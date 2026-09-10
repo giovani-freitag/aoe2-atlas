@@ -1,13 +1,3 @@
-/** Countries a Brazilian reader has a feel for, largest first. */
-const YARDSTICKS: readonly { name: string; km2: number }[] = [
-    { name: 'o Brasil', km2: 8_510_346 },
-    { name: 'a Índia', km2: 3_287_263 },
-    { name: 'o México', km2: 1_964_375 },
-    { name: 'o estado de Minas Gerais', km2: 586_522 },
-    { name: 'a França', km2: 551_695 },
-    { name: 'Portugal', km2: 92_212 },
-];
-
 const AREA = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
 const RATIO = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
 const PERCENT = new Intl.NumberFormat('pt-BR', { style: 'percent', maximumFractionDigits: 0 });
@@ -22,22 +12,12 @@ export function formatArea(km2: number): string {
 }
 
 /**
- * The same area said in countries, because nobody pictures four million square kilometres.
+ * A ratio, as Portuguese writes a decimal.
  *
- * @param km2 - The area.
- * @returns A phrase like "≈ 2,7× a França", or null when nothing on the list fits.
+ * @param times - How many times over.
  */
-export function formatYardstick(km2: number): string | null {
-    for (const yardstick of YARDSTICKS) {
-        const ratio = km2 / yardstick.km2;
-        if (ratio < 0.9) continue;
-
-        return `≈ ${RATIO.format(ratio)}× ${yardstick.name}`;
-    }
-
-    const smallest = YARDSTICKS[YARDSTICKS.length - 1];
-
-    return `≈ ${PERCENT.format(km2 / smallest.km2)} de ${smallest.name}`;
+export function formatTimes(times: number): string {
+    return `${RATIO.format(times)}×`;
 }
 
 /**

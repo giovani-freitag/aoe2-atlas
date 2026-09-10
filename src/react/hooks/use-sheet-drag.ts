@@ -6,6 +6,9 @@ const STOPS = [0.42, 0.62, 0.88] as const;
 /** How far a drag must travel before it counts as a drag rather than a tap. */
 const SLOP = 6;
 
+/** Dragged below this share of the viewport, the sheet is being thrown away rather than resized. */
+const DISMISS_BELOW = 0.3;
+
 export interface SheetDrag {
     /** The share of the viewport the sheet currently covers. */
     height: number;
@@ -22,9 +25,12 @@ export interface SheetDrag {
  *
  * A grip that looks draggable and is not is worse than no grip at all, so this is the real
  * thing: the sheet follows the finger, snaps to the nearest stop on release, and a tap or the
- * Enter key steps to the next one for anyone not using a touchscreen.
+ * Enter key steps to the next one for anyone not using a touchscreen. Dragged far enough down
+ * it is dismissed, which is why the sheet carries no close button of its own.
+ *
+ * @param onDismiss - Called when the sheet is thrown past the bottom stop.
  */
-export function useSheetDrag(): SheetDrag {
+export function useSheetDrag(onDismiss: () => void): SheetDrag {
     const [stop, setStop] = useState(1);
     const [height, setHeight] = useState<number>(STOPS[1]);
     const [dragging, setDragging] = useState(false);
@@ -53,7 +59,7 @@ export function useSheetDrag(): SheetDrag {
                 const travelled = start.y - moving.clientY;
                 if (Math.abs(travelled) > SLOP) start.moved = true;
 
-                setHeight(clamp(start.height + travelled / window.innerHeight));
+                setHeight(Math.min(STOPS[STOPS.length - 1], start.height + travelled / window.innerHeight));
             };
 
             const release = (): void => {
@@ -72,6 +78,12 @@ export function useSheetDrag(): SheetDrag {
                 }
 
                 setHeight((current) => {
+                    if (current < DISMISS_BELOW) {
+                        onDismiss();
+
+                        return STOPS[1];
+                    }
+
                     const nearest = STOPS.reduce((best, candidate) =>
                         Math.abs(candidate - current) < Math.abs(best - current) ? candidate : best,
                     );
@@ -85,12 +97,8 @@ export function useSheetDrag(): SheetDrag {
             grip.addEventListener('pointerup', release);
             grip.addEventListener('pointercancel', release);
         },
-        [stop, cycle],
+        [stop, cycle, onDismiss],
     );
 
     return { height, dragging, onPointerDown, cycle };
-}
-
-function clamp(share: number): number {
-    return Math.min(STOPS[STOPS.length - 1], Math.max(STOPS[0], share));
 }

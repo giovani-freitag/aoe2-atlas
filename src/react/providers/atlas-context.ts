@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { ExpansionKey } from '@/domain/enums/expansion.ts';
+import type { ProjectionKey } from '@/domain/enums/projection.ts';
 import type { CatalogueOrder } from '@/services/atlas/catalogue-service.ts';
 
 /** Past this many realms the legend names regions instead of civilizations. */
@@ -24,6 +25,10 @@ export interface AtlasState {
     showAll: boolean;
     /** The civilization under the pointer, highlighted but not committed to. */
     hovered: string | null;
+    /** Which projection the world is drawn in; the measured areas never depend on it. */
+    projection: ProjectionKey;
+    /** Whether the chart's ruled lines — grid, equator, tropics — are drawn. */
+    ruled: boolean;
 }
 
 export type AtlasAction =
@@ -36,7 +41,9 @@ export type AtlasAction =
     | { type: 'toggle-pin'; value: string }
     | { type: 'toggle-show-all' }
     | { type: 'clear-map' }
-    | { type: 'hover'; value: string | null };
+    | { type: 'hover'; value: string | null }
+    | { type: 'projection'; value: ProjectionKey }
+    | { type: 'toggle-ruled' };
 
 export interface AtlasStore {
     state: AtlasState;
@@ -52,6 +59,8 @@ export const INITIAL_ATLAS_STATE: AtlasState = {
     pinned: [],
     showAll: false,
     hovered: null,
+    projection: 'equal-earth',
+    ruled: true,
 };
 
 const AtlasContext = createContext<AtlasStore | null>(null);
@@ -143,5 +152,11 @@ export function atlasReducer(state: AtlasState, action: AtlasAction): AtlasState
 
         case 'hover':
             return { ...state, hovered: action.value };
+
+        case 'projection':
+            return { ...state, projection: action.value };
+
+        case 'toggle-ruled':
+            return { ...state, ruled: !state.ruled };
     }
 }

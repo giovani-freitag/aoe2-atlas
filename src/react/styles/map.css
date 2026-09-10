@@ -124,8 +124,9 @@
 
 .atlas__note {
     position: absolute;
-    right: var(--space-3);
+    left: var(--space-3);
     top: var(--space-2);
+    max-width: 60%;
     font-size: 0.625rem;
     color: var(--ink-faint);
     pointer-events: none;
@@ -168,4 +169,81 @@
         width: 16rem;
         max-height: calc(100% - 4rem);
     }
+}
+
+/*
+ * The lines an old chart is laid out on. The grid is faint, the tropics and polar circles are
+ * ruled a little heavier, and the equator is the one line drawn as though it mattered.
+ */
+.atlas__tropics {
+    fill: none;
+    stroke: var(--coast);
+    stroke-width: 0.9;
+    stroke-opacity: 0.45;
+    stroke-dasharray: 7 5;
+}
+
+.atlas__equator {
+    fill: none;
+    stroke: var(--coast);
+    stroke-width: 1.4;
+    stroke-opacity: 0.65;
+}
+
+.atlas__note[data-warning='true'] {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+/* The settings sheet is a panel, not a bottom sheet, so it never hides behind the rail. */
+.sheet--settings {
+    height: 78dvh;
+}
+
+@media (min-width: 60rem) {
+    .sheet--settings {
+        position: fixed;
+        inset: auto var(--space-4) var(--space-4) auto;
+        width: 24rem;
+        height: auto;
+        max-height: 80dvh;
+        border: 1px solid var(--oak);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+    }
+}
+
+/* ---- the wind rose ------------------------------------------------------ */
+
+.rose {
+    pointer-events: none;
+}
+
+.rose__ring {
+    fill: none;
+    stroke: var(--coast);
+    stroke-width: 0.8;
+    stroke-opacity: 0.5;
+}
+
+.rose__minor {
+    fill: var(--coast);
+    fill-opacity: 0.3;
+}
+
+.rose__major {
+    fill: var(--coast);
+    fill-opacity: 0.55;
+}
+
+.rose__north {
+    fill: var(--brass-deep);
+    fill-opacity: 0.85;
+}
+
+.rose__label {
+    fill: var(--ink-soft);
+    font-family: var(--title);
+    font-size: 11px;
+    font-weight: 600;
 }

@@ -1,7 +1,17 @@
-import { geoEqualEarth, geoGraticule10, geoPath, type GeoPath, type GeoProjection } from 'd3-geo';
+import {
+    geoEqualEarth,
+    geoGraticule,
+    geoGraticule10,
+    geoMercator,
+    geoNaturalEarth1,
+    geoPath,
+    type GeoPath,
+    type GeoProjection,
+} from 'd3-geo';
 import type { MultiPolygon } from 'geojson';
 import type { GeoPoint } from '@/domain/values/geo-point.ts';
 import type { MultiPolygonRings } from '@/domain/values/geo-shape.ts';
+import type { ProjectionKey } from '@/domain/enums/projection.ts';
 
 /** How much of the frame a realm is allowed to fill when the map flies to it. */
 const FRAME_FILL = 0.72;
@@ -31,9 +41,27 @@ const DRAWN_WINDOW = { west: -115, south: -48, east: 150, north: 72 };
 /** How finely the window's edges are sampled when working out where they land, in degrees. */
 const SAMPLE_STEP = 5;
 
+/**
+ * The extent every projection is fitted to, as a densified ring.
+ *
+ * Fitting to the whole sphere is no use for Mercator, which sends the poles to infinity, so all
+ * three are fitted to the same latitude band instead — and the band is spelled out point by
+ * point because d3 reads a four-corner box's edges as great circles and lets them bulge.
+ */
+const FITTED_WORLD: MultiPolygonRings = [[densify({ west: -180, south: -60, east: 180, north: 78 })]];
+
+/** Radius of the Earth in kilometres, for turning a scale factor into something readable. */
+const EARTH_RADIUS_KM = 6371.0088;
+
+/** The parallels an old chart rules heavier than the rest of the grid. */
+const TROPIC = 23.4366;
+const POLAR = 66.5634;
+
 export interface AtlasProjectionConfig {
     width: number;
     height: number;
+    /** Which projection to draw in; the measured areas never depend on it. */
+    kind: ProjectionKey;
     /**
      * Pixels at the foot of the viewport the legend sits over.
      *
@@ -52,15 +80,18 @@ export interface Frame {
 }
 
 /**
- * Equal Earth, fitted to the viewport, and the paths drawn on it.
+ * A projection fitted to the viewport, and the paths drawn on it.
  *
- * The projection is equal-area on purpose. The whole point of the atlas is that a reader can
- * look at the Mongol Empire beside Mali and believe the sizes; on Mercator, which every slippy
- * map uses, Scandinavia would outweigh India and the comparison would be a lie.
+ * Equal Earth is the default because the atlas is about how much ground a realm held, and on
+ * Mercator Scandinavia outweighs India. But the reader can pick, and the honesty does not
+ * depend on the choice: every area in the panels is measured on the sphere when the data is
+ * built, so switching to Mercator changes the picture and not one number. What the map does
+ * instead is say, out loud, how much the picture is lying at the latitude on screen.
  */
 export class AtlasProjection {
     public readonly width: number;
     public readonly height: number;
+    public readonly kind: ProjectionKey;
     private readonly visibleHeight: number;
     private readonly projection: GeoProjection;
     private readonly path: GeoPath;
@@ -68,8 +99,15 @@ export class AtlasProjection {
     constructor(config: AtlasProjectionConfig) {
         this.width = config.width;
         this.height = config.height;
+        this.kind = config.kind;
         this.visibleHeight = Math.max(config.height - (config.bottomInset ?? 0), config.height * 0.4);
-        this.projection = geoEqualEarth().fitSize([config.width, config.height], { type: 'Sphere' });
+        this.projection = build(config.kind).fitExtent(
+            [
+                [0, 0],
+                [config.width, config.height],
+            ],
+            asMultiPolygon(FITTED_WORLD),
+        );
         this.path = geoPath(this.projection);
     }
 
@@ -101,6 +139,79 @@ export class AtlasProjection {
     /** Meridians and parallels every ten degrees, as one path. */
     public graticulePath(): string {
         return this.path(geoGraticule10()) ?? '';
+    }
+
+    /**
+     * The lines an old chart draws heavier than the rest of the grid.
+     *
+     * @returns The equator on its own, and the tropics and polar circles together.
+     */
+    public referenceLines(): { equator: string; tropics: string } {
+        const along = (lat: number): string =>
+            this.path(geoGraticule().extentMajor([[-180, lat], [180, lat]]).stepMinor([360, 360]).outline()) ?? '';
+
+        return {
+            equator: along(0),
+            tropics: [TROPIC, -TROPIC, POLAR, -POLAR].map(along).join(' '),
+        };
+    }
+
+    /**
+     * How many times larger a shape looks at a latitude than it truly is.
+     *
+     * Measured rather than derived, so it holds for whichever projection is on: a small quad is
+     * projected at the latitude and at the equator, and the two area ratios are compared. An
+     * equal-area projection answers one everywhere; Mercator answers three at fifty-five degrees.
+     *
+     * @param lat - The latitude to measure at, in degrees.
+     */
+    public areaInflationAt(lat: number): number {
+        const baseline = this.quadRatio(0);
+        const here = this.quadRatio(Math.max(-84, Math.min(84, lat)));
+        if (baseline === 0) return 1;
+
+        return here / baseline;
+    }
+
+    /**
+     * The latitude at the middle of what the reader is currently looking at.
+     *
+     * @param frame - The pan and zoom on screen.
+     * @returns The latitude in degrees, or zero when the centre falls off the map.
+     */
+    public centreLatitude(frame: Frame): number {
+        const centre = this.projection.invert?.([
+            (this.width / 2 - frame.x) / frame.k,
+            (this.visibleHeight / 2 - frame.y) / frame.k,
+        ]);
+
+        return centre ? centre[1] : 0;
+    }
+
+    /** Projected area over true area for a small quad at one latitude. */
+    private quadRatio(lat: number): number {
+        const half = 0.5;
+        const corners: [number, number][] = [
+            [-half, lat - half],
+            [half, lat - half],
+            [half, lat + half],
+            [-half, lat + half],
+        ];
+
+        let projected = 0;
+        for (let index = 0; index < corners.length; index += 1) {
+            const from = this.projection(corners[index]);
+            const to = this.projection(corners[(index + 1) % corners.length]);
+            if (!from || !to) return 0;
+
+            projected += from[0] * to[1] - to[0] * from[1];
+        }
+
+        const trueArea = Math.abs(
+            (Math.PI / 180) * (2 * half) * (Math.sin(((lat + half) * Math.PI) / 180) - Math.sin(((lat - half) * Math.PI) / 180)),
+        );
+
+        return trueArea === 0 ? 0 : Math.abs(projected / 2) / (trueArea * EARTH_RADIUS_KM * EARTH_RADIUS_KM);
     }
 
     /**
@@ -176,6 +287,26 @@ export class AtlasProjection {
  */
 function asMultiPolygon(rings: MultiPolygonRings): MultiPolygon {
     return { type: 'MultiPolygon', coordinates: rings as MultiPolygon['coordinates'] };
+}
+
+function build(kind: ProjectionKey): GeoProjection {
+    if (kind === 'mercator') return geoMercator();
+    if (kind === 'natural-earth') return geoNaturalEarth1();
+
+    return geoEqualEarth();
+}
+
+/** Walks the edges of a box so the ring follows parallels and meridians, not great circles. */
+function densify(box: { west: number; south: number; east: number; north: number }): [number, number][] {
+    const ring: [number, number][] = [];
+
+    for (let lon = box.west; lon <= box.east; lon += SAMPLE_STEP) ring.push([lon, box.south]);
+    for (let lat = box.south; lat <= box.north; lat += SAMPLE_STEP) ring.push([box.east, lat]);
+    for (let lon = box.east; lon >= box.west; lon -= SAMPLE_STEP) ring.push([lon, box.north]);
+    for (let lat = box.north; lat >= box.south; lat -= SAMPLE_STEP) ring.push([box.west, lat]);
+    ring.push([box.west, box.south]);
+
+    return ring;
 }
 
 function clamp(scale: number): number {

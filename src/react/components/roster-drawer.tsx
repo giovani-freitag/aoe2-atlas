@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { Search, X } from 'lucide-react';
+import { useEffect, useMemo, useRef, type MouseEvent } from 'react';
+import { Search } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import type { CatalogueOrder } from '@/services/atlas/catalogue-service.ts';
@@ -62,13 +62,28 @@ export function RosterDrawer({ civilizations, borders, open, onClose }: RosterDr
 
     const standingCount = civilizations.filter((civ) => borders.has(civ.key)).length;
 
+    /*
+     * A dialog does not close when the backdrop is clicked, so the click lands on the dialog
+     * element itself and the box tells us whether it was inside the panel. This is what lets
+     * the drawer go without a close button: tap anywhere off it, or press Escape.
+     */
+    const closeOnBackdrop = (event: MouseEvent<HTMLDialogElement>): void => {
+        if (wide || event.target !== event.currentTarget) return;
+
+        const box = event.currentTarget.getBoundingClientRect();
+        const inside =
+            event.clientX >= box.left &&
+            event.clientX <= box.right &&
+            event.clientY >= box.top &&
+            event.clientY <= box.bottom;
+
+        if (!inside) onClose();
+    };
+
     return (
-        <dialog className="roster leather" ref={dialog} onCancel={onClose} onClose={onClose}>
+        <dialog className="roster leather" ref={dialog} onCancel={onClose} onClose={onClose} onClick={closeOnBackdrop}>
             <div className="roster__head">
                 <h2>Civilizações</h2>
-                <button type="button" className="roster__close bar__button iron" onClick={onClose} aria-label="Fechar">
-                    <X size={18} aria-hidden />
-                </button>
             </div>
 
             <div className="roster__filters">

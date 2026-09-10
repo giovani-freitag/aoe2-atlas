@@ -1,33 +1,34 @@
 import { useCallback, useMemo, useState } from 'react';
-import { List, Loader } from 'lucide-react';
-import { EmberCanvas } from './ember-canvas.tsx';
+import { List, Loader, SlidersHorizontal } from 'lucide-react';
 import { useServices } from '@/react/providers/services-context.ts';
 import { drawnRealms, useAtlas } from '@/react/providers/atlas-context.ts';
 import { useEscape } from '@/react/hooks/use-escape.ts';
 import { useTimeSlice } from '@/react/hooks/use-time-slice.ts';
 import { useSpecular } from '@/react/hooks/use-specular.ts';
-import { GENERATED_AT } from '@/data/dataset.ts';
+import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { AtlasMap } from './atlas-map.tsx';
 import { DetailSheet } from './detail-sheet.tsx';
+import { EmberCanvas } from './ember-canvas.tsx';
 import { LegendPanel } from './legend-panel.tsx';
 import { RosterDrawer } from './roster-drawer.tsx';
+import { SettingsSheet } from './settings-sheet.tsx';
 import { TimelineRail } from './timeline-rail.tsx';
+import { YearStepper } from './year-stepper.tsx';
 
 /** The whole interface: a map that owns the screen, with everything else sliding over it. */
 export function AppShell() {
     const { catalogue, slices } = useServices();
     const { state, dispatch } = useAtlas();
+    const wide = useWideScreen();
     const [rosterOpen, setRosterOpen] = useState(false);
+    const [settingsOpen, setSettingsOpen] = useState(false);
 
     useSpecular('.iron');
 
     const { slice, loading, error } = useTimeSlice(slices, state.year);
     const sliceYear = slices.sliceYearFor(state.year);
 
-    const borders = useMemo(
-        () => new Map((slice?.borders ?? []).map((border) => [border.civ, border])),
-        [slice],
-    );
+    const borders = useMemo(() => new Map((slice?.borders ?? []).map((border) => [border.civ, border])), [slice]);
 
     const listed = useMemo(
         () => catalogue.search({ text: state.query, expansions: state.expansions, order: state.order }),
@@ -43,7 +44,18 @@ export function AppShell() {
         dispatch({ type: 'focus', value: null });
     }, [dispatch]);
 
+    const closeSettings = useCallback(() => {
+        setSettingsOpen(false);
+    }, []);
+
     useEscape(closeSheet);
+
+    const setYear = useCallback(
+        (year: number) => {
+            dispatch({ type: 'year', value: year });
+        },
+        [dispatch],
+    );
 
     return (
         <div className="shell">
@@ -77,6 +89,19 @@ export function AppShell() {
                         <span className="sr-only">Carregando o século</span>
                     </span>
                 ) : null}
+
+                {wide ? (
+                    <button
+                        type="button"
+                        className="bar__button iron"
+                        onClick={() => {
+                            setSettingsOpen(true);
+                        }}
+                        aria-label="Abrir os ajustes do mapa"
+                    >
+                        <SlidersHorizontal size={18} aria-hidden />
+                    </button>
+                ) : null}
             </header>
 
             <main className="stage">
@@ -103,25 +128,45 @@ export function AppShell() {
                 />
             ) : null}
 
+            <SettingsSheet
+                civilizations={catalogue.all()}
+                from={range.from}
+                to={range.to}
+                sliceYear={sliceYear}
+                loading={loading}
+                open={settingsOpen}
+                onClose={closeSettings}
+            />
+
+            {/*
+             * The rail keeps the full instrument where there is room for it, and shrinks to the
+             * reading alone on a phone, where a histogram and a slider would be fighting the map
+             * for the bottom of the screen.
+             */}
             <div className="rail leather">
-                <TimelineRail
-                    civilizations={catalogue.all()}
-                    from={range.from}
-                    to={range.to}
-                    year={state.year}
-                    sliceYear={sliceYear}
-                    loading={loading}
-                    onChange={(year) => {
-                        dispatch({ type: 'year', value: year });
-                    }}
-                />
-                <p className="rail__credit">
-                    Fronteiras de{' '}
-                    <a href="https://github.com/aourednik/historical-basemaps" target="_blank" rel="noreferrer">
-                        historical-basemaps
-                    </a>{' '}
-                    · costa de Natural Earth · <span className="numeric">{GENERATED_AT.slice(0, 10)}</span>
-                </p>
+                {wide ? (
+                    <TimelineRail
+                        civilizations={catalogue.all()}
+                        from={range.from}
+                        to={range.to}
+                        year={state.year}
+                        sliceYear={sliceYear}
+                        loading={loading}
+                        onChange={setYear}
+                    />
+                ) : (
+                    <YearStepper
+                        from={range.from}
+                        to={range.to}
+                        year={state.year}
+                        sliceYear={sliceYear}
+                        loading={loading}
+                        onChange={setYear}
+                        onOpenSettings={() => {
+                            setSettingsOpen(true);
+                        }}
+                    />
+                )}
             </div>
         </div>
     );

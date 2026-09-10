@@ -265,11 +265,7 @@
         transition: none;
     }
 
-    .roster__close {
-        display: none;
-    }
-
-    .sheet {
+    .sheet:not(.sheet--settings) {
         grid-area: detail;
         position: relative;
         inset: auto;
@@ -286,7 +282,7 @@
         padding-bottom: 0;
     }
 
-    .sheet__grip {
+    .sheet:not(.sheet--settings) .sheet__grip {
         display: none;
     }
 

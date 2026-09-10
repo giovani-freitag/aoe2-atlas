@@ -4,10 +4,13 @@ import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import { LAND_RINGS } from '@/data/dataset.ts';
 import { AtlasProjection, SCALE_EXTENT } from '@/services/geo/atlas-projection.ts';
+import { PROJECTIONS } from '@/domain/enums/projection.ts';
+import { formatTimes } from '@/react/format.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useElementSize } from '@/react/hooks/use-element-size.ts';
 import { useMapZoom } from '@/react/hooks/use-map-zoom.ts';
+import { CompassRose } from './compass-rose.tsx';
 import { HatchDefs } from './hatch-defs.tsx';
 import { WonderMarker } from './wonder-marker.tsx';
 
@@ -16,6 +19,10 @@ const LEGEND_SHARE = 0.36;
 
 /** Above this width the legend is a card in the corner and stops eating the map's height. */
 const CARD_LEGEND_WIDTH = 720;
+
+/** Where the wind rose sits and how big it is, as a share of the shorter side. */
+const ROSE_SHARE = 0.11;
+const ROSE_MAX = 46;
 
 export interface AtlasMapProps {
     /** The civilizations the filters leave standing in the year on the rail; each gets a mark. */
@@ -44,8 +51,8 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
 
         const bottomInset = size.width < CARD_LEGEND_WIDTH ? size.height * LEGEND_SHARE : 0;
 
-        return new AtlasProjection({ width: size.width, height: size.height, bottomInset });
-    }, [size.width, size.height]);
+        return new AtlasProjection({ width: size.width, height: size.height, bottomInset, kind: state.projection });
+    }, [size.width, size.height, state.projection]);
 
     const { frame, flyTo, zoomBy } = useMapZoom(svg, {
         width: size.width,
@@ -56,10 +63,14 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
     const base = useMemo(() => {
         if (!projection) return null;
 
+        const { equator, tropics } = projection.referenceLines();
+
         return {
             sphere: projection.spherePath(),
             graticule: projection.graticulePath(),
             land: projection.pathOf(LAND_RINGS),
+            equator,
+            tropics,
         };
     }, [projection]);
 
@@ -96,6 +107,14 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         flyTo(projection.frameFor(border.rings));
     }, [focus, projection, borders, flyTo]);
 
+    const profile = PROJECTIONS[state.projection];
+    const inflation = useMemo(
+        () => (projection && !profile.equalArea ? projection.areaInflationAt(projection.centreLatitude(frame)) : 1),
+        [projection, profile.equalArea, frame],
+    );
+
+    const roseRadius = Math.min(ROSE_MAX, Math.min(size.width, size.height) * ROSE_SHARE);
+
     const marks = useMemo(() => {
         if (!projection) return [];
 
@@ -124,7 +143,20 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                     <g transform={`translate(${frame.x},${frame.y}) scale(${frame.k})`}>
                         <path className="atlas__sea" d={base.sphere} />
                         <path className="atlas__land" d={base.land} vectorEffect="non-scaling-stroke" />
-                        <path className="atlas__graticule" d={base.graticule} vectorEffect="non-scaling-stroke" />
+
+                        {/* The ruled lines an old chart is laid out on, heaviest at the equator. */}
+                        {state.ruled ? (
+                            <>
+                                <path
+                                    className="atlas__graticule"
+                                    d={base.graticule}
+                                    vectorEffect="non-scaling-stroke"
+                                />
+                                <path className="atlas__tropics" d={base.tropics} vectorEffect="non-scaling-stroke" />
+                                <path className="atlas__equator" d={base.equator} vectorEffect="non-scaling-stroke" />
+                            </>
+                        ) : null}
+
                         <path className="atlas__rim" d={base.sphere} vectorEffect="non-scaling-stroke" />
 
                         {shapes.map(({ civilization, border, path }) => {
@@ -147,6 +179,13 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                             );
                         })}
                     </g>
+
+                    {state.ruled ? (
+                        <CompassRose
+                            at={[size.width - roseRadius - 18, roseRadius + 26]}
+                            radius={roseRadius}
+                        />
+                    ) : null}
 
                     <g className="atlas__marks">
                         {marks.map(({ civilization, point }) => (
@@ -203,7 +242,17 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                 </button>
             </div>
 
-            <p className="atlas__note">Projeção Equal Earth · áreas comparáveis</p>
+            {/*
+             * On a projection that does not preserve area, the note says how badly the picture
+             * exaggerates right where the reader is looking. The numbers in the panels are
+             * measured on the sphere and never move, so the map can be wrong out loud.
+             */}
+            <p className="atlas__note" data-warning={inflation > 1.2}>
+                {PROJECTIONS[state.projection].name}
+                {profile.equalArea
+                    ? ' · áreas comparáveis'
+                    : ` · aqui infla ${formatTimes(inflation)} · compare pelos números`}
+            </p>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { AlertTriangle, ExternalLink, MapPin, PencilRuler, Pin, PinOff, Swords, X } from 'lucide-react';
+import { AlertTriangle, ExternalLink, MapPin, PencilRuler, Pin, PinOff, Swords } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { Frontier } from '@/domain/values/frontier.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
@@ -9,7 +9,7 @@ import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { useSheetDrag } from '@/react/hooks/use-sheet-drag.ts';
-import { formatArea, formatDate, formatShare, formatSpan, formatYardstick, formatYear } from '@/react/format.ts';
+import { formatArea, formatDate, formatShare, formatSpan, formatYear } from '@/react/format.ts';
 
 /** How many neighbours the frontier list shows before it stops being a list. */
 const MAX_FRONTIERS = 6;
@@ -41,7 +41,7 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
     const { catalogue, palette } = useServices();
     const { state, dispatch } = useAtlas();
     const wide = useWideScreen();
-    const drag = useSheetDrag();
+    const drag = useSheetDrag(onClose);
     const sheet = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -94,9 +94,6 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                     <h2>{civilization.name}</h2>
                     <p className="sheet__region">{REGION_NAMES[civilization.region]}</p>
                 </div>
-                <button type="button" className="bar__button iron" onClick={onClose} aria-label="Fechar">
-                    <X size={18} aria-hidden />
-                </button>
             </header>
 
             <div className="sheet__body">
@@ -147,10 +144,6 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                                 <div>
                                     <dt>Área</dt>
                                     <dd className="numeric">{formatArea(border.areaKm2)}</dd>
-                                </div>
-                                <div>
-                                    <dt>Equivale a</dt>
-                                    <dd>{formatYardstick(border.areaKm2)}</dd>
                                 </div>
                                 <div>
                                     <dt>Fronteira</dt>

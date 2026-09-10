@@ -27,10 +27,14 @@ Duas fronteiras só se cruzam na tela se as duas existiam no mesmo século. Isso
 arquitetura, não por um filtro que alguém precisa lembrar de aplicar, e um teste recusa qualquer
 par anacrônico.
 
-### A projeção é equivalente e a incerteza é visível
+### A projeção é escolha sua, e a distorção é dita em voz alta
 
-Equal Earth, não Web Mercator. Em Mercator a Escandinávia parece maior que a Índia; se a pergunta
-é *"quanto chão essa civilização segurava?"*, Mercator responde errado.
+Equal Earth por padrão, porque em Mercator a Escandinávia parece maior que a Índia. Mas dá para
+trocar por Natural Earth ou Mercator nos ajustes — **e nenhum número muda**: as áreas são medidas
+na esfera quando os dados são gerados, não lidas do desenho. O que a troca muda é o desenho, e
+aí o mapa avisa: numa projeção que não preserva área, a nota diz quanto o que está na tela está
+inflado na latitude que você está olhando. O fator é medido, não deduzido — um quadrado pequeno é
+projetado ali e no equador, e as duas razões são comparadas, então vale para qualquer projeção.
 
 E fronteira medieval era zona, não linha. A fonte informa o quanto conhece cada traçado, e o
 atlas obedece: contorno **sólido** onde a fronteira é demarcada, **tracejado e desfocado** onde é
