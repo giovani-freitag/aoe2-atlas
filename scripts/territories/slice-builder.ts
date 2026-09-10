@@ -69,6 +69,8 @@ export interface Frontier {
     areaKm2: number;
     shareOfA: number;
     shareOfB: number;
+    /** True when either side's line was borrowed from another century, so the figure is softer. */
+    carried: boolean;
 }
 
 export interface Slice {
@@ -321,9 +323,25 @@ function describe(civ: string, cut: Cut, year: number): Realm {
     };
 }
 
-/** The cut for a year, or the closest one the civilization has if that year has none. */
+/**
+ * The cut for a year, or the nearest one the civilization has — unless the gap is interior.
+ *
+ * A civilization the source maps before a century and again after it, but not in it, is not
+ * missing data: it is missing. The Chinese have borders every century from 700 to 1200 and
+ * again from 1492, and nothing between — because the ground was the Mongol Yuan and then the
+ * Ming. Carrying the Song line of 1200 forward into 1279 would draw a realm that had ceased to
+ * exist, and then report the Mongols as disputing all of it.
+ *
+ * Outside that range the reasoning is the other way round. A single hand-drawn snapshot, or a
+ * source that simply stops recording, is thin data rather than evidence of an ending, so the
+ * nearest cut stands in and the border is drawn as borrowed.
+ */
 function nearest(cuts: readonly Cut[], year: number): Cut | null {
     if (cuts.length === 0) return null;
+
+    const before = cuts.filter((cut) => cut.year <= year).at(-1);
+    const after = cuts.find((cut) => cut.year >= year);
+    if (before && after && before.year !== after.year) return null;
 
     return cuts.reduce((best, cut) => (Math.abs(cut.year - year) < Math.abs(best.year - year) ? cut : best));
 }
@@ -360,7 +378,14 @@ function frontierBetween(a: Realm, b: Realm): Frontier | null {
 
     if (Math.max(shareOfA, shareOfB) < MIN_OVERLAP_SHARE) return null;
 
-    return { a: a.civ, b: b.civ, areaKm2: Math.round(area), shareOfA: round(shareOfA, 4), shareOfB: round(shareOfB, 4) };
+    return {
+        a: a.civ,
+        b: b.civ,
+        areaKm2: Math.round(area),
+        shareOfA: round(shareOfA, 4),
+        shareOfB: round(shareOfB, 4),
+        carried: !a.exact || !b.exact,
+    };
 }
 
 /** How far a point sits from a shape, in kilometres; zero when it is inside. */

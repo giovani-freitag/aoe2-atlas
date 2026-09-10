@@ -22,7 +22,7 @@ interface SliceJson {
         centroid: [number, number];
         rings: number[][][][];
     }[];
-    frontiers: { a: string; b: string; areaKm2: number; shareOfA: number; shareOfB: number }[];
+    frontiers: { a: string; b: string; areaKm2: number; shareOfA: number; shareOfB: number; carried: boolean }[];
 }
 
 export interface SliceServiceConfig {

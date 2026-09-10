@@ -206,6 +206,10 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                         </h3>
                         <p className="card__hint">
                             Só contemporâneos entram aqui: quem dividiu chão com esta civilização neste mesmo século.
+                            Um <abbr title="a fonte não mapeia um dos dois neste século, e a linha veio da fatia mais próxima">
+                                ≈
+                            </abbr>{' '}
+                            marca a medida feita contra uma fronteira emprestada de outro século.
                         </p>
                         <ul className="frontiers">
                             {neighbours.map((frontier) => {
@@ -238,7 +242,8 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                                                     }}
                                                 />
                                             </span>
-                                            <span className="frontiers__share numeric">
+                                            <span className="frontiers__share numeric" data-soft={frontier.carried}>
+                                                {frontier.carried ? '≈' : ''}
                                                 {formatShare(frontier.shareOf(civilization.key))}
                                             </span>
                                         </button>

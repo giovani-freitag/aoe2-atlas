@@ -750,3 +750,14 @@
     font-size: 0.6875rem;
     color: var(--text-faint);
 }
+
+/* A share measured against a borrowed border is shown as an estimate, not a figure. */
+.frontiers__share[data-soft='true'] {
+    color: var(--ink-faint);
+    font-style: italic;
+}
+
+.card__hint abbr {
+    text-decoration: underline dotted;
+    cursor: help;
+}

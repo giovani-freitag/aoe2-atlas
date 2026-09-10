@@ -20,7 +20,7 @@ function sliceJson(year: number): unknown {
                 rings: [[[[0, 0], [1, 0], [1, 1], [0, 0]]]],
             },
         ],
-        frontiers: [{ a: 'mongols', b: 'tatars', areaKm2: 5_000_000, shareOfA: 0.22, shareOfB: 0.99 }],
+        frontiers: [{ a: 'mongols', b: 'tatars', areaKm2: 5_000_000, shareOfA: 0.22, shareOfB: 0.99, carried: true }],
     };
 }
 
@@ -138,5 +138,11 @@ describe('SliceService', () => {
         const slice = await service.load(800);
 
         expect(slice.frontiers[0].isNested).toBe(true);
+    });
+
+    it('carries through that a frontier was measured against a borrowed border', async () => {
+        const slice = await service.load(800);
+
+        expect(slice.frontiers[0].carried).toBe(true);
     });
 });

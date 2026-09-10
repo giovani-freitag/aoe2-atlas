@@ -6,16 +6,36 @@
  * hundred years apart. A frontier only exists between contemporaries, so these are only ever
  * built inside a single time slice.
  */
+export interface FrontierConfig {
+    a: string;
+    b: string;
+    areaKm2: number;
+    shareOfA: number;
+    shareOfB: number;
+    /** True when either side's line was borrowed from another century. */
+    carried: boolean;
+}
+
 export class Frontier {
     public readonly a: string;
     public readonly b: string;
     public readonly areaKm2: number;
+    /**
+     * Whether one of the two lines came from another century.
+     *
+     * The atlas draws a realm in a century the source does not map it for by borrowing the
+     * nearest line it has. That keeps the map populated, but it means the shared ground was
+     * measured against a border that may have moved, so the figure is shown as softer rather
+     * than presented with the same confidence as two lines of the same year.
+     */
+    public readonly carried: boolean;
     private readonly shares: Readonly<Record<string, number>>;
 
-    constructor(config: { a: string; b: string; areaKm2: number; shareOfA: number; shareOfB: number }) {
+    constructor(config: FrontierConfig) {
         this.a = config.a;
         this.b = config.b;
         this.areaKm2 = config.areaKm2;
+        this.carried = config.carried;
         this.shares = { [config.a]: config.shareOfA, [config.b]: config.shareOfB };
     }
 
