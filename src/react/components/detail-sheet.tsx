@@ -1,23 +1,17 @@
+import { useTranslation } from 'react-i18next';
 import { AlertTriangle, ExternalLink, MapPin, PencilRuler, Pin, PinOff, Swords } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { Frontier } from '@/domain/values/frontier.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
-import { REGION_NAMES } from '@/domain/enums/region.ts';
 import { EXPANSION_RECORDS } from '@/data/expansions.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
+import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
+import { useFormat } from '@/react/hooks/use-format.ts';
 import { BottomSheet } from './bottom-sheet.tsx';
-import { formatArea, formatDate, formatShare, formatSpan, formatYear } from '@/react/format.ts';
 
 /** How many neighbours the frontier list shows before it stops being a list. */
 const MAX_FRONTIERS = 6;
-
-/** What the source calls each level of confidence in a border. */
-const PRECISION_WORDS = {
-    approximate: 'aproximada',
-    moderate: 'moderadamente precisa',
-    surveyed: 'demarcada',
-} as const;
 
 export interface DetailSheetProps {
     civilization: Civilization;
@@ -36,12 +30,15 @@ export interface DetailSheetProps {
  * panel says which — a reader should never have to wonder what year they are looking at.
  */
 export function DetailSheet({ civilization, border, frontiers, onClose }: DetailSheetProps) {
-    const { catalogue, palette } = useServices();
+    const { t } = useTranslation();
+    const { catalogue, palette, text } = useServices();
     const { state, dispatch } = useAtlas();
+    const words = useCivilizationText(civilization);
+    const format = useFormat();
     const style = palette.styleOf(civilization.key);
     const expansion = EXPANSION_RECORDS.find((entry) => entry.key === civilization.expansion);
     const pinned = state.pinned.includes(civilization.key);
-    const { wonder } = civilization;
+    const year = format.year(state.year);
 
     const neighbours = frontiers
         .filter((frontier) => frontier.otherThan(civilization.key) !== null)
@@ -50,7 +47,7 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
 
     return (
         <BottomSheet
-            label={`Detalhes de ${civilization.name}`}
+            label={t('sheet.details', { name: words.name })}
             open
             onClose={onClose}
             wide="dock"
@@ -63,8 +60,8 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                         height={44}
                     />
                     <div>
-                        <h2>{civilization.name}</h2>
-                        <p className="sheet__region">{REGION_NAMES[civilization.region]}</p>
+                        <h2>{words.name}</h2>
+                        <p className="sheet__region">{text.region(civilization.region)}</p>
                     </div>
                 </div>
             }
@@ -85,92 +82,95 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                     }}
                 >
                     {pinned ? <PinOff size={16} aria-hidden /> : <Pin size={16} aria-hidden />}
-                    {border === null
-                        ? `Sem fronteira em ${formatYear(state.year)}`
-                        : pinned
-                          ? 'Tirar do mapa'
-                          : 'Traçar no mapa'}
+                    {border === null ? t('detail.noBorder', { year }) : pinned ? t('detail.untrace') : t('detail.trace')}
                 </button>
 
                 <section className="card parchment singed">
-                    <h3 className="eyebrow">Em {formatYear(state.year)}</h3>
-                    <p className="card__lead">{civilization.realmLabel}</p>
+                    <h3 className="eyebrow">{t('detail.in', { year })}</h3>
+                    <p className="card__lead">{words.realm}</p>
 
                     {border ? (
                         <>
                             <dl className="stats">
                                 <div>
-                                    <dt>Área</dt>
-                                    <dd className="numeric">{formatArea(border.areaKm2)}</dd>
+                                    <dt>{t('detail.area')}</dt>
+                                    <dd className="numeric">{format.area(border.areaKm2)}</dd>
                                 </div>
                                 <div>
-                                    <dt>Fronteira</dt>
-                                    <dd>{PRECISION_WORDS[border.precision]}</dd>
+                                    <dt>{t('detail.border')}</dt>
+                                    <dd>{t(`detail.precision.${border.precision}`)}</dd>
                                 </div>
                                 <div>
-                                    <dt>Em cena</dt>
-                                    <dd className="numeric">
-                                        {formatSpan(civilization.span.from, civilization.span.to)}
-                                    </dd>
+                                    <dt>{t('detail.onStage')}</dt>
+                                    <dd className="numeric">{format.span(civilization.span.from, civilization.span.to)}</dd>
                                 </div>
                             </dl>
 
                             {border.isHandDrawn ? (
                                 <p className="card__note">
-                                    <PencilRuler size={14} aria-hidden /> Contorno desenhado à mão para este atlas: a
-                                    fonte não traz este reino.
+                                    <PencilRuler size={14} aria-hidden /> {t('detail.handDrawn')}
                                 </p>
                             ) : (
                                 <p className="card__source">
-                                    Dissolvido de {border.sourceNames.join(', ')} no mapa de {formatYear(border.from)}.
+                                    {t('detail.dissolved', {
+                                        sources: border.sourceNames.join(', '),
+                                        year: format.year(border.from),
+                                    })}
                                 </p>
                             )}
 
                             {border.isOfItsCentury ? null : (
                                 <p className="card__note">
-                                    <AlertTriangle size={14} aria-hidden /> A fonte não mapeia este reino em{' '}
-                                    {formatYear(state.year)}; a linha vem de {formatYear(border.from)},{' '}
-                                    {border.carriedYears} anos de distância.
+                                    <AlertTriangle size={14} aria-hidden />{' '}
+                                    {t('detail.carried', {
+                                        year,
+                                        from: format.year(border.from),
+                                        years: border.carriedYears,
+                                    })}
                                 </p>
                             )}
                         </>
                     ) : (
                         <p className="card__note">
-                            <AlertTriangle size={14} aria-hidden /> Nenhuma fronteira mapeada neste século. Arraste o
-                            ano para {formatYear(civilization.reach.peakYear)}, o auge desta civilização.
+                            <AlertTriangle size={14} aria-hidden />{' '}
+                            {t('detail.absent', { peak: format.year(civilization.reach.peakYear) })}
                         </p>
                     )}
 
                     <p className="card__source">
-                        Auge em {formatYear(civilization.reach.peakYear)}, com{' '}
-                        {formatArea(civilization.reach.peakAreaKm2)}.
+                        {t('detail.peak', {
+                            year: format.year(civilization.reach.peakYear),
+                            area: format.area(civilization.reach.peakAreaKm2),
+                        })}
                     </p>
 
                     {/* The Wonder is the pin on the map; here it is one line, not a card of its own. */}
                     <p className="card__source">
-                        <MapPin size={12} aria-hidden /> {wonder.monument}, {wonder.place} ·{' '}
+                        <MapPin size={12} aria-hidden /> {words.monument}, {words.place} ·{' '}
                         <a
                             className="card__link"
-                            href={`https://en.wikipedia.org/wiki/${encodeURIComponent(wonder.wikipedia)}`}
+                            href={`https://en.wikipedia.org/wiki/${encodeURIComponent(civilization.wonder.wikipedia)}`}
                             target="_blank"
                             rel="noreferrer"
                         >
-                            Wikipédia <ExternalLink size={11} aria-hidden />
+                            {t('detail.wikipedia')} <ExternalLink size={11} aria-hidden />
                         </a>
                     </p>
-                    {wonder.anachronism ? (
+                    {words.anachronism ? (
                         <p className="card__note">
-                            <AlertTriangle size={14} aria-hidden /> {wonder.anachronism}
+                            <AlertTriangle size={14} aria-hidden /> {words.anachronism}
                         </p>
                     ) : null}
                 </section>
 
                 {expansion ? (
                     <section className="card parchment singed">
-                        <h3 className="eyebrow">Expansão</h3>
+                        <h3 className="eyebrow">{t('detail.expansion')}</h3>
                         <p className="card__lead">{expansion.name}</p>
                         <p className="card__line">
-                            {expansion.released ? 'Lançada em' : 'Prevista para'} {formatDate(expansion.releasedOn)}
+                            {t(expansion.released ? 'detail.releasedOn' : 'detail.plannedFor', {
+                                date: format.date(expansion.releasedOn),
+                            })}
                         </p>
                     </section>
                 ) : null}
@@ -178,14 +178,11 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                 {neighbours.length > 0 ? (
                     <section className="card parchment singed">
                         <h3 className="eyebrow">
-                            <Swords size={13} aria-hidden /> Terreno dividido em {formatYear(state.year)}
+                            <Swords size={13} aria-hidden /> {t('detail.shared', { year })}
                         </h3>
                         <p className="card__hint">
-                            Só contemporâneos entram aqui: quem dividiu chão com esta civilização neste mesmo século.
-                            Um <abbr title="a fonte não mapeia um dos dois neste século, e a linha veio da fatia mais próxima">
-                                ≈
-                            </abbr>{' '}
-                            marca a medida feita contra uma fronteira emprestada de outro século.
+                            {t('detail.sharedHint')} <abbr title={t('detail.sharedAbbr')}>≈</abbr>{' '}
+                            {t('detail.sharedHintTail')}
                         </p>
                         <ul className="frontiers">
                             {neighbours.map((frontier) => {
@@ -194,6 +191,7 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                                 if (!other) return null;
 
                                 const otherStyle = palette.styleOf(other.key);
+                                const otherName = text.civilization(other.key, false).name;
 
                                 return (
                                     <li key={other.key}>
@@ -202,14 +200,14 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                                             onClick={() => {
                                                 dispatch({ type: 'toggle-pin', value: other.key });
                                             }}
-                                            title={`Sobrepor ${other.name} no mapa`}
+                                            title={t('detail.overlay', { name: otherName })}
                                         >
                                             <span
                                                 className="frontiers__dot"
                                                 style={{ background: otherStyle.colour }}
                                                 aria-hidden
                                             />
-                                            <span className="frontiers__name">{other.name}</span>
+                                            <span className="frontiers__name">{otherName}</span>
                                             <span className="frontiers__meter" aria-hidden>
                                                 <span
                                                     style={{
@@ -220,7 +218,7 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                                             </span>
                                             <span className="frontiers__share numeric" data-soft={frontier.carried}>
                                                 {frontier.carried ? '≈' : ''}
-                                                {formatShare(frontier.shareOf(civilization.key))}
+                                                {format.share(frontier.shareOf(civilization.key))}
                                             </span>
                                         </button>
                                     </li>

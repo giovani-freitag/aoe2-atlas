@@ -1,8 +1,11 @@
-import { Grid2x2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Grid2x2, Languages } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import { PROJECTION_KEYS, PROJECTIONS } from '@/domain/enums/projection.ts';
 import { GENERATED_AT } from '@/data/dataset.ts';
+import { LOCALE_NAMES, SUPPORTED_LOCALES, toSupportedLocale } from '@/i18n/locales.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
+import { useFormat } from '@/react/hooks/use-format.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { BottomSheet } from './bottom-sheet.tsx';
 import { TimelineRail } from './timeline-rail.tsx';
@@ -19,32 +22,35 @@ export interface SettingsSheetProps {
 }
 
 /**
- * How the map is drawn, and — on a phone — which year it is drawn for.
+ * How the map is drawn, in which language, and — on a phone — for which year.
  *
  * The time control lives here on narrow screens because the histogram and slider crowd the
  * bottom of a phone; the rail outside keeps only the reading. On a wide screen the rail keeps
- * the full instrument and this panel is just the projection and the ruling.
+ * the full instrument and this panel is the language, the projection and the ruling.
  */
 export function SettingsSheet({ civilizations, from, to, sliceYear, loading, open, onClose }: SettingsSheetProps) {
+    const { t, i18n } = useTranslation();
     const { state, dispatch } = useAtlas();
+    const format = useFormat();
     const wide = useWideScreen();
+    const locale = toSupportedLocale(i18n.language);
 
     return (
         <BottomSheet
-            label="Ajustes do mapa"
+            label={t('settings.title')}
             open={open}
             onClose={onClose}
             wide="float"
             head={
                 <div>
-                    <h2>Ajustes</h2>
-                    <p className="sheet__region">Como o mundo é desenhado</p>
+                    <h2>{t('settings.title')}</h2>
+                    <p className="sheet__region">{t('settings.subtitle')}</p>
                 </div>
             }
         >
             {wide ? null : (
                 <section className="card parchment singed">
-                    <h3 className="eyebrow">Ano</h3>
+                    <h3 className="eyebrow">{t('settings.year')}</h3>
                     <TimelineRail
                         civilizations={civilizations}
                         from={from}
@@ -59,40 +65,54 @@ export function SettingsSheet({ civilizations, from, to, sliceYear, loading, ope
                 </section>
             )}
 
+            {/* Each language is named in itself, so a reader lost in the wrong one can still find theirs. */}
             <section className="card parchment singed">
-                <h3 className="eyebrow">Projeção</h3>
-                <p className="card__hint">
-                    Nenhuma projeção é neutra. As áreas nos painéis são medidas na esfera quando os dados são gerados,
-                    então trocar aqui muda o desenho e nenhum número.
-                </p>
-                <div className="options" role="radiogroup" aria-label="Projeção">
-                    {PROJECTION_KEYS.map((key) => {
-                        const profile = PROJECTIONS[key];
+                <h3 className="eyebrow">{t('settings.language')}</h3>
+                <label className="select">
+                    <Languages size={16} aria-hidden />
+                    <select
+                        value={locale}
+                        aria-label={t('settings.language')}
+                        onChange={(event) => {
+                            void i18n.changeLanguage(event.target.value);
+                        }}
+                    >
+                        {SUPPORTED_LOCALES.map((tag) => (
+                            <option key={tag} value={tag} lang={tag}>
+                                {LOCALE_NAMES[tag]}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+            </section>
 
-                        return (
-                            <button
-                                key={key}
-                                type="button"
-                                role="radio"
-                                aria-checked={state.projection === key}
-                                data-active={state.projection === key}
-                                onClick={() => {
-                                    dispatch({ type: 'projection', value: key });
-                                }}
-                            >
-                                <span className="options__name">
-                                    {profile.name}
-                                    <small>preserva {profile.preserves}</small>
-                                </span>
-                                <span className="options__caveat">{profile.caveat}</span>
-                            </button>
-                        );
-                    })}
+            <section className="card parchment singed">
+                <h3 className="eyebrow">{t('settings.projection')}</h3>
+                <p className="card__hint">{t('settings.projectionHint')}</p>
+                <div className="options" role="radiogroup" aria-label={t('settings.projection')}>
+                    {PROJECTION_KEYS.map((key) => (
+                        <button
+                            key={key}
+                            type="button"
+                            role="radio"
+                            aria-checked={state.projection === key}
+                            data-active={state.projection === key}
+                            onClick={() => {
+                                dispatch({ type: 'projection', value: key });
+                            }}
+                        >
+                            <span className="options__name">
+                                {PROJECTIONS[key].name}
+                                <small>{t('settings.preserves', { what: t(`projections.${key}.preserves`) })}</small>
+                            </span>
+                            <span className="options__caveat">{t(`projections.${key}.caveat`)}</span>
+                        </button>
+                    ))}
                 </div>
             </section>
 
             <section className="card parchment singed">
-                <h3 className="eyebrow">Carta</h3>
+                <h3 className="eyebrow">{t('settings.chart')}</h3>
                 <button
                     type="button"
                     className="switch"
@@ -104,7 +124,7 @@ export function SettingsSheet({ civilizations, from, to, sliceYear, loading, ope
                     }}
                 >
                     <Grid2x2 size={16} aria-hidden />
-                    <span>Linhas de rumo, equador e trópicos</span>
+                    <span>{t('settings.ruled')}</span>
                     <span className="switch__track" aria-hidden>
                         <span className="switch__knob" />
                     </span>
@@ -112,12 +132,11 @@ export function SettingsSheet({ civilizations, from, to, sliceYear, loading, ope
             </section>
 
             <p className="sheet__credit">
-                Fronteiras de{' '}
+                {t('settings.creditsBorders')}{' '}
                 <a href="https://github.com/aourednik/historical-basemaps" target="_blank" rel="noreferrer">
                     historical-basemaps
                 </a>{' '}
-                (GPL-3.0) · costa de Natural Earth · maravilhas e emblemas da Age of Empires Series Wiki · geometria
-                de <span className="numeric">{GENERATED_AT.slice(0, 10)}</span>
+                {t('settings.creditsRest', { date: format.date(GENERATED_AT.slice(0, 10)) })}
             </p>
         </BottomSheet>
     );

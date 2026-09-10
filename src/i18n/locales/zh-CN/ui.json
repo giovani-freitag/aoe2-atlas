@@ -1,0 +1,114 @@
+{
+    "app": {
+        "title": "AoE2 Atlas",
+        "tagline": "世纪为序的奇观与疆域",
+        "openRoster": "打开文明列表",
+        "openSettings": "打开地图设置",
+        "loading": "正在载入本世纪",
+        "mapAlt": "标注各文明疆域与奇观的世界地图。"
+    },
+    "map": {
+        "traceAll": "绘出 {{year}} 年的全部 {{count}} 个政权",
+        "untraceAll": "停止绘出全部政权",
+        "zoomIn": "放大",
+        "zoomOut": "缩小",
+        "wholeWorld": "查看整个世界"
+    },
+    "legend": {
+        "onMap": "地图上 {{count}} 个",
+        "clear": "清空",
+        "remove": "将{{name}}移出地图",
+        "hint": "颜色表示地区；影线角度区分同一地区内的各个文明。"
+    },
+    "roster": {
+        "title": "文明",
+        "search": "搜索文明",
+        "placeholder": "文明、建筑、城市…",
+        "orderBy": "排序方式",
+        "order": {
+            "name": "名称",
+            "area": "鼎盛",
+            "year": "年代",
+            "expansion": "DLC"
+        },
+        "count": "{{year}} 年存续 {{standing}} 个 · 列表中 {{listed}} 个",
+        "trace": "在地图上绘出{{name}}",
+        "untrace": "将{{name}}移出地图"
+    },
+    "sheet": {
+        "grip": "调整面板高度",
+        "details": "{{name}}详情"
+    },
+    "marker": {
+        "label": "{{name}} — {{monument}}，{{place}}"
+    },
+    "detail": {
+        "trace": "在地图上绘出",
+        "untrace": "移出地图",
+        "noBorder": "{{year}} 年无疆界",
+        "in": "{{year}} 年",
+        "area": "面积",
+        "border": "疆界",
+        "onStage": "登场时段",
+        "precision": {
+            "approximate": "大致",
+            "moderate": "较为精确",
+            "surveyed": "已测绘"
+        },
+        "handDrawn": "本图集为其手绘的轮廓：数据源中没有这个政权。",
+        "dissolved": "由 {{year}} 年地图中的 {{sources}} 合并而成。",
+        "carried": "数据源未绘出 {{year}} 年的这个政权；此线取自 {{from}} 年，相距 {{years}} 年。",
+        "absent": "本世纪没有测绘的疆界。请把年份拖到 {{peak}} 年，这一文明的鼎盛之时。",
+        "peak": "鼎盛于 {{year}} 年，面积 {{area}}。",
+        "wikipedia": "维基百科",
+        "expansion": "资料片",
+        "releasedOn": "{{date}} 发行",
+        "plannedFor": "预定 {{date}} 发行",
+        "shared": "{{year}} 年共有的土地",
+        "sharedHint": "此处只列同时代者：在同一世纪与这一文明共处一地的政权。符号",
+        "sharedAbbr": "数据源在本世纪未绘出双方之一，此线取自最近的切片",
+        "sharedHintTail": "表示该数值是对照从别的世纪借来的疆界量得的。",
+        "overlay": "将{{name}}叠加到地图上"
+    },
+    "settings": {
+        "title": "设置",
+        "subtitle": "世界如何绘制",
+        "year": "年份",
+        "language": "语言",
+        "projection": "投影",
+        "projectionHint": "没有哪种投影是中立的。面板中的面积是在生成数据时于球面上测得的，因此在此更换只改变图形，不改变任何数字。",
+        "preserves": "保持{{what}}",
+        "chart": "海图",
+        "ruled": "恒向线、赤道与回归线",
+        "creditsBorders": "疆界来自",
+        "creditsRest": "（GPL-3.0）· 海岸线来自 Natural Earth · 奇观与徽记来自 Age of Empires Series Wiki · 几何数据生成于 {{date}}"
+    },
+    "projections": {
+        "equal-earth": {
+            "preserves": "面积",
+            "caveat": "面积可用肉眼比较。靠近边缘的形状会倾斜。"
+        },
+        "natural-earth": {
+            "preserves": "观感",
+            "caveat": "一种讨喜的折中：面积和角度都不精确，但两者误差都不大。"
+        },
+        "mercator": {
+            "preserves": "角度",
+            "caveat": "熟悉，但会放大远离赤道的一切。请用数字比较大小。"
+        }
+    },
+    "rail": {
+        "loading": "载入中…",
+        "thisYear": "本年地图",
+        "mapOf": "{{year}} 年地图",
+        "year": "地图年份",
+        "back": "后退 {{years}} 年",
+        "forward": "前进 {{years}} 年"
+    },
+    "year": {
+        "bce": "公元前 {{year}} 年"
+    },
+    "errors": {
+        "slice": "无法载入本世纪。"
+    }
+}

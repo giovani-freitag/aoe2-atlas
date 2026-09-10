@@ -1,0 +1,114 @@
+{
+    "app": {
+        "title": "AoE2 Atlas",
+        "tagline": "Weltwunder und Territorien, Jahrhundert für Jahrhundert",
+        "openRoster": "Liste der Zivilisationen öffnen",
+        "openSettings": "Karteneinstellungen öffnen",
+        "loading": "Jahrhundert wird geladen",
+        "mapAlt": "Weltkarte mit den Territorien und Weltwundern der Zivilisationen."
+    },
+    "map": {
+        "traceAll": "Alle {{count}} Reiche von {{year}} einzeichnen",
+        "untraceAll": "Nicht mehr alle Reiche einzeichnen",
+        "zoomIn": "Vergrößern",
+        "zoomOut": "Verkleinern",
+        "wholeWorld": "Die ganze Welt zeigen"
+    },
+    "legend": {
+        "onMap": "{{count}} auf der Karte",
+        "clear": "leeren",
+        "remove": "{{name}} von der Karte nehmen",
+        "hint": "Die Farbe nennt die Region; der Winkel der Schraffur unterscheidet die Zivilisationen darin."
+    },
+    "roster": {
+        "title": "Zivilisationen",
+        "search": "Zivilisation suchen",
+        "placeholder": "Zivilisation, Bauwerk, Stadt…",
+        "orderBy": "Sortieren nach",
+        "order": {
+            "name": "Name",
+            "area": "Blüte",
+            "year": "Epoche",
+            "expansion": "DLC"
+        },
+        "count": "{{standing}} bestehen in {{year}} · {{listed}} in der Liste",
+        "trace": "{{name}} auf der Karte einzeichnen",
+        "untrace": "{{name}} von der Karte nehmen"
+    },
+    "sheet": {
+        "grip": "Höhe des Panels ändern",
+        "details": "Details zu {{name}}"
+    },
+    "marker": {
+        "label": "{{name}} — {{monument}}, {{place}}"
+    },
+    "detail": {
+        "trace": "Auf der Karte einzeichnen",
+        "untrace": "Von der Karte nehmen",
+        "noBorder": "Keine Grenze in {{year}}",
+        "in": "Im Jahr {{year}}",
+        "area": "Fläche",
+        "border": "Grenze",
+        "onStage": "Auf der Bühne",
+        "precision": {
+            "approximate": "ungefähr",
+            "moderate": "ziemlich genau",
+            "surveyed": "vermessen"
+        },
+        "handDrawn": "Umriss für diesen Atlas von Hand gezeichnet: die Quelle führt dieses Reich nicht.",
+        "dissolved": "Zusammengefasst aus {{sources}} auf der Karte von {{year}}.",
+        "carried": "Die Quelle kartiert dieses Reich in {{year}} nicht; die Linie stammt aus {{from}}, {{years}} Jahre entfernt.",
+        "absent": "In diesem Jahrhundert ist keine Grenze kartiert. Ziehen Sie das Jahr auf {{peak}}, die Blütezeit dieser Zivilisation.",
+        "peak": "Blütezeit {{year}}, mit {{area}}.",
+        "wikipedia": "Wikipedia",
+        "expansion": "Erweiterung",
+        "releasedOn": "Erschienen am {{date}}",
+        "plannedFor": "Angekündigt für den {{date}}",
+        "shared": "Geteilter Boden in {{year}}",
+        "sharedHint": "Nur Zeitgenossen gehören hierher: wer im selben Jahrhundert Boden mit dieser Zivilisation teilte. Ein",
+        "sharedAbbr": "die Quelle kartiert eine der beiden in diesem Jahrhundert nicht, und die Linie stammt aus dem nächstgelegenen Schnitt",
+        "sharedHintTail": "kennzeichnet ein Maß gegen eine aus einem anderen Jahrhundert entliehene Grenze.",
+        "overlay": "{{name}} auf der Karte überlagern"
+    },
+    "settings": {
+        "title": "Einstellungen",
+        "subtitle": "Wie die Welt gezeichnet wird",
+        "year": "Jahr",
+        "language": "Sprache",
+        "projection": "Projektion",
+        "projectionHint": "Keine Projektion ist neutral. Die Flächen in den Panels werden beim Erzeugen der Daten auf der Kugel gemessen; ein Wechsel hier ändert die Zeichnung und keine Zahl.",
+        "preserves": "erhält {{what}}",
+        "chart": "Seekarte",
+        "ruled": "Kurslinien, Äquator und Wendekreise",
+        "creditsBorders": "Grenzen aus",
+        "creditsRest": "(GPL-3.0) · Küsten von Natural Earth · Weltwunder und Wappen aus dem Age of Empires Series Wiki · Geometrie vom {{date}}"
+    },
+    "projections": {
+        "equal-earth": {
+            "preserves": "die Fläche",
+            "caveat": "Flächen lassen sich mit dem Auge vergleichen. Formen nahe den Rändern kippen."
+        },
+        "natural-earth": {
+            "preserves": "das Aussehen",
+            "caveat": "Ein gefälliger Kompromiss: weder Fläche noch Winkel bleiben wahr, beide irren wenig."
+        },
+        "mercator": {
+            "preserves": "den Winkel",
+            "caveat": "Vertraut, aber sie bläht alles auf, was weit vom Äquator liegt. Größen anhand der Zahlen vergleichen."
+        }
+    },
+    "rail": {
+        "loading": "wird geladen…",
+        "thisYear": "Karte dieses Jahres",
+        "mapOf": "Karte von {{year}}",
+        "year": "Kartenjahr",
+        "back": "{{years}} Jahre zurück",
+        "forward": "{{years}} Jahre vor"
+    },
+    "year": {
+        "bce": "{{year}} v. Chr."
+    },
+    "errors": {
+        "slice": "Dieses Jahrhundert konnte nicht geladen werden."
+    }
+}

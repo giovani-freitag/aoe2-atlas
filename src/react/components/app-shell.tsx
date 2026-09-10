@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { List, Loader, SlidersHorizontal } from 'lucide-react';
 import { useServices } from '@/react/providers/services-context.ts';
 import { drawnRealms, useAtlas } from '@/react/providers/atlas-context.ts';
@@ -17,6 +18,7 @@ import { YearStepper } from './year-stepper.tsx';
 
 /** The whole interface: a map that owns the screen, with everything else sliding over it. */
 export function AppShell() {
+    const { t, i18n } = useTranslation();
     const { catalogue, slices } = useServices();
     const { state, dispatch } = useAtlas();
     const wide = useWideScreen();
@@ -25,14 +27,23 @@ export function AppShell() {
 
     useSpecular('.iron');
 
-    const { slice, loading, error } = useTimeSlice(slices, state.year);
+    // The document follows the language: its tag for screen readers and fonts, its title for the tab.
+    const language = i18n.language;
+    useEffect(() => {
+        document.documentElement.lang = language;
+        document.title = `${t('app.title')} — ${t('app.tagline')}`;
+    }, [language, t]);
+
+    const { slice, loading, failed } = useTimeSlice(slices, state.year);
     const sliceYear = slices.sliceYearFor(state.year);
 
     const borders = useMemo(() => new Map((slice?.borders ?? []).map((border) => [border.civ, border])), [slice]);
 
+    // The language is a dependency because the names the search matches and sorts by live in it.
     const listed = useMemo(
         () => catalogue.search({ text: state.query, expansions: state.expansions, order: state.order }),
-        [catalogue, state.query, state.expansions, state.order],
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- the language changes what search returns
+        [catalogue, state.query, state.expansions, state.order, language],
     );
 
     const standing = useMemo(() => listed.filter((civ) => borders.has(civ.key)), [listed, borders]);
@@ -68,7 +79,7 @@ export function AppShell() {
                     onClick={() => {
                         setRosterOpen(true);
                     }}
-                    aria-label="Abrir a lista de civilizações"
+                    aria-label={t('app.openRoster')}
                 >
                     <List size={20} aria-hidden />
                 </button>
@@ -76,8 +87,8 @@ export function AppShell() {
                 <div className="bar__brand">
                     <img src={`${import.meta.env.BASE_URL}brand.svg`} alt="" width={26} height={26} />
                     <div>
-                        <h1>AoE2 Atlas</h1>
-                        <p>Maravilhas e territórios, século a século</p>
+                        <h1>{t('app.title')}</h1>
+                        <p>{t('app.tagline')}</p>
                     </div>
                 </div>
 
@@ -86,7 +97,7 @@ export function AppShell() {
                 {loading ? (
                     <span className="bar__loading" role="status">
                         <Loader size={16} aria-hidden />
-                        <span className="sr-only">Carregando o século</span>
+                        <span className="sr-only">{t('app.loading')}</span>
                     </span>
                 ) : null}
 
@@ -97,7 +108,7 @@ export function AppShell() {
                         onClick={() => {
                             setSettingsOpen(true);
                         }}
-                        aria-label="Abrir os ajustes do mapa"
+                        aria-label={t('app.openSettings')}
                     >
                         <SlidersHorizontal size={18} aria-hidden />
                     </button>
@@ -107,7 +118,7 @@ export function AppShell() {
             <main className="stage">
                 <AtlasMap standing={standing} drawn={drawn} borders={borders} />
                 <LegendPanel drawn={drawn} borders={borders} />
-                {error ? <p className="stage__error">{error}</p> : null}
+                {failed ? <p className="stage__error">{t('errors.slice')}</p> : null}
             </main>
 
             <RosterDrawer

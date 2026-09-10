@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSheetDrag } from '@/react/hooks/use-sheet-drag.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 
@@ -28,6 +29,7 @@ export interface BottomSheetProps {
  * the grip disappears and the sheet simply is the column; nothing about it is duplicated.
  */
 export function BottomSheet({ label, open, onClose, wide, head, children }: BottomSheetProps) {
+    const { t } = useTranslation();
     const isWide = useWideScreen();
     const drag = useSheetDrag(onClose);
     const sheet = useRef<HTMLDivElement>(null);
@@ -57,12 +59,7 @@ export function BottomSheet({ label, open, onClose, wide, head, children }: Bott
             data-dragging={drag.dragging}
             style={isWide ? undefined : { height: `${drag.height * 100}dvh` }}
         >
-            <button
-                type="button"
-                className="sheet__grip"
-                onPointerDown={drag.onPointerDown}
-                aria-label="Mudar a altura do painel"
-            >
+            <button type="button" className="sheet__grip" onPointerDown={drag.onPointerDown} aria-label={t('sheet.grip')}>
                 <span aria-hidden />
             </button>
 

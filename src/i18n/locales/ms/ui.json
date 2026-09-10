@@ -1,0 +1,114 @@
+{
+    "app": {
+        "title": "AoE2 Atlas",
+        "tagline": "Keajaiban dan wilayah, abad demi abad",
+        "openRoster": "Buka senarai tamadun",
+        "openSettings": "Buka tetapan peta",
+        "loading": "Memuatkan abad",
+        "mapAlt": "Peta dunia dengan wilayah dan keajaiban setiap tamadun."
+    },
+    "map": {
+        "traceAll": "Lukis kesemua {{count}} kerajaan tahun {{year}}",
+        "untraceAll": "Berhenti melukis semua kerajaan",
+        "zoomIn": "Zum masuk",
+        "zoomOut": "Zum keluar",
+        "wholeWorld": "Lihat seluruh dunia"
+    },
+    "legend": {
+        "onMap": "{{count}} di peta",
+        "clear": "kosongkan",
+        "remove": "Buang {{name}} dari peta",
+        "hint": "Warna menunjukkan rantau; sudut lorekan membezakan tamadun di dalamnya."
+    },
+    "roster": {
+        "title": "Tamadun",
+        "search": "Cari tamadun",
+        "placeholder": "Tamadun, monumen, bandar…",
+        "orderBy": "Susun mengikut",
+        "order": {
+            "name": "Nama",
+            "area": "Kemuncak",
+            "year": "Zaman",
+            "expansion": "DLC"
+        },
+        "count": "{{standing}} wujud pada {{year}} · {{listed}} dalam senarai",
+        "trace": "Lukis {{name}} di peta",
+        "untrace": "Buang {{name}} dari peta"
+    },
+    "sheet": {
+        "grip": "Ubah ketinggian panel",
+        "details": "Butiran {{name}}"
+    },
+    "marker": {
+        "label": "{{name}} — {{monument}}, {{place}}"
+    },
+    "detail": {
+        "trace": "Lukis di peta",
+        "untrace": "Buang dari peta",
+        "noBorder": "Tiada sempadan pada {{year}}",
+        "in": "Pada {{year}}",
+        "area": "Keluasan",
+        "border": "Sempadan",
+        "onStage": "Di pentas",
+        "precision": {
+            "approximate": "anggaran",
+            "moderate": "agak tepat",
+            "surveyed": "diukur"
+        },
+        "handDrawn": "Garis bentuk dilukis dengan tangan untuk atlas ini: sumber tidak memuatkan kerajaan ini.",
+        "dissolved": "Digabungkan daripada {{sources}} pada peta {{year}}.",
+        "carried": "Sumber tidak memetakan kerajaan ini pada {{year}}; garisnya diambil dari {{from}}, {{years}} tahun jauhnya.",
+        "absent": "Tiada sempadan dipetakan pada abad ini. Seret tahun ke {{peak}}, kemuncak tamadun ini.",
+        "peak": "Kemuncak pada {{year}}, dengan {{area}}.",
+        "wikipedia": "Wikipedia",
+        "expansion": "Pengembangan",
+        "releasedOn": "Dikeluarkan pada {{date}}",
+        "plannedFor": "Dijangka pada {{date}}",
+        "shared": "Tanah yang dikongsi pada {{year}}",
+        "sharedHint": "Hanya yang sezaman masuk di sini: mereka yang berkongsi tanah dengan tamadun ini dalam abad yang sama. Tanda",
+        "sharedAbbr": "sumber tidak memetakan salah satu daripada dua pihak pada abad ini, dan garisnya diambil dari hirisan terdekat",
+        "sharedHintTail": "menandakan ukuran yang dibuat terhadap sempadan yang dipinjam dari abad lain.",
+        "overlay": "Tindankan {{name}} di peta"
+    },
+    "settings": {
+        "title": "Tetapan",
+        "subtitle": "Bagaimana dunia dilukis",
+        "year": "Tahun",
+        "language": "Bahasa",
+        "projection": "Unjuran",
+        "projectionHint": "Tiada unjuran yang neutral. Keluasan dalam panel diukur di atas sfera semasa data dijana, jadi menukar di sini mengubah lukisan dan bukan angka.",
+        "preserves": "mengekalkan {{what}}",
+        "chart": "Carta",
+        "ruled": "Garis rumb, khatulistiwa dan garisan sartan",
+        "creditsBorders": "Sempadan daripada",
+        "creditsRest": "(GPL-3.0) · pantai daripada Natural Earth · keajaiban dan lambang daripada Age of Empires Series Wiki · geometri pada {{date}}"
+    },
+    "projections": {
+        "equal-earth": {
+            "preserves": "keluasan",
+            "caveat": "Keluasan boleh dibandingkan dengan mata kasar. Bentuk berhampiran tepi condong."
+        },
+        "natural-earth": {
+            "preserves": "rupa",
+            "caveat": "Kompromi yang menyenangkan: tidak mengekalkan keluasan mahupun sudut, dan sedikit sahaja tersasar pada kedua-duanya."
+        },
+        "mercator": {
+            "preserves": "sudut",
+            "caveat": "Biasa dilihat, tetapi membesarkan apa yang jauh dari khatulistiwa. Bandingkan saiz dengan angka."
+        }
+    },
+    "rail": {
+        "loading": "memuatkan…",
+        "thisYear": "peta tahun ini",
+        "mapOf": "peta tahun {{year}}",
+        "year": "Tahun peta",
+        "back": "Undur {{years}} tahun",
+        "forward": "Mara {{years}} tahun"
+    },
+    "year": {
+        "bce": "{{year}} SM"
+    },
+    "errors": {
+        "slice": "Abad ini tidak dapat dimuatkan."
+    }
+}

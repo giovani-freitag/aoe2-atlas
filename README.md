@@ -6,7 +6,7 @@ em escala honesta.
 
 ![O mundo de 1200, com as 34 civilizações que existiam nele](docs/century.png)
 
-## As três coisas que este atlas leva a sério
+## As quatro coisas que este atlas leva a sério
 
 ### O eixo é o tempo, não o auge
 
@@ -53,6 +53,25 @@ não precisa, `@starting-style` e `allow-discrete` para as transições, contain
 mesmos componentes servirem gaveta no celular e coluna no desktop.
 
 <img src="docs/phone.png" alt="A gaveta de civilizações num celular de 360px" width="320">
+
+### Fala as 17 línguas em que o jogo é vendido
+
+en · pt-BR · es · es-MX · fr · de · it · pl · ru · tr · hi · ja · ko · ms · vi · zh-CN · zh-TW.
+
+Não é a interface traduzida com os dados em inglês por baixo: **os 56 nomes de civilização, os
+56 monumentos, as cidades, os países e o nome de cada domínio** existem nas dezessete. Os
+registros em `src/data/civilizations.ts` não têm uma palavra de idioma nenhum — só chave,
+coordenada e anos —, e tudo o que se diz sobre uma civilização vem de `src/i18n/locales/<tag>/`.
+
+Número e data seguem junto: 8,45,077 km² em híndi, 845.077 km² em português, 1999/09/30 em
+japonês. A busca casa contra o idioma na tela (procurar "モンゴル" acha os mongóis) e a ordenação
+alfabética usa a colação da língua, não uma fixa. Cada idioma é um chunk próprio de ~12 kB,
+buscado só quando escolhido; a detecção lê o navegador e cai no inglês quando não reconhece.
+
+Cinzel é uma capital romana e não sabe cirílico, devanágari, hangul nem kana — e nem sequer o
+alfabeto latino inteiro: os acentos empilhados do vietnamita ficam de fora dos dois subconjuntos
+que a família publica. Onde ela não serve, o título cede lugar a uma serifada do sistema, porque
+uma fonte que cobre metade da palavra é pior que uma que não cobre nada.
 
 ## Rodando
 
@@ -129,9 +148,10 @@ src/
   services/      atlas (catálogo e fatias), geo (projeção), palette (cor e hachura)
   data/          catálogo curado + índice gerado
   skins/age/     tokens, materiais e a paleta validada do tema
+  i18n/          as 17 línguas, dois bundles cada: ui (interface) e atlas (o mundo)
   react/         componentes, hooks, providers, estilos, efeitos
 scripts/         o pipeline que gera a geografia
-tests/           unit/ e feature/
+tests/           unit/ e feature/ — inclusive o que recusa um bundle com chave faltando
 public/data/     as 19 fatias, buscadas sob demanda
 ```
 

@@ -1,0 +1,114 @@
+{
+    "app": {
+        "title": "AoE2 Atlas",
+        "tagline": "Maravilhas e territórios, século a século",
+        "openRoster": "Abrir a lista de civilizações",
+        "openSettings": "Abrir os ajustes do mapa",
+        "loading": "Carregando o século",
+        "mapAlt": "Mapa-múndi com os territórios e maravilhas das civilizações."
+    },
+    "map": {
+        "traceAll": "Traçar os {{count}} reinos de {{year}}",
+        "untraceAll": "Deixar de traçar todos os reinos",
+        "zoomIn": "Aproximar",
+        "zoomOut": "Afastar",
+        "wholeWorld": "Ver o mundo inteiro"
+    },
+    "legend": {
+        "onMap": "{{count}} no mapa",
+        "clear": "limpar",
+        "remove": "Tirar {{name}} do mapa",
+        "hint": "A cor diz a região; o ângulo da hachura separa as civilizações dentro dela."
+    },
+    "roster": {
+        "title": "Civilizações",
+        "search": "Buscar civilização",
+        "placeholder": "Civilização, monumento, cidade…",
+        "orderBy": "Ordenar por",
+        "order": {
+            "name": "Nome",
+            "area": "Auge",
+            "year": "Época",
+            "expansion": "DLC"
+        },
+        "count": "{{standing}} de pé em {{year}} · {{listed}} na lista",
+        "trace": "Traçar {{name}} no mapa",
+        "untrace": "Tirar {{name}} do mapa"
+    },
+    "sheet": {
+        "grip": "Mudar a altura do painel",
+        "details": "Detalhes de {{name}}"
+    },
+    "marker": {
+        "label": "{{name}} — {{monument}}, {{place}}"
+    },
+    "detail": {
+        "trace": "Traçar no mapa",
+        "untrace": "Tirar do mapa",
+        "noBorder": "Sem fronteira em {{year}}",
+        "in": "Em {{year}}",
+        "area": "Área",
+        "border": "Fronteira",
+        "onStage": "Em cena",
+        "precision": {
+            "approximate": "aproximada",
+            "moderate": "moderadamente precisa",
+            "surveyed": "demarcada"
+        },
+        "handDrawn": "Contorno desenhado à mão para este atlas: a fonte não traz este reino.",
+        "dissolved": "Dissolvido de {{sources}} no mapa de {{year}}.",
+        "carried": "A fonte não mapeia este reino em {{year}}; a linha vem de {{from}}, {{years}} anos de distância.",
+        "absent": "Nenhuma fronteira mapeada neste século. Arraste o ano para {{peak}}, o auge desta civilização.",
+        "peak": "Auge em {{year}}, com {{area}}.",
+        "wikipedia": "Wikipédia",
+        "expansion": "Expansão",
+        "releasedOn": "Lançada em {{date}}",
+        "plannedFor": "Prevista para {{date}}",
+        "shared": "Terreno dividido em {{year}}",
+        "sharedHint": "Só contemporâneos entram aqui: quem dividiu chão com esta civilização neste mesmo século. Um",
+        "sharedAbbr": "a fonte não mapeia um dos dois neste século, e a linha veio da fatia mais próxima",
+        "sharedHintTail": "marca a medida feita contra uma fronteira emprestada de outro século.",
+        "overlay": "Sobrepor {{name}} no mapa"
+    },
+    "settings": {
+        "title": "Ajustes",
+        "subtitle": "Como o mundo é desenhado",
+        "year": "Ano",
+        "language": "Idioma",
+        "projection": "Projeção",
+        "projectionHint": "Nenhuma projeção é neutra. As áreas nos painéis são medidas na esfera quando os dados são gerados, então trocar aqui muda o desenho e nenhum número.",
+        "preserves": "preserva {{what}}",
+        "chart": "Carta",
+        "ruled": "Linhas de rumo, equador e trópicos",
+        "creditsBorders": "Fronteiras de",
+        "creditsRest": "(GPL-3.0) · costa de Natural Earth · maravilhas e emblemas da Age of Empires Series Wiki · geometria de {{date}}"
+    },
+    "projections": {
+        "equal-earth": {
+            "preserves": "área",
+            "caveat": "Áreas comparáveis a olho. As formas próximas às bordas ficam inclinadas."
+        },
+        "natural-earth": {
+            "preserves": "aparência",
+            "caveat": "Um meio-termo agradável: não preserva nem área nem ângulo, erra pouco em ambos."
+        },
+        "mercator": {
+            "preserves": "ângulo",
+            "caveat": "Familiar, mas infla o que está longe do equador. Compare tamanhos pelos números."
+        }
+    },
+    "rail": {
+        "loading": "carregando…",
+        "thisYear": "mapa deste ano",
+        "mapOf": "mapa de {{year}}",
+        "year": "Ano do mapa",
+        "back": "Recuar {{years}} anos",
+        "forward": "Avançar {{years}} anos"
+    },
+    "year": {
+        "bce": "{{year}} a.C."
+    },
+    "errors": {
+        "slice": "Não consegui carregar este século."
+    }
+}

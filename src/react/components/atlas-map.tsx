@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Compass, Layers, Minus, Plus } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import { LAND_RINGS } from '@/data/dataset.ts';
 import { AtlasProjection, SCALE_EXTENT } from '@/services/geo/atlas-projection.ts';
-import { formatYear } from '@/react/format.ts';
+import { useFormat } from '@/react/hooks/use-format.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useElementSize } from '@/react/hooks/use-element-size.ts';
@@ -40,7 +41,9 @@ export interface AtlasMapProps {
  * applying the same transform by hand, which is what keeps them a constant size.
  */
 export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
-    const { palette } = useServices();
+    const { t } = useTranslation();
+    const format = useFormat();
+    const { palette, text } = useServices();
     const { state, dispatch } = useAtlas();
     const [holder, size] = useElementSize<HTMLDivElement>();
     const svg = useRef<SVGSVGElement>(null);
@@ -108,6 +111,10 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
 
     const roseRadius = Math.min(ROSE_MAX, Math.min(size.width, size.height) * ROSE_SHARE);
 
+    const traceLabel = state.showAll
+        ? t('map.untraceAll')
+        : t('map.traceAll', { count: standing.length, year: format.year(state.year) });
+
     /*
      * The shield hangs inside the realm, on a point the build guarantees is dry land, so it moves
      * with the border century by century. The Wonder itself is a fixed place and stays a pin; a
@@ -137,7 +144,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                     height={size.height}
                     viewBox={`0 0 ${size.width} ${size.height}`}
                     role="img"
-                    aria-label="Mapa-múndi de área equivalente com os territórios e maravilhas das civilizações."
+                    aria-label={t('app.mapAlt')}
                 >
                     <HatchDefs styles={styles} scale={frame.k} />
 
@@ -221,7 +228,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                                                 dispatch({ type: 'focus', value: civilization.key });
                                             }}
                                         >
-                                            <title>{civilization.wonder.monument}</title>
+                                            <title>{text.civilization(civilization.key, false).monument}</title>
                                             <circle className="pin__dot" r={5} stroke={colour} />
                                             <circle className="pin__core" r={1.8} />
                                         </g>
@@ -255,16 +262,8 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                     onClick={() => {
                         dispatch({ type: 'toggle-show-all' });
                     }}
-                    aria-label={
-                        state.showAll
-                            ? 'Deixar de traçar todos os reinos'
-                            : `Traçar os ${standing.length} reinos de ${formatYear(state.year)}`
-                    }
-                    title={
-                        state.showAll
-                            ? 'Deixar de traçar todos os reinos'
-                            : `Traçar os ${standing.length} reinos de ${formatYear(state.year)}`
-                    }
+                    aria-label={traceLabel}
+                    title={traceLabel}
                 >
                     <Layers size={18} aria-hidden />
                 </button>
@@ -274,7 +273,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                     onClick={() => {
                         zoomBy(1.6);
                     }}
-                    aria-label="Aproximar"
+                    aria-label={t('map.zoomIn')}
                 >
                     <Plus size={18} aria-hidden />
                 </button>
@@ -284,7 +283,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                     onClick={() => {
                         zoomBy(1 / 1.6);
                     }}
-                    aria-label="Afastar"
+                    aria-label={t('map.zoomOut')}
                 >
                     <Minus size={18} aria-hidden />
                 </button>
@@ -294,7 +293,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                     onClick={() => {
                         if (projection) flyTo(projection.wholeWorld());
                     }}
-                    aria-label="Ver o mundo inteiro"
+                    aria-label={t('map.wholeWorld')}
                 >
                     <Compass size={18} aria-hidden />
                 </button>

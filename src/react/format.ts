@@ -1,50 +1,43 @@
-const AREA = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
-const PERCENT = new Intl.NumberFormat('pt-BR', { style: 'percent', maximumFractionDigits: 0 });
+export interface Formatters {
+    /** An area in square kilometres, grouped the way the language writes numbers. */
+    area(km2: number): string;
+    /** A fraction as a percentage. */
+    share(fraction: number): string;
+    /** A year, with the era spelled out when it is before the common one. */
+    year(year: number): string;
+    /** A stretch of years. */
+    span(from: number, to: number): string;
+    /** A calendar date given in ISO 8601, written as the language writes dates. */
+    date(iso: string): string;
+}
 
-/**
- * An area in square kilometres, grouped the way Portuguese writes numbers.
- *
- * @param km2 - The area.
- */
-export function formatArea(km2: number): string {
-    return `${AREA.format(Math.round(km2))} km²`;
+export interface FormattersConfig {
+    /** The language in force, as a BCP 47 tag. */
+    locale: string;
+    /** Writes a year before the common era, in the language in force. */
+    beforeCommonEra: (year: number) => string;
 }
 
 /**
- * A year, with the era spelled out when it is before the common one.
+ * Number and date formatting bound to one language.
  *
- * @param year - The year, negative before the common era.
- */
-export function formatYear(year: number): string {
-    return year < 0 ? `${Math.abs(year)} a.C.` : `${year}`;
-}
-
-/**
- * A stretch of years.
+ * Everything the interface says in digits goes through here, so a reader in Delhi sees
+ * 12,34,567 km² and one in Berlin sees 1.234.567 km² of the very same realm.
  *
- * @param from - First year.
- * @param to - Last year.
+ * @param config - The language and how it writes a year before Christ.
  */
-export function formatSpan(from: number, to: number): string {
-    return `${formatYear(from)} – ${formatYear(to)}`;
-}
+export function createFormatters(config: FormattersConfig): Formatters {
+    const area = new Intl.NumberFormat(config.locale, { maximumFractionDigits: 0 });
+    const percent = new Intl.NumberFormat(config.locale, { style: 'percent', maximumFractionDigits: 0 });
+    const date = new Intl.DateTimeFormat(config.locale, { dateStyle: 'medium', timeZone: 'UTC' });
 
-/**
- * A fraction as a percentage.
- *
- * @param fraction - A value between zero and one.
- */
-export function formatShare(fraction: number): string {
-    return PERCENT.format(fraction);
-}
+    const year = (value: number): string => (value < 0 ? config.beforeCommonEra(Math.abs(value)) : `${value}`);
 
-/**
- * A release date, as a Brazilian reader writes it.
- *
- * @param iso - The date in ISO 8601.
- */
-export function formatDate(iso: string): string {
-    const [year, month, day] = iso.split('-');
-
-    return `${day}/${month}/${year}`;
+    return {
+        area: (km2) => `${area.format(Math.round(km2))} km²`,
+        share: (fraction) => percent.format(fraction),
+        year,
+        span: (from, to) => `${year(from)} – ${year(to)}`,
+        date: (iso) => date.format(new Date(`${iso}T00:00:00Z`)),
+    };
 }

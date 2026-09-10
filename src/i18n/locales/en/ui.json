@@ -1,0 +1,114 @@
+{
+    "app": {
+        "title": "AoE2 Atlas",
+        "tagline": "Wonders and territories, century by century",
+        "openRoster": "Open the list of civilizations",
+        "openSettings": "Open the map settings",
+        "loading": "Loading the century",
+        "mapAlt": "World map with the territories and Wonders of the civilizations."
+    },
+    "map": {
+        "traceAll": "Trace the {{count}} realms of {{year}}",
+        "untraceAll": "Stop tracing every realm",
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out",
+        "wholeWorld": "See the whole world"
+    },
+    "legend": {
+        "onMap": "{{count}} on the map",
+        "clear": "clear",
+        "remove": "Take {{name}} off the map",
+        "hint": "Colour tells the region; the angle of the hatching tells the civilizations within it apart."
+    },
+    "roster": {
+        "title": "Civilizations",
+        "search": "Search civilizations",
+        "placeholder": "Civilization, monument, city…",
+        "orderBy": "Order by",
+        "order": {
+            "name": "Name",
+            "area": "Peak",
+            "year": "Era",
+            "expansion": "DLC"
+        },
+        "count": "{{standing}} standing in {{year}} · {{listed}} listed",
+        "trace": "Trace {{name}} on the map",
+        "untrace": "Take {{name}} off the map"
+    },
+    "sheet": {
+        "grip": "Change the panel height",
+        "details": "Details of {{name}}"
+    },
+    "marker": {
+        "label": "{{name}} — {{monument}}, {{place}}"
+    },
+    "detail": {
+        "trace": "Trace on the map",
+        "untrace": "Take off the map",
+        "noBorder": "No border in {{year}}",
+        "in": "In {{year}}",
+        "area": "Area",
+        "border": "Border",
+        "onStage": "On stage",
+        "precision": {
+            "approximate": "approximate",
+            "moderate": "fairly precise",
+            "surveyed": "surveyed"
+        },
+        "handDrawn": "Outline drawn by hand for this atlas: the source does not carry this realm.",
+        "dissolved": "Dissolved from {{sources}} on the {{year}} map.",
+        "carried": "The source does not map this realm in {{year}}; the line comes from {{from}}, {{years}} years away.",
+        "absent": "No border mapped in this century. Drag the year to {{peak}}, this civilization's height.",
+        "peak": "Height in {{year}}, with {{area}}.",
+        "wikipedia": "Wikipedia",
+        "expansion": "Expansion",
+        "releasedOn": "Released on {{date}}",
+        "plannedFor": "Due on {{date}}",
+        "shared": "Ground shared in {{year}}",
+        "sharedHint": "Only contemporaries belong here: whoever shared ground with this civilization in this same century. A",
+        "sharedAbbr": "the source does not map one of the two in this century, and the line came from the nearest slice",
+        "sharedHintTail": "marks a measure taken against a border borrowed from another century.",
+        "overlay": "Overlay {{name}} on the map"
+    },
+    "settings": {
+        "title": "Settings",
+        "subtitle": "How the world is drawn",
+        "year": "Year",
+        "language": "Language",
+        "projection": "Projection",
+        "projectionHint": "No projection is neutral. The areas in the panels are measured on the sphere when the data is built, so switching here changes the drawing and no number.",
+        "preserves": "preserves {{what}}",
+        "chart": "Chart",
+        "ruled": "Rhumb lines, equator and tropics",
+        "creditsBorders": "Borders from",
+        "creditsRest": "(GPL-3.0) · coastline from Natural Earth · Wonders and emblems from the Age of Empires Series Wiki · geometry cut on {{date}}"
+    },
+    "projections": {
+        "equal-earth": {
+            "preserves": "area",
+            "caveat": "Areas can be compared by eye. Shapes near the edges lean."
+        },
+        "natural-earth": {
+            "preserves": "appearance",
+            "caveat": "A pleasant compromise: it keeps neither area nor angle true, and errs little in both."
+        },
+        "mercator": {
+            "preserves": "angle",
+            "caveat": "Familiar, but it inflates whatever is far from the equator. Compare sizes by the numbers."
+        }
+    },
+    "rail": {
+        "loading": "loading…",
+        "thisYear": "map of this year",
+        "mapOf": "map of {{year}}",
+        "year": "Map year",
+        "back": "Back {{years}} years",
+        "forward": "Forward {{years}} years"
+    },
+    "year": {
+        "bce": "{{year}} BC"
+    },
+    "errors": {
+        "slice": "This century could not be loaded."
+    }
+}

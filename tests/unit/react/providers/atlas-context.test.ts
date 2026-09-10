@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { atlasReducer, drawnRealms, INITIAL_ATLAS_STATE, type AtlasState } from '@/react/providers/atlas-context.ts';
 import { civilizationStub } from '../../../fixtures/civilizations.ts';
 
-const MONGOLS = civilizationStub({ key: 'mongols', name: 'Mongóis', from: 1206, to: 1368 });
-const ROMANS = civilizationStub({ key: 'romans', name: 'Romanos', from: -27, to: 476 });
-const BRITONS = civilizationStub({ key: 'britons', name: 'Bretões', from: 800, to: 1500 });
+const MONGOLS = civilizationStub({ key: 'mongols', from: 1206, to: 1368 });
+const ROMANS = civilizationStub({ key: 'romans', from: -27, to: 476 });
+const BRITONS = civilizationStub({ key: 'britons', from: 800, to: 1500 });
 
 /** What the shell hands in: only the civilizations that had a border in the century on screen. */
 const STANDING = [MONGOLS, ROMANS, BRITONS];

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Civilization } from '@/domain/entities/civilization.ts';
-import { formatYear } from '@/react/format.ts';
+import { useFormat } from '@/react/hooks/use-format.ts';
 
 /** Width of one bucket of the standing-realms profile, in years. */
 const BUCKET = 25;
@@ -29,6 +30,9 @@ export interface TimelineRailProps {
  * roster piles up between 800 and 1400 and thins out sharply either side.
  */
 export function TimelineRail({ civilizations, from, to, year, sliceYear, loading, onChange }: TimelineRailProps) {
+    const { t } = useTranslation();
+    const format = useFormat();
+
     const buckets = useMemo(() => {
         const count = Math.ceil((to - from) / BUCKET);
         const bars = new Array<number>(count).fill(0);
@@ -48,9 +52,13 @@ export function TimelineRail({ civilizations, from, to, year, sliceYear, loading
     return (
         <div className="rail-body">
             <div className="rail-body__reading">
-                <strong className="numeric">{formatYear(year)}</strong>
+                <strong className="numeric">{format.year(year)}</strong>
                 <span className="eyebrow">
-                    {loading ? 'carregando…' : sliceYear === year ? 'mapa deste ano' : `mapa de ${formatYear(sliceYear)}`}
+                    {loading
+                        ? t('rail.loading')
+                        : sliceYear === year
+                          ? t('rail.thisYear')
+                          : t('rail.mapOf', { year: format.year(sliceYear) })}
                 </span>
             </div>
 
@@ -71,8 +79,8 @@ export function TimelineRail({ civilizations, from, to, year, sliceYear, loading
                     max={to}
                     step={5}
                     value={year}
-                    aria-label="Ano do mapa"
-                    aria-valuetext={formatYear(year)}
+                    aria-label={t('rail.year')}
+                    aria-valuetext={format.year(year)}
                     onChange={(event) => {
                         onChange(Number(event.target.value));
                     }}
@@ -80,8 +88,8 @@ export function TimelineRail({ civilizations, from, to, year, sliceYear, loading
             </div>
 
             <div className="rail-body__ends numeric" aria-hidden>
-                <span>{formatYear(from)}</span>
-                <span>{formatYear(to)}</span>
+                <span>{format.year(from)}</span>
+                <span>{format.year(to)}</span>
             </div>
         </div>
     );

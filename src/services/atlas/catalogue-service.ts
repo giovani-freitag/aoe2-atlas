@@ -1,11 +1,12 @@
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { ExpansionKey } from '@/domain/enums/expansion.ts';
+import type { TextService } from '@/services/text/text-service.ts';
 
 /** How the civilization list can be ordered. */
 export type CatalogueOrder = 'name' | 'area' | 'year' | 'expansion';
 
 export interface CatalogueQuery {
-    /** Free text matched against name, monument, place and realm. */
+    /** Free text matched against name, monument, place and realm, in the language in force. */
     text?: string;
     /** Keep only civilizations standing in this year. */
     year?: number;
@@ -18,6 +19,8 @@ export interface CatalogueServiceConfig {
     civilizations: readonly Civilization[];
     /** Order the expansions are listed in, so sorting by expansion follows release order. */
     expansionOrder: readonly ExpansionKey[];
+    /** Where the names come from, since the civilizations themselves carry none. */
+    text: TextService;
 }
 
 /**
@@ -25,17 +28,20 @@ export interface CatalogueServiceConfig {
  *
  * It knows nothing about geometry: borders live a century at a time behind the slice service.
  * What it answers is "which civilizations are we talking about", which is a question the list,
- * the map and the detail panel must never disagree on.
+ * the map and the detail panel must never disagree on. Names are read at query time, so the
+ * same catalogue answers in whichever language the reader has switched to.
  */
 export class CatalogueService {
     private readonly civilizations: readonly Civilization[];
     private readonly expansionRank: ReadonlyMap<ExpansionKey, number>;
     private readonly byKey: ReadonlyMap<string, Civilization>;
+    private readonly text: TextService;
 
     constructor(config: CatalogueServiceConfig) {
         this.civilizations = config.civilizations;
         this.expansionRank = new Map(config.expansionOrder.map((key, index) => [key, index]));
         this.byKey = new Map(config.civilizations.map((civ) => [civ.key, civ]));
+        this.text = config.text;
     }
 
     /** Every civilization, in catalogue order. */
@@ -65,7 +71,7 @@ export class CatalogueService {
         const matches = this.civilizations.filter((civ) => {
             if (query.year !== undefined && !civ.standingIn(query.year)) return false;
             if (expansions && !expansions.has(civ.expansion)) return false;
-            if (needle && !normalize(civ.searchable).includes(needle)) return false;
+            if (needle && !normalize(this.text.searchable(civ.key)).includes(needle)) return false;
 
             return true;
         });
@@ -82,7 +88,10 @@ export class CatalogueService {
     }
 
     private sort(civilizations: Civilization[], order: CatalogueOrder): Civilization[] {
-        const byName = (left: Civilization, right: Civilization): number => left.name.localeCompare(right.name, 'pt-BR');
+        const locale = this.text.locale();
+        const names = new Map(civilizations.map((civ) => [civ.key, this.text.civilization(civ.key, false).name]));
+        const byName = (left: Civilization, right: Civilization): number =>
+            (names.get(left.key) ?? '').localeCompare(names.get(right.key) ?? '', locale);
 
         if (order === 'area') {
             return civilizations.sort(

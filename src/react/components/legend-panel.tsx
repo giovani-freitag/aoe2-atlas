@@ -1,10 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
-import { REGION_KEYS, REGION_NAMES, type RegionKey } from '@/domain/enums/region.ts';
+import { REGION_KEYS, type RegionKey } from '@/domain/enums/region.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { LEGEND_DETAIL_LIMIT, useAtlas } from '@/react/providers/atlas-context.ts';
-import { formatArea } from '@/react/format.ts';
+import { useFormat } from '@/react/hooks/use-format.ts';
 import { HatchSwatch } from './hatch-swatch.tsx';
 
 export interface LegendPanelProps {
@@ -23,8 +24,10 @@ export interface LegendPanelProps {
  * realm of the century sits with the map controls, where a switch belongs.
  */
 export function LegendPanel({ drawn, borders }: LegendPanelProps) {
-    const { palette } = useServices();
+    const { t } = useTranslation();
+    const { palette, text } = useServices();
     const { state, dispatch } = useAtlas();
+    const format = useFormat();
 
     const detailed = drawn.length <= LEGEND_DETAIL_LIMIT;
     const regionsOnMap = new Set(drawn.map((civ) => civ.region));
@@ -39,14 +42,14 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
     return (
         <div className="legend leather stitched">
             <div className="legend__head">
-                <span className="eyebrow">{drawn.length} no mapa</span>
+                <span className="eyebrow">{t('legend.onMap', { count: drawn.length })}</span>
                 <button
                     type="button"
                     onClick={() => {
                         dispatch({ type: 'clear-map' });
                     }}
                 >
-                    limpar
+                    {t('legend.clear')}
                 </button>
             </div>
 
@@ -54,15 +57,16 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
                 <ul>
                     {drawn.map((civilization) => {
                         const border = borders.get(civilization.key);
+                        const words = text.civilization(civilization.key, false);
 
                         return (
                             <li key={civilization.key}>
                                 <HatchSwatch style={palette.styleOf(civilization.key)} size={18} />
                                 <span className="legend__text">
-                                    <strong>{civilization.name}</strong>
+                                    <strong>{words.name}</strong>
                                     <small>
-                                        {REGION_NAMES[civilization.region]}
-                                        {border ? ` · ${formatArea(border.areaKm2)}` : ''}
+                                        {text.region(civilization.region)}
+                                        {border ? ` · ${format.area(border.areaKm2)}` : ''}
                                     </small>
                                 </span>
                                 {state.showAll ? null : (
@@ -71,7 +75,7 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
                                         onClick={() => {
                                             remove(civilization.key);
                                         }}
-                                        aria-label={`Tirar ${civilization.name} do mapa`}
+                                        aria-label={t('legend.remove', { name: words.name })}
                                     >
                                         <X size={14} aria-hidden />
                                     </button>
@@ -82,9 +86,7 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
                 </ul>
             ) : (
                 <>
-                    <p className="legend__hint">
-                        A cor diz a região; o ângulo da hachura separa as civilizações dentro dela.
-                    </p>
+                    <p className="legend__hint">{t('legend.hint')}</p>
                     <ul className="legend__regions">
                         {REGION_KEYS.filter((region) => regionsOnMap.has(region)).map((region) => (
                             <li key={region}>
@@ -94,8 +96,8 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
                                     aria-hidden
                                 />
                                 <span className="legend__text">
-                                    <strong>{REGION_NAMES[region]}</strong>
-                                    <small>{countIn(drawn, region)} no mapa</small>
+                                    <strong>{text.region(region)}</strong>
+                                    <small>{t('legend.onMap', { count: countIn(drawn, region) })}</small>
                                 </span>
                             </li>
                         ))}

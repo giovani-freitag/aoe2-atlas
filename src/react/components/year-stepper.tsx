@@ -1,5 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
-import { formatYear } from '@/react/format.ts';
+import { useFormat } from '@/react/hooks/use-format.ts';
 
 /** How far the arrows move the year, which is a human-sized step through the centuries. */
 const STEP = 50;
@@ -25,6 +26,9 @@ export interface YearStepperProps {
  * be visible at all times because the whole map depends on it.
  */
 export function YearStepper({ from, to, year, sliceYear, loading, onChange, onOpenSettings }: YearStepperProps) {
+    const { t } = useTranslation();
+    const format = useFormat();
+
     const step = (by: number): void => {
         onChange(Math.min(to, Math.max(from, year + by)));
     };
@@ -38,15 +42,19 @@ export function YearStepper({ from, to, year, sliceYear, loading, onChange, onOp
                     step(-STEP);
                 }}
                 disabled={year <= from}
-                aria-label={`Recuar ${STEP} anos`}
+                aria-label={t('rail.back', { years: STEP })}
             >
                 <ChevronLeft size={20} aria-hidden />
             </button>
 
             <button type="button" className="stepper__reading" onClick={onOpenSettings}>
-                <strong className="numeric">{formatYear(year)}</strong>
+                <strong className="numeric">{format.year(year)}</strong>
                 <span className="eyebrow">
-                    {loading ? 'carregando…' : sliceYear === year ? 'mapa deste ano' : `mapa de ${formatYear(sliceYear)}`}
+                    {loading
+                        ? t('rail.loading')
+                        : sliceYear === year
+                          ? t('rail.thisYear')
+                          : t('rail.mapOf', { year: format.year(sliceYear) })}
                 </span>
             </button>
 
@@ -57,17 +65,12 @@ export function YearStepper({ from, to, year, sliceYear, loading, onChange, onOp
                     step(STEP);
                 }}
                 disabled={year >= to}
-                aria-label={`Avançar ${STEP} anos`}
+                aria-label={t('rail.forward', { years: STEP })}
             >
                 <ChevronRight size={20} aria-hidden />
             </button>
 
-            <button
-                type="button"
-                className="stepper__more iron"
-                onClick={onOpenSettings}
-                aria-label="Abrir os ajustes do mapa"
-            >
+            <button type="button" className="stepper__more iron" onClick={onOpenSettings} aria-label={t('app.openSettings')}>
                 <SlidersHorizontal size={18} aria-hidden />
             </button>
         </div>

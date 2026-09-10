@@ -1,8 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { Pin, PinOff } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import type { CivilizationStyle } from '@/services/palette/palette-service.ts';
-import { formatArea } from '@/react/format.ts';
+import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
+import { useFormat } from '@/react/hooks/use-format.ts';
 import { HatchSwatch } from './hatch-swatch.tsx';
 
 export interface CivRowProps {
@@ -31,6 +33,10 @@ export function CivRow({
     onTogglePin,
     onHover,
 }: CivRowProps) {
+    const { t } = useTranslation();
+    const words = useCivilizationText(civilization);
+    const format = useFormat();
+
     return (
         <li
             className="civ"
@@ -61,8 +67,8 @@ export function CivRow({
                     height={26}
                     loading="lazy"
                 />
-                <span className="civ__name">{civilization.name}</span>
-                <span className="civ__area numeric">{border ? formatArea(border.areaKm2) : '—'}</span>
+                <span className="civ__name">{words.name}</span>
+                <span className="civ__area numeric">{border ? format.area(border.areaKm2) : '—'}</span>
             </button>
             <button
                 type="button"
@@ -72,7 +78,7 @@ export function CivRow({
                 onClick={() => {
                     onTogglePin(civilization.key);
                 }}
-                aria-label={pinned ? `Tirar ${civilization.name} do mapa` : `Traçar ${civilization.name} no mapa`}
+                aria-label={pinned ? t('roster.untrace', { name: words.name }) : t('roster.trace', { name: words.name })}
             >
                 {pinned ? <PinOff size={16} aria-hidden /> : <Pin size={16} aria-hidden />}
             </button>

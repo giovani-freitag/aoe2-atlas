@@ -77,6 +77,53 @@
     }
 }
 
+/*
+ * Cinzel is a Roman capital and only knows the Latin alphabet — not even the whole of it: the
+ * tone marks Vietnamese stacks on its vowels are outside the two subsets the family ships. A
+ * face that covers half a word is worse than one that covers none of it, because the fallback
+ * lands mid-word and the heading breaks in two. So for every script it cannot set, the title
+ * face steps aside for a serif the reader's system actually has.
+ */
+:root:lang(vi) {
+    --title: 'Times New Roman', Georgia, serif;
+}
+
+:root:lang(ru) {
+    --title: 'Times New Roman', Georgia, serif;
+}
+
+:root:lang(hi) {
+    --title: 'Noto Serif Devanagari', 'Nirmala UI', serif;
+}
+
+:root:lang(ja) {
+    --title: 'Yu Mincho', 'Hiragino Mincho ProN', 'Noto Serif JP', serif;
+}
+
+:root:lang(ko) {
+    --title: 'Noto Serif KR', Batang, 'Apple SD Gothic Neo', serif;
+}
+
+:root:lang(zh-CN) {
+    --title: 'Songti SC', 'Noto Serif SC', SimSun, serif;
+}
+
+:root:lang(zh-TW) {
+    --title: 'Songti TC', 'Noto Serif TC', PMingLiU, serif;
+}
+
+/*
+ * The tracking that makes a Roman capital breathe only crowds a script whose glyphs are already
+ * squares, and uppercasing does nothing to any of them.
+ */
+:root:lang(hi) .eyebrow,
+:root:lang(ja) .eyebrow,
+:root:lang(ko) .eyebrow,
+:root:lang(zh-CN) .eyebrow,
+:root:lang(zh-TW) .eyebrow {
+    letter-spacing: 0.04em;
+}
+
 /* ---- materials ---------------------------------------------------------- */
 
 /*

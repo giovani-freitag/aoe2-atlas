@@ -1,0 +1,114 @@
+{
+    "app": {
+        "title": "AoE2 Atlas",
+        "tagline": "Merveilles et territoires, siècle après siècle",
+        "openRoster": "Ouvrir la liste des civilisations",
+        "openSettings": "Ouvrir les réglages de la carte",
+        "loading": "Chargement du siècle",
+        "mapAlt": "Carte du monde avec les territoires et les merveilles des civilisations."
+    },
+    "map": {
+        "traceAll": "Tracer les {{count}} royaumes de {{year}}",
+        "untraceAll": "Ne plus tracer tous les royaumes",
+        "zoomIn": "Zoom avant",
+        "zoomOut": "Zoom arrière",
+        "wholeWorld": "Voir le monde entier"
+    },
+    "legend": {
+        "onMap": "{{count}} sur la carte",
+        "clear": "effacer",
+        "remove": "Retirer {{name}} de la carte",
+        "hint": "La couleur donne la région ; l'angle des hachures distingue les civilisations qui la composent."
+    },
+    "roster": {
+        "title": "Civilisations",
+        "search": "Rechercher une civilisation",
+        "placeholder": "Civilisation, monument, ville…",
+        "orderBy": "Trier par",
+        "order": {
+            "name": "Nom",
+            "area": "Apogée",
+            "year": "Époque",
+            "expansion": "DLC"
+        },
+        "count": "{{standing}} debout en {{year}} · {{listed}} dans la liste",
+        "trace": "Tracer {{name}} sur la carte",
+        "untrace": "Retirer {{name}} de la carte"
+    },
+    "sheet": {
+        "grip": "Changer la hauteur du panneau",
+        "details": "Détails de {{name}}"
+    },
+    "marker": {
+        "label": "{{name}} — {{monument}}, {{place}}"
+    },
+    "detail": {
+        "trace": "Tracer sur la carte",
+        "untrace": "Retirer de la carte",
+        "noBorder": "Pas de frontière en {{year}}",
+        "in": "En {{year}}",
+        "area": "Superficie",
+        "border": "Frontière",
+        "onStage": "En scène",
+        "precision": {
+            "approximate": "approximative",
+            "moderate": "assez précise",
+            "surveyed": "relevée"
+        },
+        "handDrawn": "Contour dessiné à la main pour cet atlas : la source ne comporte pas ce royaume.",
+        "dissolved": "Fusionné à partir de {{sources}} sur la carte de {{year}}.",
+        "carried": "La source ne cartographie pas ce royaume en {{year}} ; le tracé vient de {{from}}, à {{years}} ans de là.",
+        "absent": "Aucune frontière cartographiée pour ce siècle. Faites glisser l'année jusqu'à {{peak}}, l'apogée de cette civilisation.",
+        "peak": "Apogée en {{year}}, avec {{area}}.",
+        "wikipedia": "Wikipédia",
+        "expansion": "Extension",
+        "releasedOn": "Sortie le {{date}}",
+        "plannedFor": "Prévue pour le {{date}}",
+        "shared": "Terrain partagé en {{year}}",
+        "sharedHint": "Seuls les contemporains figurent ici : ceux qui ont partagé le sol avec cette civilisation au cours du même siècle. Un",
+        "sharedAbbr": "la source ne cartographie pas l'un des deux pour ce siècle, et le tracé vient de la coupe la plus proche",
+        "sharedHintTail": "signale une mesure faite contre une frontière empruntée à un autre siècle.",
+        "overlay": "Superposer {{name}} sur la carte"
+    },
+    "settings": {
+        "title": "Réglages",
+        "subtitle": "Comment le monde est dessiné",
+        "year": "Année",
+        "language": "Langue",
+        "projection": "Projection",
+        "projectionHint": "Aucune projection n'est neutre. Les superficies des panneaux sont mesurées sur la sphère lors de la génération des données : changer ici modifie le dessin et aucun chiffre.",
+        "preserves": "conserve {{what}}",
+        "chart": "Carte",
+        "ruled": "Loxodromies, équateur et tropiques",
+        "creditsBorders": "Frontières issues de",
+        "creditsRest": "(GPL-3.0) · côtes de Natural Earth · merveilles et emblèmes de l'Age of Empires Series Wiki · géométrie du {{date}}"
+    },
+    "projections": {
+        "equal-earth": {
+            "preserves": "les surfaces",
+            "caveat": "Les surfaces se comparent à l'œil. Les formes près des bords s'inclinent."
+        },
+        "natural-earth": {
+            "preserves": "l'apparence",
+            "caveat": "Un compromis agréable : elle ne conserve ni surfaces ni angles, et se trompe peu sur les deux."
+        },
+        "mercator": {
+            "preserves": "les angles",
+            "caveat": "Familière, mais elle gonfle tout ce qui s'éloigne de l'équateur. Comparez les tailles avec les chiffres."
+        }
+    },
+    "rail": {
+        "loading": "chargement…",
+        "thisYear": "carte de cette année",
+        "mapOf": "carte de {{year}}",
+        "year": "Année de la carte",
+        "back": "Reculer de {{years}} ans",
+        "forward": "Avancer de {{years}} ans"
+    },
+    "year": {
+        "bce": "{{year}} av. J.-C."
+    },
+    "errors": {
+        "slice": "Ce siècle n'a pas pu être chargé."
+    }
+}

@@ -1,0 +1,114 @@
+{
+    "app": {
+        "title": "AoE2 Atlas",
+        "tagline": "Meraviglie e territori, secolo per secolo",
+        "openRoster": "Apri l'elenco delle civiltà",
+        "openSettings": "Apri le impostazioni della mappa",
+        "loading": "Caricamento del secolo",
+        "mapAlt": "Mappa del mondo con i territori e le meraviglie delle civiltà."
+    },
+    "map": {
+        "traceAll": "Traccia i {{count}} regni del {{year}}",
+        "untraceAll": "Smetti di tracciare tutti i regni",
+        "zoomIn": "Avvicina",
+        "zoomOut": "Allontana",
+        "wholeWorld": "Vedi il mondo intero"
+    },
+    "legend": {
+        "onMap": "{{count}} sulla mappa",
+        "clear": "svuota",
+        "remove": "Togli {{name}} dalla mappa",
+        "hint": "Il colore indica la regione; l'angolo del tratteggio distingue le civiltà al suo interno."
+    },
+    "roster": {
+        "title": "Civiltà",
+        "search": "Cerca una civiltà",
+        "placeholder": "Civiltà, monumento, città…",
+        "orderBy": "Ordina per",
+        "order": {
+            "name": "Nome",
+            "area": "Apogeo",
+            "year": "Epoca",
+            "expansion": "DLC"
+        },
+        "count": "{{standing}} in piedi nel {{year}} · {{listed}} in elenco",
+        "trace": "Traccia {{name}} sulla mappa",
+        "untrace": "Togli {{name}} dalla mappa"
+    },
+    "sheet": {
+        "grip": "Cambia l'altezza del pannello",
+        "details": "Dettagli di {{name}}"
+    },
+    "marker": {
+        "label": "{{name}} — {{monument}}, {{place}}"
+    },
+    "detail": {
+        "trace": "Traccia sulla mappa",
+        "untrace": "Togli dalla mappa",
+        "noBorder": "Nessun confine nel {{year}}",
+        "in": "Nel {{year}}",
+        "area": "Area",
+        "border": "Confine",
+        "onStage": "In scena",
+        "precision": {
+            "approximate": "approssimativo",
+            "moderate": "abbastanza preciso",
+            "surveyed": "rilevato"
+        },
+        "handDrawn": "Contorno disegnato a mano per questo atlante: la fonte non riporta questo regno.",
+        "dissolved": "Fuso da {{sources}} sulla mappa del {{year}}.",
+        "carried": "La fonte non mappa questo regno nel {{year}}; la linea viene dal {{from}}, a {{years}} anni di distanza.",
+        "absent": "Nessun confine mappato in questo secolo. Trascina l'anno al {{peak}}, l'apogeo di questa civiltà.",
+        "peak": "Apogeo nel {{year}}, con {{area}}.",
+        "wikipedia": "Wikipedia",
+        "expansion": "Espansione",
+        "releasedOn": "Pubblicata il {{date}}",
+        "plannedFor": "Prevista per il {{date}}",
+        "shared": "Terreno condiviso nel {{year}}",
+        "sharedHint": "Solo i contemporanei compaiono qui: chi ha condiviso il suolo con questa civiltà nello stesso secolo. Un",
+        "sharedAbbr": "la fonte non mappa una delle due in questo secolo, e la linea viene dal taglio più vicino",
+        "sharedHintTail": "segnala una misura presa contro un confine preso in prestito da un altro secolo.",
+        "overlay": "Sovrapponi {{name}} sulla mappa"
+    },
+    "settings": {
+        "title": "Impostazioni",
+        "subtitle": "Come viene disegnato il mondo",
+        "year": "Anno",
+        "language": "Lingua",
+        "projection": "Proiezione",
+        "projectionHint": "Nessuna proiezione è neutra. Le aree nei pannelli sono misurate sulla sfera quando i dati vengono generati, quindi cambiare qui modifica il disegno e nessun numero.",
+        "preserves": "conserva {{what}}",
+        "chart": "Carta",
+        "ruled": "Lossodromie, equatore e tropici",
+        "creditsBorders": "Confini da",
+        "creditsRest": "(GPL-3.0) · coste di Natural Earth · meraviglie ed emblemi dall'Age of Empires Series Wiki · geometria del {{date}}"
+    },
+    "projections": {
+        "equal-earth": {
+            "preserves": "l'area",
+            "caveat": "Aree confrontabili a occhio. Le forme vicino ai bordi si inclinano."
+        },
+        "natural-earth": {
+            "preserves": "l'aspetto",
+            "caveat": "Un compromesso gradevole: non conserva né area né angolo, e sbaglia poco in entrambi."
+        },
+        "mercator": {
+            "preserves": "l'angolo",
+            "caveat": "Familiare, ma gonfia ciò che è lontano dall'equatore. Confronta le dimensioni con i numeri."
+        }
+    },
+    "rail": {
+        "loading": "caricamento…",
+        "thisYear": "mappa di quest'anno",
+        "mapOf": "mappa del {{year}}",
+        "year": "Anno della mappa",
+        "back": "Indietro di {{years}} anni",
+        "forward": "Avanti di {{years}} anni"
+    },
+    "year": {
+        "bce": "{{year}} a.C."
+    },
+    "errors": {
+        "slice": "Impossibile caricare questo secolo."
+    }
+}

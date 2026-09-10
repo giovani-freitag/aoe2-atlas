@@ -1,4 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import type { Civilization } from '@/domain/entities/civilization.ts';
+import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
 
 /**
  * Side of the icon plate, in screen pixels.
@@ -10,7 +12,7 @@ const SIZE = 34;
 
 export interface WonderMarkerProps {
     civilization: Civilization;
-    /** Screen position of the monument. */
+    /** Screen position of the mark. */
     at: [number, number];
     colour: string;
     /** True when the civilization has a border drawn in the century on the rail. */
@@ -22,7 +24,7 @@ export interface WonderMarkerProps {
 }
 
 /**
- * A civilization's mark, standing on the real monument its Wonder was copied from.
+ * A civilization's mark: its arms on a heater shield.
  *
  * The marker is positioned in screen space rather than inside the zoomed group, so the shield
  * stays the same size at every zoom and the reader can still tell Chichester from Chartres
@@ -38,9 +40,11 @@ export function WonderMarker({
     onOpen,
     onHover,
 }: WonderMarkerProps) {
+    const { t } = useTranslation();
+    const words = useCivilizationText(civilization);
     const [x, y] = at;
     const half = SIZE / 2;
-    const label = `${civilization.name} — ${civilization.wonder.monument}, ${civilization.wonder.place}`;
+    const label = t('marker.label', { name: words.name, monument: words.monument, place: words.place });
 
     return (
         <g

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, type MouseEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
@@ -6,16 +7,11 @@ import type { CatalogueOrder } from '@/services/atlas/catalogue-service.ts';
 import { EXPANSION_RECORDS } from '@/data/expansions.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useServices } from '@/react/providers/services-context.ts';
+import { useFormat } from '@/react/hooks/use-format.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
-import { formatYear } from '@/react/format.ts';
 import { CivRow } from './civ-row.tsx';
 
-const ORDERS: readonly { key: CatalogueOrder; label: string }[] = [
-    { key: 'name', label: 'Nome' },
-    { key: 'area', label: 'Auge' },
-    { key: 'year', label: 'Época' },
-    { key: 'expansion', label: 'DLC' },
-];
+const ORDERS: readonly CatalogueOrder[] = ['name', 'area', 'year', 'expansion'];
 
 export interface RosterDrawerProps {
     /** Every civilization the filters leave, whether or not it stood in the year on the rail. */
@@ -33,8 +29,10 @@ export interface RosterDrawerProps {
  * the grid. Two behaviours, one element, no duplicated markup.
  */
 export function RosterDrawer({ civilizations, borders, open, onClose }: RosterDrawerProps) {
+    const { t } = useTranslation();
     const { palette } = useServices();
     const { state, dispatch } = useAtlas();
+    const format = useFormat();
     const wide = useWideScreen();
     const dialog = useRef<HTMLDialogElement>(null);
 
@@ -83,7 +81,7 @@ export function RosterDrawer({ civilizations, borders, open, onClose }: RosterDr
     return (
         <dialog className="roster leather" ref={dialog} onCancel={onClose} onClose={onClose} onClick={closeOnBackdrop}>
             <div className="roster__head">
-                <h2>Civilizações</h2>
+                <h2>{t('roster.title')}</h2>
             </div>
 
             <div className="roster__filters">
@@ -92,25 +90,25 @@ export function RosterDrawer({ civilizations, borders, open, onClose }: RosterDr
                     <input
                         type="search"
                         value={state.query}
-                        placeholder="Civilização, monumento, cidade…"
-                        aria-label="Buscar civilização"
+                        placeholder={t('roster.placeholder')}
+                        aria-label={t('roster.search')}
                         onChange={(event) => {
                             dispatch({ type: 'query', value: event.target.value });
                         }}
                     />
                 </div>
 
-                <div className="segmented oak" role="group" aria-label="Ordenar por">
+                <div className="segmented oak" role="group" aria-label={t('roster.orderBy')}>
                     {ORDERS.map((order) => (
                         <button
-                            key={order.key}
+                            key={order}
                             type="button"
-                            data-active={state.order === order.key}
+                            data-active={state.order === order}
                             onClick={() => {
-                                dispatch({ type: 'order', value: order.key });
+                                dispatch({ type: 'order', value: order });
                             }}
                         >
-                            {order.label}
+                            {t(`roster.order.${order}`)}
                         </button>
                     ))}
                 </div>
@@ -135,7 +133,11 @@ export function RosterDrawer({ civilizations, borders, open, onClose }: RosterDr
                 </div>
 
                 <p className="roster__count">
-                    {standingCount} de pé em {formatYear(state.year)} · {civilizations.length} na lista
+                    {t('roster.count', {
+                        standing: standingCount,
+                        year: format.year(state.year),
+                        listed: civilizations.length,
+                    })}
                 </p>
             </div>
 

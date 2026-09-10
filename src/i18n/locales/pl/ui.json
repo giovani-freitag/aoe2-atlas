@@ -1,0 +1,114 @@
+{
+    "app": {
+        "title": "AoE2 Atlas",
+        "tagline": "Cuda i terytoria, stulecie po stuleciu",
+        "openRoster": "Otwórz listę cywilizacji",
+        "openSettings": "Otwórz ustawienia mapy",
+        "loading": "Wczytywanie stulecia",
+        "mapAlt": "Mapa świata z terytoriami i cudami cywilizacji."
+    },
+    "map": {
+        "traceAll": "Nakreśl wszystkie {{count}} królestwa z roku {{year}}",
+        "untraceAll": "Przestań kreślić wszystkie królestwa",
+        "zoomIn": "Przybliż",
+        "zoomOut": "Oddal",
+        "wholeWorld": "Pokaż cały świat"
+    },
+    "legend": {
+        "onMap": "{{count}} na mapie",
+        "clear": "wyczyść",
+        "remove": "Usuń {{name}} z mapy",
+        "hint": "Kolor wskazuje region; kąt kreskowania rozróżnia cywilizacje w jego obrębie."
+    },
+    "roster": {
+        "title": "Cywilizacje",
+        "search": "Szukaj cywilizacji",
+        "placeholder": "Cywilizacja, budowla, miasto…",
+        "orderBy": "Sortuj według",
+        "order": {
+            "name": "Nazwa",
+            "area": "Szczyt",
+            "year": "Epoka",
+            "expansion": "DLC"
+        },
+        "count": "{{standing}} istnieje w roku {{year}} · {{listed}} na liście",
+        "trace": "Nakreśl {{name}} na mapie",
+        "untrace": "Usuń {{name}} z mapy"
+    },
+    "sheet": {
+        "grip": "Zmień wysokość panelu",
+        "details": "Szczegóły: {{name}}"
+    },
+    "marker": {
+        "label": "{{name}} — {{monument}}, {{place}}"
+    },
+    "detail": {
+        "trace": "Nakreśl na mapie",
+        "untrace": "Usuń z mapy",
+        "noBorder": "Brak granicy w roku {{year}}",
+        "in": "W roku {{year}}",
+        "area": "Powierzchnia",
+        "border": "Granica",
+        "onStage": "Na scenie",
+        "precision": {
+            "approximate": "przybliżona",
+            "moderate": "dość dokładna",
+            "surveyed": "wytyczona"
+        },
+        "handDrawn": "Zarys narysowany ręcznie dla tego atlasu: źródło nie zawiera tego królestwa.",
+        "dissolved": "Scalono z {{sources}} na mapie z roku {{year}}.",
+        "carried": "Źródło nie mapuje tego królestwa w roku {{year}}; linia pochodzi z roku {{from}}, o {{years}} lat dalej.",
+        "absent": "W tym stuleciu nie zmapowano żadnej granicy. Przesuń rok na {{peak}}, szczyt tej cywilizacji.",
+        "peak": "Szczyt w roku {{year}}, z powierzchnią {{area}}.",
+        "wikipedia": "Wikipedia",
+        "expansion": "Dodatek",
+        "releasedOn": "Wydany {{date}}",
+        "plannedFor": "Zapowiedziany na {{date}}",
+        "shared": "Wspólna ziemia w roku {{year}}",
+        "sharedHint": "Tylko współcześni trafiają tutaj: ci, którzy dzielili ziemię z tą cywilizacją w tym samym stuleciu. Znak",
+        "sharedAbbr": "źródło nie mapuje jednej z dwu stron w tym stuleciu, a linia pochodzi z najbliższego przekroju",
+        "sharedHintTail": "oznacza pomiar względem granicy zapożyczonej z innego stulecia.",
+        "overlay": "Nałóż {{name}} na mapę"
+    },
+    "settings": {
+        "title": "Ustawienia",
+        "subtitle": "Jak rysowany jest świat",
+        "year": "Rok",
+        "language": "Język",
+        "projection": "Odwzorowanie",
+        "projectionHint": "Żadne odwzorowanie nie jest neutralne. Powierzchnie w panelach mierzone są na sferze podczas generowania danych, więc zmiana tutaj zmienia rysunek, a nie liczby.",
+        "preserves": "zachowuje {{what}}",
+        "chart": "Mapa",
+        "ruled": "Loksodromy, równik i zwrotniki",
+        "creditsBorders": "Granice z",
+        "creditsRest": "(GPL-3.0) · wybrzeża z Natural Earth · cuda i herby z Age of Empires Series Wiki · geometria z dnia {{date}}"
+    },
+    "projections": {
+        "equal-earth": {
+            "preserves": "powierzchnię",
+            "caveat": "Powierzchnie można porównywać na oko. Kształty przy krawędziach się pochylają."
+        },
+        "natural-earth": {
+            "preserves": "wygląd",
+            "caveat": "Przyjemny kompromis: nie zachowuje ani powierzchni, ani kątów, a w obu myli się niewiele."
+        },
+        "mercator": {
+            "preserves": "kąty",
+            "caveat": "Znane, ale rozdyma wszystko, co daleko od równika. Porównuj rozmiary liczbami."
+        }
+    },
+    "rail": {
+        "loading": "wczytywanie…",
+        "thisYear": "mapa z tego roku",
+        "mapOf": "mapa z roku {{year}}",
+        "year": "Rok mapy",
+        "back": "Wstecz o {{years}} lat",
+        "forward": "Naprzód o {{years}} lat"
+    },
+    "year": {
+        "bce": "{{year}} p.n.e."
+    },
+    "errors": {
+        "slice": "Nie udało się wczytać tego stulecia."
+    }
+}

@@ -1,62 +1,36 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CatalogueService } from '@/services/atlas/catalogue-service.ts';
-import { civilizationStub } from '../../../fixtures/civilizations.ts';
+import { civilizationStub, textStub } from '../../../fixtures/civilizations.ts';
 
 const CIVILIZATIONS = [
-    civilizationStub({
-        key: 'mongols',
-        name: 'Mongóis',
-        region: 'step',
-        from: 1206,
-        to: 1368,
-        peakAreaKm2: 22_885_825,
-        monument: 'Grande tenda de Gêngis Khan',
-        place: 'Carachorum',
-    }),
-    civilizationStub({
-        key: 'tatars',
-        name: 'Tártaros',
-        region: 'step',
-        from: 1240,
-        to: 1507,
-        peakAreaKm2: 12_041_558,
-        monument: 'Observatório de Ulugue Begue',
-        place: 'Samarcanda',
-    }),
-    civilizationStub({
-        key: 'britons',
-        name: 'Bretões',
-        region: 'weur',
-        from: 800,
-        to: 1500,
-        peakAreaKm2: 259_345,
-        monument: 'Catedral de Chichester',
-        place: 'Chichester',
-    }),
-    civilizationStub({
-        key: 'romans',
-        name: 'Romanos',
-        expansion: 'ror',
-        region: 'med',
-        from: -27,
-        to: 476,
-        peakAreaKm2: 4_875_526,
-        monument: 'Coliseu',
-        place: 'Roma',
-    }),
+    civilizationStub({ key: 'mongols', region: 'step', from: 1206, to: 1368, peakAreaKm2: 22_885_825 }),
+    civilizationStub({ key: 'tatars', region: 'step', from: 1240, to: 1507, peakAreaKm2: 12_041_558 }),
+    civilizationStub({ key: 'britons', region: 'weur', from: 800, to: 1500, peakAreaKm2: 259_345 }),
+    civilizationStub({ key: 'romans', expansion: 'ror', region: 'med', from: -27, to: 476, peakAreaKm2: 4_875_526 }),
 ];
+
+const PORTUGUESE = {
+    mongols: { name: 'Mongóis', monument: 'Grande tenda de Gêngis Khan', place: 'Carachorum' },
+    tatars: { name: 'Tártaros', monument: 'Observatório de Ulugue Begue', place: 'Samarcanda' },
+    britons: { name: 'Bretões', monument: 'Catedral de Chichester', place: 'Chichester' },
+    romans: { name: 'Romanos', monument: 'Coliseu', place: 'Roma' },
+};
 
 describe('CatalogueService', () => {
     let catalogue: CatalogueService;
 
     beforeEach(() => {
-        catalogue = new CatalogueService({ civilizations: CIVILIZATIONS, expansionOrder: ['aok', 'ror'] });
+        catalogue = new CatalogueService({
+            civilizations: CIVILIZATIONS,
+            expansionOrder: ['aok', 'ror'],
+            text: textStub(PORTUGUESE, 'pt-BR'),
+        });
     });
 
     it('finds a civilization by key', () => {
         const found = catalogue.find('tatars');
 
-        expect(found?.name).toBe('Tártaros');
+        expect(found?.key).toBe('tatars');
     });
 
     it('hands back null for a key nothing carries', () => {
@@ -73,6 +47,18 @@ describe('CatalogueService', () => {
 
     it('matches on the monument as well as the name', () => {
         const found = catalogue.search({ text: 'samarcanda' });
+
+        expect(found.map((civ) => civ.key)).toEqual(['tatars']);
+    });
+
+    it('searches in whatever language the text service is speaking', () => {
+        const english = new CatalogueService({
+            civilizations: CIVILIZATIONS,
+            expansionOrder: ['aok', 'ror'],
+            text: textStub({ tatars: { place: 'Samarkand' } }),
+        });
+
+        const found = english.search({ text: 'samarkand' });
 
         expect(found.map((civ) => civ.key)).toEqual(['tatars']);
     });
@@ -107,7 +93,7 @@ describe('CatalogueService', () => {
         expect(found.map((civ) => civ.key)).toEqual(['romans', 'britons', 'mongols', 'tatars']);
     });
 
-    it('orders by name using Portuguese collation', () => {
+    it('orders by the translated name with the collation of the language on', () => {
         const found = catalogue.search({ order: 'name' });
 
         expect(found.map((civ) => civ.key)).toEqual(['britons', 'mongols', 'romans', 'tatars']);

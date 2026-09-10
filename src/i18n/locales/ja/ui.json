@@ -1,0 +1,114 @@
+{
+    "app": {
+        "title": "AoE2 Atlas",
+        "tagline": "世紀ごとの、象徴と領土",
+        "openRoster": "文明の一覧を開く",
+        "openSettings": "地図の設定を開く",
+        "loading": "世紀を読み込み中",
+        "mapAlt": "各文明の領土と象徴を示した世界地図。"
+    },
+    "map": {
+        "traceAll": "{{year}}年の{{count}}の国をすべて描く",
+        "untraceAll": "すべての国の描画をやめる",
+        "zoomIn": "拡大",
+        "zoomOut": "縮小",
+        "wholeWorld": "世界全体を見る"
+    },
+    "legend": {
+        "onMap": "地図上に{{count}}",
+        "clear": "消去",
+        "remove": "{{name}}を地図から外す",
+        "hint": "色は地域を示し、ハッチングの角度がその地域内の文明を区別します。"
+    },
+    "roster": {
+        "title": "文明",
+        "search": "文明を検索",
+        "placeholder": "文明、建造物、都市…",
+        "orderBy": "並び替え",
+        "order": {
+            "name": "名前",
+            "area": "最盛期",
+            "year": "時代",
+            "expansion": "DLC"
+        },
+        "count": "{{year}}年に{{standing}}が存在 · 一覧に{{listed}}",
+        "trace": "{{name}}を地図に描く",
+        "untrace": "{{name}}を地図から外す"
+    },
+    "sheet": {
+        "grip": "パネルの高さを変える",
+        "details": "{{name}}の詳細"
+    },
+    "marker": {
+        "label": "{{name}} — {{monument}}、{{place}}"
+    },
+    "detail": {
+        "trace": "地図に描く",
+        "untrace": "地図から外す",
+        "noBorder": "{{year}}年に国境なし",
+        "in": "{{year}}年",
+        "area": "面積",
+        "border": "国境",
+        "onStage": "登場期間",
+        "precision": {
+            "approximate": "おおよそ",
+            "moderate": "比較的正確",
+            "surveyed": "測量済み"
+        },
+        "handDrawn": "この地図帳のために手で描いた輪郭です。出典にこの国はありません。",
+        "dissolved": "{{year}}年の地図の{{sources}}を統合。",
+        "carried": "出典は{{year}}年のこの国を描いていません。線は{{years}}年離れた{{from}}年のものです。",
+        "absent": "この世紀には国境が描かれていません。年をこの文明の最盛期、{{peak}}年に動かしてください。",
+        "peak": "最盛期は{{year}}年、{{area}}。",
+        "wikipedia": "Wikipedia",
+        "expansion": "拡張パック",
+        "releasedOn": "{{date}}発売",
+        "plannedFor": "{{date}}発売予定",
+        "shared": "{{year}}年に重なる土地",
+        "sharedHint": "ここに載るのは同時代の国だけ、つまり同じ世紀にこの文明と土地を分け合った国です。",
+        "sharedAbbr": "出典がこの世紀に両者のどちらかを描いておらず、線は最も近い断面から借りたもの",
+        "sharedHintTail": "は、別の世紀から借りた国境に対して測った値を示します。",
+        "overlay": "{{name}}を地図に重ねる"
+    },
+    "settings": {
+        "title": "設定",
+        "subtitle": "世界の描き方",
+        "year": "年",
+        "language": "言語",
+        "projection": "投影法",
+        "projectionHint": "中立な投影法はありません。パネルの面積はデータ生成時に球面上で測っているので、ここでの変更は描画だけを変え、数値は変わりません。",
+        "preserves": "{{what}}を保つ",
+        "chart": "海図",
+        "ruled": "航程線、赤道、回帰線",
+        "creditsBorders": "国境:",
+        "creditsRest": "(GPL-3.0) · 海岸線は Natural Earth · 象徴と紋章は Age of Empires Series Wiki · 図形データは{{date}}"
+    },
+    "projections": {
+        "equal-earth": {
+            "preserves": "面積",
+            "caveat": "面積を目で比べられます。端に近い形は傾きます。"
+        },
+        "natural-earth": {
+            "preserves": "見た目",
+            "caveat": "心地よい折衷案。面積も角度も正確ではありませんが、どちらの誤差も小さいです。"
+        },
+        "mercator": {
+            "preserves": "角度",
+            "caveat": "見慣れていますが、赤道から離れたものを膨らませます。大きさは数値で比べてください。"
+        }
+    },
+    "rail": {
+        "loading": "読み込み中…",
+        "thisYear": "この年の地図",
+        "mapOf": "{{year}}年の地図",
+        "year": "地図の年",
+        "back": "{{years}}年戻る",
+        "forward": "{{years}}年進む"
+    },
+    "year": {
+        "bce": "紀元前{{year}}年"
+    },
+    "errors": {
+        "slice": "この世紀を読み込めませんでした。"
+    }
+}

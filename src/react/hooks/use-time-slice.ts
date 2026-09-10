@@ -6,8 +6,8 @@ export interface SliceState {
     slice: TimeSlice | null;
     /** True while the century matching the rail is still being fetched. */
     loading: boolean;
-    /** Set when the century could not be fetched at all. */
-    error: string | null;
+    /** True when the century could not be fetched at all. */
+    failed: boolean;
 }
 
 /**
@@ -26,7 +26,7 @@ export interface SliceState {
 export function useTimeSlice(slices: SliceService, year: number): SliceState {
     const sliceYear = slices.sliceYearFor(year);
     const [arrived, setArrived] = useState<{ year: number; slice: TimeSlice } | null>(null);
-    const [failed, setFailed] = useState<{ year: number; message: string } | null>(null);
+    const [failed, setFailed] = useState<{ year: number } | null>(null);
 
     useEffect(() => {
         let current = true;
@@ -37,12 +37,9 @@ export function useTimeSlice(slices: SliceService, year: number): SliceState {
                 setArrived({ year: sliceYear, slice });
                 slices.warmNeighbours(sliceYear);
             },
-            (reason: unknown) => {
+            () => {
                 if (!current) return;
-                setFailed({
-                    year: sliceYear,
-                    message: reason instanceof Error ? reason.message : 'Não consegui carregar este século.',
-                });
+                setFailed({ year: sliceYear });
             },
         );
 
@@ -54,6 +51,6 @@ export function useTimeSlice(slices: SliceService, year: number): SliceState {
     return {
         slice: arrived?.slice ?? null,
         loading: arrived?.year !== sliceYear && failed?.year !== sliceYear,
-        error: failed?.year === sliceYear ? failed.message : null,
+        failed: failed?.year === sliceYear,
     };
 }

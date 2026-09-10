@@ -33,19 +33,14 @@ export const CIVILIZATIONS: readonly Civilization[] = CIVILIZATION_RECORDS.map((
 
     return new Civilization({
         key: record.key,
-        name: record.name,
         icon: record.icon,
         expansion: record.expansion,
         region: record.region,
         wonder: {
-            monument: record.wonder.monument,
-            place: record.wonder.place,
-            country: record.wonder.country,
             at: { lon: record.wonder.lon, lat: record.wonder.lat },
             wikipedia: record.wonder.wikipedia,
-            anachronism: record.wonder.anachronism,
+            anachronistic: record.wonder.anachronistic === true,
         },
-        realmLabel: record.realm.label,
         span: new YearSpan(record.realm.from, record.realm.to),
         reach: { slices: reach.slices, peakYear: reach.peakYear, peakAreaKm2: reach.peakAreaKm2 },
     });

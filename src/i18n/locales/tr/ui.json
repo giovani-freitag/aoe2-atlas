@@ -1,0 +1,114 @@
+{
+    "app": {
+        "title": "AoE2 Atlas",
+        "tagline": "Yüzyıl yüzyıl harikalar ve topraklar",
+        "openRoster": "Uygarlık listesini aç",
+        "openSettings": "Harita ayarlarını aç",
+        "loading": "Yüzyıl yükleniyor",
+        "mapAlt": "Uygarlıkların toprakları ve harikalarıyla dünya haritası."
+    },
+    "map": {
+        "traceAll": "{{year}} yılının {{count}} krallığını çiz",
+        "untraceAll": "Tüm krallıkları çizmeyi bırak",
+        "zoomIn": "Yaklaştır",
+        "zoomOut": "Uzaklaştır",
+        "wholeWorld": "Tüm dünyayı gör"
+    },
+    "legend": {
+        "onMap": "Haritada {{count}}",
+        "clear": "temizle",
+        "remove": "{{name}} uygarlığını haritadan kaldır",
+        "hint": "Renk bölgeyi söyler; tarama açısı o bölgedeki uygarlıkları birbirinden ayırır."
+    },
+    "roster": {
+        "title": "Uygarlıklar",
+        "search": "Uygarlık ara",
+        "placeholder": "Uygarlık, anıt, şehir…",
+        "orderBy": "Sırala",
+        "order": {
+            "name": "Ad",
+            "area": "Zirve",
+            "year": "Çağ",
+            "expansion": "DLC"
+        },
+        "count": "{{year}} yılında {{standing}} ayakta · listede {{listed}}",
+        "trace": "{{name}} uygarlığını haritaya çiz",
+        "untrace": "{{name}} uygarlığını haritadan kaldır"
+    },
+    "sheet": {
+        "grip": "Panel yüksekliğini değiştir",
+        "details": "{{name}} ayrıntıları"
+    },
+    "marker": {
+        "label": "{{name}} — {{monument}}, {{place}}"
+    },
+    "detail": {
+        "trace": "Haritaya çiz",
+        "untrace": "Haritadan kaldır",
+        "noBorder": "{{year}} yılında sınır yok",
+        "in": "{{year}} yılında",
+        "area": "Alan",
+        "border": "Sınır",
+        "onStage": "Sahnede",
+        "precision": {
+            "approximate": "yaklaşık",
+            "moderate": "oldukça kesin",
+            "surveyed": "ölçülmüş"
+        },
+        "handDrawn": "Bu atlas için elle çizilmiş sınır: kaynakta bu krallık yok.",
+        "dissolved": "{{year}} haritasında {{sources}} birleştirilerek elde edildi.",
+        "carried": "Kaynak bu krallığı {{year}} yılında haritalamıyor; çizgi {{years}} yıl uzaktaki {{from}} yılından geliyor.",
+        "absent": "Bu yüzyılda haritalanmış sınır yok. Yılı bu uygarlığın zirvesi olan {{peak}} yılına sürükleyin.",
+        "peak": "Zirve {{year}} yılında, {{area}} ile.",
+        "wikipedia": "Vikipedi",
+        "expansion": "Genişleme paketi",
+        "releasedOn": "{{date}} tarihinde çıktı",
+        "plannedFor": "{{date}} için planlandı",
+        "shared": "{{year}} yılında paylaşılan toprak",
+        "sharedHint": "Buraya yalnızca çağdaşlar girer: aynı yüzyılda bu uygarlıkla toprak paylaşanlar. Bir",
+        "sharedAbbr": "kaynak bu yüzyılda iki taraftan birini haritalamıyor ve çizgi en yakın kesitten alındı",
+        "sharedHintTail": "işareti, başka bir yüzyıldan ödünç alınan bir sınıra göre yapılan ölçümü gösterir.",
+        "overlay": "{{name}} uygarlığını haritaya bindir"
+    },
+    "settings": {
+        "title": "Ayarlar",
+        "subtitle": "Dünya nasıl çiziliyor",
+        "year": "Yıl",
+        "language": "Dil",
+        "projection": "Projeksiyon",
+        "projectionHint": "Hiçbir projeksiyon tarafsız değildir. Panellerdeki alanlar veri üretilirken küre üzerinde ölçülür; buradaki değişiklik çizimi değiştirir, sayıları değil.",
+        "preserves": "{{what}} korur",
+        "chart": "Harita",
+        "ruled": "Kerte hatları, ekvator ve dönenceler",
+        "creditsBorders": "Sınırlar:",
+        "creditsRest": "(GPL-3.0) · kıyı çizgisi Natural Earth · harikalar ve armalar Age of Empires Series Wiki · geometri {{date}}"
+    },
+    "projections": {
+        "equal-earth": {
+            "preserves": "alanı",
+            "caveat": "Alanlar gözle karşılaştırılabilir. Kenarlara yakın şekiller eğilir."
+        },
+        "natural-earth": {
+            "preserves": "görünümü",
+            "caveat": "Hoş bir orta yol: ne alanı ne açıyı korur, ikisinde de az yanılır."
+        },
+        "mercator": {
+            "preserves": "açıyı",
+            "caveat": "Tanıdık, ama ekvatordan uzak olanı şişirir. Boyutları sayılarla karşılaştırın."
+        }
+    },
+    "rail": {
+        "loading": "yükleniyor…",
+        "thisYear": "bu yılın haritası",
+        "mapOf": "{{year}} haritası",
+        "year": "Harita yılı",
+        "back": "{{years}} yıl geri",
+        "forward": "{{years}} yıl ileri"
+    },
+    "year": {
+        "bce": "MÖ {{year}}"
+    },
+    "errors": {
+        "slice": "Bu yüzyıl yüklenemedi."
+    }
+}
