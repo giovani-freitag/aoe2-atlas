@@ -172,7 +172,10 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 102.8419,
             wikipedia: 'Karakorum',
         },
-        realm: { label: 'Império Mongol e seus quatro canatos', from: 1206, to: 1368 },
+        // From Temujin's election as khan of the Mongols, not the 1206 kurultai: the source draws
+        // the steppe confederation he was welding together in 1200, and without it the empire
+        // appears on the map at full size from nowhere.
+        realm: { label: 'Império Mongol e seus quatro canatos', from: 1189, to: 1368 },
     },
     {
         key: 'persians',
