@@ -785,3 +785,34 @@
 .select:focus-within {
     border-color: var(--brass-deep);
 }
+
+/*
+ * The one control that lives inside a parchment card: it moves the year rail rather than
+ * changing anything about the card, so it reads as a link with an arrow, not as a button.
+ */
+.card__jump {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    align-self: flex-start;
+    min-height: 1.75rem;
+    padding: 0 var(--space-2) 0 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--brass-deep);
+    border-bottom: 1px solid color-mix(in srgb, var(--brass-deep) 40%, transparent);
+}
+
+.card__jump:hover,
+.card__jump:focus-visible {
+    color: var(--ink);
+    border-bottom-color: var(--brass-deep);
+}
+
+.card__jump svg {
+    transition: transform 140ms ease;
+}
+
+.card__jump:hover svg {
+    transform: translateX(3px);
+}

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle, ExternalLink, MapPin, PencilRuler, Pin, PinOff, Swords } from 'lucide-react';
+import { AlertTriangle, ExternalLink, MapPin, MoveRight, PencilRuler, Pin, PinOff, Swords } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { Frontier } from '@/domain/values/frontier.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
@@ -39,6 +39,7 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
     const expansion = EXPANSION_RECORDS.find((entry) => entry.key === civilization.expansion);
     const pinned = state.pinned.includes(civilization.key);
     const year = format.year(state.year);
+    const { peakYear, peakAreaKm2 } = civilization.reach;
 
     const neighbours = frontiers
         .filter((frontier) => frontier.otherThan(civilization.key) !== null)
@@ -133,16 +134,31 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                     ) : (
                         <p className="card__note">
                             <AlertTriangle size={14} aria-hidden />{' '}
-                            {t('detail.absent', { peak: format.year(civilization.reach.peakYear) })}
+                            {t('detail.absent')}
                         </p>
                     )}
 
                     <p className="card__source">
-                        {t('detail.peak', {
-                            year: format.year(civilization.reach.peakYear),
-                            area: format.area(civilization.reach.peakAreaKm2),
-                        })}
+                        {t('detail.peak', { year: format.year(peakYear), area: format.area(peakAreaKm2) })}
                     </p>
+
+                    {/*
+                     * Telling a reader that a realm was bigger somewhere else in time and leaving them
+                     * to find the year by hand is half an answer. The rail is the whole atlas, so the
+                     * sheet moves it.
+                     */}
+                    {state.year === peakYear ? null : (
+                        <button
+                            type="button"
+                            className="card__jump"
+                            onClick={() => {
+                                dispatch({ type: 'year', value: peakYear });
+                            }}
+                        >
+                            {t('detail.goToPeak', { year: format.year(peakYear) })}
+                            <MoveRight size={13} aria-hidden />
+                        </button>
+                    )}
 
                     {/* The Wonder is the pin on the map; here it is one line, not a card of its own. */}
                     <p className="card__source">
