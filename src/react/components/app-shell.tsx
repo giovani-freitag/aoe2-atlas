@@ -106,7 +106,7 @@ export function AppShell() {
 
             <main className="stage">
                 <AtlasMap standing={standing} drawn={drawn} borders={borders} />
-                <LegendPanel drawn={drawn} borders={borders} standingCount={standing.length} />
+                <LegendPanel drawn={drawn} borders={borders} />
                 {error ? <p className="stage__error">{error}</p> : null}
             </main>
 

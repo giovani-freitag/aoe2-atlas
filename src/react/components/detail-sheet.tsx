@@ -70,6 +70,11 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
             }
         >
             <>
+                {/*
+                 * Opening the sheet already previews the realm; this button is what makes the hatch
+                 * stay behind when the sheet closes. With no border in this century there is nothing
+                 * to trace, and the button says so instead of sitting there greyed out.
+                 */}
                 <button
                     type="button"
                     className="button iron"
@@ -80,32 +85,12 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                     }}
                 >
                     {pinned ? <PinOff size={16} aria-hidden /> : <Pin size={16} aria-hidden />}
-                    {pinned ? 'Tirar do mapa' : 'Traçar no mapa'}
+                    {border === null
+                        ? `Sem fronteira em ${formatYear(state.year)}`
+                        : pinned
+                          ? 'Tirar do mapa'
+                          : 'Traçar no mapa'}
                 </button>
-
-                <section className="card parchment singed">
-                    <h3 className="eyebrow">Maravilha</h3>
-                    <p className="card__lead">{wonder.monument}</p>
-                    <p className="card__line">
-                        <MapPin size={14} aria-hidden /> {wonder.place}, {wonder.country}
-                    </p>
-                    <p className="card__line numeric">
-                        {wonder.at.lat.toFixed(4)}°, {wonder.at.lon.toFixed(4)}°
-                    </p>
-                    {wonder.anachronism ? (
-                        <p className="card__note">
-                            <AlertTriangle size={14} aria-hidden /> {wonder.anachronism}
-                        </p>
-                    ) : null}
-                    <a
-                        className="card__link"
-                        href={`https://en.wikipedia.org/wiki/${encodeURIComponent(wonder.wikipedia)}`}
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        Wikipédia <ExternalLink size={13} aria-hidden />
-                    </a>
-                </section>
 
                 <section className="card parchment singed">
                     <h3 className="eyebrow">Em {formatYear(state.year)}</h3>
@@ -160,6 +145,24 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                         Auge em {formatYear(civilization.reach.peakYear)}, com{' '}
                         {formatArea(civilization.reach.peakAreaKm2)}.
                     </p>
+
+                    {/* The Wonder is the pin on the map; here it is one line, not a card of its own. */}
+                    <p className="card__source">
+                        <MapPin size={12} aria-hidden /> {wonder.monument}, {wonder.place} ·{' '}
+                        <a
+                            className="card__link"
+                            href={`https://en.wikipedia.org/wiki/${encodeURIComponent(wonder.wikipedia)}`}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Wikipédia <ExternalLink size={11} aria-hidden />
+                        </a>
+                    </p>
+                    {wonder.anachronism ? (
+                        <p className="card__note">
+                            <AlertTriangle size={14} aria-hidden /> {wonder.anachronism}
+                        </p>
+                    ) : null}
                 </section>
 
                 {expansion ? (

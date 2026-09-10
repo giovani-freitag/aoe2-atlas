@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { Compass, Minus, Plus } from 'lucide-react';
+import { Compass, Layers, Minus, Plus } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import { LAND_RINGS } from '@/data/dataset.ts';
 import { AtlasProjection, SCALE_EXTENT } from '@/services/geo/atlas-projection.ts';
-import { PROJECTIONS } from '@/domain/enums/projection.ts';
-import { formatTimes } from '@/react/format.ts';
+import { formatYear } from '@/react/format.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useElementSize } from '@/react/hooks/use-element-size.ts';
@@ -107,12 +106,6 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         flyTo(projection.frameFor(border.rings));
     }, [focus, projection, borders, flyTo]);
 
-    const profile = PROJECTIONS[state.projection];
-    const inflation = useMemo(
-        () => (projection && !profile.equalArea ? projection.areaInflationAt(projection.centreLatitude(frame)) : 1),
-        [projection, profile.equalArea, frame],
-    );
-
     const roseRadius = Math.min(ROSE_MAX, Math.min(size.width, size.height) * ROSE_SHARE);
 
     /*
@@ -170,6 +163,17 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                         {shapes.map(({ civilization, border, path }) => {
                             const style = palette.styleOf(civilization.key);
 
+                            /*
+                             * Opening a sheet only previews the realm — a wash of its colour inside
+                             * the border. The hatch is what "trace on the map" adds, and what stays
+                             * behind when the sheet closes; the two have to look different or the
+                             * button appears to do nothing.
+                             */
+                            const preview =
+                                !state.showAll &&
+                                state.focused === civilization.key &&
+                                !state.pinned.includes(civilization.key);
+
                             return (
                                 <path
                                     key={civilization.key}
@@ -178,8 +182,9 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                                     data-carried={!border.isOfItsCentury}
                                     data-highlighted={state.hovered === civilization.key}
                                     data-focused={state.focused === civilization.key}
+                                    data-preview={preview}
                                     d={path}
-                                    fill={`url(#${style.patternId})`}
+                                    fill={preview ? style.colour : `url(#${style.patternId})`}
                                     stroke={style.colour}
                                     filter={border.precision === 'approximate' ? 'url(#frontier-haze)' : undefined}
                                     vectorEffect="non-scaling-stroke"
@@ -246,6 +251,26 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                 <button
                     type="button"
                     className="iron"
+                    aria-pressed={state.showAll}
+                    onClick={() => {
+                        dispatch({ type: 'toggle-show-all' });
+                    }}
+                    aria-label={
+                        state.showAll
+                            ? 'Deixar de traçar todos os reinos'
+                            : `Traçar os ${standing.length} reinos de ${formatYear(state.year)}`
+                    }
+                    title={
+                        state.showAll
+                            ? 'Deixar de traçar todos os reinos'
+                            : `Traçar os ${standing.length} reinos de ${formatYear(state.year)}`
+                    }
+                >
+                    <Layers size={18} aria-hidden />
+                </button>
+                <button
+                    type="button"
+                    className="iron"
                     onClick={() => {
                         zoomBy(1.6);
                     }}
@@ -274,18 +299,6 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                     <Compass size={18} aria-hidden />
                 </button>
             </div>
-
-            {/*
-             * On a projection that does not preserve area, the note says how badly the picture
-             * exaggerates right where the reader is looking. The numbers in the panels are
-             * measured on the sphere and never move, so the map can be wrong out loud.
-             */}
-            <p className="atlas__note" data-warning={inflation > 1.2}>
-                {PROJECTIONS[state.projection].name}
-                {profile.equalArea
-                    ? ' · áreas comparáveis'
-                    : ` · aqui infla ${formatTimes(inflation)} · compare pelos números`}
-            </p>
         </div>
     );
 }

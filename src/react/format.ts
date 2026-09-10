@@ -1,5 +1,4 @@
 const AREA = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
-const RATIO = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
 const PERCENT = new Intl.NumberFormat('pt-BR', { style: 'percent', maximumFractionDigits: 0 });
 
 /**
@@ -9,15 +8,6 @@ const PERCENT = new Intl.NumberFormat('pt-BR', { style: 'percent', maximumFracti
  */
 export function formatArea(km2: number): string {
     return `${AREA.format(Math.round(km2))} km²`;
-}
-
-/**
- * A ratio, as Portuguese writes a decimal.
- *
- * @param times - How many times over.
- */
-export function formatTimes(times: number): string {
-    return `${RATIO.format(times)}×`;
 }
 
 /**
