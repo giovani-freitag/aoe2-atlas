@@ -17,6 +17,8 @@ export interface RealmBorderConfig {
     areaKm2: number;
     bbox: BoundingBox;
     centroid: GeoPoint;
+    /** A point inside the realm, for hanging its mark on; the centroid when that is inside. */
+    anchor: GeoPoint;
     rings: MultiPolygonRings;
 }
 
@@ -38,6 +40,7 @@ export class RealmBorder {
     public readonly areaKm2: number;
     public readonly bbox: BoundingBox;
     public readonly centroid: GeoPoint;
+    public readonly anchor: GeoPoint;
     public readonly rings: MultiPolygonRings;
 
     constructor(config: RealmBorderConfig) {
@@ -50,6 +53,7 @@ export class RealmBorder {
         this.areaKm2 = config.areaKm2;
         this.bbox = config.bbox;
         this.centroid = config.centroid;
+        this.anchor = config.anchor;
         this.rings = config.rings;
     }
 

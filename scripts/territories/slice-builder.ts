@@ -1,4 +1,4 @@
-import { geoContains, geoDistance } from 'd3-geo';
+import { geoArea, geoCentroid, geoContains, geoDistance } from 'd3-geo';
 import type { CivilizationRecord } from '@/data/civilizations.ts';
 import type { DrawnRings, TerritorySpec } from '@/data/territory-sources.ts';
 import {
@@ -60,6 +60,8 @@ export interface Realm {
     areaKm2: number;
     bbox: [number, number, number, number];
     centroid: Position;
+    /** A point guaranteed to lie inside the realm, for hanging its mark on. */
+    anchor: Position;
     rings: MultiPolygonRings;
 }
 
@@ -319,8 +321,54 @@ function describe(civ: string, cut: Cut, year: number): Realm {
         areaKm2: Math.round(areaInSquareKm(cut.rings)),
         bbox: [round(west, 3), round(south, 3), round(east, 3), round(north, 3)],
         centroid: centroidOf(cut.rings),
+        anchor: anchorOf(cut.rings),
         rings: cut.rings,
     };
+}
+
+/**
+ * A point inside the realm to hang its mark on.
+ *
+ * The centroid is the obvious choice and it fails for a seventh of the realms: Rome and Byzantium
+ * wrap the Mediterranean and their centre of mass is open sea. So the centroid is used when it
+ * lands inside; failing that, the centroid of the largest piece; failing that, the inside point
+ * nearest the centroid, found on a grid over the largest piece.
+ */
+function anchorOf(rings: MultiPolygonRings): Position {
+    const shape = { type: 'MultiPolygon' as const, coordinates: rings as number[][][][] };
+    const inside = (point: Position): boolean => geoContains(shape, [point[0], point[1]]);
+
+    const centroid = centroidOf(rings);
+    if (inside(centroid)) return centroid;
+
+    const largest = rings.reduce((best, polygon) =>
+        geoArea({ type: 'Polygon', coordinates: polygon }) >
+        geoArea({ type: 'Polygon', coordinates: best })
+            ? polygon
+            : best,
+    );
+    const [lon, lat] = geoCentroid({ type: 'Polygon', coordinates: largest });
+    if (inside([lon, lat])) return [round(lon, 3), round(lat, 3)];
+
+    const { west, south, east, north } = boundingBox([largest]);
+    const steps = 40;
+    let nearest: Position | null = null;
+    let nearestGap = Infinity;
+
+    for (let i = 0; i <= steps; i += 1) {
+        for (let j = 0; j <= steps; j += 1) {
+            const candidate: Position = [west + ((east - west) * i) / steps, south + ((north - south) * j) / steps];
+            if (!inside(candidate)) continue;
+
+            const gap = geoDistance([centroid[0], centroid[1]], [candidate[0], candidate[1]]);
+            if (gap < nearestGap) {
+                nearestGap = gap;
+                nearest = candidate;
+            }
+        }
+    }
+
+    return nearest ? [round(nearest[0], 3), round(nearest[1], 3)] : centroid;
 }
 
 /**

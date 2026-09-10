@@ -20,6 +20,7 @@ interface SliceJson {
         areaKm2: number;
         bbox: [number, number, number, number];
         centroid: [number, number];
+        anchor: [number, number];
         rings: number[][][][];
     }[];
     frontiers: { a: string; b: string; areaKm2: number; shareOfA: number; shareOfB: number; carried: boolean }[];
@@ -145,6 +146,7 @@ function toSlice(json: SliceJson): TimeSlice {
                 areaKm2: realm.areaKm2,
                 bbox: { west, south, east, north },
                 centroid: { lon: realm.centroid[0], lat: realm.centroid[1] },
+                anchor: { lon: realm.anchor[0], lat: realm.anchor[1] },
                 rings: realm.rings,
             });
         }),

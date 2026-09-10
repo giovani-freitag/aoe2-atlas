@@ -195,13 +195,8 @@
     font-weight: 600;
 }
 
-/* The settings sheet is a panel, not a bottom sheet, so it never hides behind the rail. */
-.sheet--settings {
-    height: 78dvh;
-}
-
 @media (min-width: 60rem) {
-    .sheet--settings {
+    .sheet--float {
         position: fixed;
         inset: auto var(--space-4) var(--space-4) auto;
         width: 24rem;
@@ -246,4 +241,37 @@
     font-family: var(--title);
     font-size: 11px;
     font-weight: 600;
+}
+
+/*
+ * The mark now sits inside the realm, on a point the build guarantees is dry land, and the
+ * monument itself becomes a small pin. When the two are apart a leader ties them, so the reader
+ * sees both where the people were and where the Wonder actually stands.
+ */
+.pin {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.pin__dot {
+    fill: var(--parchment);
+    stroke-width: 1.5;
+    filter: drop-shadow(0 1px 1px rgb(0 0 0 / 45%));
+}
+
+.pin__core {
+    fill: var(--brass-deep);
+}
+
+.leader {
+    fill: none;
+    stroke: var(--ink-soft);
+    stroke-width: 1;
+    stroke-dasharray: 2 3;
+    stroke-opacity: 0.6;
+    pointer-events: none;
+}
+
+.marker[data-standing='false'] .marker__shield {
+    stroke-dasharray: 3 2;
 }

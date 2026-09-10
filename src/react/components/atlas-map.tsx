@@ -115,16 +115,24 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
 
     const roseRadius = Math.min(ROSE_MAX, Math.min(size.width, size.height) * ROSE_SHARE);
 
+    /*
+     * The shield hangs inside the realm, on a point the build guarantees is dry land, so it moves
+     * with the border century by century. The Wonder itself is a fixed place and stays a pin; a
+     * leader joins the two when they are apart.
+     */
     const marks = useMemo(() => {
         if (!projection) return [];
 
         return standing.flatMap((civilization) => {
-            const point = projection.pointOf(civilization.markerAt);
-            if (!point) return [];
+            const wonder = projection.pointOf(civilization.markerAt);
+            if (!wonder) return [];
 
-            return [{ civilization, point }];
+            const border = borders.get(civilization.key);
+            const anchor = border ? projection.pointOf(border.anchor) ?? wonder : wonder;
+
+            return [{ civilization, anchor, wonder }];
         });
-    }, [projection, standing]);
+    }, [projection, standing, borders]);
 
     return (
         <div className="atlas" ref={holder}>
@@ -188,23 +196,48 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                     ) : null}
 
                     <g className="atlas__marks">
-                        {marks.map(({ civilization, point }) => (
-                            <WonderMarker
-                                key={civilization.key}
-                                civilization={civilization}
-                                at={[frame.k * point[0] + frame.x, frame.k * point[1] + frame.y]}
-                                colour={palette.styleOf(civilization.key).colour}
-                                standing={borders.has(civilization.key)}
-                                focused={state.focused === civilization.key}
-                                highlighted={state.hovered === civilization.key}
-                                onOpen={(key) => {
-                                    dispatch({ type: 'focus', value: state.focused === key ? null : key });
-                                }}
-                                onHover={(key) => {
-                                    dispatch({ type: 'hover', value: key });
-                                }}
-                            />
-                        ))}
+                        {marks.map(({ civilization, anchor, wonder }) => {
+                            const at: [number, number] = [frame.k * anchor[0] + frame.x, frame.k * anchor[1] + frame.y];
+                            const pin: [number, number] = [frame.k * wonder[0] + frame.x, frame.k * wonder[1] + frame.y];
+                            const apart = Math.hypot(at[0] - pin[0], at[1] - pin[1]) > 6;
+                            const lit = state.focused === civilization.key || state.hovered === civilization.key;
+                            const colour = palette.styleOf(civilization.key).colour;
+
+                            return (
+                                <g key={civilization.key}>
+                                    {apart && lit ? (
+                                        <line className="leader" x1={at[0]} y1={at[1]} x2={pin[0]} y2={pin[1]} />
+                                    ) : null}
+                                    {apart ? (
+                                        <g
+                                            className="pin"
+                                            transform={`translate(${pin[0]}, ${pin[1]})`}
+                                            onClick={() => {
+                                                dispatch({ type: 'focus', value: civilization.key });
+                                            }}
+                                        >
+                                            <title>{civilization.wonder.monument}</title>
+                                            <circle className="pin__dot" r={5} stroke={colour} />
+                                            <circle className="pin__core" r={1.8} />
+                                        </g>
+                                    ) : null}
+                                    <WonderMarker
+                                        civilization={civilization}
+                                        at={at}
+                                        colour={colour}
+                                        standing={borders.has(civilization.key)}
+                                        focused={state.focused === civilization.key}
+                                        highlighted={state.hovered === civilization.key}
+                                        onOpen={(key) => {
+                                            dispatch({ type: 'focus', value: state.focused === key ? null : key });
+                                        }}
+                                        onHover={(key) => {
+                                            dispatch({ type: 'hover', value: key });
+                                        }}
+                                    />
+                                </g>
+                            );
+                        })}
                     </g>
                 </svg>
             ) : null}

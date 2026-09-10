@@ -17,6 +17,7 @@ function sliceJson(year: number): unknown {
                 areaKm2: 22_885_825,
                 bbox: [20, 30, 130, 55],
                 centroid: [80, 45],
+                anchor: [80, 45],
                 rings: [[[[0, 0], [1, 0], [1, 1], [0, 0]]]],
             },
         ],

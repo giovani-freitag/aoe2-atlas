@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { AlertTriangle, ExternalLink, MapPin, PencilRuler, Pin, PinOff, Swords } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { Frontier } from '@/domain/values/frontier.ts';
@@ -7,8 +6,7 @@ import { REGION_NAMES } from '@/domain/enums/region.ts';
 import { EXPANSION_RECORDS } from '@/data/expansions.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
-import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
-import { useSheetDrag } from '@/react/hooks/use-sheet-drag.ts';
+import { BottomSheet } from './bottom-sheet.tsx';
 import { formatArea, formatDate, formatShare, formatSpan, formatYear } from '@/react/format.ts';
 
 /** How many neighbours the frontier list shows before it stops being a list. */
@@ -40,21 +38,6 @@ export interface DetailSheetProps {
 export function DetailSheet({ civilization, border, frontiers, onClose }: DetailSheetProps) {
     const { catalogue, palette } = useServices();
     const { state, dispatch } = useAtlas();
-    const wide = useWideScreen();
-    const drag = useSheetDrag(onClose);
-    const sheet = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const element = sheet.current;
-        if (!element || wide) return;
-
-        element.showPopover();
-
-        return () => {
-            if (element.matches(':popover-open')) element.hidePopover();
-        };
-    }, [wide]);
-
     const style = palette.styleOf(civilization.key);
     const expansion = EXPANSION_RECORDS.find((entry) => entry.key === civilization.expansion);
     const pinned = state.pinned.includes(civilization.key);
@@ -66,37 +49,27 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
         .slice(0, MAX_FRONTIERS);
 
     return (
-        <div
-            className="sheet leather"
-            ref={sheet}
-            popover={wide ? undefined : 'manual'}
-            aria-label={`Detalhes de ${civilization.name}`}
-            data-dragging={drag.dragging}
-            style={wide ? undefined : { height: `${drag.height * 100}dvh` }}
-        >
-            <button
-                type="button"
-                className="sheet__grip"
-                onPointerDown={drag.onPointerDown}
-                aria-label="Mudar a altura do painel"
-            >
-                <span aria-hidden />
-            </button>
-
-            <header className="sheet__head" style={{ borderColor: style.colour }}>
-                <img
-                    src={`${import.meta.env.BASE_URL}img/civs/${civilization.icon}.png`}
-                    alt=""
-                    width={44}
-                    height={44}
-                />
-                <div>
-                    <h2>{civilization.name}</h2>
-                    <p className="sheet__region">{REGION_NAMES[civilization.region]}</p>
+        <BottomSheet
+            label={`Detalhes de ${civilization.name}`}
+            open
+            onClose={onClose}
+            wide="dock"
+            head={
+                <div className="sheet__head--titled" style={{ borderColor: style.colour }}>
+                    <img
+                        src={`${import.meta.env.BASE_URL}img/civs/${civilization.icon}.png`}
+                        alt=""
+                        width={44}
+                        height={44}
+                    />
+                    <div>
+                        <h2>{civilization.name}</h2>
+                        <p className="sheet__region">{REGION_NAMES[civilization.region]}</p>
+                    </div>
                 </div>
-            </header>
-
-            <div className="sheet__body">
+            }
+        >
+            <>
                 <button
                     type="button"
                     className="button iron"
@@ -253,7 +226,7 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                         </ul>
                     </section>
                 ) : null}
-            </div>
-        </div>
+            </>
+        </BottomSheet>
     );
 }

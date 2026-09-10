@@ -265,7 +265,7 @@
         transition: none;
     }
 
-    .sheet:not(.sheet--settings) {
+    .sheet--dock {
         grid-area: detail;
         position: relative;
         inset: auto;
@@ -282,7 +282,7 @@
         padding-bottom: 0;
     }
 
-    .sheet:not(.sheet--settings) .sheet__grip {
+    .sheet--dock .sheet__grip {
         display: none;
     }
 

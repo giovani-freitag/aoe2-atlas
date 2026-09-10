@@ -426,6 +426,17 @@
     font-size: 1.125rem;
 }
 
+.sheet__head--titled {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+}
+
+.sheet__head--titled img {
+    flex: none;
+}
+
 .sheet__region {
     font-size: 0.6875rem;
     color: var(--text-faint);
