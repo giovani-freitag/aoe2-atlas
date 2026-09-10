@@ -1,42 +1,87 @@
 /**
- * Where each civilization's border comes from.
+ * Where each civilization's border comes from, century by century.
  *
- * Most borders are lifted from aourednik/historical-basemaps, which publishes one world GeoJSON
- * per century: `pick` names the year file and the polities to dissolve together. A handful of
- * realms the dataset simply does not carry — the Three Kingdoms, the Jurchen Jin, Bohemia and the
- * Valois Burgundian state — are drawn here by hand from historical atlases, coarse on purpose,
- * because a rough outline that is honest about being rough beats a missing one.
+ * The atlas draws one border per time slice rather than a single "peak", because overlaying
+ * realms from different centuries and calling the result a shared frontier is simply wrong: the
+ * Mongols of 1279 never met the Sasanians of 600. Historical atlases answer this with a
+ * sequence of maps, one per period, and so does this one.
+ *
+ * The source, aourednik/historical-basemaps, publishes a world GeoJSON per century and renames
+ * polities as they change — Franks, then Frankish Kingdom, then Carolingian Empire. So a
+ * civilization is described by the *set of names its realm ever goes by*, and the builder works
+ * out which of them exist in each slice. The years drawn are then bounded by the span in
+ * `civilizations.ts`: "Kingdom of France" matches 1600, but the Franks stop at 987, so no slice
+ * is cut for them there.
  */
-
-/** A pull from one year file of the source dataset. */
-export interface PickSource {
-    kind: 'pick';
-    /** Year file to read, matching a `world_<year>.geojson` in the source repository. */
-    year: number;
-    /** Exact NAME values to dissolve into the civilization's border. */
-    names: readonly string[];
-}
 
 /** A ring drawn by hand, as [lon, lat] pairs; the closing point is added by the builder. */
-export interface DrawnSource {
-    kind: 'drawn';
-    /** Why this realm is not taken from the dataset, so the next reader does not have to guess. */
+export type DrawnRings = readonly (readonly (readonly [number, number])[])[];
+
+export interface DrawnOutline {
+    /** Why the source could not supply this, so the next reader does not have to guess. */
     reason: string;
-    rings: readonly (readonly (readonly [number, number])[])[];
+    rings: DrawnRings;
 }
 
-export type TerritorySource = PickSource | DrawnSource;
+/** A box that swallows whole sub-polygons the source wrongly attached to a realm. */
+export interface DropBox {
+    reason: string;
+    west: number;
+    south: number;
+    east: number;
+    north: number;
+}
 
-const pick = (year: number, ...names: string[]): PickSource => ({ kind: 'pick', year, names });
+export interface TerritorySpec {
+    /** Every name the realm goes by in the source, across the centuries. */
+    aliases: readonly string[];
+    /** Names that replace the alias match for one year; an empty list draws nothing that year. */
+    overrides?: Readonly<Record<number, readonly string[]>>;
+    /** Outlines drawn by hand, keyed by the year they stand for. */
+    drawn?: Readonly<Record<number, DrawnOutline>>;
+    /** An outline merged into every slice, for ground the source leaves out of all of them. */
+    patch?: DrawnOutline;
+    /** Sub-polygons to discard, matched by where their centre falls. */
+    drop?: readonly DropBox[];
+}
 
 /**
- * The Kingdom of Bohemia at its widest under Charles IV, holding Moravia, Silesia and Lusatia.
+ * Wonders that genuinely stand outside their civilization's realm, and why.
  *
- * The source dataset folds Bohemia into the Holy Roman Empire from 1000 onward and never draws
- * it as a realm of its own.
+ * The build refuses any other case. A monument the atlas cannot reach from its own borders is
+ * almost always a mistake in the coordinate or in the source names; these two are not.
  */
-const BOHEMIA: DrawnSource = {
-    kind: 'drawn',
+export const WONDERS_OUTSIDE_THE_REALM: Readonly<Record<string, string>> = {
+    huns: 'O Arco de Constantino é uma obra romana em Roma, e os hunos nunca chegaram à cidade.',
+    slavs: 'O pogost de Kizhi é do século XVII, na Carélia — fora de qualquer recorte eslavo medieval.',
+};
+
+/**
+ * The Sixteen Prefectures, held by the Liao from 938 and missing from the source's Liao polygon.
+ *
+ * Without them the Khitan Wonder — the Fogong pagoda at Yingxian, in northern Shanxi — falls a
+ * hundred and fifty kilometres outside the dynasty that built it.
+ */
+const SIXTEEN_PREFECTURES: DrawnOutline = {
+    reason: 'O polígono Liao da fonte exclui as Dezesseis Prefeituras, que a dinastia detinha desde 938.',
+    rings: [
+        [
+            [112.0, 38.9],
+            [112.3, 40.4],
+            [114.0, 41.3],
+            [116.0, 41.5],
+            [118.0, 41.0],
+            [119.5, 40.2],
+            [118.5, 39.4],
+            [116.5, 39.1],
+            [114.5, 38.8],
+            [113.0, 38.6],
+        ],
+    ],
+};
+
+/** The Kingdom of Bohemia at its widest under Charles IV: Moravia, Silesia and Lusatia. */
+const BOHEMIA: DrawnOutline = {
     reason: 'A fonte dissolve a Boêmia dentro do Sacro Império e nunca a desenha em separado.',
     rings: [
         [
@@ -60,14 +105,8 @@ const BOHEMIA: DrawnSource = {
     ],
 };
 
-/**
- * The Valois Burgundian state around 1470: the two Burgundies plus the Low Countries.
- *
- * The dataset's "Burgandy" is the older duchy in eastern France alone, which leaves out exactly
- * the half — Flanders, Brabant, Holland — that the civilization's Wonder in Brussels stands in.
- */
-const BURGUNDY: DrawnSource = {
-    kind: 'drawn',
+/** The Valois Burgundian state around 1470: the two Burgundies plus the Low Countries. */
+const BURGUNDY: DrawnOutline = {
     reason: 'A fonte só traz o ducado antigo, sem os Países Baixos onde fica a maravilha da civ.',
     rings: [
         [
@@ -104,14 +143,8 @@ const BURGUNDY: DrawnSource = {
     ],
 };
 
-/**
- * The Jurchen Jin dynasty around 1200: Manchuria and northern China down to the Huai river.
- *
- * The dataset's 1200 file still labels this ground "Liao", a dynasty the Jurchens had ended
- * seventy-five years earlier, so the Jin have to be drawn rather than picked.
- */
-const JIN: DrawnSource = {
-    kind: 'drawn',
+/** The Jurchen Jin around 1200: Manchuria and northern China down to the Huai river. */
+const JIN: DrawnOutline = {
     reason: 'O arquivo de 1200 ainda rotula esse território como Liao, dinastia já derrubada em 1125.',
     rings: [
         [
@@ -142,10 +175,11 @@ const JIN: DrawnSource = {
     ],
 };
 
+const THREE_KINGDOMS = 'A fonte salta dos Han (220) para Han Zhao (300) e nunca desenha os Três Reinos.';
+
 /** Cao Wei around 250: the Yellow River basin from Gansu to Liaodong. */
-const CAO_WEI: DrawnSource = {
-    kind: 'drawn',
-    reason: 'A fonte salta dos Han (220) para Han Zhao (300) e nunca desenha os Três Reinos.',
+const CAO_WEI: DrawnOutline = {
+    reason: THREE_KINGDOMS,
     rings: [
         [
             [103.5, 36.5],
@@ -169,9 +203,8 @@ const CAO_WEI: DrawnSource = {
 };
 
 /** Shu Han around 250: the Sichuan basin, Hanzhong and the reaches south of it. */
-const SHU_HAN: DrawnSource = {
-    kind: 'drawn',
-    reason: 'A fonte salta dos Han (220) para Han Zhao (300) e nunca desenha os Três Reinos.',
+const SHU_HAN: DrawnOutline = {
+    reason: THREE_KINGDOMS,
     rings: [
         [
             [101.5, 32.5],
@@ -192,9 +225,8 @@ const SHU_HAN: DrawnSource = {
 };
 
 /** Eastern Wu around 250: the lower Yangtze, Jiangnan and the coast down to Tonkin. */
-const EASTERN_WU: DrawnSource = {
-    kind: 'drawn',
-    reason: 'A fonte salta dos Han (220) para Han Zhao (300) e nunca desenha os Três Reinos.',
+const EASTERN_WU: DrawnOutline = {
+    reason: THREE_KINGDOMS,
     rings: [
         [
             [110.0, 32.0],
@@ -221,75 +253,132 @@ const EASTERN_WU: DrawnSource = {
     ],
 };
 
-/** Civilization key to the border the atlas draws for it. */
-export const TERRITORY_SOURCES: Readonly<Record<string, TerritorySource>> = {
-    britons: pick(1200, 'Angevin Empire'),
-    byzantines: pick(600, 'Eastern Roman Empire'),
-    celts: pick(1200, 'Celtic kingdoms', 'Scotland'),
-    chinese: pick(800, 'Tang Empire'),
-    franks: pick(800, 'Carolingian Empire'),
-    goths: pick(500, 'Visigoths', 'Ostrogoths'),
-    japanese: pick(1300, 'Shogun Japan (Kamakura)'),
-    mongols: pick(1279, 'Great Khanate', 'Chagatai Khanate', 'Ilkhanate', 'Khanate of the Golden Horde'),
-    persians: pick(600, 'Sasanian Empire', 'Sasanian dependencies'),
-    saracens: pick(800, 'Abbasid Caliphate'),
-    teutons: pick(1200, 'Holy Roman Empire'),
-    turks: pick(1530, 'Ottoman Empire'),
-    vikings: pick(1100, 'Norway', 'Sweden', 'Denmark'),
+/**
+ * Norse Greenland, which the source hangs off Denmark-Norway.
+ *
+ * The colony was real, but two million square kilometres of ice would make the Vikings the
+ * third largest realm in the game, and that is not a fact about the Vikings.
+ */
+const GREENLAND: DropBox = {
+    reason: 'A colônia nórdica existiu, mas 2,1 milhões de km² de gelo distorcem a comparação de área.',
+    west: -75,
+    south: 58,
+    east: -30,
+    north: 85,
+};
 
-    aztecs: pick(1500, 'Aztec Empire'),
-    huns: pick(400, 'Hunnic Empire'),
-    koreans: pick(1200, 'Goryeo'),
-    maya: pick(800, 'Maya city-states'),
-    spanish: pick(1530, 'Spain'),
+/** Civilization key to the names, patches and drawings its border is cut from. */
+export const TERRITORY_SOURCES: Readonly<Record<string, TerritorySpec>> = {
+    britons: { aliases: ['Mercia', 'Wessex', 'England', 'Angevin Empire', 'England and Ireland'] },
+    byzantines: { aliases: ['Eastern Roman Empire', 'Byzantine Empire'] },
+    celts: { aliases: ['Celtic kingdoms', 'Scotland'] },
+    chinese: { aliases: ['Sui Empire', 'Tang Empire', 'Song Empire', 'Ming Empire', 'Ming Chinese Empire'] },
+    franks: { aliases: ['Franks', 'Frankish Kingdom', 'Carolingian Empire', 'West Francia', 'East Francia'] },
+    goths: { aliases: ['Visigoths', 'Ostrogoths', 'Goths', 'Visigothic Kingdom'] },
+    japanese: {
+        aliases: ['Yamato', 'Japan', 'Imperial Japan (Fujiwara)', 'Shogun Japan (Kamakura)', 'Japan (Warring States)'],
+    },
+    mongols: {
+        aliases: [
+            'Mongols',
+            'Mongol Empire',
+            'Great Khanate',
+            'Chagatai Khanate',
+            'Ilkhanate',
+            'Khanate of the Golden Horde',
+        ],
+    },
+    persians: { aliases: ['Persia', 'Sasanian Empire', 'Sasanian dependencies'] },
+    saracens: { aliases: ['Umayyad Caliphate', 'Abbasid Caliphate', 'Fatimid Caliphate'] },
+    teutons: { aliases: ['Holy Roman Empire', 'Teutonic Knights'] },
+    turks: { aliases: ['Ottoman Empire'] },
+    vikings: { aliases: ['Kingdom of Norway', 'Norway', 'Sweden', 'Denmark', 'Denmark-Norway'], drop: [GREENLAND] },
 
-    inca: pick(1500, 'Inca Empire'),
-    italians: pick(1530, 'Venice', 'Genoa', 'Milan', 'Papal States', 'Naples', 'Savoy'),
-    magyars: pick(1400, 'Kingdom of Hungary'),
-    slavs: pick(900, 'Slavic tribes'),
+    aztecs: { aliases: ['Aztec Empire'] },
+    huns: { aliases: ['Hunnic Empire'] },
+    koreans: { aliases: ['Korea', 'Goryeo'] },
+    maya: { aliases: ['Maya chiefdoms and states', 'Maya states', 'Maya city-states', 'Mayas'] },
+    spanish: { aliases: ['Castilla', 'Castile', 'Castille', 'Aragón', 'Spain'] },
 
-    berbers: pick(1200, 'Almohad Caliphate'),
-    ethiopians: pick(1400, 'Ethiopia'),
-    malians: pick(1300, 'Mali'),
-    portuguese: pick(1500, 'Portugal'),
+    inca: { aliases: ['Inca Empire'] },
+    italians: { aliases: ['Venice', 'Genoa', 'Milan', 'Papal States', 'Naples', 'Savoy'] },
+    magyars: { aliases: ['Magyars', 'Hungary', 'Kingdom of Hungary', 'Imperial Hungary'] },
+    slavs: {
+        aliases: ['Slavs', 'Proto-Slavs', 'Slavonic tribes', 'Slavic tribes', 'Principality of Novgorod', 'Novgorod'],
+    },
 
-    burmese: pick(1200, 'Bagan'),
-    khmer: pick(1200, 'Khmer Empire'),
-    malay: pick(1400, 'Srivijaya Empire'),
-    vietnamese: pick(1400, 'Đại Việt'),
+    berbers: {
+        aliases: [
+            'Berbers',
+            'Berber Tribes',
+            'Idrisid Caliphate',
+            'Almoravid dynasty',
+            'Almohad Caliphate',
+            'Hafsid Caliphate',
+            'Zayyanid Caliphate',
+            'Wattasid Caliphate',
+        ],
+    },
+    ethiopians: { aliases: ['Axum', 'Ethiopia'] },
+    malians: { aliases: ['Mali'] },
+    portuguese: { aliases: ['Portugal'] },
 
-    bulgarians: pick(900, 'Bulgars'),
-    cumans: pick(1200, 'Cuman Khanates'),
-    lithuanians: pick(1300, 'Lithuania'),
-    tatars: pick(1400, 'Timurid Empire'),
+    burmese: { aliases: ['Pyu state', 'Pagan', 'Kingdom of Pagan', 'Bagan', 'Mon state', 'Mon States'] },
+    khmer: { aliases: ['Khmer Empire', 'Cambodia'] },
+    malay: { aliases: ['Srivijaya Empire', 'Malay', 'Malays', 'East Java', 'Malaysian Islamic states'] },
+    vietnamese: { aliases: ['Annam', 'Đại Việt'] },
 
-    burgundians: BURGUNDY,
-    sicilians: pick(1279, 'Sicily'),
+    bulgarians: { aliases: ['Bulgars', 'Danube Bulgars', 'Bulgar Khanate'] },
+    cumans: { aliases: ['Kimek-Kipchak khaganate', 'Cuman-Kipchak confederation', 'Cuman Khanates'] },
+    lithuanians: { aliases: ['Lithuania', 'Poland-Lithuania'] },
+    tatars: {
+        aliases: [
+            'Khanate of the Golden Horde',
+            'Golden Horde',
+            'Chagatai Khanate',
+            'Timurid Empire',
+            'Timurid Emirates',
+            'Crimean Khanate',
+        ],
+    },
 
-    bohemians: BOHEMIA,
-    poles: pick(1300, 'Poland'),
+    burgundians: { aliases: [], drawn: { 1400: BURGUNDY } },
+    sicilians: { aliases: ['Sicily'] },
 
-    bengalis: pick(800, 'Palas'),
-    dravidians: pick(1100, 'Cholas'),
-    gurjaras: pick(900, 'Gurjara Pratihara'),
-    hindustanis: pick(1300, 'Sultanate of Delhi'),
+    bohemians: { aliases: [], drawn: { 1300: BOHEMIA } },
+    poles: { aliases: ['Poland', 'Poland-Lithuania'] },
 
-    romans: pick(200, 'Roman Empire'),
+    bengalis: { aliases: ['Palas', 'Senas'] },
+    dravidians: { aliases: ['Chola', 'Cholas', 'Chola state', 'Pallavas', 'Pallava', 'Pallava state'] },
+    gurjaras: { aliases: ['Gurjara Pratihara', 'Pratiharas', 'Rajput kingdoms', 'Rajput Clans and Small States'] },
+    hindustanis: { aliases: ['Sultanate of Delhi', 'Mughal Empire'] },
 
-    armenians: pick(1000, 'Armenia'),
-    georgians: pick(1200, 'Georgia'),
+    romans: { aliases: ['Roman Empire', 'Western Roman Empire'] },
 
-    jurchens: JIN,
-    khitans: pick(1100, 'Liao'),
-    shu: SHU_HAN,
-    wei: CAO_WEI,
-    wu: EASTERN_WU,
+    armenians: { aliases: ['Armenia'] },
+    georgians: { aliases: ['Georgia', 'Kingdom of Georgia', 'Georgian Kingdom'] },
 
-    mapuche: pick(1492, 'Wallmapu (Mapuche)'),
-    muisca: pick(1492, 'Muisca'),
-    tupi: pick(1492, 'Tupinambá', 'Tekohá (Guarani)'),
+    jurchens: { aliases: [], drawn: { 1200: JIN } },
+    khitans: { aliases: ['Khitans', 'Liao'], patch: SIXTEEN_PREFECTURES },
+    shu: { aliases: [], drawn: { 250: SHU_HAN } },
+    wei: { aliases: [], drawn: { 250: CAO_WEI } },
+    wu: { aliases: [], drawn: { 250: EASTERN_WU } },
 
-    danes: pick(1100, 'Denmark', 'Norway', 'England'),
-    saxons: pick(1000, 'England'),
-    varangians: pick(1000, 'Kyivan Rus'),
+    mapuche: { aliases: ['Wallmapu (Mapuche)'] },
+    muisca: { aliases: ['Muisca'] },
+    tupi: { aliases: ['Tupis', 'Tupinambá', 'Tekohá (Guarani)'] },
+
+    danes: { aliases: ['Denmark', 'Denmark-Norway', 'Norway', 'England'], drop: [GREENLAND] },
+    saxons: { aliases: ['Anglo-Saxons', 'Mercia', 'Wessex', 'England'] },
+    varangians: {
+        aliases: [
+            "Rus' Khaganate",
+            'Kyivan Rus',
+            'Kievan Rus',
+            'Principality of Kyiv',
+            'Principality of Novgorod',
+            'Principality of Vladimir-Suzdal',
+            'Other Rus Principalities',
+        ],
+    },
 };

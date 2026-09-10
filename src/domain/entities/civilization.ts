@@ -1,7 +1,6 @@
 import type { ExpansionKey } from '@/domain/enums/expansion.ts';
 import type { RegionKey } from '@/domain/enums/region.ts';
 import type { GeoPoint } from '@/domain/values/geo-point.ts';
-import type { Territory } from '@/domain/values/territory.ts';
 import type { YearSpan } from '@/domain/values/year-span.ts';
 
 /** The monument a civilization's Wonder is a copy of. */
@@ -11,8 +10,17 @@ export interface Wonder {
     country: string;
     at: GeoPoint;
     wikipedia: string;
-    /** Set when the model is centuries younger than the people it stands for. */
+    /** Set when the model, or the site, does not sit where the civilization does. */
     anachronism?: string;
+}
+
+/** What the atlas measured about a civilization's borders once every century was cut. */
+export interface RealmReach {
+    /** Years this civilization has a border cut for, oldest first. */
+    slices: readonly number[];
+    /** The century it held the most ground in. */
+    peakYear: number;
+    peakAreaKm2: number;
 }
 
 export interface CivilizationConfig {
@@ -22,14 +30,13 @@ export interface CivilizationConfig {
     expansion: ExpansionKey;
     region: RegionKey;
     wonder: Wonder;
-    /** What the drawn border actually is, named so a reader can check it. */
+    /** What the realm was called across the centuries it stood. */
     realmLabel: string;
-    /** The years the atlas counts the civilization as standing. */
     span: YearSpan;
-    territory: Territory;
+    reach: RealmReach;
 }
 
-/** One playable civilization, its Wonder and the ground behind it. */
+/** One playable civilization, its Wonder and the reach of the realm behind it. */
 export class Civilization {
     public readonly key: string;
     public readonly name: string;
@@ -39,7 +46,7 @@ export class Civilization {
     public readonly wonder: Wonder;
     public readonly realmLabel: string;
     public readonly span: YearSpan;
-    public readonly territory: Territory;
+    public readonly reach: RealmReach;
 
     constructor(config: CivilizationConfig) {
         this.key = config.key;
@@ -50,7 +57,7 @@ export class Civilization {
         this.wonder = config.wonder;
         this.realmLabel = config.realmLabel;
         this.span = config.span;
-        this.territory = config.territory;
+        this.reach = config.reach;
     }
 
     /**

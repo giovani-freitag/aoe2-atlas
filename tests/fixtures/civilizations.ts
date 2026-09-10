@@ -1,7 +1,6 @@
 import { Civilization } from '@/domain/entities/civilization.ts';
 import type { ExpansionKey } from '@/domain/enums/expansion.ts';
 import type { RegionKey } from '@/domain/enums/region.ts';
-import { Territory } from '@/domain/values/territory.ts';
 import { YearSpan } from '@/domain/values/year-span.ts';
 
 export interface CivilizationStubOptions {
@@ -11,7 +10,9 @@ export interface CivilizationStubOptions {
     region?: RegionKey;
     from?: number;
     to?: number;
-    areaKm2?: number;
+    peakAreaKm2?: number;
+    peakYear?: number;
+    slices?: readonly number[];
     monument?: string;
     place?: string;
 }
@@ -38,26 +39,12 @@ export function civilizationStub(options: CivilizationStubOptions = {}): Civiliz
             at: { lon: -0.78, lat: 50.84 },
             wikipedia: 'Chichester_Cathedral',
         },
-        realmLabel: 'Império Angevino',
+        realmLabel: 'Reinos ingleses e o Império Angevino',
         span: new YearSpan(from, to),
-        territory: new Territory({
-            rings: [
-                [
-                    [
-                        [0, 0],
-                        [1, 0],
-                        [1, 1],
-                        [0, 1],
-                        [0, 0],
-                    ],
-                ],
-            ],
-            year: from,
-            origin: 'dataset',
-            sourceNames: ['Angevin Empire'],
-            areaKm2: options.areaKm2 ?? 259_345,
-            bbox: { west: 0, south: 0, east: 1, north: 1 },
-            centroid: { lon: 0.5, lat: 0.5 },
-        }),
+        reach: {
+            slices: options.slices ?? [from],
+            peakYear: options.peakYear ?? from,
+            peakAreaKm2: options.peakAreaKm2 ?? 259_345,
+        },
     });
 }

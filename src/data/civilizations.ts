@@ -18,8 +18,6 @@ export interface WonderRecord {
 export interface RealmRecord {
     /** What the drawn border actually is, named so a reader can go and check it. */
     label: string;
-    /** The year the border is drawn for. */
-    peakYear: number;
     /** First year the atlas counts the civilization as standing. */
     from: number;
     /** Last year the atlas counts the civilization as standing. */
@@ -41,9 +39,10 @@ export interface CivilizationRecord {
 /**
  * Every civilization the game ships, with the monument its Wonder copies and the realm behind it.
  *
- * The realm is deliberately one snapshot rather than a moving border: the atlas answers "how much
- * ground did these people hold, at their most", and a reader comparing the Mongols to the Maya is
- * served better by one honest year each than by an animation nobody can hold still.
+ * The realm carries only a name and the years it stood. Its borders are not here: they are cut
+ * per century from the source in `territory-sources.ts`, and the year a realm was at its widest
+ * is measured from those cuts rather than declared by hand — a figure nobody has to keep in
+ * step with the geometry.
  */
 export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
     {
@@ -60,7 +59,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: -0.7801,
             wikipedia: 'Chichester_Cathedral',
         },
-        realm: { label: 'Império Angevino', peakYear: 1200, from: 800, to: 1500 },
+        realm: { label: 'Reinos ingleses e o Império Angevino', from: 800, to: 1500 },
     },
     {
         key: 'byzantines',
@@ -76,7 +75,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 28.9802,
             wikipedia: 'Hagia_Sophia',
         },
-        realm: { label: 'Império Romano do Oriente sob Justiniano', peakYear: 600, from: 395, to: 1453 },
+        realm: { label: 'Império Romano do Oriente', from: 395, to: 1453 },
     },
     {
         key: 'celts',
@@ -92,7 +91,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: -7.8906,
             wikipedia: 'Rock_of_Cashel',
         },
-        realm: { label: 'Reinos gaélicos e Escócia', peakYear: 1200, from: 400, to: 1500 },
+        realm: { label: 'Reinos gaélicos e a Escócia', from: 400, to: 1500 },
     },
     {
         key: 'chinese',
@@ -107,9 +106,9 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lat: 39.8822,
             lon: 116.4066,
             wikipedia: 'Temple_of_Heaven',
-            anachronism: 'O salão é Ming (1420), séculos depois do auge Tang desenhado aqui.',
+            anachronism: 'O salão é Ming (1420); a civilização cobre desde os Sui, oitocentos anos antes.',
         },
-        realm: { label: 'Império Tang', peakYear: 800, from: 618, to: 1600 },
+        realm: { label: 'Impérios Sui, Tang, Song e Ming', from: 618, to: 1600 },
     },
     {
         key: 'franks',
@@ -125,7 +124,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 1.4877,
             wikipedia: 'Chartres_Cathedral',
         },
-        realm: { label: 'Império Carolíngio sob Carlos Magno', peakYear: 800, from: 481, to: 987 },
+        realm: { label: 'Reino franco e o Império Carolíngio', from: 481, to: 987 },
     },
     {
         key: 'goths',
@@ -141,7 +140,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 12.2091,
             wikipedia: 'Mausoleum_of_Theodoric',
         },
-        realm: { label: 'Reinos visigodo e ostrogodo', peakYear: 500, from: 376, to: 711 },
+        realm: { label: 'Reinos visigodo e ostrogodo', from: 376, to: 711 },
     },
     {
         key: 'japanese',
@@ -157,7 +156,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 135.8398,
             wikipedia: 'Tōdai-ji',
         },
-        realm: { label: 'Xogunato Kamakura', peakYear: 1300, from: 550, to: 1600 },
+        realm: { label: 'Yamato e os xogunatos', from: 550, to: 1600 },
     },
     {
         key: 'mongols',
@@ -173,7 +172,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 102.8419,
             wikipedia: 'Karakorum',
         },
-        realm: { label: 'Império Mongol e seus quatro canatos', peakYear: 1279, from: 1206, to: 1368 },
+        realm: { label: 'Império Mongol e seus quatro canatos', from: 1206, to: 1368 },
     },
     {
         key: 'persians',
@@ -189,7 +188,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 44.5808,
             wikipedia: 'Taq_Kasra',
         },
-        realm: { label: 'Império Sassânida sob Cosroes II', peakYear: 600, from: 224, to: 651 },
+        realm: { label: 'Império Sassânida', from: 224, to: 651 },
     },
     {
         key: 'saracens',
@@ -205,7 +204,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 43.8792,
             wikipedia: 'Great_Mosque_of_Samarra',
         },
-        realm: { label: 'Califado Abássida', peakYear: 800, from: 632, to: 1258 },
+        realm: { label: 'Califados omíada, abássida e fatímida', from: 632, to: 1258 },
     },
     {
         key: 'teutons',
@@ -221,7 +220,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 7.2528,
             wikipedia: 'Maria_Laach_Abbey',
         },
-        realm: { label: 'Sacro Império Romano-Germânico', peakYear: 1200, from: 800, to: 1500 },
+        realm: { label: 'Sacro Império Romano-Germânico', from: 800, to: 1500 },
     },
     {
         key: 'turks',
@@ -237,7 +236,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 26.5594,
             wikipedia: 'Selimiye_Mosque',
         },
-        realm: { label: 'Império Otomano sob Solimão', peakYear: 1530, from: 1299, to: 1600 },
+        realm: { label: 'Império Otomano', from: 1299, to: 1600 },
     },
     {
         key: 'vikings',
@@ -253,7 +252,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 7.8125,
             wikipedia: 'Borgund_Stave_Church',
         },
-        realm: { label: 'Escandinávia nórdica', peakYear: 1100, from: 793, to: 1100 },
+        realm: { label: 'Escandinávia nórdica', from: 793, to: 1100 },
     },
     {
         key: 'aztecs',
@@ -269,7 +268,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: -99.1315,
             wikipedia: 'Templo_Mayor',
         },
-        realm: { label: 'Tríplice Aliança asteca', peakYear: 1500, from: 1325, to: 1521 },
+        realm: { label: 'Tríplice Aliança asteca', from: 1325, to: 1521 },
     },
     {
         key: 'huns',
@@ -286,7 +285,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             wikipedia: 'Arch_of_Constantine',
             anachronism: 'O arco é romano, e os hunos nunca chegaram a Roma.',
         },
-        realm: { label: 'Império Huno de Átila', peakYear: 400, from: 370, to: 469 },
+        realm: { label: 'Império Huno de Átila', from: 370, to: 469 },
     },
     {
         key: 'koreans',
@@ -302,7 +301,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 129.2422,
             wikipedia: 'Hwangnyongsa',
         },
-        realm: { label: 'Goryeo', peakYear: 1200, from: 918, to: 1600 },
+        realm: { label: 'Goryeo e Joseon', from: 918, to: 1600 },
     },
     {
         key: 'maya',
@@ -318,7 +317,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: -89.6237,
             wikipedia: 'Tikal_Temple_I',
         },
-        realm: { label: 'Cidades-estado maias do período Clássico', peakYear: 800, from: 250, to: 1500 },
+        realm: { label: 'Cidades-estado maias', from: 250, to: 1500 },
     },
     {
         key: 'spanish',
@@ -335,7 +334,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             wikipedia: 'Torre_del_Oro',
             anachronism: 'Erguida pelos almóadas berberes; a coroa castelhana só a herdou depois.',
         },
-        realm: { label: 'Coroa da Espanha unificada', peakYear: 1530, from: 1000, to: 1600 },
+        realm: { label: 'Reinos cristãos ibéricos e a Espanha', from: 1000, to: 1600 },
     },
     {
         key: 'inca',
@@ -351,7 +350,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: -72.5456,
             wikipedia: 'Machu_Picchu',
         },
-        realm: { label: 'Tawantinsuyu', peakYear: 1500, from: 1438, to: 1533 },
+        realm: { label: 'Tawantinsuyu', from: 1438, to: 1533 },
     },
     {
         key: 'italians',
@@ -367,7 +366,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 8.9317,
             wikipedia: 'Genoa_Cathedral',
         },
-        realm: { label: 'Repúblicas e ducados da península itálica', peakYear: 1530, from: 1000, to: 1600 },
+        realm: { label: 'Repúblicas e ducados da península itálica', from: 1000, to: 1600 },
     },
     {
         key: 'magyars',
@@ -383,7 +382,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 22.8878,
             wikipedia: 'Corvin_Castle',
         },
-        realm: { label: 'Reino da Hungria', peakYear: 1400, from: 895, to: 1526 },
+        realm: { label: 'Reino da Hungria', from: 895, to: 1526 },
     },
     {
         key: 'slavs',
@@ -400,7 +399,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             wikipedia: 'Kizhi_Pogost',
             anachronism: 'Construído no século XVII, muito depois do recorte temporal do jogo.',
         },
-        realm: { label: 'Tribos eslavas', peakYear: 900, from: 500, to: 1500 },
+        realm: { label: 'Tribos eslavas', from: 500, to: 1500 },
     },
     {
         key: 'berbers',
@@ -416,7 +415,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: -6.8226,
             wikipedia: 'Hassan_Tower',
         },
-        realm: { label: 'Califado Almóada', peakYear: 1200, from: 700, to: 1500 },
+        realm: { label: 'Dinastias berberes do Magrebe', from: 700, to: 1500 },
     },
     {
         key: 'ethiopians',
@@ -432,7 +431,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 39.043,
             wikipedia: 'Biete_Amanuel',
         },
-        realm: { label: 'Império Etíope salomônico', peakYear: 1400, from: 100, to: 1600 },
+        realm: { label: 'Áxum e a Etiópia salomônica', from: 100, to: 1600 },
     },
     {
         key: 'malians',
@@ -449,7 +448,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             wikipedia: 'Great_Mosque_of_Djenné',
             anachronism: 'A mesquita atual é uma reconstrução do início do século XX.',
         },
-        realm: { label: 'Império do Mali sob Mansa Musa', peakYear: 1300, from: 1235, to: 1600 },
+        realm: { label: 'Império do Mali', from: 1235, to: 1600 },
     },
     {
         key: 'portuguese',
@@ -465,7 +464,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: -9.216,
             wikipedia: 'Belém_Tower',
         },
-        realm: { label: 'Reino de Portugal', peakYear: 1500, from: 1139, to: 1600 },
+        realm: { label: 'Reino de Portugal', from: 1139, to: 1600 },
     },
     {
         key: 'burmese',
@@ -481,7 +480,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 94.8933,
             wikipedia: 'Shwezigon_Pagoda',
         },
-        realm: { label: 'Reino de Pagan', peakYear: 1200, from: 849, to: 1600 },
+        realm: { label: 'Pyu e o reino de Pagan', from: 849, to: 1600 },
     },
     {
         key: 'khmer',
@@ -497,7 +496,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 103.867,
             wikipedia: 'Angkor_Wat',
         },
-        realm: { label: 'Império Khmer sob Jaiavarman VII', peakYear: 1200, from: 802, to: 1431 },
+        realm: { label: 'Império Khmer', from: 802, to: 1431 },
     },
     {
         key: 'malay',
@@ -513,7 +512,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 110.4681,
             wikipedia: 'Kalasan',
         },
-        realm: { label: 'Talassocracia de Serivijaia', peakYear: 1400, from: 671, to: 1500 },
+        realm: { label: 'Serivijaia e os reinos de Java', from: 671, to: 1500 },
     },
     {
         key: 'vietnamese',
@@ -529,7 +528,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 106.08,
             wikipedia: 'Bút_Tháp_Temple',
         },
-        realm: { label: 'Đại Việt', peakYear: 1400, from: 938, to: 1600 },
+        realm: { label: 'Đại Việt', from: 938, to: 1600 },
     },
     {
         key: 'bulgarians',
@@ -545,7 +544,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 26.8125,
             wikipedia: 'Round_Church,_Preslav',
         },
-        realm: { label: 'Primeiro Império Búlgaro sob Simeão I', peakYear: 900, from: 681, to: 1396 },
+        realm: { label: 'Primeiro Império Búlgaro sob Simeão I', from: 681, to: 1396 },
     },
     {
         key: 'cumans',
@@ -562,7 +561,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             wikipedia: 'Sarkel',
             anachronism: 'Erguida pelos cazares com engenheiros bizantinos; os cumanos apenas a tomaram.',
         },
-        realm: { label: 'Confederação cumano-quipchaque', peakYear: 1200, from: 1000, to: 1241 },
+        realm: { label: 'Confederação cumano-quipchaque', from: 1000, to: 1241 },
     },
     {
         key: 'lithuanians',
@@ -578,7 +577,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 24.9336,
             wikipedia: 'Trakai_Island_Castle',
         },
-        realm: { label: 'Grão-Ducado da Lituânia', peakYear: 1300, from: 1236, to: 1569 },
+        realm: { label: 'Grão-Ducado da Lituânia', from: 1236, to: 1569 },
     },
     {
         key: 'tatars',
@@ -594,7 +593,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 66.9889,
             wikipedia: 'Ulugh_Beg_Observatory',
         },
-        realm: { label: 'Império Timúrida', peakYear: 1400, from: 1240, to: 1507 },
+        realm: { label: 'Canatos tártaros e o Império Timúrida', from: 1240, to: 1507 },
     },
     {
         key: 'burgundians',
@@ -610,7 +609,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 4.3524,
             wikipedia: 'Brussels_Town_Hall',
         },
-        realm: { label: 'Estado borgonhês dos Valois', peakYear: 1470, from: 1363, to: 1477 },
+        realm: { label: 'Estado borgonhês dos Valois', from: 1363, to: 1477 },
     },
     {
         key: 'sicilians',
@@ -626,7 +625,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 13.2919,
             wikipedia: 'Monreale_Cathedral',
         },
-        realm: { label: 'Reino da Sicília', peakYear: 1279, from: 1130, to: 1500 },
+        realm: { label: 'Reino da Sicília', from: 1130, to: 1500 },
     },
     {
         key: 'bohemians',
@@ -642,7 +641,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 14.4278,
             wikipedia: 'Powder_Tower,_Prague',
         },
-        realm: { label: 'Coroa da Boêmia sob Carlos IV', peakYear: 1350, from: 1198, to: 1526 },
+        realm: { label: 'Coroa da Boêmia', from: 1198, to: 1526 },
     },
     {
         key: 'poles',
@@ -658,7 +657,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 19.9354,
             wikipedia: 'Wawel_Cathedral',
         },
-        realm: { label: 'Reino da Polônia', peakYear: 1300, from: 966, to: 1569 },
+        realm: { label: 'Reino da Polônia', from: 966, to: 1569 },
     },
     {
         key: 'bengalis',
@@ -674,7 +673,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 88.9775,
             wikipedia: 'Somapura_Mahavihara',
         },
-        realm: { label: 'Império Pala', peakYear: 800, from: 750, to: 1200 },
+        realm: { label: 'Impérios Pala e Sena', from: 750, to: 1200 },
     },
     {
         key: 'dravidians',
@@ -690,7 +689,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 79.1317,
             wikipedia: 'Brihadisvara_Temple,_Thanjavur',
         },
-        realm: { label: 'Império Chola sob Rajendra I', peakYear: 1100, from: 300, to: 1279 },
+        realm: { label: 'Pálavas e o Império Chola', from: 300, to: 1279 },
     },
     {
         key: 'gurjaras',
@@ -706,7 +705,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 70.4012,
             wikipedia: 'Somnath_temple',
         },
-        realm: { label: 'Império Gurjara-Pratihara', peakYear: 900, from: 730, to: 1036 },
+        realm: { label: 'Gurjara-Pratiharas e os reinos rajputes', from: 730, to: 1036 },
     },
     {
         key: 'hindustanis',
@@ -722,7 +721,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 77.2507,
             wikipedia: "Humayun's_Tomb",
         },
-        realm: { label: 'Sultanato de Déli sob os Tughlaq', peakYear: 1300, from: 1206, to: 1600 },
+        realm: { label: 'Sultanato de Déli e o Império Mogol', from: 1206, to: 1600 },
     },
     {
         key: 'romans',
@@ -738,7 +737,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 12.4922,
             wikipedia: 'Colosseum',
         },
-        realm: { label: 'Império Romano no século II', peakYear: 200, from: -27, to: 476 },
+        realm: { label: 'Império Romano', from: -27, to: 476 },
     },
     {
         key: 'armenians',
@@ -754,7 +753,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 44.2914,
             wikipedia: 'Etchmiadzin_Cathedral',
         },
-        realm: { label: 'Armênia bagrátida', peakYear: 1000, from: 885, to: 1375 },
+        realm: { label: 'Armênia bagrátida', from: 885, to: 1375 },
     },
     {
         key: 'georgians',
@@ -770,7 +769,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 44.7211,
             wikipedia: 'Svetitskhoveli_Cathedral',
         },
-        realm: { label: 'Reino da Geórgia sob a rainha Tamar', peakYear: 1200, from: 1008, to: 1490 },
+        realm: { label: 'Reino da Geórgia', from: 1008, to: 1490 },
     },
     {
         key: 'jurchens',
@@ -786,7 +785,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 116.1367,
             wikipedia: 'Yinshan_Pagoda_Forest',
         },
-        realm: { label: 'Dinastia Jin dos jurchéns', peakYear: 1200, from: 1115, to: 1234 },
+        realm: { label: 'Dinastia Jin dos jurchéns', from: 1115, to: 1234 },
     },
     {
         key: 'khitans',
@@ -802,7 +801,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 113.1861,
             wikipedia: 'Pagoda_of_Fogong_Temple',
         },
-        realm: { label: 'Dinastia Liao', peakYear: 1100, from: 907, to: 1125 },
+        realm: { label: 'Dinastia Liao', from: 907, to: 1125 },
     },
     {
         key: 'shu',
@@ -818,7 +817,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 104.0472,
             wikipedia: 'Wuhou_Shrine',
         },
-        realm: { label: 'Shu Han', peakYear: 250, from: 221, to: 263 },
+        realm: { label: 'Shu Han', from: 221, to: 263 },
     },
     {
         key: 'wei',
@@ -834,7 +833,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 113.0264,
             wikipedia: 'Songyue_Pagoda',
         },
-        realm: { label: 'Cao Wei', peakYear: 250, from: 220, to: 266 },
+        realm: { label: 'Cao Wei', from: 220, to: 266 },
     },
     {
         key: 'wu',
@@ -850,7 +849,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 121.4453,
             wikipedia: "Jing'an_Temple",
         },
-        realm: { label: 'Wu Oriental', peakYear: 250, from: 222, to: 280 },
+        realm: { label: 'Wu Oriental', from: 222, to: 280 },
     },
     {
         key: 'mapuche',
@@ -866,7 +865,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: -72.5904,
             wikipedia: 'Mapuche',
         },
-        realm: { label: 'Wallmapu', peakYear: 1492, from: 1000, to: 1600 },
+        realm: { label: 'Wallmapu', from: 1000, to: 1600 },
     },
     {
         key: 'muisca',
@@ -882,7 +881,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: -72.9339,
             wikipedia: 'Sun_Temple_(Sogamoso)',
         },
-        realm: { label: 'Confederação muísca', peakYear: 1492, from: 800, to: 1540 },
+        realm: { label: 'Confederação muísca', from: 800, to: 1540 },
     },
     {
         key: 'tupi',
@@ -898,7 +897,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: -54.4367,
             wikipedia: 'Iguazu_Falls',
         },
-        realm: { label: 'Terras tupi-guarani', peakYear: 1492, from: 900, to: 1600 },
+        realm: { label: 'Terras tupi-guarani', from: 900, to: 1600 },
     },
     {
         key: 'danes',
@@ -914,7 +913,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: 9.42,
             wikipedia: 'Jelling_stones',
         },
-        realm: { label: 'Império do Mar do Norte de Canuto', peakYear: 1030, from: 800, to: 1100 },
+        realm: { label: 'Império do Mar do Norte de Canuto', from: 800, to: 1100 },
     },
     {
         key: 'saxons',
@@ -930,7 +929,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
             lon: -0.7517,
             wikipedia: "All_Saints'_Church,_Earls_Barton",
         },
-        realm: { label: 'Inglaterra anglo-saxã', peakYear: 1000, from: 500, to: 1066 },
+        realm: { label: 'Inglaterra anglo-saxã', from: 500, to: 1066 },
     },
     {
         key: 'varangians',
@@ -939,13 +938,14 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
         expansion: 'tvs',
         region: 'ceur',
         wonder: {
-            monument: 'Funeral em navio nórdico (navio de Gokstad)',
-            place: 'Sandefjord',
-            country: 'Noruega',
-            lat: 59.1436,
-            lon: 10.2181,
-            wikipedia: 'Gokstad_ship',
+            monument: 'Funeral em navio nórdico',
+            place: 'Gnezdovo, junto a Smolensk',
+            country: 'Rússia',
+            lat: 54.78,
+            lon: 31.87,
+            wikipedia: 'Gnyozdovo',
+            anachronism: 'A wiki cita o navio de Gokstad como referência visual; ele está na Noruega, e os varegues do jogo são a Rus.',
         },
-        realm: { label: 'Rus de Kiev', peakYear: 1000, from: 862, to: 1240 },
+        realm: { label: 'Rus de Kiev', from: 862, to: 1240 },
     },
 ];
