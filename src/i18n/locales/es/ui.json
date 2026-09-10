@@ -4,6 +4,7 @@
         "tagline": "Maravillas y territorios, siglo a siglo",
         "openRoster": "Abrir la lista de civilizaciones",
         "openSettings": "Abrir los ajustes del mapa",
+        "closeSettings": "Cerrar los ajustes del mapa",
         "loading": "Cargando el siglo",
         "mapAlt": "Mapamundi con los territorios y maravillas de las civilizaciones."
     },

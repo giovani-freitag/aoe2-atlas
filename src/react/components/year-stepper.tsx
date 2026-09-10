@@ -13,8 +13,10 @@ export interface YearStepperProps {
     sliceYear: number;
     loading: boolean;
     onChange: (year: number) => void;
-    /** Opens the panel holding the full time control. */
-    onOpenSettings: () => void;
+    /** Whether that panel is on screen, so the control can say what a press will do. */
+    settingsOpen: boolean;
+    /** Opens the panel holding the full time control, or closes it when it is already up. */
+    onToggleSettings: () => void;
 }
 
 /**
@@ -25,7 +27,16 @@ export interface YearStepperProps {
  * into the settings panel and what stays is the reading itself, which is the part that has to
  * be visible at all times because the whole map depends on it.
  */
-export function YearStepper({ from, to, year, sliceYear, loading, onChange, onOpenSettings }: YearStepperProps) {
+export function YearStepper({
+    from,
+    to,
+    year,
+    sliceYear,
+    loading,
+    onChange,
+    settingsOpen,
+    onToggleSettings,
+}: YearStepperProps) {
     const { t } = useTranslation();
     const format = useFormat();
 
@@ -47,7 +58,7 @@ export function YearStepper({ from, to, year, sliceYear, loading, onChange, onOp
                 <ChevronLeft size={20} aria-hidden />
             </button>
 
-            <button type="button" className="stepper__reading" onClick={onOpenSettings}>
+            <button type="button" className="stepper__reading" aria-expanded={settingsOpen} onClick={onToggleSettings}>
                 <strong className="numeric">{format.year(year)}</strong>
                 <span className="eyebrow">
                     {loading
@@ -70,7 +81,13 @@ export function YearStepper({ from, to, year, sliceYear, loading, onChange, onOp
                 <ChevronRight size={20} aria-hidden />
             </button>
 
-            <button type="button" className="stepper__more iron" onClick={onOpenSettings} aria-label={t('app.openSettings')}>
+            <button
+                type="button"
+                className="stepper__more iron"
+                aria-expanded={settingsOpen}
+                onClick={onToggleSettings}
+                aria-label={t(settingsOpen ? 'app.closeSettings' : 'app.openSettings')}
+            >
                 <SlidersHorizontal size={18} aria-hidden />
             </button>
         </div>

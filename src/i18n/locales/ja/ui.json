@@ -4,6 +4,7 @@
         "tagline": "世紀ごとの、象徴と領土",
         "openRoster": "文明の一覧を開く",
         "openSettings": "地図の設定を開く",
+        "closeSettings": "地図の設定を閉じる",
         "loading": "世紀を読み込み中",
         "mapAlt": "各文明の領土と象徴を示した世界地図。"
     },

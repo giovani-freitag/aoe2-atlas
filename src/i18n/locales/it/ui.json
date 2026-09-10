@@ -4,6 +4,7 @@
         "tagline": "Meraviglie e territori, secolo per secolo",
         "openRoster": "Apri l'elenco delle civiltà",
         "openSettings": "Apri le impostazioni della mappa",
+        "closeSettings": "Chiudi le impostazioni della mappa",
         "loading": "Caricamento del secolo",
         "mapAlt": "Mappa del mondo con i territori e le meraviglie delle civiltà."
     },

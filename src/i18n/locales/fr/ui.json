@@ -4,6 +4,7 @@
         "tagline": "Merveilles et territoires, siècle après siècle",
         "openRoster": "Ouvrir la liste des civilisations",
         "openSettings": "Ouvrir les réglages de la carte",
+        "closeSettings": "Fermer les réglages de la carte",
         "loading": "Chargement du siècle",
         "mapAlt": "Carte du monde avec les territoires et les merveilles des civilisations."
     },

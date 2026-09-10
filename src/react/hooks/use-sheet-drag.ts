@@ -9,6 +9,13 @@ const SLOP = 6;
 /** Dragged below this share of the viewport, the sheet is being thrown away rather than resized. */
 const DISMISS_BELOW = 0.3;
 
+export interface SheetDragConfig {
+    /** Whether the sheet is on screen; coming back resets it to the middle stop. */
+    open: boolean;
+    /** Called when the sheet is thrown past the bottom stop. */
+    onDismiss: () => void;
+}
+
 export interface SheetDrag {
     /** The share of the viewport the sheet currently covers. */
     height: number;
@@ -28,13 +35,28 @@ export interface SheetDrag {
  * Enter key steps to the next one for anyone not using a touchscreen. Dragged far enough down
  * it is dismissed, which is why the sheet carries no close button of its own.
  *
- * @param onDismiss - Called when the sheet is thrown past the bottom stop.
+ * @param config - Whether the sheet is open, and what to do when it is thrown away.
  */
-export function useSheetDrag(onDismiss: () => void): SheetDrag {
+export function useSheetDrag({ open, onDismiss }: SheetDragConfig): SheetDrag {
     const [stop, setStop] = useState(1);
     const [height, setHeight] = useState<number>(STOPS[1]);
     const [dragging, setDragging] = useState(false);
     const origin = useRef<{ y: number; height: number; moved: boolean } | null>(null);
+    const [wasOpen, setWasOpen] = useState(open);
+
+    /*
+     * A dismissed sheet keeps the height the finger left it at, so the slide out starts from
+     * where the reader let go instead of snapping back up first. That height has to be undone
+     * before the sheet is seen again, and the render that reopens it is the only moment early
+     * enough — an effect would run after the browser had already painted the wrong size.
+     */
+    if (open !== wasOpen) {
+        setWasOpen(open);
+        if (open) {
+            setStop(1);
+            setHeight(STOPS[1]);
+        }
+    }
 
     const cycle = useCallback(() => {
         setStop((current) => {
@@ -81,7 +103,7 @@ export function useSheetDrag(onDismiss: () => void): SheetDrag {
                     if (current < DISMISS_BELOW) {
                         onDismiss();
 
-                        return STOPS[1];
+                        return current;
                     }
 
                     const nearest = STOPS.reduce((best, candidate) =>

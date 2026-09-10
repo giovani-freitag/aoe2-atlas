@@ -25,13 +25,14 @@ export interface BottomSheetProps {
  *
  * There is no close button. The grip drags the sheet between three heights and throws it away
  * past the lowest, a tap on it steps to the next height, and Escape or tapping the map closes
- * it — so a cross would be a fourth way to do what three already do. Docked on a wide screen
- * the grip disappears and the sheet simply is the column; nothing about it is duplicated.
+ * it — so a cross would be a fourth way to do what three already do. On a wide screen nothing
+ * slides: the docked sheet is simply the column and the floating one is a card in the corner,
+ * so the grip goes away rather than sitting there pretending to be draggable.
  */
 export function BottomSheet({ label, open, onClose, wide, head, children }: BottomSheetProps) {
     const { t } = useTranslation();
     const isWide = useWideScreen();
-    const drag = useSheetDrag(onClose);
+    const drag = useSheetDrag({ open, onDismiss: onClose });
     const sheet = useRef<HTMLDivElement>(null);
 
     // Docked, the sheet is part of the layout and the popover machinery must stay out of it.
@@ -59,9 +60,17 @@ export function BottomSheet({ label, open, onClose, wide, head, children }: Bott
             data-dragging={drag.dragging}
             style={isWide ? undefined : { height: `${drag.height * 100}dvh` }}
         >
-            <button type="button" className="sheet__grip" onPointerDown={drag.onPointerDown} aria-label={t('sheet.grip')}>
-                <span aria-hidden />
-            </button>
+            {/* The grip resizes a sheet that slides; wide, neither sheet slides, so it would be a lie. */}
+            {isWide ? null : (
+                <button
+                    type="button"
+                    className="sheet__grip"
+                    onPointerDown={drag.onPointerDown}
+                    aria-label={t('sheet.grip')}
+                >
+                    <span aria-hidden />
+                </button>
+            )}
 
             <header className="sheet__head">{head}</header>
 

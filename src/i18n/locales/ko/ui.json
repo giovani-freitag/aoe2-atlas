@@ -4,6 +4,7 @@
         "tagline": "세기별로 보는 불가사의와 영토",
         "openRoster": "문명 목록 열기",
         "openSettings": "지도 설정 열기",
+        "closeSettings": "지도 설정 닫기",
         "loading": "세기 불러오는 중",
         "mapAlt": "문명들의 영토와 불가사의를 표시한 세계 지도."
     },

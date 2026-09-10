@@ -4,6 +4,7 @@
         "tagline": "Wonders and territories, century by century",
         "openRoster": "Open the list of civilizations",
         "openSettings": "Open the map settings",
+        "closeSettings": "Close the map settings",
         "loading": "Loading the century",
         "mapAlt": "World map with the territories and Wonders of the civilizations."
     },

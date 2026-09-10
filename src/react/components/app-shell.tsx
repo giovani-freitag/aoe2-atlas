@@ -59,7 +59,25 @@ export function AppShell() {
         setSettingsOpen(false);
     }, []);
 
-    useEscape(closeSheet);
+    const toggleSettings = useCallback(() => {
+        setSettingsOpen((open) => !open);
+    }, []);
+
+    /*
+     * Escape closes whatever is on top: the settings float over the detail, so they go first and
+     * a second press reaches the sheet underneath. Without the order, one key would clear both.
+     */
+    useEscape(
+        useCallback(() => {
+            if (settingsOpen) {
+                setSettingsOpen(false);
+
+                return;
+            }
+
+            closeSheet();
+        }, [settingsOpen, closeSheet]),
+    );
 
     const setYear = useCallback(
         (year: number) => {
@@ -108,10 +126,9 @@ export function AppShell() {
                     <button
                         type="button"
                         className="bar__button iron"
-                        onClick={() => {
-                            setSettingsOpen(true);
-                        }}
-                        aria-label={t('app.openSettings')}
+                        aria-expanded={settingsOpen}
+                        onClick={toggleSettings}
+                        aria-label={t(settingsOpen ? 'app.closeSettings' : 'app.openSettings')}
                     >
                         <SlidersHorizontal size={18} aria-hidden />
                     </button>
@@ -176,9 +193,8 @@ export function AppShell() {
                         sliceYear={sliceYear}
                         loading={loading}
                         onChange={setYear}
-                        onOpenSettings={() => {
-                            setSettingsOpen(true);
-                        }}
+                        settingsOpen={settingsOpen}
+                        onToggleSettings={toggleSettings}
                     />
                 )}
             </div>
