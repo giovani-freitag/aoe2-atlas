@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+    <defs>
+        <pattern id="b" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="#e6bb6b" stroke-width="2" stroke-opacity="0.55" />
+        </pattern>
+    </defs>
+    <circle cx="32" cy="32" r="29" fill="#0f1216" stroke="#e6bb6b" stroke-width="2" />
+    <path
+        d="M15 38c5-9 10-4 15-11s10-3 19-9"
+        stroke="#e6bb6b"
+        stroke-width="1.5"
+        stroke-opacity="0.35"
+        stroke-linecap="round"
+    />
+    <path
+        d="M17 44c6-2 9-10 16-10s11 7 17 4"
+        stroke="#e6bb6b"
+        stroke-width="1.5"
+        stroke-opacity="0.35"
+        stroke-linecap="round"
+    />
+    <path d="M22 46c-4-8-2-17 6-22s18-3 23 5c-6 13-18 20-29 17Z" fill="url(#b)" stroke="#e6bb6b" stroke-width="1.6" />
+    <path d="M32 20v8m-4-4h8" stroke="#e6bb6b" stroke-width="2" stroke-linecap="round" />
+</svg>

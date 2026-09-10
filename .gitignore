@@ -1,0 +1,14 @@
+node_modules
+dist
+coverage
+.cache
+*.local
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+
+# Downloaded source basemaps, re-fetched by `npm run data:build`.
+.cache/historical-basemaps
+
+# Scratch scripts written while probing the source data, never part of a build.
+scripts/tmp-*

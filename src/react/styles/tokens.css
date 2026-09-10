@@ -1,0 +1,116 @@
+:root {
+    color-scheme: light dark;
+
+    /* Aged paper, the light face of the atlas. */
+    --bg: #f4f1ea;
+    --bg-elevated: #faf8f3;
+    --surface: #ffffff;
+    --surface-2: #ece7dc;
+    --border: #d9d2c4;
+    --border-strong: #b9b0a0;
+
+    --text: #1b1a17;
+    --text-muted: #5b564c;
+    --text-faint: #8a8377;
+
+    --gold: #8a6417;
+    --gold-ink: #fffaf0;
+    --gold-soft: #6d4e10;
+    --gold-dim: rgb(138 100 23 / 12%);
+
+    /* The map itself: sea, land and the lines ruled over them. */
+    --sea: #ccd8dd;
+    --land: #faf6ea;
+    --land-edge: #9a8f7a;
+    --graticule: rgb(27 26 23 / 10%);
+    --sphere-edge: #8f8578;
+
+    --danger: #a8332f;
+
+    --control-height: 2.25rem;
+
+    --radius-sm: 2px;
+    --radius: 3px;
+    --radius-lg: 5px;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+
+    --shadow: 0 1px 2px rgb(27 26 23 / 10%);
+    --shadow-lg: 0 8px 28px rgb(27 26 23 / 18%);
+
+    --font:
+        ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+    --sidebar-width: 21rem;
+    --panel-width: 23rem;
+}
+
+/*
+ * The dark face is stepped for a dark surface rather than flipped from the light one, because a
+ * hue that reads as a border on paper turns to mud on ink.
+ */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+        --bg: #0f1216;
+        --bg-elevated: #141920;
+        --surface: #1a2029;
+        --surface-2: #222a35;
+        --border: #2b333f;
+        --border-strong: #3f4a59;
+
+        --text: #eef2f6;
+        --text-muted: #a4b0bd;
+        --text-faint: #78838f;
+
+        --gold: #e6bb6b;
+        --gold-ink: #14100a;
+        --gold-soft: #f4d79c;
+        --gold-dim: rgb(230 187 107 / 14%);
+
+        --sea: #090c10;
+        --land: #232c37;
+        --land-edge: #4a5765;
+        --graticule: rgb(230 187 107 / 7%);
+        --sphere-edge: #3f4a59;
+
+        --danger: #ef8375;
+
+        --shadow: 0 1px 2px rgb(0 0 0 / 40%);
+        --shadow-lg: 0 8px 28px rgb(0 0 0 / 55%);
+    }
+}
+
+:root[data-theme='dark'] {
+    --bg: #0f1216;
+    --bg-elevated: #141920;
+    --surface: #1a2029;
+    --surface-2: #222a35;
+    --border: #2b333f;
+    --border-strong: #3f4a59;
+
+    --text: #eef2f6;
+    --text-muted: #a4b0bd;
+    --text-faint: #78838f;
+
+    --gold: #e6bb6b;
+    --gold-ink: #14100a;
+    --gold-soft: #f4d79c;
+    --gold-dim: rgb(230 187 107 / 14%);
+
+    --sea: #090c10;
+    --land: #232c37;
+    --land-edge: #4a5765;
+    --graticule: rgb(230 187 107 / 7%);
+    --sphere-edge: #3f4a59;
+
+    --danger: #ef8375;
+
+    --shadow: 0 1px 2px rgb(0 0 0 / 40%);
+    --shadow-lg: 0 8px 28px rgb(0 0 0 / 55%);
+}
