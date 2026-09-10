@@ -73,16 +73,19 @@ export function AppShell() {
             <header className="bar leather">
                 <EmberCanvas className="bar__embers" density={0.7} wind={0.6} />
 
-                <button
-                    type="button"
-                    className="bar__button iron riveted"
-                    onClick={() => {
-                        setRosterOpen(true);
-                    }}
-                    aria-label={t('app.openRoster')}
-                >
-                    <List size={20} aria-hidden />
-                </button>
+                {/* Wide, the roster is already a column of the grid, so the handle that opens it would open nothing. */}
+                {wide ? null : (
+                    <button
+                        type="button"
+                        className="bar__button iron riveted"
+                        onClick={() => {
+                            setRosterOpen(true);
+                        }}
+                        aria-label={t('app.openRoster')}
+                    >
+                        <List size={20} aria-hidden />
+                    </button>
+                )}
 
                 <div className="bar__brand">
                     <img src={`${import.meta.env.BASE_URL}brand.svg`} alt="" width={26} height={26} />
