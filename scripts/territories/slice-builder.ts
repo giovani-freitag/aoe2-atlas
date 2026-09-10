@@ -241,7 +241,7 @@ export class SliceBuilder {
         for (const civilization of this.civilizations) {
             if (year < civilization.realm.from || year > civilization.realm.to) continue;
 
-            const cut = nearest(cuts.get(civilization.key) ?? [], year);
+            const cut = nearest(cuts.get(civilization.key) ?? [], year, this.sources[civilization.key]?.absent ?? []);
             if (!cut) continue;
 
             realms.push(describe(civilization.key, cut, year));
@@ -324,24 +324,18 @@ function describe(civ: string, cut: Cut, year: number): Realm {
 }
 
 /**
- * The cut for a year, or the nearest one the civilization has — unless the gap is interior.
+ * The cut for a year, or the nearest one the civilization has.
  *
- * A civilization the source maps before a century and again after it, but not in it, is not
- * missing data: it is missing. The Chinese have borders every century from 700 to 1200 and
- * again from 1492, and nothing between — because the ground was the Mongol Yuan and then the
- * Ming. Carrying the Song line of 1200 forward into 1279 would draw a realm that had ceased to
- * exist, and then report the Mongols as disputing all of it.
- *
- * Outside that range the reasoning is the other way round. A single hand-drawn snapshot, or a
- * source that simply stops recording, is thin data rather than evidence of an ending, so the
- * nearest cut stands in and the border is drawn as borrowed.
+ * A century the source does not map is bridged with the nearest border, because the source is
+ * patchy and a hole in it is nearly always a hole in the data: England is missing from 1279 to
+ * 1400 and Goryeo from the same years, and both plainly existed. The one thing that stops the
+ * bridge is a declared absence — the realm was gone, somebody else held the ground, and the old
+ * line would invent a state. That judgement is written down per civilization, with its reason,
+ * rather than inferred from the shape of the gaps.
  */
-function nearest(cuts: readonly Cut[], year: number): Cut | null {
+function nearest(cuts: readonly Cut[], year: number, absent: readonly { from: number; to: number }[]): Cut | null {
     if (cuts.length === 0) return null;
-
-    const before = cuts.filter((cut) => cut.year <= year).at(-1);
-    const after = cuts.find((cut) => cut.year >= year);
-    if (before && after && before.year !== after.year) return null;
+    if (absent.some((gap) => year >= gap.from && year <= gap.to)) return null;
 
     return cuts.reduce((best, cut) => (Math.abs(cut.year - year) < Math.abs(best.year - year) ? cut : best));
 }

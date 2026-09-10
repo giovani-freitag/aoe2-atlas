@@ -32,9 +32,25 @@ export interface DropBox {
     north: number;
 }
 
+/** A stretch of years a realm did not exist as itself, and why. */
+export interface Absence {
+    from: number;
+    to: number;
+    reason: string;
+}
+
 export interface TerritorySpec {
     /** Every name the realm goes by in the source, across the centuries. */
     aliases: readonly string[];
+    /**
+     * Years the realm must not be drawn even though its span covers them.
+     *
+     * By default a century the source does not map is bridged with the nearest border, because
+     * the source is patchy and a gap in it is usually a gap in the data. This is for the other
+     * case: the realm was genuinely gone, somebody else held the ground, and drawing the old
+     * line would invent a state that did not exist.
+     */
+    absent?: readonly Absence[];
     /** Names that replace the alias match for one year; an empty list draws nothing that year. */
     overrides?: Readonly<Record<number, readonly string[]>>;
     /** Outlines drawn by hand, keyed by the year they stand for. */
@@ -269,10 +285,19 @@ const GREENLAND: DropBox = {
 
 /** Civilization key to the names, patches and drawings its border is cut from. */
 export const TERRITORY_SOURCES: Readonly<Record<string, TerritorySpec>> = {
-    britons: { aliases: ['Mercia', 'Wessex', 'England', 'Angevin Empire', 'England and Ireland'] },
+    britons: { aliases: ['Mercia', 'Wessex', 'England', 'Angevin Empire', 'English territory', 'England and Ireland'] },
     byzantines: { aliases: ['Eastern Roman Empire', 'Byzantine Empire'] },
     celts: { aliases: ['Celtic kingdoms', 'Scotland'] },
-    chinese: { aliases: ['Sui Empire', 'Tang Empire', 'Song Empire', 'Ming Empire', 'Ming Chinese Empire'] },
+    chinese: {
+        aliases: ['Sui Empire', 'Tang Empire', 'Song Empire', 'Ming Empire', 'Ming Chinese Empire'],
+        absent: [
+            {
+                from: 1279,
+                to: 1367,
+                reason: 'Dinastia Yuan: de Yamen (1279) à queda de Khanbaliq (1368), a China era o Grande Canato mongol.',
+            },
+        ],
+    },
     franks: { aliases: ['Franks', 'Frankish Kingdom', 'Carolingian Empire', 'West Francia', 'East Francia'] },
     goths: { aliases: ['Visigoths', 'Ostrogoths', 'Goths', 'Visigothic Kingdom'] },
     japanese: {
@@ -297,14 +322,24 @@ export const TERRITORY_SOURCES: Readonly<Record<string, TerritorySpec>> = {
     aztecs: { aliases: ['Aztec Empire'] },
     huns: { aliases: ['Hunnic Empire'] },
     koreans: { aliases: ['Korea', 'Goryeo'] },
-    maya: { aliases: ['Maya chiefdoms and states', 'Maya states', 'Maya city-states', 'Mayas'] },
+    maya: { aliases: ['Maya chiefdoms and states', 'Maya states', 'Maya city-states', 'Maya Yucateco', 'Mayas'] },
     spanish: { aliases: ['Castilla', 'Castile', 'Castille', 'Aragón', 'Spain'] },
 
     inca: { aliases: ['Inca Empire'] },
     italians: { aliases: ['Venice', 'Genoa', 'Milan', 'Papal States', 'Naples', 'Savoy'] },
     magyars: { aliases: ['Magyars', 'Hungary', 'Kingdom of Hungary', 'Imperial Hungary'] },
     slavs: {
-        aliases: ['Slavs', 'Proto-Slavs', 'Slavonic tribes', 'Slavic tribes', 'Principality of Novgorod', 'Novgorod'],
+        // Croatia and Serbia are Slavic realms no other civilization in the game claims.
+        aliases: [
+            'Slavs',
+            'Proto-Slavs',
+            'Slavonic tribes',
+            'Slavic tribes',
+            'Croatia',
+            'Serbia',
+            'Principality of Novgorod',
+            'Novgorod',
+        ],
     },
 
     berbers: {
@@ -353,7 +388,17 @@ export const TERRITORY_SOURCES: Readonly<Record<string, TerritorySpec>> = {
     gurjaras: { aliases: ['Gurjara Pratihara', 'Pratiharas', 'Rajput kingdoms', 'Rajput Clans and Small States'] },
     hindustanis: { aliases: ['Sultanate of Delhi', 'Mughal Empire'] },
 
-    romans: { aliases: ['Roman Empire', 'Western Roman Empire'] },
+    romans: {
+        // In 300 the source draws the Tetrarchy as four co-emperors' shares of one empire.
+        aliases: [
+            'Roman Empire',
+            'Rome (Diocletianus)',
+            'Rome (Maximian)',
+            'Rome (Galerius)',
+            'Rome (Constantinus)',
+            'Western Roman Empire',
+        ],
+    },
 
     armenians: { aliases: ['Armenia'] },
     georgians: { aliases: ['Georgia', 'Kingdom of Georgia', 'Georgian Kingdom'] },

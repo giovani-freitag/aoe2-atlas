@@ -6,7 +6,7 @@ import { CIVILIZATIONS, LAND_RINGS, REGION_MEMBERSHIP, SLICE_YEARS } from '@/dat
 import { EXPANSION_RECORDS } from '@/data/expansions.ts';
 import { REGION_KEYS } from '@/domain/enums/region.ts';
 import type { MultiPolygonRings, Ring } from '@/domain/values/geo-shape.ts';
-import { WONDERS_OUTSIDE_THE_REALM } from '@/data/territory-sources.ts';
+import { TERRITORY_SOURCES, WONDERS_OUTSIDE_THE_REALM } from '@/data/territory-sources.ts';
 
 /** Half the sphere in steradians: an outer ring past this is wound inside out. */
 const HALF_SPHERE = 2 * Math.PI;
@@ -111,6 +111,42 @@ describe('the shipped geography', () => {
         const excused = Object.keys(WONDERS_OUTSIDE_THE_REALM);
 
         expect(excused.filter((key) => !CIV_KEYS.has(key))).toEqual([]);
+    });
+
+    /*
+     * A century inside a civilization's span with no border in it is either a declared absence —
+     * the realm was genuinely gone, and the spec says why — or a mistake. The first version of
+     * the century rule inferred absences from the shape of the gaps and wiped England, Goryeo and
+     * Rome out of centuries they plainly stood in. Now every blank has to be accounted for.
+     */
+    it('explains every century a standing civilization is missing from', () => {
+        const unexplained = CIVILIZATIONS.flatMap((civ) => {
+            const absences = TERRITORY_SOURCES[civ.key]?.absent ?? [];
+
+            return SLICE_YEARS.filter(
+                (year) =>
+                    civ.span.contains(year) &&
+                    !SLICES.find((slice) => slice.year === year)?.realms.some((realm) => realm.civ === civ.key) &&
+                    !absences.some((gap) => year >= gap.from && year <= gap.to),
+            ).map((year) => `${civ.key}@${year}`);
+        });
+
+        expect(unexplained).toEqual([]);
+    });
+
+    it('honours every declared absence', () => {
+        const drawnAnyway = CIVILIZATIONS.flatMap((civ) =>
+            (TERRITORY_SOURCES[civ.key]?.absent ?? []).flatMap((gap) =>
+                SLICES.filter(
+                    (slice) =>
+                        slice.year >= gap.from &&
+                        slice.year <= gap.to &&
+                        slice.realms.some((realm) => realm.civ === civ.key),
+                ).map((slice) => `${civ.key}@${slice.year}`),
+            ),
+        );
+
+        expect(drawnAnyway).toEqual([]);
     });
 
     it('never draws a civilization outside the years it stood', () => {
