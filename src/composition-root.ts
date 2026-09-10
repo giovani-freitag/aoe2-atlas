@@ -3,6 +3,7 @@ import { EXPANSION_RECORDS } from './data/expansions.ts';
 import { CatalogueService } from './services/atlas/catalogue-service.ts';
 import { SliceService } from './services/atlas/slice-service.ts';
 import { PaletteService } from './services/palette/palette-service.ts';
+import { AGE_COLUMN, AGE_REGION_SLOT } from './skins/age/palette.ts';
 
 export interface AtlasServices {
     catalogue: CatalogueService;
@@ -24,6 +25,6 @@ export function createServices(): AtlasServices {
             expansionOrder: EXPANSION_RECORDS.map((expansion) => expansion.key),
         }),
         slices: new SliceService({ baseUrl: `${import.meta.env.BASE_URL}data/`, years: SLICE_YEARS }),
-        palette: new PaletteService({ membership: REGION_MEMBERSHIP }),
+        palette: new PaletteService({ membership: REGION_MEMBERSHIP, column: AGE_COLUMN, regionSlot: AGE_REGION_SLOT }),
     };
 }

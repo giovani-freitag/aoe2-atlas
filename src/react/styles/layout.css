@@ -1,0 +1,296 @@
+/*
+ * Phone layout first: the map owns the screen and everything else slides over it.
+ *
+ * Nothing here squeezes the map into a strip so a list can sit under it — that was the mistake
+ * the previous version made, and on a 360-pixel screen it left the map barely taller than the
+ * legend. The roster and the detail arrive as offcanvas panels and leave again.
+ */
+
+.shell {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+    min-height: 0;
+}
+
+/* ---- header ------------------------------------------------------------- */
+
+.bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-2);
+    border-bottom: 1px solid var(--oak);
+    z-index: 2;
+}
+
+.bar__embers {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+.bar__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+    z-index: 1;
+}
+
+.bar__brand h1 {
+    font-size: 0.9375rem;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+
+.bar__brand p {
+    display: none;
+    font-size: 0.6875rem;
+    color: var(--text-faint);
+}
+
+.bar__spacer {
+    flex: 1;
+}
+
+.bar__button {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: var(--control);
+    height: var(--control);
+    border-radius: var(--radius);
+    z-index: 1;
+}
+
+/* ---- map ---------------------------------------------------------------- */
+
+.stage {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ---- timeline rail ------------------------------------------------------ */
+
+.rail {
+    position: relative;
+    padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--oak);
+    z-index: 2;
+}
+
+/* ---- the roster, offcanvas from the left -------------------------------- */
+
+.roster {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(20rem, 88vw);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--oak);
+    box-shadow: var(--shadow-lg);
+    transform: translateX(-100%);
+    transition:
+        transform 240ms ease,
+        overlay 240ms allow-discrete,
+        display 240ms allow-discrete;
+}
+
+.roster[open] {
+    transform: translateX(0);
+}
+
+/* The panel has to start offscreen for the transition to have anywhere to come from. */
+@starting-style {
+    .roster[open] {
+        transform: translateX(-100%);
+    }
+}
+
+.roster__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border-bottom: 1px solid var(--oak);
+}
+
+.roster__head h2 {
+    flex: 1;
+    font-size: 0.875rem;
+}
+
+.roster__list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    list-style: none;
+    padding: var(--space-1) var(--space-2) var(--space-5);
+    margin: 0;
+}
+
+/* ---- sheets, offcanvas from the bottom ---------------------------------- */
+
+.sheet {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100%;
+    height: 62dvh;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--oak);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: var(--shadow-lg);
+    padding-bottom: env(safe-area-inset-bottom);
+    transform: translateY(100%);
+    transition:
+        transform 240ms ease,
+        overlay 240ms allow-discrete,
+        display 240ms allow-discrete;
+}
+
+.sheet:popover-open {
+    transform: translateY(0);
+}
+
+@starting-style {
+    .sheet:popover-open {
+        transform: translateY(100%);
+    }
+}
+
+/* The grip is a real control: drag it between stops, or tap and it steps to the next. */
+.sheet__grip {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    padding: var(--space-2) 0 var(--space-1);
+    flex: none;
+    touch-action: none;
+    cursor: grab;
+}
+
+.sheet[data-dragging='true'] {
+    transition: none;
+    cursor: grabbing;
+}
+
+.sheet__grip span {
+    width: 2.5rem;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--stitch);
+}
+
+.sheet__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0 var(--space-3) var(--space-3);
+    border-bottom: 1px solid var(--oak);
+}
+
+.sheet__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+/*
+ * Once there is room for three columns the same panels stop being offcanvas and dock.
+ *
+ * They are the same elements and the same components: the dialog is opened non-modally and
+ * pulled back into the flow, and the sheet becomes the right-hand column. Nothing is duplicated
+ * for the wide case.
+ */
+@media (min-width: 60rem) {
+    .shell {
+        grid-template-areas:
+            'bar bar bar'
+            'roster stage detail'
+            'rail rail rail';
+        grid-template-columns: 20rem 1fr auto;
+        grid-template-rows: auto 1fr auto;
+    }
+
+    .bar {
+        grid-area: bar;
+        padding: var(--space-2) var(--space-4);
+    }
+
+    .bar__brand p {
+        display: block;
+    }
+
+    .stage {
+        grid-area: stage;
+    }
+
+    .rail {
+        grid-area: rail;
+        padding-inline: var(--space-4);
+    }
+
+    /*
+     * A non-modal dialog still arrives with the user agent's absolute positioning and auto
+     * margins. Both have to go for it to behave as a grid column, and a zero min-height is what
+     * stops fifty-six rows from stretching the row and pushing the map off the screen.
+     */
+    .roster {
+        grid-area: roster;
+        position: relative;
+        inset: auto;
+        margin: 0;
+        width: auto;
+        max-width: none;
+        height: auto;
+        min-height: 0;
+        transform: none;
+        box-shadow: none;
+        transition: none;
+    }
+
+    .roster__close {
+        display: none;
+    }
+
+    .sheet {
+        grid-area: detail;
+        position: relative;
+        inset: auto;
+        margin: 0;
+        width: 22rem;
+        height: auto;
+        min-height: 0;
+        border-top: none;
+        border-left: 1px solid var(--oak);
+        border-radius: 0;
+        box-shadow: none;
+        transform: none;
+        transition: none;
+        padding-bottom: 0;
+    }
+
+    .sheet__grip {
+        display: none;
+    }
+
+    .sheet__head {
+        padding-top: var(--space-3);
+    }
+}

@@ -1,0 +1,171 @@
+.atlas {
+    position: absolute;
+    inset: 0;
+    background: var(--leather-deep);
+    overflow: hidden;
+}
+
+.atlas__canvas {
+    display: block;
+    cursor: grab;
+    /* The map owns every gesture inside it; the page must not try to scroll underneath. */
+    touch-action: none;
+}
+
+.atlas__canvas:active {
+    cursor: grabbing;
+}
+
+/*
+ * The sea is a flat wash and the land is the parchment, which is the way an old chart is
+ * inked: the paper is the world, and the water is what was left alone.
+ */
+.atlas__sea {
+    fill: var(--sea);
+}
+
+.atlas__land {
+    fill: var(--parchment);
+    stroke: var(--coast);
+    stroke-width: 0.7;
+    stroke-linejoin: round;
+}
+
+.atlas__graticule {
+    fill: none;
+    stroke: var(--graticule);
+    stroke-width: 1;
+}
+
+.atlas__rim {
+    fill: none;
+    stroke: var(--rim);
+    stroke-width: 1.5;
+}
+
+.atlas__realm {
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    transition: stroke-width 120ms ease;
+}
+
+/*
+ * A border the source admits it only knows roughly is drawn as a dashed line over a blurred
+ * fill. Both are the documented way to say "this was a frontier zone, not a surveyed line",
+ * and drawing it crisp would claim a precision that does not exist.
+ */
+.atlas__realm[data-precision='approximate'] {
+    stroke-dasharray: 6 4;
+}
+
+/* A line borrowed from another century is drawn even fainter, and the panel says which. */
+.atlas__realm[data-carried='true'] {
+    stroke-dasharray: 2 5;
+    stroke-opacity: 0.75;
+}
+
+.atlas__realm[data-focused='true'] {
+    stroke-width: 2.5;
+}
+
+.atlas__realm[data-highlighted='true'] {
+    stroke-width: 3.5;
+    stroke-dasharray: none;
+}
+
+.atlas__marks {
+    pointer-events: none;
+}
+
+.marker {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.marker__shield {
+    fill: var(--parchment);
+    filter: drop-shadow(0 1px 2px rgb(0 0 0 / 45%));
+}
+
+.marker__arms {
+    clip-path: inset(0 round 2px);
+}
+
+/* A civilization with no border this century is still on the map, but faded to a ghost. */
+.marker[data-standing='false'] {
+    opacity: 0.3;
+}
+
+.marker[data-highlighted='true'] .marker__shield,
+.marker:hover .marker__shield {
+    fill: var(--parchment-shade);
+}
+
+.marker[data-focused='true'] .marker__shield {
+    fill: var(--brass-soft);
+}
+
+.atlas__controls {
+    position: absolute;
+    right: var(--space-3);
+    bottom: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.atlas__controls button {
+    display: grid;
+    place-items: center;
+    width: var(--control);
+    height: var(--control);
+    border-radius: var(--radius);
+}
+
+.atlas__note {
+    position: absolute;
+    right: var(--space-3);
+    top: var(--space-2);
+    font-size: 0.625rem;
+    color: var(--ink-faint);
+    pointer-events: none;
+}
+
+.stage__error {
+    position: absolute;
+    left: 50%;
+    top: var(--space-4);
+    transform: translateX(-50%);
+    padding: var(--space-2) var(--space-3);
+    background: var(--leather-raised);
+    border: 1px solid var(--danger);
+    border-radius: var(--radius);
+    color: var(--danger-soft);
+    font-size: 0.8125rem;
+}
+
+/*
+ * The legend sits at the foot of the map, never the head. Europe is where the borders pile up,
+ * and a panel in the top corner covers exactly the part a reader turned the layer on to see.
+ */
+.legend {
+    position: absolute;
+    left: var(--space-2);
+    right: calc(var(--control) + var(--space-4));
+    bottom: var(--space-2);
+    max-height: 34%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-2);
+    border: 1px solid var(--oak);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+@media (min-width: 45rem) {
+    .legend {
+        right: auto;
+        width: 16rem;
+        max-height: calc(100% - 4rem);
+    }
+}

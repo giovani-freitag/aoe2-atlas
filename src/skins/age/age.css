@@ -1,0 +1,201 @@
+/*
+ * The Age skin: an old chart on a leather-topped table.
+ *
+ * The map is parchment and the furniture around it is dark — tooled leather, oak, iron. That
+ * split is not decoration: the lightest thing on screen should be the thing being read, and
+ * everything else should recede. The realm colours were darkened to clear three to one against
+ * this parchment, so the surface value below is not a free choice — see skins/age/palette.ts.
+ */
+:root {
+    color-scheme: dark;
+
+    /* Parchment: the map, and anything meant to read as a document. */
+    --parchment: #efe6d0;
+    --parchment-shade: #ddd0b2;
+    --parchment-deep: #c8b894;
+    --ink: #241c10;
+    --ink-soft: #4a3c26;
+    --ink-faint: #776346;
+
+    /* Leather and oak: the furniture. */
+    --leather: #241b14;
+    --leather-raised: #30241a;
+    --leather-deep: #1a130d;
+    --oak: #3b2c1d;
+    --stitch: #6b543a;
+
+    /* Iron and brass: the fittings. */
+    --iron: #4a4640;
+    --iron-lit: #6d675e;
+    --brass: #c8a44a;
+    --brass-soft: #e6cd8a;
+    --brass-deep: #8a6a1f;
+    --brass-dim: rgb(200 164 74 / 16%);
+
+    /* Text on the dark furniture. */
+    --text: #eadfc6;
+    --text-muted: #b3a184;
+    --text-faint: #857458;
+
+    --sea: #cfd6cf;
+    --coast: #7d6a4c;
+    --graticule: rgb(36 28 16 / 9%);
+    --rim: #6b563a;
+
+    --danger: #b8452f;
+    --danger-soft: #e08b74;
+
+    /* Touch first: every control is a thumb target until a pointer says otherwise. */
+    --control: 2.75rem;
+    --tap: 2.75rem;
+
+    --radius-sm: 2px;
+    --radius: 3px;
+    --radius-lg: 6px;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+
+    --shadow: 0 1px 3px rgb(0 0 0 / 45%);
+    --shadow-lg: 0 12px 40px rgb(0 0 0 / 60%);
+    --emboss: inset 0 1px 0 rgb(234 223 198 / 8%);
+    --engrave: inset 0 1px 2px rgb(0 0 0 / 55%);
+
+    --title: Cinzel, 'Times New Roman', serif;
+    --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+@media (min-width: 60rem) {
+    :root {
+        /* A pointer is precise, so controls can stop being thumb-sized. */
+        --control: 2.25rem;
+    }
+}
+
+/* ---- materials ---------------------------------------------------------- */
+
+/*
+ * Leather. The grain is two offset radial fields rather than an image, so it costs one
+ * declaration and survives any size.
+ */
+.leather {
+    background-color: var(--leather);
+    background-image:
+        radial-gradient(circle at 20% 15%, rgb(255 255 255 / 3%) 0 1px, transparent 1px),
+        radial-gradient(circle at 62% 48%, rgb(0 0 0 / 22%) 0 2px, transparent 2px),
+        radial-gradient(circle at 85% 78%, rgb(255 255 255 / 2%) 0 1px, transparent 1px);
+    background-size:
+        13px 11px,
+        19px 17px,
+        23px 29px;
+}
+
+/* A stitched edge, the way a tooled panel is finished. */
+.stitched {
+    position: relative;
+}
+
+.stitched::after {
+    content: '';
+    position: absolute;
+    inset: var(--space-1);
+    border: 1px dashed var(--stitch);
+    border-radius: inherit;
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+/* Oak, for the rails a control slides along. */
+.oak {
+    background-color: var(--oak);
+    background-image: repeating-linear-gradient(
+        90deg,
+        rgb(0 0 0 / 16%) 0 1px,
+        transparent 1px 4px,
+        rgb(255 255 255 / 4%) 4px 5px,
+        transparent 5px 11px
+    );
+}
+
+/*
+ * Iron. The plate is a bevel; the highlight that crosses it follows the pointer and is fed by
+ * the specular effect, so a device with no pointer simply never lights it.
+ */
+.iron {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--iron-lit) 0%, var(--iron) 55%, #37332e 100%);
+    border: 1px solid #1d1a16;
+    box-shadow: var(--emboss), var(--shadow);
+    color: var(--text);
+}
+
+.iron::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--sx, 50%) var(--sy, -60%), rgb(255 245 220 / 30%) 0%, transparent 46%);
+    pointer-events: none;
+    transition: opacity 200ms ease;
+}
+
+.iron:active {
+    background: linear-gradient(180deg, #37332e 0%, var(--iron) 60%, var(--iron-lit) 100%);
+    box-shadow: var(--engrave);
+}
+
+/* Four rivets, one per corner, for anything that should read as bolted down. */
+.riveted::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: inherit;
+    background-image: radial-gradient(circle, var(--iron-lit) 0 1.5px, transparent 1.6px);
+    background-position:
+        0 0,
+        100% 0,
+        0 100%,
+        100% 100%;
+    background-size: 4px 4px;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+
+/*
+ * Parchment. The fibre is a turbulence filter baked into a data URI: no network, no image file,
+ * and it tiles at any zoom without going soft.
+ */
+.parchment {
+    background-color: var(--parchment);
+    background-image: url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180">\
+<filter id="f"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/>\
+<feColorMatrix type="saturate" values="0"/></filter>\
+<rect width="180" height="180" filter="url(%23f)" opacity="0.055"/></svg>');
+    color: var(--ink);
+}
+
+/* The scorched edge of an old sheet. */
+.singed {
+    box-shadow:
+        inset 0 0 22px rgb(120 84 34 / 26%),
+        inset 0 0 3px rgb(90 58 20 / 40%);
+}
+
+/* A braided rope, for dividing one thing from another. */
+.rope {
+    height: 6px;
+    background-image: repeating-linear-gradient(
+        66deg,
+        var(--brass-deep) 0 3px,
+        #6b4f16 3px 6px,
+        var(--brass-deep) 6px 9px
+    );
+    opacity: 0.55;
+    border-radius: 3px;
+}

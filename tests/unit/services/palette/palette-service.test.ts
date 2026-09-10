@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { REGION_KEYS, type RegionKey } from '@/domain/enums/region.ts';
 import { PaletteService } from '@/services/palette/palette-service.ts';
+import { AGE_COLUMN, AGE_REGION_SLOT } from '@/skins/age/palette.ts';
 
 const MEMBERSHIP: Record<RegionKey, readonly string[]> = {
     weur: ['britons', 'franks', 'celts', 'goths', 'vikings', 'spanish', 'italians'],
@@ -14,13 +15,13 @@ const MEMBERSHIP: Record<RegionKey, readonly string[]> = {
 };
 
 describe('PaletteService', () => {
-    const palette = new PaletteService({ membership: MEMBERSHIP });
+    const palette = new PaletteService({ membership: MEMBERSHIP, column: AGE_COLUMN, regionSlot: AGE_REGION_SLOT });
 
     it('gives every civilization in a region the same hue', () => {
         const mongols = palette.styleOf('mongols');
         const tatars = palette.styleOf('tatars');
 
-        expect([mongols.light, mongols.dark]).toEqual([tatars.light, tatars.dark]);
+        expect(mongols.colour).toBe(tatars.colour);
     });
 
     it('gives two civilizations of one region different hatching', () => {
@@ -34,7 +35,7 @@ describe('PaletteService', () => {
         const mongols = palette.styleOf('mongols');
         const chinese = palette.styleOf('chinese');
 
-        expect(mongols.dark).not.toBe(chinese.dark);
+        expect(mongols.colour).not.toBe(chinese.colour);
     });
 
     it('reaches a second stroke weight once the angles run out', () => {
@@ -57,7 +58,7 @@ describe('PaletteService', () => {
     });
 
     it('hands the legend a colour for every region', () => {
-        const colours = REGION_KEYS.map((region) => palette.regionColour(region, 'dark'));
+        const colours = REGION_KEYS.map((region) => palette.regionColour(region));
 
         expect(new Set(colours).size).toBe(REGION_KEYS.length);
     });

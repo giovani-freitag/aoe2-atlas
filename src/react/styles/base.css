@@ -1,0 +1,132 @@
+/*
+ * The base sheet is written for a phone. There is not one media query in it.
+ *
+ * Everything wider than a phone is an addition, made with `min-width` in layout.css. Building
+ * the other way round — desktop first, then squeezing — is how the previous version ended up
+ * stacking a map on top of a list on a 360-pixel screen.
+ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+html {
+    /* Stops iOS inflating type in landscape, which breaks the thumb-sized controls. */
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background: var(--leather-deep);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    /* A tap should never be mistaken for the start of a text selection. */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+input {
+    font: inherit;
+    color: inherit;
+}
+
+a {
+    color: var(--brass-soft);
+    text-decoration-color: color-mix(in srgb, var(--brass) 45%, transparent);
+    text-underline-offset: 0.15em;
+}
+
+a:hover {
+    text-decoration-color: var(--brass);
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--title);
+    font-size: inherit;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+:focus-visible {
+    outline: 2px solid var(--brass);
+    outline-offset: 2px;
+}
+
+dialog {
+    padding: 0;
+    border: none;
+    color: inherit;
+    max-width: none;
+    max-height: none;
+}
+
+dialog::backdrop {
+    background: rgb(12 8 4 / 62%);
+}
+
+[popover] {
+    padding: 0;
+    border: none;
+    color: inherit;
+    overflow: visible;
+}
+
+/* Readable by a screen reader, invisible to everyone else. */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.eyebrow {
+    font-family: var(--title);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+}
+
+.numeric {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
