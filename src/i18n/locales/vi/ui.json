@@ -74,7 +74,7 @@
     },
     "settings": {
         "title": "Cài đặt",
-        "subtitle": "Cách thế giới được vẽ",
+        "subtitle": "Cách atlas được hiển thị",
         "language": "Ngôn ngữ",
         "projection": "Phép chiếu",
         "projectionHint": "Diện tích trong các bảng được đo trên mặt cầu khi tạo dữ liệu, nên đổi ở đây chỉ đổi hình vẽ chứ không đổi con số nào.",

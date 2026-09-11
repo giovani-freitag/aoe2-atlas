@@ -74,7 +74,7 @@
     },
     "settings": {
         "title": "Settings",
-        "subtitle": "How the world is drawn",
+        "subtitle": "How the atlas is shown",
         "language": "Language",
         "projection": "Projection",
         "projectionHint": "Areas in the panels are measured on the sphere when the data is built, so switching here changes the drawing and not a single number.",

@@ -74,7 +74,7 @@
     },
     "settings": {
         "title": "Ayarlar",
-        "subtitle": "Dünya nasıl çiziliyor",
+        "subtitle": "Atlas nasıl gösteriliyor",
         "language": "Dil",
         "projection": "Projeksiyon",
         "projectionHint": "Panellerdeki alanlar veri üretilirken küre üzerinde ölçülür; buradaki değişiklik çizimi değiştirir, sayıları değil.",

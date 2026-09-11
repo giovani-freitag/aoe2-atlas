@@ -74,7 +74,7 @@
     },
     "settings": {
         "title": "設定",
-        "subtitle": "世界如何繪製",
+        "subtitle": "地圖集如何呈現",
         "language": "語言",
         "projection": "投影",
         "projectionHint": "面板中的面積是在產生資料時於球面上量得的，因此在此更換只改變圖形，不改變任何數字。",

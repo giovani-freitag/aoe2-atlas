@@ -74,7 +74,7 @@
     },
     "settings": {
         "title": "Ajustes",
-        "subtitle": "Cómo se dibuja el mundo",
+        "subtitle": "Cómo se muestra el atlas",
         "language": "Idioma",
         "projection": "Proyección",
         "projectionHint": "Las áreas de los paneles se miden sobre la esfera al generar los datos, así que cambiar aquí altera el dibujo y ningún número.",

@@ -74,7 +74,7 @@
     },
     "settings": {
         "title": "設定",
-        "subtitle": "世界の描き方",
+        "subtitle": "アトラスの表示方法",
         "language": "言語",
         "projection": "投影法",
         "projectionHint": "パネルの面積はデータ生成時に球面上で測っているので、ここでの変更は描画だけを変え、数値は変わりません。",

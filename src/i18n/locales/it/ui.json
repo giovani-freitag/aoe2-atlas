@@ -74,7 +74,7 @@
     },
     "settings": {
         "title": "Impostazioni",
-        "subtitle": "Come viene disegnato il mondo",
+        "subtitle": "Come viene mostrato l'atlante",
         "language": "Lingua",
         "projection": "Proiezione",
         "projectionHint": "Le aree nei pannelli sono misurate sulla sfera quando i dati vengono generati, quindi cambiare qui modifica il disegno e nessun numero.",
