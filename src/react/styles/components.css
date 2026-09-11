@@ -290,15 +290,17 @@
     --knob: 0.875rem;
 
     /*
-     * Half a bar of the handle's travel, which is not half a bar of the track.
+     * How far in from each end the rail has to start for its stops to land on the bars.
      *
-     * A slider's handle cannot reach the ends: it runs between its own half-widths, so the
-     * first stop sits a knob-radius in from the left and the last one a knob-radius in from the
-     * right. Bars spread across the whole track therefore drifted away from the handle as it
-     * moved, by up to half its width — at 1492, sixteen stops along, the handle sat a good six
-     * pixels to the left of the column it had selected.
+     * A slider's handle cannot reach the ends of its own element — it runs between its own half
+     * widths — and each bar's stop is its middle, half a bar in from the edge of the row. So the
+     * rail is pulled in by half a bar and pushed back out by half a handle, and after that the
+     * first stop is the middle of the first bar and the last is the middle of the last.
+     *
+     * The bars were hung over the ends instead, and clipped. That lined them up just as well and
+     * looked like a mistake: the first and last column came out half the width of the rest.
      */
-    --overhang: calc((100% - var(--knob)) / (2 * (var(--bars, 2) - 1)));
+    --edge: calc(100% / (2 * var(--bars, 2)) - var(--knob) / 2);
 
     grid-area: track;
     position: relative;
@@ -315,7 +317,7 @@
  */
 .rail-body__profile {
     position: absolute;
-    inset: 0 calc(var(--knob) / 2 - var(--overhang)) 0.75rem;
+    inset: 0 0 0.75rem;
     display: flex;
     align-items: flex-end;
     gap: 1px;
@@ -337,18 +339,23 @@
 /* The slider runs along a rail of oak, because a bare track looks like a form control. */
 .rail-body__rope {
     position: absolute;
-    inset: auto 0 0.5rem;
+    inset: auto var(--edge) 0.5rem;
     height: 4px;
     border-radius: 3px;
     box-shadow: var(--engrave);
 }
 
-/* The stretch of the rail already travelled, ending exactly under the handle. */
+/*
+ * The stretch of rail already travelled, ending exactly under the middle of the handle.
+ *
+ * It starts at the very end of the rail rather than at the first stop, so that the half-handle
+ * of rail before that stop is filled too — left dark it read as a chip out of the brass.
+ */
 .rail-body__fill {
     position: absolute;
-    left: calc(var(--knob) / 2);
+    left: var(--edge);
     bottom: 0.5rem;
-    width: calc(var(--at, 0) * (100% - var(--knob)));
+    width: calc(var(--knob) / 2 + var(--at, 0) * (100% - 100% / var(--bars, 2)));
     height: 4px;
     border-radius: 3px;
     background: var(--brass);
@@ -363,8 +370,7 @@
  */
 .rail-body__track input {
     position: absolute;
-    inset: auto 0 0;
-    width: 100%;
+    inset: auto var(--edge) 0;
     height: 1.25rem;
     margin: 0;
     appearance: none;
