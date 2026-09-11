@@ -254,21 +254,28 @@
 
 /* ---- timeline rail ------------------------------------------------------ */
 
+/*
+ * On a phone the year gets the full width of the drawer it sits in.
+ *
+ * Beside the reading it had barely half of one, and a slider that narrow is not a control any
+ * thumb can work: nineteen centuries were crammed into about a hundred and forty pixels, so
+ * every stop was seven pixels wide. The reading goes above it instead, on one line.
+ */
 .rail-body {
     display: grid;
-    grid-template-columns: auto 1fr;
     grid-template-areas:
-        'reading track'
-        'reading ends';
-    align-items: center;
-    gap: 0 var(--space-3);
+        'reading'
+        'track'
+        'ends';
+    gap: var(--space-1);
 }
 
 .rail-body__reading {
     grid-area: reading;
     display: flex;
-    flex-direction: column;
-    min-width: 5.5rem;
+    align-items: baseline;
+    gap: var(--space-2);
+    min-width: 0;
 }
 
 .rail-body__reading strong {
@@ -286,8 +293,15 @@
  * read as the half-bars a histogram centred on its ticks is supposed to have.
  */
 .rail-body__track {
-    /* The handle is drawn here rather than by the browser, so its width is a number we know. */
-    --knob: 0.875rem;
+    /*
+     * The handle is drawn here rather than by the browser, so its width is a number we know —
+     * and a number that can grow for a thumb where a pointer is not what is doing the dragging.
+     * The lane is the slider's own height, which is the hit area, and everything else in the
+     * track is placed against those two so one set of rules serves both sizes.
+     */
+    --knob: 1.125rem;
+    --lane: 1.75rem;
+    --rope: 5px;
 
     /*
      * How far in from each end the rail has to start for its stops to land on the bars.
@@ -304,7 +318,7 @@
 
     grid-area: track;
     position: relative;
-    height: 2.25rem;
+    height: 3rem;
     overflow: clip;
 }
 
@@ -317,7 +331,7 @@
  */
 .rail-body__profile {
     position: absolute;
-    inset: 0 0 0.75rem;
+    inset: 0 0 calc(var(--lane) / 2 + var(--rope) / 2);
     display: flex;
     align-items: flex-end;
     gap: 1px;
@@ -339,8 +353,8 @@
 /* The slider runs along a rail of oak, because a bare track looks like a form control. */
 .rail-body__rope {
     position: absolute;
-    inset: auto var(--edge) 0.5rem;
-    height: 4px;
+    inset: auto var(--edge) calc(var(--lane) / 2 - var(--rope) / 2);
+    height: var(--rope);
     border-radius: 3px;
     box-shadow: var(--engrave);
 }
@@ -354,9 +368,9 @@
 .rail-body__fill {
     position: absolute;
     left: var(--edge);
-    bottom: 0.5rem;
+    bottom: calc(var(--lane) / 2 - var(--rope) / 2);
     width: calc(var(--knob) / 2 + var(--at, 0) * (100% - 100% / var(--bars, 2)));
-    height: 4px;
+    height: var(--rope);
     border-radius: 3px;
     background: var(--brass);
     opacity: 0.85;
@@ -371,7 +385,7 @@
 .rail-body__track input {
     position: absolute;
     inset: auto var(--edge) 0;
-    height: 1.25rem;
+    height: var(--lane);
     margin: 0;
     appearance: none;
     background: none;
@@ -412,6 +426,36 @@
     justify-content: space-between;
     font-size: 0.625rem;
     color: var(--text-faint);
+}
+
+/*
+ * With room for it, the reading moves back beside the rail and the whole instrument shrinks:
+ * a pointer is precise, so the handle has no need to be the size of a fingertip.
+ */
+@media (min-width: 60rem) {
+    .rail-body {
+        grid-template-columns: auto 1fr;
+        grid-template-areas:
+            'reading track'
+            'reading ends';
+        align-items: center;
+        gap: 0 var(--space-3);
+    }
+
+    .rail-body__reading {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        min-width: 5.5rem;
+    }
+
+    .rail-body__track {
+        --knob: 0.875rem;
+        --lane: 1.25rem;
+        --rope: 4px;
+
+        height: 2.25rem;
+    }
 }
 
 .rail__credit {
