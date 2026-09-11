@@ -29,9 +29,10 @@ export interface TimelineRailProps {
  * years would spend most of its travel on positions that redraw nothing and would report a year
  * the map does not actually show. One notch, one map.
  *
- * On a phone it also carries an arrow either side of the reading. Nineteen stops across a phone
- * is seventeen pixels apiece, which a thumb can sweep but cannot aim — and telling 1279 from
- * 1300 is exactly the kind of thing a reader comes here to do.
+ * On a phone it also carries an arrow either side of the track. Nineteen stops across a phone is
+ * a dozen pixels apiece, which a thumb can sweep but cannot aim — and telling 1279 from 1300 is
+ * exactly the kind of thing a reader comes here to do. They sit beside the track rather than on
+ * a line of their own, because a line of their own cost the map thirty pixels of its height.
  */
 export function TimelineRail({ civilizations, years, year, loading, stepping, onChange }: TimelineRailProps) {
     const { t } = useTranslation();
@@ -59,6 +60,11 @@ export function TimelineRail({ civilizations, years, year, loading, stepping, on
     return (
         <div className="rail-body">
             <div className="rail-body__reading">
+                <strong className="numeric">{format.year(year)}</strong>
+                <span className="eyebrow">{loading ? t('rail.loading') : t('rail.year')}</span>
+            </div>
+
+            <div className="rail-body__lane">
                 {stepping ? (
                     <button
                         type="button"
@@ -73,10 +79,40 @@ export function TimelineRail({ civilizations, years, year, loading, stepping, on
                     </button>
                 ) : null}
 
-                <span className="rail-body__now">
-                    <strong className="numeric">{format.year(year)}</strong>
-                    <span className="eyebrow">{loading ? t('rail.loading') : t('rail.year')}</span>
-                </span>
+                {/*
+                 * How many stops there are, and which one we are on, as numbers the stylesheet can
+                 * do arithmetic with: everything drawn behind the slider has to land on exactly the
+                 * same positions the slider's own handle can reach.
+                 */}
+                <div
+                    className="rail-body__track"
+                    style={{ '--bars': profile.length, '--at': at / Math.max(1, years.length - 1) } as CSSProperties}
+                >
+                    <div className="rail-body__profile" aria-hidden>
+                        {profile.map((count, index) => (
+                            <span
+                                key={years[index]}
+                                data-reached={index <= at}
+                                style={{ height: `${Math.max(6, (count / tallest) * 100)}%` }}
+                            />
+                        ))}
+                    </div>
+                    <div className="rail-body__rope oak" aria-hidden />
+                    <div className="rail-body__fill" aria-hidden />
+                    <input
+                        type="range"
+                        min={0}
+                        max={Math.max(0, years.length - 1)}
+                        step={1}
+                        value={at}
+                        aria-label={t('rail.year')}
+                        aria-valuetext={format.year(year)}
+                        onChange={(event) => {
+                            const chosen = years[Number(event.target.value)];
+                            if (chosen !== undefined) onChange(chosen);
+                        }}
+                    />
+                </div>
 
                 {stepping ? (
                     <button
@@ -93,40 +129,7 @@ export function TimelineRail({ civilizations, years, year, loading, stepping, on
                 ) : null}
             </div>
 
-            {/*
-             * How many stops there are, and which one we are on, as numbers the stylesheet can
-             * do arithmetic with: everything drawn behind the slider has to land on exactly the
-             * same positions the slider's own handle can reach.
-             */}
-            <div
-                className="rail-body__track"
-                style={{ '--bars': profile.length, '--at': at / Math.max(1, years.length - 1) } as CSSProperties}
-            >
-                <div className="rail-body__profile" aria-hidden>
-                    {profile.map((count, index) => (
-                        <span
-                            key={years[index]}
-                            data-reached={index <= at}
-                            style={{ height: `${Math.max(6, (count / tallest) * 100)}%` }}
-                        />
-                    ))}
-                </div>
-                <div className="rail-body__rope oak" aria-hidden />
-                <div className="rail-body__fill" aria-hidden />
-                <input
-                    type="range"
-                    min={0}
-                    max={Math.max(0, years.length - 1)}
-                    step={1}
-                    value={at}
-                    aria-label={t('rail.year')}
-                    aria-valuetext={format.year(year)}
-                    onChange={(event) => {
-                        const chosen = years[Number(event.target.value)];
-                        if (chosen !== undefined) onChange(chosen);
-                    }}
-                />
-            </div>
+
 
             <div className="rail-body__ends numeric" aria-hidden>
                 <span>{format.year(first)}</span>

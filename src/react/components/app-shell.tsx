@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { List, Loader, SlidersHorizontal } from 'lucide-react';
+import { ListFilter, Loader, SlidersHorizontal } from 'lucide-react';
 import { SLICE_YEARS } from '@/data/dataset.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { drawnRealms, useAtlas } from '@/react/providers/atlas-context.ts';
@@ -112,7 +112,7 @@ export function AppShell() {
                         }}
                         aria-label={t('app.openRoster')}
                     >
-                        <List size={20} aria-hidden />
+                        <ListFilter size={20} aria-hidden />
                     </button>
                 )}
 

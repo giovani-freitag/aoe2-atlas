@@ -99,6 +99,12 @@
     position: fixed;
     inset: 0 auto var(--rail-height, 0px) 0;
     width: min(20rem, 88vw);
+    /*
+     * A dialog is `height: fit-content` by the browser's own stylesheet, which quietly wins over
+     * a top and a bottom and makes the box as tall as fifty-six rows. The list inside then has
+     * nothing to be a fraction of, and its scroll goes away with it.
+     */
+    height: auto;
     display: flex;
     flex-direction: column;
     border-right: 1px solid var(--oak);
