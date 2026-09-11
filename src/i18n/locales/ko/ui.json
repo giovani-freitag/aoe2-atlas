@@ -101,8 +101,6 @@
     },
     "rail": {
         "loading": "불러오는 중…",
-        "thisYear": "이 해의 지도",
-        "mapOf": "{{year}}년 지도",
         "year": "지도 연도",
         "back": "{{years}}년 뒤로",
         "forward": "{{years}}년 앞으로"

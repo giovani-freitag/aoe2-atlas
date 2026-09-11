@@ -101,8 +101,6 @@
     },
     "rail": {
         "loading": "読み込み中…",
-        "thisYear": "この年の地図",
-        "mapOf": "{{year}}年の地図",
         "year": "地図の年",
         "back": "{{years}}年戻る",
         "forward": "{{years}}年進む"

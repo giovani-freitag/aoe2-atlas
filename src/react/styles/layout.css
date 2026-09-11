@@ -97,9 +97,8 @@
 
 .roster {
     position: fixed;
-    inset: 0 auto 0 0;
+    inset: 0 auto var(--rail-height, 0px) 0;
     width: min(20rem, 88vw);
-    height: 100%;
     display: flex;
     flex-direction: column;
     border-right: 1px solid var(--oak);
@@ -147,18 +146,26 @@
 
 /* ---- sheets, offcanvas from the bottom ---------------------------------- */
 
+/*
+ * A sheet stops at the year rail; it never covers it.
+ *
+ * The year is the axis the whole atlas turns on — every area, every border and every neighbour
+ * in the panel is stated *for that year* — so a panel that hides it is asking the reader to
+ * remember which map they are reading. The rail publishes its height, and the sheet rises to
+ * meet it and slides away behind it.
+ */
 .sheet {
     position: fixed;
-    inset: auto 0 0 0;
+    inset: auto 0 var(--rail-height, 0px) 0;
     width: 100%;
     height: 62dvh;
+    max-height: calc(100dvh - var(--bar-height, 0px) - var(--rail-height, 0px));
     display: flex;
     flex-direction: column;
     border-top: 1px solid var(--oak);
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     box-shadow: var(--shadow-lg);
-    padding-bottom: env(safe-area-inset-bottom);
-    transform: translateY(100%);
+    transform: translateY(calc(100% + var(--rail-height, 0px)));
     transition:
         transform 240ms ease,
         height 200ms ease,
@@ -172,7 +179,7 @@
 
 @starting-style {
     .sheet:popover-open {
-        transform: translateY(100%);
+        transform: translateY(calc(100% + var(--rail-height, 0px)));
     }
 }
 
@@ -286,14 +293,13 @@
      * simply slides in from the right.
      */
     .sheet--dock {
-        inset: auto 0 0 auto;
+        inset: var(--bar-height, 0px) 0 var(--rail-height, 0px) auto;
         width: 22rem;
         height: auto;
-        top: 0;
+        max-height: none;
         border-top: none;
         border-left: 1px solid var(--oak);
-        border-radius: 0;
-        padding-bottom: 0;
+        border-radius: var(--radius-lg) 0 0 var(--radius-lg);
         transform: translateX(100%);
         transition:
             transform 240ms ease,

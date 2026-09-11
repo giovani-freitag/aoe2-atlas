@@ -2,15 +2,10 @@ import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import { useFormat } from '@/react/hooks/use-format.ts';
 
-/** How far the arrows move the year, which is a human-sized step through the centuries. */
-const STEP = 50;
-
 export interface YearStepperProps {
-    from: number;
-    to: number;
+    /** The years the atlas has maps for, oldest first; the arrows walk this list. */
+    years: readonly number[];
     year: number;
-    /** The century the atlas has a map for, which may not be the year on the rail. */
-    sliceYear: number;
     loading: boolean;
     onChange: (year: number) => void;
     /** Whether that panel is on screen, so the control can say what a press will do. */
@@ -26,23 +21,17 @@ export interface YearStepperProps {
  * phone, where it competes with the map for the bottom of the screen. So the fine control moves
  * into the settings panel and what stays is the reading itself, which is the part that has to
  * be visible at all times because the whole map depends on it.
+ *
+ * The arrows step from map to map. A fixed stride of fifty years took two presses to change
+ * anything and, half the time, left the rail reading a year the atlas has no map for.
  */
-export function YearStepper({
-    from,
-    to,
-    year,
-    sliceYear,
-    loading,
-    onChange,
-    settingsOpen,
-    onToggleSettings,
-}: YearStepperProps) {
+export function YearStepper({ years, year, loading, onChange, settingsOpen, onToggleSettings }: YearStepperProps) {
     const { t } = useTranslation();
     const format = useFormat();
 
-    const step = (by: number): void => {
-        onChange(Math.min(to, Math.max(from, year + by)));
-    };
+    const at = Math.max(0, years.indexOf(year));
+    const back = years[at - 1];
+    const forward = years[at + 1];
 
     return (
         <div className="stepper">
@@ -50,33 +39,27 @@ export function YearStepper({
                 type="button"
                 className="stepper__arrow iron"
                 onClick={() => {
-                    step(-STEP);
+                    if (back !== undefined) onChange(back);
                 }}
-                disabled={year <= from}
-                aria-label={t('rail.back', { years: STEP })}
+                disabled={back === undefined}
+                aria-label={t('rail.back', { years: back === undefined ? 0 : year - back })}
             >
                 <ChevronLeft size={20} aria-hidden />
             </button>
 
             <button type="button" className="stepper__reading" aria-expanded={settingsOpen} onClick={onToggleSettings}>
                 <strong className="numeric">{format.year(year)}</strong>
-                <span className="eyebrow">
-                    {loading
-                        ? t('rail.loading')
-                        : sliceYear === year
-                          ? t('rail.thisYear')
-                          : t('rail.mapOf', { year: format.year(sliceYear) })}
-                </span>
+                <span className="eyebrow">{loading ? t('rail.loading') : t('rail.year')}</span>
             </button>
 
             <button
                 type="button"
                 className="stepper__arrow iron"
                 onClick={() => {
-                    step(STEP);
+                    if (forward !== undefined) onChange(forward);
                 }}
-                disabled={year >= to}
-                aria-label={t('rail.forward', { years: STEP })}
+                disabled={forward === undefined}
+                aria-label={t('rail.forward', { years: forward === undefined ? 0 : forward - year })}
             >
                 <ChevronRight size={20} aria-hidden />
             </button>

@@ -101,8 +101,6 @@
     },
     "rail": {
         "loading": "loading…",
-        "thisYear": "map of this year",
-        "mapOf": "map of {{year}}",
         "year": "Map year",
         "back": "Back {{years}} years",
         "forward": "Forward {{years}} years"

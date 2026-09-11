@@ -101,8 +101,6 @@
     },
     "rail": {
         "loading": "đang tải…",
-        "thisYear": "bản đồ của năm này",
-        "mapOf": "bản đồ năm {{year}}",
         "year": "Năm của bản đồ",
         "back": "Lùi {{years}} năm",
         "forward": "Tiến {{years}} năm"

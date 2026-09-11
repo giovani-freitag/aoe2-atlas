@@ -101,8 +101,6 @@
     },
     "rail": {
         "loading": "memuatkan…",
-        "thisYear": "peta tahun ini",
-        "mapOf": "peta tahun {{year}}",
         "year": "Tahun peta",
         "back": "Undur {{years}} tahun",
         "forward": "Mara {{years}} tahun"

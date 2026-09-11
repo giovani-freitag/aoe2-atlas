@@ -261,9 +261,18 @@
     height: 3rem;
 }
 
+/*
+ * One bar per map, each standing over the notch that brings it up.
+ *
+ * Nineteen bars filling the track exactly would sit half a bar to the right of the stops they
+ * belong to, because a bar occupies a span while a stop is a point. Hanging the row half a bar
+ * over each end puts the first bar's middle on the first stop and the last one's on the last.
+ */
 .rail-body__profile {
+    --overhang: calc(50% / (var(--bars, 2) - 1));
+
     position: absolute;
-    inset: 0 0 1.15rem;
+    inset: 0 calc(-1 * var(--overhang)) 1.15rem;
     display: flex;
     align-items: flex-end;
     gap: 1px;
@@ -930,4 +939,47 @@
     bottom: calc(100% - 1px);
     border-top-color: transparent;
     border-bottom-color: var(--leather);
+}
+
+/* ---- the language picker ------------------------------------------------ */
+
+/*
+ * Seventeen languages, each written in itself, laid out rather than folded into a dropdown.
+ *
+ * The names set in every script the game ships in, so the column widths come from the longest
+ * of them rather than from a guess; a name too long for its cell wraps instead of being cut,
+ * because half a language name is no use to the person looking for it.
+ */
+.tongues {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+    gap: var(--space-1);
+}
+
+.tongues button {
+    display: flex;
+    align-items: center;
+    min-height: var(--control);
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--parchment-deep);
+    border-radius: var(--radius);
+    font-size: 0.8125rem;
+    line-height: 1.2;
+    text-align: left;
+    color: var(--ink-soft);
+    transition:
+        background-color 120ms ease,
+        border-color 120ms ease;
+}
+
+.tongues button:hover {
+    border-color: var(--brass-deep);
+}
+
+/* The one in force wears the brass, which is how every other chosen thing in the panel reads. */
+.tongues button[data-active='true'] {
+    background: rgb(138 106 31 / 14%);
+    border-color: var(--brass-deep);
+    font-weight: 600;
+    color: var(--ink);
 }

@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { List, Loader, SlidersHorizontal } from 'lucide-react';
+import { SLICE_YEARS } from '@/data/dataset.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { drawnRealms, useAtlas } from '@/react/providers/atlas-context.ts';
 import { useEscape } from '@/react/hooks/use-escape.ts';
+import { useMeasuredHeight } from '@/react/hooks/use-measured-height.ts';
 import { useTimeSlice } from '@/react/hooks/use-time-slice.ts';
 import { useSheetHistory } from '@/react/hooks/use-sheet-history.ts';
 import { useSpecular } from '@/react/hooks/use-specular.ts';
@@ -28,6 +30,11 @@ export function AppShell() {
 
     useSpecular('.iron');
 
+    // The panels slide over the map, never over the header or the year rail; this is what tells
+    // the stylesheet where those two end.
+    const bar = useMeasuredHeight<HTMLElement>('--bar-height');
+    const rail = useMeasuredHeight<HTMLDivElement>('--rail-height');
+
     // The document follows the language: its tag for screen readers and fonts, its title for the tab.
     const language = i18n.language;
     useEffect(() => {
@@ -36,7 +43,6 @@ export function AppShell() {
     }, [language, t]);
 
     const { slice, loading, failed } = useTimeSlice(slices, state.year);
-    const sliceYear = slices.sliceYearFor(state.year);
 
     const borders = useMemo(() => new Map((slice?.borders ?? []).map((border) => [border.civ, border])), [slice]);
 
@@ -49,7 +55,6 @@ export function AppShell() {
 
     const standing = useMemo(() => listed.filter((civ) => borders.has(civ.key)), [listed, borders]);
     const drawn = useMemo(() => drawnRealms(state, standing), [state, standing]);
-    const range = useMemo(() => catalogue.yearRange(), [catalogue]);
     const focused = state.focused ? catalogue.find(state.focused) : null;
 
     const closeSheet = useCallback(() => {
@@ -95,7 +100,7 @@ export function AppShell() {
 
     return (
         <div className="shell">
-            <header className="bar leather">
+            <header className="bar leather" ref={bar}>
                 <EmberCanvas className="bar__embers" density={0.7} wind={0.6} />
 
                 {/* Wide, the roster is already a column of the grid, so the handle that opens it would open nothing. */}
@@ -168,9 +173,7 @@ export function AppShell() {
 
             <SettingsSheet
                 civilizations={catalogue.all()}
-                from={range.from}
-                to={range.to}
-                sliceYear={sliceYear}
+                years={SLICE_YEARS}
                 loading={loading}
                 open={settingsOpen}
                 onClose={closeSettings}
@@ -181,23 +184,19 @@ export function AppShell() {
              * reading alone on a phone, where a histogram and a slider would be fighting the map
              * for the bottom of the screen.
              */}
-            <div className="rail leather">
+            <div className="rail leather" ref={rail}>
                 {wide ? (
                     <TimelineRail
                         civilizations={catalogue.all()}
-                        from={range.from}
-                        to={range.to}
+                        years={SLICE_YEARS}
                         year={state.year}
-                        sliceYear={sliceYear}
                         loading={loading}
                         onChange={setYear}
                     />
                 ) : (
                     <YearStepper
-                        from={range.from}
-                        to={range.to}
+                        years={SLICE_YEARS}
                         year={state.year}
-                        sliceYear={sliceYear}
                         loading={loading}
                         onChange={setYear}
                         settingsOpen={settingsOpen}

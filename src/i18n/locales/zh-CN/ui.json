@@ -101,8 +101,6 @@
     },
     "rail": {
         "loading": "载入中…",
-        "thisYear": "本年地图",
-        "mapOf": "{{year}} 年地图",
         "year": "地图年份",
         "back": "后退 {{years}} 年",
         "forward": "前进 {{years}} 年"

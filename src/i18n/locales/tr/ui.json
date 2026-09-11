@@ -101,8 +101,6 @@
     },
     "rail": {
         "loading": "yükleniyor…",
-        "thisYear": "bu yılın haritası",
-        "mapOf": "{{year}} haritası",
         "year": "Harita yılı",
         "back": "{{years}} yıl geri",
         "forward": "{{years}} yıl ileri"

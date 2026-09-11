@@ -1,20 +1,15 @@
-import { useMemo } from 'react';
+import { useMemo, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
 
-/** Width of one bucket of the standing-realms profile, in years. */
-const BUCKET = 25;
-
 export interface TimelineRailProps {
     /** Every civilization, so the profile does not move when a filter does. */
     civilizations: readonly Civilization[];
-    from: number;
-    to: number;
+    /** The years the atlas has maps for, oldest first; the slider stops on these and only these. */
+    years: readonly number[];
     year: number;
-    /** The century the atlas actually has a map for, which may not be the year on the rail. */
-    sliceYear: number;
-    /** True while that century is still being fetched. */
+    /** True while the chosen century is still being fetched. */
     loading: boolean;
     onChange: (year: number) => void;
 }
@@ -26,48 +21,51 @@ export interface TimelineRailProps {
  * above it is drawn as it stood in the year selected here, which is the one arrangement in
  * which two realms overlapping actually means they met.
  *
- * The profile behind the slider earns its place by showing something no list does: the game's
- * roster piles up between 800 and 1400 and thins out sharply either side.
+ * The slider counts maps, not years. The atlas holds nineteen of them and they are not evenly
+ * spaced — 1279 and 1300 sit a generation apart, 300 and 400 a century — so a slider ruled in
+ * years would spend most of its travel on positions that redraw nothing and would report a year
+ * the map does not actually show. One notch, one map.
  */
-export function TimelineRail({ civilizations, from, to, year, sliceYear, loading, onChange }: TimelineRailProps) {
+export function TimelineRail({ civilizations, years, year, loading, onChange }: TimelineRailProps) {
     const { t } = useTranslation();
     const format = useFormat();
 
-    const buckets = useMemo(() => {
-        const count = Math.ceil((to - from) / BUCKET);
-        const bars = new Array<number>(count).fill(0);
+    /*
+     * How many of the game's civilizations were on stage in each of those years.
+     *
+     * A bar per map rather than a bar per fixed span of years, so every bar stands over the
+     * notch that brings it up. The roster piles up between 800 and 1400 and thins out sharply
+     * either side, which is the one thing about the timeline no list of civilizations shows.
+     */
+    const profile = useMemo(
+        () => years.map((at) => civilizations.filter((civ) => civ.span.from <= at && at <= civ.span.to).length),
+        [civilizations, years],
+    );
 
-        for (const civilization of civilizations) {
-            const first = Math.max(0, Math.floor((civilization.span.from - from) / BUCKET));
-            const last = Math.min(count - 1, Math.floor((civilization.span.to - from) / BUCKET));
-
-            for (let index = first; index <= last; index += 1) bars[index] += 1;
-        }
-
-        return bars;
-    }, [civilizations, from, to]);
-
-    const tallest = Math.max(1, ...buckets);
+    const tallest = Math.max(1, ...profile);
+    const at = Math.max(0, years.indexOf(year));
+    const first = years[0] ?? year;
+    const last = years[years.length - 1] ?? year;
 
     return (
         <div className="rail-body">
             <div className="rail-body__reading">
                 <strong className="numeric">{format.year(year)}</strong>
-                <span className="eyebrow">
-                    {loading
-                        ? t('rail.loading')
-                        : sliceYear === year
-                          ? t('rail.thisYear')
-                          : t('rail.mapOf', { year: format.year(sliceYear) })}
-                </span>
+                <span className="eyebrow">{loading ? t('rail.loading') : t('rail.year')}</span>
             </div>
 
             <div className="rail-body__track">
-                <div className="rail-body__profile" aria-hidden>
-                    {buckets.map((count, index) => (
+                {/* The count tells the stylesheet how far to hang the bars over the ends of the
+                    track, which is what puts each bar's middle over the notch that raises it. */}
+                <div
+                    className="rail-body__profile"
+                    style={{ '--bars': profile.length } as CSSProperties}
+                    aria-hidden
+                >
+                    {profile.map((count, index) => (
                         <span
-                            key={from + index * BUCKET}
-                            data-reached={from + index * BUCKET <= year}
+                            key={years[index]}
+                            data-reached={index <= at}
                             style={{ height: `${Math.max(6, (count / tallest) * 100)}%` }}
                         />
                     ))}
@@ -75,21 +73,22 @@ export function TimelineRail({ civilizations, from, to, year, sliceYear, loading
                 <div className="rail-body__rope oak" aria-hidden />
                 <input
                     type="range"
-                    min={from}
-                    max={to}
-                    step={5}
-                    value={year}
+                    min={0}
+                    max={Math.max(0, years.length - 1)}
+                    step={1}
+                    value={at}
                     aria-label={t('rail.year')}
                     aria-valuetext={format.year(year)}
                     onChange={(event) => {
-                        onChange(Number(event.target.value));
+                        const chosen = years[Number(event.target.value)];
+                        if (chosen !== undefined) onChange(chosen);
                     }}
                 />
             </div>
 
             <div className="rail-body__ends numeric" aria-hidden>
-                <span>{format.year(from)}</span>
-                <span>{format.year(to)}</span>
+                <span>{format.year(first)}</span>
+                <span>{format.year(last)}</span>
             </div>
         </div>
     );

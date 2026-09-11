@@ -101,8 +101,6 @@
     },
     "rail": {
         "loading": "cargando…",
-        "thisYear": "mapa de este año",
-        "mapOf": "mapa de {{year}}",
         "year": "Año del mapa",
         "back": "Retroceder {{years}} años",
         "forward": "Avanzar {{years}} años"

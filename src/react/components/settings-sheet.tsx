@@ -13,9 +13,8 @@ import { TimelineRail } from './timeline-rail.tsx';
 export interface SettingsSheetProps {
     /** Every civilization, for the profile behind the year slider. */
     civilizations: readonly Civilization[];
-    from: number;
-    to: number;
-    sliceYear: number;
+    /** The years the atlas has maps for, oldest first. */
+    years: readonly number[];
     loading: boolean;
     open: boolean;
     onClose: () => void;
@@ -28,7 +27,7 @@ export interface SettingsSheetProps {
  * bottom of a phone; the rail outside keeps only the reading. On a wide screen the rail keeps
  * the full instrument and this panel is the language, the projection and the ruling.
  */
-export function SettingsSheet({ civilizations, from, to, sliceYear, loading, open, onClose }: SettingsSheetProps) {
+export function SettingsSheet({ civilizations, years, loading, open, onClose }: SettingsSheetProps) {
     const { t, i18n } = useTranslation();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
@@ -53,10 +52,8 @@ export function SettingsSheet({ civilizations, from, to, sliceYear, loading, ope
                     <h3 className="eyebrow">{t('settings.year')}</h3>
                     <TimelineRail
                         civilizations={civilizations}
-                        from={from}
-                        to={to}
+                        years={years}
                         year={state.year}
-                        sliceYear={sliceYear}
                         loading={loading}
                         onChange={(year) => {
                             dispatch({ type: 'year', value: year });
@@ -65,25 +62,35 @@ export function SettingsSheet({ civilizations, from, to, sliceYear, loading, ope
                 </section>
             )}
 
-            {/* Each language is named in itself, so a reader lost in the wrong one can still find theirs. */}
+            {/*
+             * Each language is named in itself, and all seventeen are on the table at once.
+             *
+             * A dropdown hid them behind a control painted by the operating system — the one
+             * grey rectangle in a panel made of parchment and brass — and asked a reader who
+             * cannot read the interface to open it before finding out whether their language is
+             * even there. Laid out, the answer is the first thing they see.
+             */}
             <section className="card parchment singed">
-                <h3 className="eyebrow">{t('settings.language')}</h3>
-                <label className="select">
-                    <Languages size={16} aria-hidden />
-                    <select
-                        value={locale}
-                        aria-label={t('settings.language')}
-                        onChange={(event) => {
-                            void i18n.changeLanguage(event.target.value);
-                        }}
-                    >
-                        {SUPPORTED_LOCALES.map((tag) => (
-                            <option key={tag} value={tag} lang={tag}>
-                                {LOCALE_NAMES[tag]}
-                            </option>
-                        ))}
-                    </select>
-                </label>
+                <h3 className="eyebrow">
+                    <Languages size={13} aria-hidden /> {t('settings.language')}
+                </h3>
+                <div className="tongues" role="radiogroup" aria-label={t('settings.language')}>
+                    {SUPPORTED_LOCALES.map((tag) => (
+                        <button
+                            key={tag}
+                            type="button"
+                            role="radio"
+                            lang={tag}
+                            aria-checked={locale === tag}
+                            data-active={locale === tag}
+                            onClick={() => {
+                                void i18n.changeLanguage(tag);
+                            }}
+                        >
+                            {LOCALE_NAMES[tag]}
+                        </button>
+                    ))}
+                </div>
             </section>
 
             <section className="card parchment singed">
