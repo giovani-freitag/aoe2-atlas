@@ -44,9 +44,6 @@
         "label": "{{name}} — {{monument}}, {{place}}"
     },
     "detail": {
-        "trace": "지도에 그리기",
-        "untrace": "지도에서 빼기",
-        "noBorder": "{{year}}년에 국경 없음",
         "in": "{{year}}년",
         "area": "면적",
         "border": "국경",

@@ -44,9 +44,6 @@
         "label": "{{name}} — {{monument}}、{{place}}"
     },
     "detail": {
-        "trace": "地図に描く",
-        "untrace": "地図から外す",
-        "noBorder": "{{year}}年に国境なし",
         "in": "{{year}}年",
         "area": "面積",
         "border": "国境",

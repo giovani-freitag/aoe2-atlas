@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle, MapPin, MoveRight, PencilRuler, Pin, PinOff, Swords } from 'lucide-react';
+import { AlertTriangle, MapPin, MoveRight, PencilRuler, Swords } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { Frontier } from '@/domain/values/frontier.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
@@ -38,7 +38,6 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
     const format = useFormat();
     const style = palette.styleOf(civilization.key);
     const expansion = EXPANSION_RECORDS.find((entry) => entry.key === civilization.expansion);
-    const pinned = state.pinned.includes(civilization.key);
     const year = format.year(state.year);
     const { peakYear, peakAreaKm2 } = civilization.reach;
 
@@ -68,24 +67,6 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
             }
         >
             <>
-                {/*
-                 * Opening the sheet already previews the realm; this button is what makes the hatch
-                 * stay behind when the sheet closes. With no border in this century there is nothing
-                 * to trace, and the button says so instead of sitting there greyed out.
-                 */}
-                <button
-                    type="button"
-                    className="button iron"
-                    data-active={pinned}
-                    disabled={border === null}
-                    onClick={() => {
-                        dispatch({ type: 'toggle-pin', value: civilization.key });
-                    }}
-                >
-                    {pinned ? <PinOff size={16} aria-hidden /> : <Pin size={16} aria-hidden />}
-                    {border === null ? t('detail.noBorder', { year }) : pinned ? t('detail.untrace') : t('detail.trace')}
-                </button>
-
                 <section className="card parchment singed">
                     <h3 className="eyebrow">{t('detail.in', { year })}</h3>
                     <p className="card__lead">{words.realm}</p>

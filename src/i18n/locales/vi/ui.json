@@ -44,9 +44,6 @@
         "label": "{{name}} — {{monument}}, {{place}}"
     },
     "detail": {
-        "trace": "Vẽ lên bản đồ",
-        "untrace": "Bỏ khỏi bản đồ",
-        "noBorder": "Không có biên giới năm {{year}}",
         "in": "Năm {{year}}",
         "area": "Diện tích",
         "border": "Biên giới",

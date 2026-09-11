@@ -44,9 +44,6 @@
         "label": "{{name}} — {{monument}}, {{place}}"
     },
     "detail": {
-        "trace": "Tracer sur la carte",
-        "untrace": "Retirer de la carte",
-        "noBorder": "Pas de frontière en {{year}}",
         "in": "En {{year}}",
         "area": "Superficie",
         "border": "Frontière",

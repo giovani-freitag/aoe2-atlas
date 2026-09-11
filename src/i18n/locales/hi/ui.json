@@ -44,9 +44,6 @@
         "label": "{{name}} — {{monument}}, {{place}}"
     },
     "detail": {
-        "trace": "मानचित्र पर आरेखित करें",
-        "untrace": "मानचित्र से हटाएँ",
-        "noBorder": "{{year}} में कोई सीमा नहीं",
         "in": "{{year}} में",
         "area": "क्षेत्रफल",
         "border": "सीमा",

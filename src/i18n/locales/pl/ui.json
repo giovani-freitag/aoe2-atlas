@@ -44,9 +44,6 @@
         "label": "{{name}} — {{monument}}, {{place}}"
     },
     "detail": {
-        "trace": "Nakreśl na mapie",
-        "untrace": "Usuń z mapy",
-        "noBorder": "Brak granicy w roku {{year}}",
         "in": "W roku {{year}}",
         "area": "Powierzchnia",
         "border": "Granica",

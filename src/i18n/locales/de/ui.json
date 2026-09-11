@@ -44,9 +44,6 @@
         "label": "{{name}} — {{monument}}, {{place}}"
     },
     "detail": {
-        "trace": "Auf der Karte einzeichnen",
-        "untrace": "Von der Karte nehmen",
-        "noBorder": "Keine Grenze in {{year}}",
         "in": "Im Jahr {{year}}",
         "area": "Fläche",
         "border": "Grenze",

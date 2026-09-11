@@ -44,9 +44,6 @@
         "label": "{{name}} — {{monument}}, {{place}}"
     },
     "detail": {
-        "trace": "Haritaya çiz",
-        "untrace": "Haritadan kaldır",
-        "noBorder": "{{year}} yılında sınır yok",
         "in": "{{year}} yılında",
         "area": "Alan",
         "border": "Sınır",

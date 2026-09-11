@@ -44,9 +44,6 @@
         "label": "{{name}} — {{monument}}, {{place}}"
     },
     "detail": {
-        "trace": "Начертить на карте",
-        "untrace": "Убрать с карты",
-        "noBorder": "Нет границы в {{year}} г.",
         "in": "В {{year}} г.",
         "area": "Площадь",
         "border": "Граница",

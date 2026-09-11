@@ -44,9 +44,6 @@
         "label": "{{name}} — {{monument}}, {{place}}"
     },
     "detail": {
-        "trace": "Lukis di peta",
-        "untrace": "Buang dari peta",
-        "noBorder": "Tiada sempadan pada {{year}}",
         "in": "Pada {{year}}",
         "area": "Keluasan",
         "border": "Sempadan",

@@ -44,9 +44,6 @@
         "label": "{{name}} — {{monument}}，{{place}}"
     },
     "detail": {
-        "trace": "在地图上绘出",
-        "untrace": "移出地图",
-        "noBorder": "{{year}} 年无疆界",
         "in": "{{year}} 年",
         "area": "面积",
         "border": "疆界",
