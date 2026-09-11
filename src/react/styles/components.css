@@ -1262,9 +1262,15 @@
 .picker__label {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+}
+
+.picker__label small {
+    font-size: 0.6875rem;
+    color: var(--ink-faint);
 }
 
 .picker__list button svg {

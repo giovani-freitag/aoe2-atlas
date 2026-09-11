@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Check, ChevronDown } from 'lucide-react';
 import { LOCALE_NAMES, SUPPORTED_LOCALES, toSupportedLocale } from '@/i18n/locales.ts';
@@ -15,13 +15,35 @@ import { Flag } from './flag.tsx';
  * original did, which is what the listbox hook underneath is for.
  *
  * Every language is named in itself, because a reader stranded in the wrong one cannot read a
- * list of languages written in that wrong one.
+ * list of languages written in that wrong one. Where the reader's own language has a different
+ * word for it, that word is shown underneath: someone reading in Spanish should not have to
+ * work out that "English" is inglés, and the browser already knows how to say so.
  */
 export function LanguagePicker() {
     const { t, i18n } = useTranslation();
     const locale = toSupportedLocale(i18n.language);
     const container = useRef<HTMLDivElement>(null);
     const opened = useRef<HTMLUListElement>(null);
+
+    /*
+     * What each language is called in the one being read. `Intl.DisplayNames` ships this with the
+     * browser, so seventeen languages naming seventeen languages costs nothing and is translated
+     * by someone who speaks them. A name that only differs by its accents or its capitals is the
+     * same name, and saying it twice would be noise.
+     */
+    const alsoKnownAs = useMemo(() => {
+        const naming = new Intl.DisplayNames([locale], { type: 'language' });
+
+        return new Map(
+            SUPPORTED_LOCALES.map((tag) => {
+                const said = naming.of(tag);
+                const own = LOCALE_NAMES[tag];
+                const same = said === undefined || said.localeCompare(own, locale, { sensitivity: 'base' }) === 0;
+
+                return [tag, same ? null : said];
+            }),
+        );
+    }, [locale]);
 
     const list = useListbox({
         container,
@@ -74,7 +96,12 @@ export function LanguagePicker() {
                                 }}
                             >
                                 <Flag locale={tag} />
-                                <span className="picker__label">{LOCALE_NAMES[tag]}</span>
+                                <span className="picker__label">
+                                    {LOCALE_NAMES[tag]}
+                                    {alsoKnownAs.get(tag) ? (
+                                        <small lang={locale}>{alsoKnownAs.get(tag)}</small>
+                                    ) : null}
+                                </span>
                                 {tag === locale ? <Check size={14} aria-hidden /> : null}
                             </button>
                         </li>

@@ -113,6 +113,8 @@
      * has nothing to be a fraction of, and its scroll goes away with it.
      */
     height: auto;
+    /* Above the civilization sheet, which shares the right-hand side on a wide screen. */
+    z-index: 2;
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow-lg);
