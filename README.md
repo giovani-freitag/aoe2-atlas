@@ -25,7 +25,7 @@
 
 <p align="center">
   <a href="https://giovani-freitag.github.io/aoe2-atlas/"><strong>Open the atlas →</strong></a><br>
-  <sub>No install, no sign-up. Pick a year and the world redraws.</sub>
+  <sub>Runs in the browser. Drag the year and every border redraws.</sub>
 </p>
 
 <p align="center">
