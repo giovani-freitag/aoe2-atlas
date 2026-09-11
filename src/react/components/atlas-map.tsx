@@ -255,22 +255,45 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
      */
     const focus = state.focused;
     const wide = useWideScreen();
+
+    /*
+     * What the camera was last sent somewhere for.
+     *
+     * Moving the year rail replaces every border on the map, and the flight used to be rebuilt
+     * along with them — so scrubbing through the centuries kept throwing the reader back out to
+     * the whole world. The century is not a reason to move the camera: whoever has zoomed into
+     * the Aegean and is walking it forward a hundred years at a time wants to stay in the
+     * Aegean. Only opening or closing a civilization moves it, and so does a change of viewport
+     * or projection, because after those the old frame no longer means the same thing.
+     *
+     * It is written when the flight actually sets off, not when it is scheduled. A flight can be
+     * cancelled and rebuilt before its frame arrives — the borders for the century land a moment
+     * after the sheet opens — and marking it as done too early lost the flight altogether.
+     */
+    const flown = useRef<{ focus: string | null; wide: boolean; projection: AtlasProjection } | null>(null);
     useEffect(() => {
         if (!projection) return;
+
+        const was = flown.current;
+        if (was && was.focus === focus && was.wide === wide && was.projection === projection) return;
 
         const frame = requestAnimationFrame(() => {
             // Wide, the panel lies over the right of the map; a realm centred under it is hidden.
             const covered = { right: focus && wide ? PANEL_WIDTH : 0 };
 
             if (!focus) {
+                flown.current = { focus, wide, projection };
                 flyTo(projection.wholeWorld(covered));
 
                 return;
             }
 
+            // No border yet means the century is still on its way; leave this unflown and let
+            // the run that arrives with the geometry do it.
             const border = borders.get(focus);
             if (!border) return;
 
+            flown.current = { focus, wide, projection };
             flyTo(projection.frameFor(border.rings, covered));
         });
 

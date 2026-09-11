@@ -165,20 +165,30 @@
     border-top: 1px solid var(--oak);
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     box-shadow: var(--shadow-lg);
+    /*
+     * Over the map, under the furniture. The bar and the rail are both raised above this, so a
+     * sheet on its way up or down slides behind the year rail rather than across the top of it.
+     */
+    z-index: 1;
+    visibility: hidden;
     transform: translateY(calc(100% + var(--rail-height, 0px)));
     transition:
         transform 240ms ease,
         height 200ms ease,
-        overlay 240ms allow-discrete,
-        display 240ms allow-discrete;
+        visibility 240ms;
 }
 
-.sheet:popover-open {
+.sheet[data-open='true'] {
+    visibility: visible;
     transform: translateY(0);
 }
 
+/*
+ * The civilization sheet is built when a civilization is opened, so it arrives already open and
+ * would simply be there. This gives it somewhere to come from.
+ */
 @starting-style {
-    .sheet:popover-open {
+    .sheet[data-open='true'] {
         transform: translateY(calc(100% + var(--rail-height, 0px)));
     }
 }
@@ -303,16 +313,15 @@
         transform: translateX(100%);
         transition:
             transform 240ms ease,
-            overlay 240ms allow-discrete,
-            display 240ms allow-discrete;
+            visibility 240ms;
     }
 
-    .sheet--dock:popover-open {
+    .sheet--dock[data-open='true'] {
         transform: translateX(0);
     }
 
     @starting-style {
-        .sheet--dock:popover-open {
+        .sheet--dock[data-open='true'] {
             transform: translateX(100%);
         }
     }

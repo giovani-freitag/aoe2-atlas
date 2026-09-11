@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSheetDrag } from '@/react/hooks/use-sheet-drag.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
@@ -33,25 +33,24 @@ export function BottomSheet({ label, open, onClose, wide, head, children }: Bott
     const { t } = useTranslation();
     const isWide = useWideScreen();
     const drag = useSheetDrag({ open, onDismiss: onClose });
-    const sheet = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const element = sheet.current;
-        if (!element) return;
-
-        const showing = element.matches(':popover-open');
-        if (open === showing) return;
-
-        if (open) element.showPopover();
-        else element.hidePopover();
-    }, [open]);
-
+    /*
+     * An ordinary panel rather than a popover, on purpose.
+     *
+     * The popover API puts an element in the top layer, where nothing on the page can be painted
+     * over it — so a sheet rising from the foot of the screen swept straight across the year
+     * rail on its way up, and back across it on the way down. The rail is the axis the whole
+     * atlas is read against and it should never be covered, least of all by an animation. As a
+     * plain fixed panel the sheet takes a place in the stacking order: over the map, under the
+     * furniture, disappearing behind the rail instead of across it.
+     */
     return (
         <div
             className={`sheet leather sheet--${wide}`}
-            ref={sheet}
-            popover="manual"
+            role="dialog"
             aria-label={label}
+            aria-hidden={open ? undefined : true}
+            data-open={open}
             data-dragging={drag.dragging}
             style={isWide ? undefined : { height: `${drag.height * 100}dvh` }}
         >

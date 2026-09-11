@@ -90,13 +90,6 @@ dialog::backdrop {
     background: rgb(12 8 4 / 62%);
 }
 
-[popover] {
-    padding: 0;
-    border: none;
-    color: inherit;
-    overflow: visible;
-}
-
 /* Readable by a screen reader, invisible to everyone else. */
 .sr-only {
     position: absolute;
