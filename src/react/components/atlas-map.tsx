@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Compass, Layers, Minus, Plus } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import { LAND_RINGS } from '@/data/dataset.ts';
-import { AtlasProjection, SCALE_EXTENT } from '@/services/geo/atlas-projection.ts';
+import { AtlasProjection, SCALE_EXTENT, type Frame } from '@/services/geo/atlas-projection.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
@@ -91,6 +91,43 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         () => shapes.map((entry) => palette.styleOf(entry.civilization.key)),
         [shapes, palette],
     );
+
+    /*
+     * Carries the view across a change of viewport, so the map never appears to fall away.
+     *
+     * The projection fits the world into whatever box it is given, so when the sheet docks and
+     * takes a third of the map's width, the same zoom draws a third smaller world: the coastline
+     * went from 1492 pixels across to 1023 in a single frame, which reads as the map lurching out
+     * before the flight has even begun. The zoom is rescaled by the ratio between the two
+     * projections and re-centred on the same place, so the picture is identical either side of
+     * the resize and the flight starts from where the reader was already looking.
+     */
+    const carried = useRef<{ projection: AtlasProjection; frame: Frame } | null>(null);
+    useLayoutEffect(() => {
+        const before = carried.current;
+        if (projection) carried.current = { projection, frame };
+        if (!projection || !before || before.projection === projection) return;
+
+        const middle: [number, number] = [
+            (before.projection.width / 2 - before.frame.x) / before.frame.k,
+            (before.projection.height / 2 - before.frame.y) / before.frame.k,
+        ];
+        const place = before.projection.placeOf(middle);
+        if (!place) return;
+
+        const anchor = projection.pointOf(place);
+        if (!anchor) return;
+
+        const k = before.frame.k * (before.projection.baseScale / projection.baseScale);
+        const next = {
+            k,
+            x: projection.width / 2 - k * anchor[0],
+            y: projection.height / 2 - k * anchor[1],
+        };
+
+        carried.current = { projection, frame: next };
+        flyTo(next, false);
+    }, [projection, frame, flyTo]);
 
     /*
      * Opening a civilization brings its realm into the frame; closing the sheet pulls back out.

@@ -131,6 +131,29 @@ export class AtlasProjection {
         return this.projection([point.lon, point.lat]);
     }
 
+    /**
+     * The place a pixel falls on, the inverse of `pointOf`.
+     *
+     * @param point - Pixel coordinates in the projection's own space, before any zoom.
+     * @returns The place in degrees, or null where the projection has no land to invert onto.
+     */
+    public placeOf(point: [number, number]): GeoPoint | null {
+        const place = this.projection.invert?.(point);
+
+        return place ? { lon: place[0], lat: place[1] } : null;
+    }
+
+    /**
+     * How large the projection draws the world before any zoom is applied.
+     *
+     * Two projections of the same world at different viewport sizes differ by exactly this
+     * ratio, which is what lets a zoom be carried from one to the other without the map
+     * appearing to jump.
+     */
+    public get baseScale(): number {
+        return this.projection.scale();
+    }
+
     /** The outline of the whole globe, which is the shape of the ocean behind everything. */
     public spherePath(): string {
         return this.path({ type: 'Sphere' }) ?? '';
