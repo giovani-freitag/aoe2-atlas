@@ -1,16 +1,31 @@
 import { useCallback, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 
-/** How much of the screen the sheet covers at each stop, tallest last. */
-const STOPS = [0.42, 0.62, 0.88] as const;
+/**
+ * How much of the screen the sheet covers at each stop, tallest last.
+ *
+ * It opens at the first of them. A civilization is opened to see its ground on the map, and a
+ * panel that takes two thirds of a phone the moment you tap answers the question by hiding the
+ * answer: the name, the region and the area are enough to start with, and the rest is a drag
+ * away. The map is told about this one and frames the realm in what is left.
+ */
+const STOPS = [0.34, 0.62, 0.88] as const;
+
+/** What the sheet covers when it first arrives, as a share of the screen. */
+export const SHEET_PEEK = STOPS[0];
 
 /** How far a drag must travel before it counts as a drag rather than a tap. */
 const SLOP = 6;
 
-/** Dragged below this share of the viewport, the sheet is being thrown away rather than resized. */
-const DISMISS_BELOW = 0.3;
+/**
+ * Dragged below this share of the viewport, the sheet is being thrown away rather than resized.
+ *
+ * Well under the first stop, or the peek the sheet opens at would be a hair's breadth from
+ * being dismissed by the smallest wobble of a thumb.
+ */
+const DISMISS_BELOW = 0.22;
 
 export interface SheetDragConfig {
-    /** Whether the sheet is on screen; coming back resets it to the middle stop. */
+    /** Whether the sheet is on screen; coming back resets it to the peek. */
     open: boolean;
     /** Called when the sheet is thrown past the bottom stop. */
     onDismiss: () => void;
@@ -38,8 +53,8 @@ export interface SheetDrag {
  * @param config - Whether the sheet is open, and what to do when it is thrown away.
  */
 export function useSheetDrag({ open, onDismiss }: SheetDragConfig): SheetDrag {
-    const [stop, setStop] = useState(1);
-    const [height, setHeight] = useState<number>(STOPS[1]);
+    const [stop, setStop] = useState(0);
+    const [height, setHeight] = useState<number>(STOPS[0]);
     const [dragging, setDragging] = useState(false);
     const origin = useRef<{ y: number; height: number; moved: boolean } | null>(null);
     const [wasOpen, setWasOpen] = useState(open);
@@ -53,8 +68,8 @@ export function useSheetDrag({ open, onDismiss }: SheetDragConfig): SheetDrag {
     if (open !== wasOpen) {
         setWasOpen(open);
         if (open) {
-            setStop(1);
-            setHeight(STOPS[1]);
+            setStop(0);
+            setHeight(STOPS[0]);
         }
     }
 

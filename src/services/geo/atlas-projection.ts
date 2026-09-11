@@ -75,6 +75,7 @@ export interface Frame {
 export interface Covered {
     left?: number;
     right?: number;
+    bottom?: number;
 }
 
 /**
@@ -138,15 +139,16 @@ export class AtlasProjection {
         const hiddenLeft = covered.left ?? 0;
         const hiddenRight = covered.right ?? 0;
         const free = Math.max(this.width - hiddenLeft - hiddenRight, this.width * 0.3);
+        const freeDown = Math.max(this.height - (covered.bottom ?? 0), this.height * 0.3);
 
         const spanX = Math.max(box.right - box.left, 1);
         const spanY = Math.max(box.bottom - box.top, 1);
-        const k = clamp((fill * Math.min(free / spanX, this.height / spanY)) || MIN_SCALE);
+        const k = clamp((fill * Math.min(free / spanX, freeDown / spanY)) || MIN_SCALE);
 
         return {
             k,
             x: hiddenLeft + free / 2 - (k * (box.left + box.right)) / 2,
-            y: this.height / 2 - (k * (box.top + box.bottom)) / 2,
+            y: freeDown / 2 - (k * (box.top + box.bottom)) / 2,
         };
     }
 

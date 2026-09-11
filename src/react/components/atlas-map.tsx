@@ -11,6 +11,7 @@ import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useElementSize } from '@/react/hooks/use-element-size.ts';
 import { useMapZoom } from '@/react/hooks/use-map-zoom.ts';
+import { SHEET_PEEK } from '@/react/hooks/use-sheet-drag.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { useWikiHover } from '@/react/hooks/use-wiki-hover.ts';
 import { CompassRose } from './compass-rose.tsx';
@@ -288,8 +289,14 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         if (was && was.focus === focus && was.wide === wide && was.projection === projection) return;
 
         const frame = requestAnimationFrame(() => {
-            // Wide, the panel lies over the right of the map; a realm centred under it is hidden.
-            const covered = { right: focus && wide ? PANEL_WIDTH : 0 };
+            /*
+             * Wide, the panel lies over the right of the map; narrow, the sheet lies over its
+             * foot. Either way a realm centred in the whole viewport ends up behind it.
+             */
+            const covered =
+                wide
+                    ? { right: focus ? PANEL_WIDTH : 0 }
+                    : { bottom: focus ? projection.height * SHEET_PEEK : 0 };
 
             // Stepping from one civilization to the next keeps the view from before the first.
             if (focus && !was?.focus) {
