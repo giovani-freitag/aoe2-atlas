@@ -357,27 +357,66 @@
 
 /* ---- legend ------------------------------------------------------------- */
 
+/*
+ * The header band: raised leather, a brass rule under it, and the title on the same mark the
+ * control that fills this card wears.
+ */
 .legend__head {
+    flex: none;
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
+    align-items: center;
     gap: var(--space-2);
-    margin-bottom: var(--space-2);
-    padding-bottom: var(--space-2);
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+    background: var(--leather-raised);
     border-bottom: 1px solid var(--oak);
+    box-shadow:
+        var(--emboss),
+        0 1px 0 rgb(200 164 74 / 18%);
 }
 
-.legend__head .eyebrow {
+.legend__head > svg {
+    flex: none;
+    color: var(--brass);
+}
+
+.legend__head h2 {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--title);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     color: var(--brass-soft);
 }
 
-.legend__head button {
+.legend__clear {
+    flex: none;
+    min-height: 1.5rem;
+    padding: 0 var(--space-2);
+    border: 1px solid var(--oak);
+    border-radius: var(--radius-sm);
     font-size: 0.6875rem;
+    color: var(--text-muted);
+}
+
+.legend__clear:hover {
+    border-color: var(--brass-deep);
     color: var(--brass-soft);
+}
+
+.legend__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-2);
 }
 
 .legend__hint {
     margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dashed var(--oak);
     font-size: 0.6875rem;
     line-height: 1.35;
     color: var(--text-faint);
@@ -392,7 +431,16 @@
 
 .legend__civs {
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
+}
+
+.legend__civs li {
+    padding: 2px var(--space-1);
+    border-radius: var(--radius-sm);
+}
+
+.legend__civs li:hover {
+    background: var(--leather-raised);
 }
 
 .legend li {
@@ -472,18 +520,36 @@
     white-space: nowrap;
 }
 
+.legend__area {
+    flex: none;
+    font-size: 0.625rem;
+    color: var(--text-faint);
+}
+
 .legend li button {
     flex: none;
     display: grid;
     place-items: center;
-    width: 1.75rem;
-    height: 1.75rem;
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: var(--radius-sm);
     color: var(--text-faint);
 }
 
 .legend li button:hover {
     color: var(--danger-soft);
+}
+
+/* With a pointer the crosses stay out of the way until the row is under it. */
+@media (min-width: 60rem) {
+    .legend__civs li button {
+        opacity: 0;
+    }
+
+    .legend__civs li:hover button,
+    .legend__civs li button:focus-visible {
+        opacity: 1;
+    }
 }
 
 /* ---- detail sheet ------------------------------------------------------- */

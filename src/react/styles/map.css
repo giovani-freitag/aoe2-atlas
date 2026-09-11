@@ -159,18 +159,21 @@
 }
 
 /*
- * The legend sits at the foot of the map, never the head. Europe is where the borders pile up,
- * and a panel in the top corner covers exactly the part a reader turned the layer on to see.
+ * A framed panel at the foot of the map, never at its head.
+ *
+ * Europe is where the borders pile up, and a panel in the top corner covers exactly the part a
+ * reader turned the layer on to see. Inside, the header band holds still while the list scrolls
+ * under it, so the count and the way out of the tracing stay on screen however long the list.
  */
 .legend {
     position: absolute;
     left: var(--space-2);
     right: calc(var(--control) + var(--space-4));
     bottom: var(--space-2);
+    display: flex;
+    flex-direction: column;
     max-height: 34%;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: var(--space-2);
+    overflow: hidden;
     border: 1px solid var(--oak);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
@@ -179,7 +182,7 @@
 @media (min-width: 45rem) {
     .legend {
         right: auto;
-        width: 16rem;
+        width: 19rem;
         max-height: calc(100% - 4rem);
     }
 }

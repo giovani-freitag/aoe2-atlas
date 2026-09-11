@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { X } from 'lucide-react';
+import { Layers, X } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import { REGION_KEYS, type RegionKey } from '@/domain/enums/region.ts';
@@ -40,81 +40,99 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
     if (drawn.length === 0) return null;
 
     return (
-        <div className="legend leather stitched">
-            <div className="legend__head">
-                <span className="eyebrow">{t('legend.onMap', { count: drawn.length })}</span>
+        <section className="legend leather" aria-label={t('legend.onMap', { count: drawn.length })}>
+            {/*
+             * A titled header, the way every other panel in the atlas is headed.
+             *
+             * The count used to be a line of small capitals floating over the list with a word
+             * beside it, which reads as a caption rather than as the top of anything. Set on a
+             * band of its own, in the title face, behind the same mark the trace control wears,
+             * the card reads as a panel — and the header holds still while the list scrolls.
+             */}
+            <header className="legend__head">
+                <Layers size={14} aria-hidden />
+                <h2>{t('legend.onMap', { count: drawn.length })}</h2>
                 <button
                     type="button"
+                    className="legend__clear"
                     onClick={() => {
                         dispatch({ type: 'clear-map' });
                     }}
                 >
                     {t('legend.clear')}
                 </button>
-            </div>
+            </header>
 
-            {detailed ? (
-                <ul className="legend__civs">
-                    {drawn.map((civilization) => {
-                        const border = borders.get(civilization.key);
-                        const words = text.civilization(civilization.key, false);
-
-                        return (
-                            <li key={civilization.key}>
-                                <HatchSwatch style={palette.styleOf(civilization.key)} size={18} />
-                                <span className="legend__text">
-                                    <strong>{words.name}</strong>
-                                    <small>
-                                        {text.region(civilization.region)}
-                                        {border ? ` · ${format.area(border.areaKm2)}` : ''}
-                                    </small>
-                                </span>
-                                {state.showAll ? null : (
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            remove(civilization.key);
-                                        }}
-                                        aria-label={t('legend.remove', { name: words.name })}
-                                    >
-                                        <X size={14} aria-hidden />
-                                    </button>
-                                )}
-                            </li>
-                        );
-                    })}
-                </ul>
-            ) : (
-                <>
-                    {/*
-                     * Past a dozen realms the legend stops naming them and names the regions
-                     * instead, as a row of tokens rather than a column of rows: eight lines of
-                     * "N on the map" repeated the same three words eight times and pushed the
-                     * card halfway up the map. What is left on screen is a colour, a name and a
-                     * numeral; the sentence stays where a screen reader can still read it.
-                     */}
-                    <ul className="legend__regions">
-                        {REGION_KEYS.filter((region) => regionsOnMap.has(region)).map((region) => {
-                            const count = countIn(drawn, region);
+            <div className="legend__body">
+                {detailed ? (
+                    <ul className="legend__civs">
+                        {drawn.map((civilization) => {
+                            const border = borders.get(civilization.key);
+                            const words = text.civilization(civilization.key, false);
 
                             return (
-                                <li key={region}>
-                                    <span
-                                        className="legend__dot"
-                                        style={{ background: palette.regionColour(region) }}
-                                        aria-hidden
-                                    />
-                                    <span className="legend__region">{text.region(region)}</span>
-                                    <b className="numeric">{count}</b>
-                                    <span className="sr-only">{t('legend.onMap', { count })}</span>
+                                <li key={civilization.key}>
+                                    <HatchSwatch style={palette.styleOf(civilization.key)} size={18} />
+                                    <span className="legend__text">
+                                        <strong>{words.name}</strong>
+                                        <small>{text.region(civilization.region)}</small>
+                                    </span>
+                                    {/*
+                                     * The area stands in its own column rather than trailing the
+                                     * region after a dot. On one line the two together ran past
+                                     * the width of the card, and it was always the number that
+                                     * got cut — "Mediterranean and Middle East · 155…".
+                                     */}
+                                    {border ? (
+                                        <span className="legend__area numeric">{format.area(border.areaKm2)}</span>
+                                    ) : null}
+                                    {state.showAll ? null : (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                remove(civilization.key);
+                                            }}
+                                            aria-label={t('legend.remove', { name: words.name })}
+                                        >
+                                            <X size={14} aria-hidden />
+                                        </button>
+                                    )}
                                 </li>
                             );
                         })}
                     </ul>
-                    <p className="legend__hint">{t('legend.hint')}</p>
-                </>
-            )}
-        </div>
+                ) : (
+                    <>
+                        {/*
+                         * Past a dozen realms the legend stops naming them and names the regions
+                         * instead, as a row of tokens rather than a column of rows: eight lines
+                         * of "N on the map" repeated the same three words eight times and pushed
+                         * the card halfway up the map. What is left is a colour, a name and a
+                         * numeral; the sentence stays where a screen reader can still read it.
+                         */}
+                        <ul className="legend__regions">
+                            {REGION_KEYS.filter((region) => regionsOnMap.has(region)).map((region) => {
+                                const count = countIn(drawn, region);
+
+                                return (
+                                    <li key={region}>
+                                        <span
+                                            className="legend__dot"
+                                            style={{ background: palette.regionColour(region) }}
+                                            aria-hidden
+                                        />
+                                        <span className="legend__region">{text.region(region)}</span>
+                                        <b className="numeric">{count}</b>
+                                        <span className="sr-only">{t('legend.onMap', { count })}</span>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                        <p className="legend__hint">{t('legend.hint')}</p>
+                    </>
+                )}
+            </div>
+        </section>
     );
 }
 
