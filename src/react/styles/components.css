@@ -255,10 +255,18 @@
     color: var(--brass-soft);
 }
 
+/*
+ * Clipped, because the profile inside deliberately hangs over both ends.
+ *
+ * Without this the overhang widened the rail, the rail widened the page, and the whole atlas
+ * scrolled sideways by the width of half a bar. Cut off at the ends, the first and last bars
+ * read as the half-bars a histogram centred on its ticks is supposed to have.
+ */
 .rail-body__track {
     grid-area: track;
     position: relative;
-    height: 3rem;
+    height: 2.5rem;
+    overflow: clip;
 }
 
 /*
@@ -769,32 +777,6 @@
 /* ---- language picker -------------------------------------------------- */
 
 /* A native select on parchment: seventeen languages are a list, not seventeen buttons. */
-.select {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    min-height: var(--control);
-    padding: 0 var(--space-2);
-    border: 1px solid var(--parchment-deep);
-    border-radius: var(--radius);
-    color: var(--ink-soft);
-}
-
-.select select {
-    flex: 1;
-    min-width: 0;
-    background: none;
-    border: none;
-    outline: none;
-    font: inherit;
-    font-size: 0.875rem;
-    color: var(--ink);
-}
-
-.select:focus-within {
-    border-color: var(--brass-deep);
-}
-
 /*
  * The one control that lives inside a parchment card: it moves the year rail rather than
  * changing anything about the card, so it reads as a link with an arrow, not as a button.
@@ -944,42 +926,111 @@
 /* ---- the language picker ------------------------------------------------ */
 
 /*
- * Seventeen languages, each written in itself, laid out rather than folded into a dropdown.
+ * A single-choice list built out of the same materials as the panel around it.
  *
- * The names set in every script the game ships in, so the column widths come from the longest
- * of them rather than from a guess; a name too long for its cell wraps instead of being cut,
- * because half a language name is no use to the person looking for it.
+ * The one control the page could not style was the native select: on Windows it arrives as a
+ * grey system rectangle in the middle of parchment and brass, and the list it drops belongs to
+ * the operating system. This is that control, drawn here — which is only worth doing because
+ * the hook behind it puts back the arrows, Home, End, Enter and Escape that were free before.
  */
-.tongues {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
-    gap: var(--space-1);
+.picker {
+    position: relative;
 }
 
-.tongues button {
+.picker__button {
     display: flex;
     align-items: center;
+    gap: var(--space-2);
+    width: 100%;
     min-height: var(--control);
-    padding: var(--space-1) var(--space-2);
+    padding: 0 var(--space-2);
     border: 1px solid var(--parchment-deep);
     border-radius: var(--radius);
-    font-size: 0.8125rem;
-    line-height: 1.2;
+    background: rgb(255 255 255 / 22%);
+    font-size: 0.875rem;
+    color: var(--ink);
     text-align: left;
+}
+
+.picker__button:hover,
+.picker__button[aria-expanded='true'] {
+    border-color: var(--brass-deep);
+}
+
+.picker__button svg {
+    flex: none;
+    color: var(--ink-faint);
+}
+
+.picker__value {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.picker__caret {
+    transition: transform 140ms ease;
+}
+
+.picker__button[aria-expanded='true'] .picker__caret {
+    transform: rotate(180deg);
+}
+
+/*
+ * The list drops over the panel rather than pushing it apart, and carries its own scroll: with
+ * seventeen entries it is taller than a phone's sheet, and a list that resizes the panel it
+ * lives in moves everything the reader was looking at.
+ */
+.picker__list {
+    position: absolute;
+    top: calc(100% + var(--space-1));
+    left: 0;
+    right: 0;
+    z-index: 5;
+    max-height: min(17rem, 46dvh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    list-style: none;
+    margin: 0;
+    padding: var(--space-1);
+    border: 1px solid var(--brass-deep);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+}
+
+.picker__list button {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    min-height: 2.25rem;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
     color: var(--ink-soft);
-    transition:
-        background-color 120ms ease,
-        border-color 120ms ease;
+    text-align: left;
 }
 
-.tongues button:hover {
-    border-color: var(--brass-deep);
+.picker__list button span {
+    flex: 1;
+    min-width: 0;
 }
 
-/* The one in force wears the brass, which is how every other chosen thing in the panel reads. */
-.tongues button[data-active='true'] {
-    background: rgb(138 106 31 / 14%);
-    border-color: var(--brass-deep);
+.picker__list button svg {
+    flex: none;
+    color: var(--brass-deep);
+}
+
+/* The keyboard's place in the list and the pointer's read the same, because they are the same. */
+.picker__list button:hover,
+.picker__list button[data-active] {
+    background: rgb(138 106 31 / 16%);
+    color: var(--ink);
+}
+
+.picker__list button[aria-selected='true'] {
     font-weight: 600;
     color: var(--ink);
 }

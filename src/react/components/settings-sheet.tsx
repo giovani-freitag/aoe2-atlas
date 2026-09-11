@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next';
-import { Grid2x2, Languages } from 'lucide-react';
+import { Grid2x2 } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import { PROJECTION_KEYS, PROJECTIONS } from '@/domain/enums/projection.ts';
 import { GENERATED_AT } from '@/data/dataset.ts';
-import { LOCALE_NAMES, SUPPORTED_LOCALES, toSupportedLocale } from '@/i18n/locales.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { BottomSheet } from './bottom-sheet.tsx';
+import { LanguagePicker } from './language-picker.tsx';
 import { TimelineRail } from './timeline-rail.tsx';
 
 export interface SettingsSheetProps {
@@ -28,11 +28,10 @@ export interface SettingsSheetProps {
  * the full instrument and this panel is the language, the projection and the ruling.
  */
 export function SettingsSheet({ civilizations, years, loading, open, onClose }: SettingsSheetProps) {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
     const wide = useWideScreen();
-    const locale = toSupportedLocale(i18n.language);
 
     return (
         <BottomSheet
@@ -62,35 +61,9 @@ export function SettingsSheet({ civilizations, years, loading, open, onClose }: 
                 </section>
             )}
 
-            {/*
-             * Each language is named in itself, and all seventeen are on the table at once.
-             *
-             * A dropdown hid them behind a control painted by the operating system — the one
-             * grey rectangle in a panel made of parchment and brass — and asked a reader who
-             * cannot read the interface to open it before finding out whether their language is
-             * even there. Laid out, the answer is the first thing they see.
-             */}
             <section className="card parchment singed">
-                <h3 className="eyebrow">
-                    <Languages size={13} aria-hidden /> {t('settings.language')}
-                </h3>
-                <div className="tongues" role="radiogroup" aria-label={t('settings.language')}>
-                    {SUPPORTED_LOCALES.map((tag) => (
-                        <button
-                            key={tag}
-                            type="button"
-                            role="radio"
-                            lang={tag}
-                            aria-checked={locale === tag}
-                            data-active={locale === tag}
-                            onClick={() => {
-                                void i18n.changeLanguage(tag);
-                            }}
-                        >
-                            {LOCALE_NAMES[tag]}
-                        </button>
-                    ))}
-                </div>
+                <h3 className="eyebrow">{t('settings.language')}</h3>
+                <LanguagePicker />
             </section>
 
             <section className="card parchment singed">
