@@ -1,10 +1,34 @@
-# AoE2 Atlas
+<p align="center">
+  <img src="public/brand.svg" alt="" width="104">
+</p>
 
-Um atlas interativo das 56 civilizações de *Age of Empires II*: a maravilha de cada uma plantada
-sobre o monumento real que a inspirou, e a fronteira que ela tinha **em cada século**, desenhada
-em escala honesta.
+<h1 align="center">AoE2 Atlas</h1>
 
-![O mundo de 1200, com as 34 civilizações que existiam nele](docs/century.png)
+<p align="center">
+  <strong>Um atlas interativo das 56 civilizações de <em>Age of Empires II</em>.</strong><br>
+  A maravilha de cada uma plantada sobre o monumento real que a inspirou, e a fronteira que ela
+  tinha <strong>em cada século</strong>, desenhada em escala honesta.
+</p>
+
+<p align="center">
+  <a href="https://github.com/giovani-freitag/aoe2-atlas/actions/workflows/ci.yml"><img src="https://github.com/giovani-freitag/aoe2-atlas/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/license-GPL--3.0-C8A44A?style=flat-square&labelColor=1A1815" alt="GPL-3.0-or-later">
+  &nbsp;·&nbsp;
+  <img src="https://img.shields.io/badge/React-19-C8A44A?style=flat-square&logo=react&logoColor=white&labelColor=1A1815" alt="React 19">
+  <img src="https://img.shields.io/badge/Vite-8-C8A44A?style=flat-square&logo=vite&logoColor=white&labelColor=1A1815" alt="Vite 8">
+  <img src="https://img.shields.io/badge/TypeScript-strict-C8A44A?style=flat-square&logo=typescript&logoColor=white&labelColor=1A1815" alt="TypeScript strict">
+  <img src="https://img.shields.io/badge/i18n-17%20idiomas-C8A44A?style=flat-square&logo=i18next&logoColor=white&labelColor=1A1815" alt="Dezessete idiomas">
+</p>
+
+<p align="center">
+  <a href="https://giovani-freitag.github.io/aoe2-atlas/"><strong>Abrir o atlas →</strong></a>
+</p>
+
+<p align="center">
+  <img src="docs/century.png" alt="O mundo de 1200, com as 34 civilizações que existiam nele" width="860">
+</p>
+
+---
 
 ## As quatro coisas que este atlas leva a sério
 
