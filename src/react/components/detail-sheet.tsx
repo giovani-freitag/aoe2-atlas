@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle, ExternalLink, MapPin, MoveRight, PencilRuler, Pin, PinOff, Swords } from 'lucide-react';
+import { AlertTriangle, MapPin, MoveRight, PencilRuler, Pin, PinOff, Swords } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { Frontier } from '@/domain/values/frontier.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
@@ -9,6 +9,7 @@ import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
 import { BottomSheet } from './bottom-sheet.tsx';
+import { WikiLink } from './wiki-link.tsx';
 
 /** How many neighbours the frontier list shows before it stops being a list. */
 const MAX_FRONTIERS = 6;
@@ -163,14 +164,9 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                     {/* The Wonder is the pin on the map; here it is one line, not a card of its own. */}
                     <p className="card__source">
                         <MapPin size={12} aria-hidden /> {words.monument}, {words.place} ·{' '}
-                        <a
-                            className="card__link"
-                            href={`https://en.wikipedia.org/wiki/${encodeURIComponent(civilization.wonder.wikipedia)}`}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {t('detail.wikipedia')} <ExternalLink size={11} aria-hidden />
-                        </a>
+                        <WikiLink language={civilization.wonder.wikipediaLang} title={civilization.wonder.wikipedia}>
+                            {t('detail.wikipedia')}
+                        </WikiLink>
                     </p>
                     {words.anachronism ? (
                         <p className="card__note">

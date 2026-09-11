@@ -816,3 +816,78 @@
 .card__jump:hover svg {
     transform: translateX(3px);
 }
+
+/* ---- the Wikipedia preview --------------------------------------------- */
+
+/*
+ * The card hangs off the link rather than the panel, so it follows the line it belongs to
+ * wherever that line has been scrolled to. It is laid over everything and never moves the text
+ * beneath it — a preview that pushed the panel around on hover would be worse than no preview.
+ */
+.wiki {
+    position: relative;
+    display: inline;
+}
+
+.wiki__card {
+    position: absolute;
+    bottom: calc(100% + var(--space-2));
+    left: 0;
+    z-index: 3;
+    display: flex;
+    gap: var(--space-3);
+    width: min(22rem, 78vw);
+    padding: var(--space-3);
+    border: 1px solid var(--oak);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    color: var(--text);
+    text-align: left;
+    pointer-events: none;
+}
+
+.wiki__card img {
+    flex: none;
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--oak);
+}
+
+.wiki__body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.wiki__body strong {
+    font-family: var(--title);
+    font-size: 0.875rem;
+    color: var(--brass-soft);
+}
+
+.wiki__body small {
+    font-size: 0.6875rem;
+    color: var(--text-faint);
+}
+
+/* Three lines of the article: enough to know what the building is, short enough to stay a hint. */
+.wiki__extract {
+    margin-top: var(--space-1);
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* No room above the line: the card drops below it instead. */
+.wiki__card[data-below='true'] {
+    top: calc(100% + var(--space-2));
+    bottom: auto;
+}

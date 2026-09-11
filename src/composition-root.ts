@@ -5,6 +5,7 @@ import { CatalogueService } from './services/atlas/catalogue-service.ts';
 import { SliceService } from './services/atlas/slice-service.ts';
 import { PaletteService } from './services/palette/palette-service.ts';
 import { TextService } from './services/text/text-service.ts';
+import { WikiService } from './services/wiki/wiki-service.ts';
 import { AGE_COLUMN, AGE_REGION_SLOT } from './skins/age/palette.ts';
 
 export interface AtlasServices {
@@ -12,6 +13,7 @@ export interface AtlasServices {
     slices: SliceService;
     palette: PaletteService;
     text: TextService;
+    wiki: WikiService;
 }
 
 /**
@@ -39,5 +41,6 @@ export function createServices(translator: i18n): AtlasServices {
         slices: new SliceService({ baseUrl: `${import.meta.env.BASE_URL}data/`, years: SLICE_YEARS }),
         palette: new PaletteService({ membership: REGION_MEMBERSHIP, column: AGE_COLUMN, regionSlot: AGE_REGION_SLOT }),
         text,
+        wiki: new WikiService({ agent: `aoe2-atlas (${__APP_REPOSITORY__})` }),
     };
 }

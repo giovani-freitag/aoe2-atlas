@@ -4,8 +4,15 @@ import type { RegionKey } from '@/domain/enums/region.ts';
 export interface WonderRecord {
     lat: number;
     lon: number;
-    /** Article slug on the English Wikipedia, for the "read more" link. */
+    /** Article title, for the "read more" link and the preview behind it. */
     wikipedia: string;
+    /**
+     * Which Wikipedia carries the article, when it is not the English one.
+     *
+     * Two of these monuments have no English article at all — the Chinese Wikipedia is the only
+     * one that writes about them — and a link to nothing serves nobody.
+     */
+    wikipediaLang?: string;
     /**
      * Set when the in-game model is centuries younger than the civilization it stands for, or
      * stands somewhere the civilization never did. The explanation itself is in the locale
@@ -189,7 +196,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
         wonder: {
             lat: 41.6781,
             lon: 26.5594,
-            wikipedia: 'Selimiye_Mosque',
+            wikipedia: 'Selimiye_Mosque,_Edirne',
         },
         realm: { from: 1299, to: 1600 },
     },
@@ -530,7 +537,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
         wonder: {
             lat: 10.7828,
             lon: 79.1317,
-            wikipedia: 'Brihadisvara_Temple,_Thanjavur',
+            wikipedia: 'Brihadisvara_Temple',
         },
         realm: { from: 300, to: 1279 },
     },
@@ -542,7 +549,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
         wonder: {
             lat: 20.888,
             lon: 70.4012,
-            wikipedia: 'Somnath_temple',
+            wikipedia: 'Somnath_Temple',
         },
         realm: { from: 730, to: 1036 },
     },
@@ -554,7 +561,7 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
         wonder: {
             lat: 28.5933,
             lon: 77.2507,
-            wikipedia: "Humayun's_Tomb",
+            wikipedia: "Humayun's_tomb",
         },
         realm: { from: 1206, to: 1600 },
     },
@@ -602,7 +609,8 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
         wonder: {
             lat: 40.1547,
             lon: 116.1367,
-            wikipedia: 'Yinshan_Pagoda_Forest',
+            wikipedia: '银山塔林',
+            wikipediaLang: 'zh',
         },
         realm: { from: 1115, to: 1234 },
     },
@@ -626,7 +634,8 @@ export const CIVILIZATION_RECORDS: readonly CivilizationRecord[] = [
         wonder: {
             lat: 30.6455,
             lon: 104.0472,
-            wikipedia: 'Wuhou_Shrine',
+            wikipedia: '成都武侯祠',
+            wikipediaLang: 'zh',
         },
         realm: { from: 221, to: 263 },
     },

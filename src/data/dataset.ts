@@ -39,6 +39,7 @@ export const CIVILIZATIONS: readonly Civilization[] = CIVILIZATION_RECORDS.map((
         wonder: {
             at: { lon: record.wonder.lon, lat: record.wonder.lat },
             wikipedia: record.wonder.wikipedia,
+            wikipediaLang: record.wonder.wikipediaLang ?? 'en',
             anachronistic: record.wonder.anachronistic === true,
         },
         span: new YearSpan(record.realm.from, record.realm.to),

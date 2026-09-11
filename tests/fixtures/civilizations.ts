@@ -34,6 +34,7 @@ export function civilizationStub(options: CivilizationStubOptions = {}): Civiliz
         wonder: {
             at: { lon: -0.78, lat: 50.84 },
             wikipedia: 'Chichester_Cathedral',
+            wikipediaLang: 'en',
             anachronistic: options.anachronistic ?? false,
         },
         span: new YearSpan(from, to),

@@ -7,6 +7,8 @@ import type { YearSpan } from '@/domain/values/year-span.ts';
 export interface Wonder {
     at: GeoPoint;
     wikipedia: string;
+    /** The Wikipedia the article lives on, as a language code. */
+    wikipediaLang: string;
     /** True when the model, or the site, does not sit where or when the civilization does. */
     anachronistic: boolean;
 }
