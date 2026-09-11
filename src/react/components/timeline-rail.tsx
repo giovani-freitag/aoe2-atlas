@@ -54,14 +54,16 @@ export function TimelineRail({ civilizations, years, year, loading, onChange }: 
                 <span className="eyebrow">{loading ? t('rail.loading') : t('rail.year')}</span>
             </div>
 
-            <div className="rail-body__track">
-                {/* The count tells the stylesheet how far to hang the bars over the ends of the
-                    track, which is what puts each bar's middle over the notch that raises it. */}
-                <div
-                    className="rail-body__profile"
-                    style={{ '--bars': profile.length } as CSSProperties}
-                    aria-hidden
-                >
+            {/*
+             * How many stops there are, and which one we are on, as numbers the stylesheet can
+             * do arithmetic with: everything drawn behind the slider has to land on exactly the
+             * same positions the slider's own handle can reach.
+             */}
+            <div
+                className="rail-body__track"
+                style={{ '--bars': profile.length, '--at': at / Math.max(1, years.length - 1) } as CSSProperties}
+            >
+                <div className="rail-body__profile" aria-hidden>
                     {profile.map((count, index) => (
                         <span
                             key={years[index]}
@@ -71,6 +73,7 @@ export function TimelineRail({ civilizations, years, year, loading, onChange }: 
                     ))}
                 </div>
                 <div className="rail-body__rope oak" aria-hidden />
+                <div className="rail-body__fill" aria-hidden />
                 <input
                     type="range"
                     min={0}

@@ -286,6 +286,20 @@
  * read as the half-bars a histogram centred on its ticks is supposed to have.
  */
 .rail-body__track {
+    /* The handle is drawn here rather than by the browser, so its width is a number we know. */
+    --knob: 0.875rem;
+
+    /*
+     * Half a bar of the handle's travel, which is not half a bar of the track.
+     *
+     * A slider's handle cannot reach the ends: it runs between its own half-widths, so the
+     * first stop sits a knob-radius in from the left and the last one a knob-radius in from the
+     * right. Bars spread across the whole track therefore drifted away from the handle as it
+     * moved, by up to half its width — at 1492, sixteen stops along, the handle sat a good six
+     * pixels to the left of the column it had selected.
+     */
+    --overhang: calc((100% - var(--knob)) / (2 * (var(--bars, 2) - 1)));
+
     grid-area: track;
     position: relative;
     height: 2.25rem;
@@ -300,10 +314,8 @@
  * over each end puts the first bar's middle on the first stop and the last one's on the last.
  */
 .rail-body__profile {
-    --overhang: calc(50% / (var(--bars, 2) - 1));
-
     position: absolute;
-    inset: 0 calc(-1 * var(--overhang)) 0.75rem;
+    inset: 0 calc(var(--knob) / 2 - var(--overhang)) 0.75rem;
     display: flex;
     align-items: flex-end;
     gap: 1px;
@@ -331,14 +343,61 @@
     box-shadow: var(--engrave);
 }
 
+/* The stretch of the rail already travelled, ending exactly under the handle. */
+.rail-body__fill {
+    position: absolute;
+    left: calc(var(--knob) / 2);
+    bottom: 0.5rem;
+    width: calc(var(--at, 0) * (100% - var(--knob)));
+    height: 4px;
+    border-radius: 3px;
+    background: var(--brass);
+    opacity: 0.85;
+}
+
+/*
+ * The slider itself is invisible: the rail, the stretch travelled and the columns behind it are
+ * all drawn above, and this is the handle and the hit area. Its own furniture is turned off so
+ * that nothing is painted twice, and the handle is given a size rather than inheriting whatever
+ * the browser felt like — the arithmetic that lines the columns up depends on knowing it.
+ */
 .rail-body__track input {
     position: absolute;
     inset: auto 0 0;
     width: 100%;
     height: 1.25rem;
     margin: 0;
+    appearance: none;
     background: none;
-    accent-color: var(--brass);
+}
+
+.rail-body__track input::-webkit-slider-thumb {
+    appearance: none;
+    width: var(--knob);
+    height: var(--knob);
+    border: 1px solid rgb(0 0 0 / 45%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 28%, #f2dca8, var(--brass) 55%, var(--brass-deep));
+    box-shadow: 0 1px 2px rgb(0 0 0 / 55%);
+    cursor: grab;
+}
+
+.rail-body__track input::-moz-range-thumb {
+    width: var(--knob);
+    height: var(--knob);
+    border: 1px solid rgb(0 0 0 / 45%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 28%, #f2dca8, var(--brass) 55%, var(--brass-deep));
+    box-shadow: 0 1px 2px rgb(0 0 0 / 55%);
+    cursor: grab;
+}
+
+.rail-body__track input:active::-webkit-slider-thumb {
+    cursor: grabbing;
+}
+
+.rail-body__track input:active::-moz-range-thumb {
+    cursor: grabbing;
 }
 
 .rail-body__ends {
