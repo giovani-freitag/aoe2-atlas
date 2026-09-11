@@ -95,29 +95,33 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
     /*
      * Opening a civilization brings its realm into the frame; closing the sheet pulls back out.
      *
-     * Only a change of civilization is worth animating. Docking the sheet takes a third of the
-     * map's width away, which rebuilds the projection and re-runs this — and a second flight
-     * starting mid-first one is the jolt a reader sees. When the destination is the same place
-     * and only the viewport moved, the frame is corrected without a flight.
+     * The flight waits a frame first. Docking the sheet takes a third of the map's width away,
+     * so opening one fires this twice: once against the old viewport and again once the resize
+     * has landed. Flying immediately means the first flight sets off for a frame that is about
+     * to stop existing and the second has to correct it in mid-air. Deferring by a frame lets
+     * the last word win — whichever run is still standing when the browser next paints is the
+     * only one that flies, and it flies to a frame that is already right.
      */
     const focus = state.focused;
-    const flown = useRef<string | null>(null);
     useEffect(() => {
         if (!projection) return;
 
-        const animated = flown.current !== focus;
-        flown.current = focus;
+        const frame = requestAnimationFrame(() => {
+            if (!focus) {
+                flyTo(projection.wholeWorld());
 
-        if (!focus) {
-            flyTo(projection.wholeWorld(), animated);
+                return;
+            }
 
-            return;
-        }
+            const border = borders.get(focus);
+            if (!border) return;
 
-        const border = borders.get(focus);
-        if (!border) return;
+            flyTo(projection.frameFor(border.rings));
+        });
 
-        flyTo(projection.frameFor(border.rings), animated);
+        return () => {
+            cancelAnimationFrame(frame);
+        };
     }, [focus, projection, borders, flyTo]);
 
     const roseRadius = Math.min(ROSE_MAX, Math.min(size.width, size.height) * ROSE_SHARE);
