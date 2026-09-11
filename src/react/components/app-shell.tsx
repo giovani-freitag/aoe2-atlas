@@ -5,6 +5,7 @@ import { useServices } from '@/react/providers/services-context.ts';
 import { drawnRealms, useAtlas } from '@/react/providers/atlas-context.ts';
 import { useEscape } from '@/react/hooks/use-escape.ts';
 import { useTimeSlice } from '@/react/hooks/use-time-slice.ts';
+import { useSheetHistory } from '@/react/hooks/use-sheet-history.ts';
 import { useSpecular } from '@/react/hooks/use-specular.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { AtlasMap } from './atlas-map.tsx';
@@ -67,6 +68,12 @@ export function AppShell() {
      * Escape closes whatever is on top: the settings float over the detail, so they go first and
      * a second press reaches the sheet underneath. Without the order, one key would clear both.
      */
+    /*
+     * The open civilization is a history entry, so the phone's Back gesture closes the sheet and
+     * pulls the map back out to the world — which is what Back means to anyone holding a phone.
+     */
+    useSheetHistory(state.focused !== null, closeSheet);
+
     useEscape(
         useCallback(() => {
             if (settingsOpen) {

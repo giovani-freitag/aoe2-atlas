@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { interpolate } from 'd3-interpolate';
 import { select } from 'd3-selection';
 import { zoom, zoomIdentity, type D3ZoomEvent, type ZoomBehavior } from 'd3-zoom';
 // Selection.transition() is bolted on by this module; importing it is what makes flights glide.
@@ -56,6 +57,17 @@ export function useMapZoom(svg: React.RefObject<SVGSVGElement | null>, options: 
         if (!element || width === 0 || height === 0) return;
 
         const behaviour = zoom<SVGSVGElement, unknown>()
+            /*
+             * A straight flight instead of d3's default arc.
+             *
+             * The default interpolator is Van Wijk and Nuij's: between two views far apart it
+             * pulls the camera up and away before coming back down, which is optimal for a long
+             * traverse and reads as a fault on a short one. Going from Byzantium to the Mongols
+             * it dropped the scale from 10.5 to 4.3 before settling at 5.4 — the map appeared to
+             * fall out to the whole world and then recover. Interpolating the transform directly
+             * gives a plain pan and scale from wherever the reader is.
+             */
+            .interpolate(interpolate)
             .scaleExtent([scaleExtent[0], scaleExtent[1]])
             .translateExtent([
                 [0, 0],

@@ -92,13 +92,24 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         [shapes, palette],
     );
 
-    // Opening a civilization brings its realm into the frame; closing the sheet pulls back out.
+    /*
+     * Opening a civilization brings its realm into the frame; closing the sheet pulls back out.
+     *
+     * Only a change of civilization is worth animating. Docking the sheet takes a third of the
+     * map's width away, which rebuilds the projection and re-runs this — and a second flight
+     * starting mid-first one is the jolt a reader sees. When the destination is the same place
+     * and only the viewport moved, the frame is corrected without a flight.
+     */
     const focus = state.focused;
+    const flown = useRef<string | null>(null);
     useEffect(() => {
         if (!projection) return;
 
+        const animated = flown.current !== focus;
+        flown.current = focus;
+
         if (!focus) {
-            flyTo(projection.wholeWorld());
+            flyTo(projection.wholeWorld(), animated);
 
             return;
         }
@@ -106,7 +117,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         const border = borders.get(focus);
         if (!border) return;
 
-        flyTo(projection.frameFor(border.rings));
+        flyTo(projection.frameFor(border.rings), animated);
     }, [focus, projection, borders, flyTo]);
 
     const roseRadius = Math.min(ROSE_MAX, Math.min(size.width, size.height) * ROSE_SHARE);
