@@ -9,7 +9,7 @@
     "url": "https://github.com/giovani-freitag/aoe2-atlas"
   },
   "homepage": "https://giovani-freitag.github.io/aoe2-atlas/",
-  "description": "AoE2 Atlas: an equal-area map of every Age of Empires II civilization, its Wonder and the reach of the realm behind it.",
+  "description": "Interactive map of Age of Empires II: where each civilization's Wonder really stands, and the reconstructed extent of its realm, century by century.",
   "engines": {
     "node": ">=20.19"
   },
