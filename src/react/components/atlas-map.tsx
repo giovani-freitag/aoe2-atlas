@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Compass, Layers, Minus, Plus } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
@@ -12,14 +12,17 @@ import { useElementSize } from '@/react/hooks/use-element-size.ts';
 import { useMapZoom } from '@/react/hooks/use-map-zoom.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { CompassRose } from './compass-rose.tsx';
-import { HatchDefs } from './hatch-defs.tsx';
-import { WonderMarker } from './wonder-marker.tsx';
+import { HatchDefs, HAZE } from './hatch-defs.tsx';
+import { MARKER_SIZE, WonderMarker } from './wonder-marker.tsx';
 
 /** How much of the foot of the map the legend covers on a narrow screen. */
 const LEGEND_SHARE = 0.36;
 
 /** Above this width the legend is a card in the corner and stops eating the map's height. */
 const CARD_LEGEND_WIDTH = 720;
+
+/** How far apart the shield and its Wonder must land before the pin and its leader are drawn. */
+const APART = 6;
 
 /** What the detail panel covers of the map once it stops sliding and lies over it, in pixels. */
 const PANEL_WIDTH = 352;
@@ -60,10 +63,87 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         return new AtlasProjection({ width: size.width, height: size.height, bottomInset, kind: state.projection });
     }, [size.width, size.height, state.projection]);
 
+    /*
+     * The frame is painted onto the nodes that move, rather than rendered through React.
+     *
+     * Everything on this map that is laid out in screen space — thirty-five shields, their pins,
+     * their leaders, and the hatch that has to keep its width on screen — depends on the zoom.
+     * Pushing each gesture frame through React meant re-rendering all of it sixty times a second,
+     * and the map visibly trailed the pointer: the transform reached the DOM every 34 ms while
+     * dragging, with stalls past 78. The same numbers written straight onto the handful of
+     * attributes that actually change cost nothing, so the map now keeps up with the hand.
+     *
+     * React is told the frame when the gesture ends, and repaints after any ordinary render, so
+     * what is on screen and what React believes never drift apart.
+     */
+    const zoomed = useRef<SVGGElement>(null);
+    const marksLayer = useRef<SVGGElement>(null);
+    const defs = useRef<SVGDefsElement>(null);
+    const haze = useRef<SVGFEGaussianBlurElement | null>(null);
+    const hatches = useRef<SVGPatternElement[]>([]);
+    const placed = useRef<
+        {
+            anchor: [number, number];
+            wonder: [number, number];
+            shield: SVGGElement | null;
+            pin: SVGGElement | null;
+            leader: SVGLineElement | null;
+        }[]
+    >([]);
+    const painted = useRef<Frame>({ k: 1, x: 0, y: 0 });
+
+    const paint = useCallback((next: Frame): void => {
+        /*
+         * A pan leaves the hatching alone. The patterns and the blur only exist to hold their
+         * width on screen as the zoom changes, and rewriting them forces the browser to
+         * re-rasterise every hatched realm and re-run a Gaussian blur — the most expensive thing
+         * on the map, for no visible difference when the scale has not moved.
+         */
+        const rescaled = painted.current.k !== next.k;
+
+        painted.current = next;
+
+        zoomed.current?.setAttribute('transform', `translate(${next.x},${next.y}) scale(${next.k})`);
+
+        // The nodes are looked up once per render, not once per frame: searching the tree sixty
+        // times a second for thirty-five marks costs more than the writing ever did.
+        for (const mark of placed.current) {
+            const sx = next.k * mark.anchor[0] + next.x;
+            const sy = next.k * mark.anchor[1] + next.y;
+            const px = next.k * mark.wonder[0] + next.x;
+            const py = next.k * mark.wonder[1] + next.y;
+            const apart = Math.hypot(sx - px, sy - py) > APART;
+
+            mark.shield?.setAttribute('transform', `translate(${sx - MARKER_SIZE / 2}, ${sy - MARKER_SIZE / 2})`);
+
+            if (mark.pin) {
+                mark.pin.setAttribute('transform', `translate(${px}, ${py})`);
+                mark.pin.style.display = apart ? '' : 'none';
+            }
+
+            if (mark.leader) {
+                mark.leader.setAttribute('x1', String(sx));
+                mark.leader.setAttribute('y1', String(sy));
+                mark.leader.setAttribute('x2', String(px));
+                mark.leader.setAttribute('y2', String(py));
+                mark.leader.style.display = apart ? '' : 'none';
+            }
+        }
+
+        if (!rescaled) return;
+
+        haze.current?.setAttribute('stdDeviation', String(HAZE / next.k));
+
+        for (const pattern of hatches.current) {
+            pattern.setAttribute('patternTransform', `rotate(${pattern.dataset.angle}) scale(${1 / next.k})`);
+        }
+    }, []);
+
     const { frame, flyTo, zoomBy } = useMapZoom(svg, {
         width: size.width,
         height: size.height,
         scaleExtent: SCALE_EXTENT,
+        onFrame: paint,
     });
 
     const base = useMemo(() => {
@@ -194,6 +274,34 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         });
     }, [projection, standing, borders]);
 
+    /*
+     * After any ordinary render, hand the painter the current marks and let it have the last
+     * word on where they sit. React has just written positions from the frame it last heard
+     * about, which during a gesture is older than what is on screen.
+     */
+    useLayoutEffect(() => {
+        const layer = marksLayer.current;
+        placed.current = marks.map(({ civilization, anchor, wonder }) => {
+            const node = layer?.querySelector<SVGGElement>(`[data-civ="${civilization.key}"]`) ?? null;
+
+            return {
+                anchor,
+                wonder,
+                shield: node?.querySelector<SVGGElement>('.marker') ?? null,
+                pin: node?.querySelector<SVGGElement>('.pin') ?? null,
+                leader: node?.querySelector<SVGLineElement>('.leader') ?? null,
+            };
+        });
+
+        haze.current = defs.current?.querySelector('feGaussianBlur') ?? null;
+        hatches.current = [...(defs.current?.querySelectorAll<SVGPatternElement>('pattern[data-angle]') ?? [])];
+
+        // React has just rebuilt these nodes, so the guard must not treat this as a pan.
+        const { k, x, y } = painted.current;
+        painted.current = { k: Number.NaN, x, y };
+        paint({ k, x, y });
+    });
+
     return (
         <div className="atlas" ref={holder}>
             {projection && base ? (
@@ -206,9 +314,9 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                     role="img"
                     aria-label={t('app.mapAlt')}
                 >
-                    <HatchDefs styles={styles} scale={frame.k} />
+                    <HatchDefs ref={defs} styles={styles} scale={frame.k} />
 
-                    <g transform={`translate(${frame.x},${frame.y}) scale(${frame.k})`}>
+                    <g ref={zoomed} transform={`translate(${frame.x},${frame.y}) scale(${frame.k})`}>
                         <path className="atlas__sea" d={base.sphere} />
                         <path className="atlas__land" d={base.land} vectorEffect="non-scaling-stroke" />
 
@@ -267,7 +375,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                         />
                     ) : null}
 
-                    <g className="atlas__marks">
+                    <g className="atlas__marks" ref={marksLayer}>
                         {marks.map(({ civilization, anchor, wonder }) => {
                             const at: [number, number] = [frame.k * anchor[0] + frame.x, frame.k * anchor[1] + frame.y];
                             const pin: [number, number] = [frame.k * wonder[0] + frame.x, frame.k * wonder[1] + frame.y];
@@ -276,13 +384,21 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                             const colour = palette.styleOf(civilization.key).colour;
 
                             return (
-                                <g key={civilization.key}>
-                                    {apart && lit ? (
-                                        <line className="leader" x1={at[0]} y1={at[1]} x2={pin[0]} y2={pin[1]} />
+                                <g key={civilization.key} data-civ={civilization.key}>
+                                    {lit ? (
+                                        <line
+                                            className="leader"
+                                            x1={at[0]}
+                                            y1={at[1]}
+                                            x2={pin[0]}
+                                            y2={pin[1]}
+                                            style={{ display: apart ? '' : 'none' }}
+                                        />
                                     ) : null}
-                                    {apart ? (
+                                    {
                                         <g
                                             className="pin"
+                                            style={{ display: apart ? '' : 'none' }}
                                             transform={`translate(${pin[0]}, ${pin[1]})`}
                                             onClick={() => {
                                                 dispatch({ type: 'focus', value: civilization.key });
@@ -292,7 +408,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                                             <circle className="pin__dot" r={5} stroke={colour} />
                                             <circle className="pin__core" r={1.8} />
                                         </g>
-                                    ) : null}
+                                    }
                                     <WonderMarker
                                         civilization={civilization}
                                         at={at}

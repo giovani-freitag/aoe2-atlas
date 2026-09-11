@@ -1,15 +1,18 @@
+import type { Ref } from 'react';
 import type { CivilizationStyle } from '@/services/palette/palette-service.ts';
 
 /** Distance between hatch lines, in screen pixels, before the zoom is compensated for. */
 const SPACING = 7;
 
 /** How far an approximate border is smeared, in screen pixels. */
-const HAZE = 2.2;
+export const HAZE = 2.2;
 
 export interface HatchDefsProps {
     styles: readonly CivilizationStyle[];
     /** Current map scale, so the hatching keeps its width on screen however far the reader zooms. */
     scale: number;
+    /** Handed out so the map can rewrite the scale during a gesture without a render. */
+    ref?: Ref<SVGDefsElement>;
 }
 
 /**
@@ -23,9 +26,9 @@ export interface HatchDefsProps {
  * zones, not surveyed lines, and the source says how well it knows each one — so the ones it
  * admits are approximate are drawn soft rather than pretending to a precision nobody has.
  */
-export function HatchDefs({ styles, scale }: HatchDefsProps) {
+export function HatchDefs({ styles, scale, ref }: HatchDefsProps) {
     return (
-        <defs>
+        <defs ref={ref}>
             <filter id="frontier-haze" x="-8%" y="-8%" width="116%" height="116%">
                 <feGaussianBlur stdDeviation={HAZE / scale} />
             </filter>
@@ -37,6 +40,7 @@ export function HatchDefs({ styles, scale }: HatchDefsProps) {
                     width={SPACING}
                     height={SPACING}
                     patternUnits="userSpaceOnUse"
+                    data-angle={style.angle}
                     patternTransform={`rotate(${style.angle}) scale(${1 / scale})`}
                 >
                     <rect width={SPACING} height={SPACING} fill={style.colour} fillOpacity={0.14} />

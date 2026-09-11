@@ -8,7 +8,9 @@ import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
  * Markers never scale with the map, and this is also the tap target, so it is sized for a
  * thumb rather than for a mouse.
  */
-const SIZE = 34;
+export const MARKER_SIZE = 34;
+
+const SIZE = MARKER_SIZE;
 
 export interface WonderMarkerProps {
     civilization: Civilization;

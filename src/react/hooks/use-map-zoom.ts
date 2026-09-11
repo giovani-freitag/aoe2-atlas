@@ -25,6 +25,14 @@ export interface MapZoomOptions {
     width: number;
     height: number;
     scaleExtent: readonly [number, number];
+    /**
+     * Called for every frame of a gesture or a flight, before React hears about it.
+     *
+     * Dragging fires this sixty times a second, and re-rendering the whole map that often is
+     * what made the map lag behind the pointer. The handler paints the frame straight onto the
+     * nodes that move; React is told once the gesture settles.
+     */
+    onFrame?: (frame: Frame) => void;
 }
 
 /** The element and the behaviour bound to it, held together so a flight needs only one lookup. */
@@ -50,7 +58,13 @@ export function useMapZoom(svg: React.RefObject<SVGSVGElement | null>, options: 
 
     const [frame, setFrame] = useState<Frame>({ k: 1, x: 0, y: 0 });
     const bound = useRef<Bound | null>(null);
-    const { width, height, scaleExtent } = options;
+    const { width, height, scaleExtent, onFrame } = options;
+
+    // Read through a ref so a new handler each render does not rebind the gesture mid-drag.
+    const paint = useRef(onFrame);
+    useEffect(() => {
+        paint.current = onFrame;
+    }, [onFrame]);
 
     useEffect(() => {
         const element = svg.current;
@@ -74,6 +88,19 @@ export function useMapZoom(svg: React.RefObject<SVGSVGElement | null>, options: 
                 [width, height],
             ])
             .on('zoom', (event: D3ZoomEvent<SVGSVGElement, unknown>) => {
+                const next = { k: event.transform.k, x: event.transform.x, y: event.transform.y };
+
+                if (paint.current) paint.current(next);
+                else setFrame(next);
+            })
+            /*
+             * React learns the frame when the movement stops, not while it is happening. Every
+             * mark is laid out in screen space, so a frame in state means re-rendering all of
+             * them — which is the work that made a drag trail behind the pointer. The painter
+             * has already put the same numbers on the nodes; this only brings React level again
+             * so the next ordinary render agrees with what is on screen.
+             */
+            .on('end', (event: D3ZoomEvent<SVGSVGElement, unknown>) => {
                 setFrame({ k: event.transform.k, x: event.transform.x, y: event.transform.y });
             });
 
