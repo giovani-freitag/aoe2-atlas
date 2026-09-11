@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, type MouseEvent } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
@@ -10,6 +10,7 @@ import { useServices } from '@/react/providers/services-context.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { CivRow } from './civ-row.tsx';
+import { SideDrawer } from './side-drawer.tsx';
 
 const ORDERS: readonly CatalogueOrder[] = ['name', 'area', 'year', 'expansion'];
 
@@ -22,11 +23,12 @@ export interface RosterDrawerProps {
 }
 
 /**
- * The roster, offcanvas from the left on a phone and docked as a column when there is room.
+ * The roster: what is on the map, offcanvas from the left and docked as a column where there is
+ * room for one.
  *
- * It is one `dialog` either way. Narrow, it opens modally so the focus cannot wander onto the
- * map behind it and Escape closes it; wide, it opens without a modal and CSS pulls it back into
- * the grid. Two behaviours, one element, no duplicated markup.
+ * It is the left half of a pair. Everything about choosing *what* is drawn lives here — the
+ * search, the sort, the expansions, the fifty-six of them — and everything about *how* it is
+ * drawn comes in from the other side.
  */
 export function RosterDrawer({ civilizations, borders, open, onClose }: RosterDrawerProps) {
     const { t } = useTranslation();
@@ -34,24 +36,6 @@ export function RosterDrawer({ civilizations, borders, open, onClose }: RosterDr
     const { state, dispatch } = useAtlas();
     const format = useFormat();
     const wide = useWideScreen();
-    const dialog = useRef<HTMLDialogElement>(null);
-
-    useEffect(() => {
-        const element = dialog.current;
-        if (!element) return;
-
-        const shouldOpen = wide || open;
-        if (shouldOpen === element.open) return;
-
-        if (!shouldOpen) {
-            element.close();
-
-            return;
-        }
-
-        if (wide) element.show();
-        else element.showModal();
-    }, [wide, open]);
 
     const largest = useMemo(
         () => Math.max(1, ...[...borders.values()].map((border) => border.areaKm2)),
@@ -60,27 +44,9 @@ export function RosterDrawer({ civilizations, borders, open, onClose }: RosterDr
 
     const standingCount = civilizations.filter((civ) => borders.has(civ.key)).length;
 
-    /*
-     * A dialog does not close when the backdrop is clicked, so the click lands on the dialog
-     * element itself and the box tells us whether it was inside the panel. This is what lets
-     * the drawer go without a close button: tap anywhere off it, or press Escape.
-     */
-    const closeOnBackdrop = (event: MouseEvent<HTMLDialogElement>): void => {
-        if (wide || event.target !== event.currentTarget) return;
-
-        const box = event.currentTarget.getBoundingClientRect();
-        const inside =
-            event.clientX >= box.left &&
-            event.clientX <= box.right &&
-            event.clientY >= box.top &&
-            event.clientY <= box.bottom;
-
-        if (!inside) onClose();
-    };
-
     return (
-        <dialog className="roster leather" ref={dialog} onCancel={onClose} onClose={onClose} onClick={closeOnBackdrop}>
-            <div className="roster__head">
+        <SideDrawer label={t('roster.title')} open={open} onClose={onClose} side="left" pinnedWhenWide className="roster">
+            <div className="drawer__head">
                 <h2>{t('roster.title')}</h2>
             </div>
 
@@ -164,6 +130,6 @@ export function RosterDrawer({ civilizations, borders, open, onClose }: RosterDr
                     />
                 ))}
             </ul>
-        </dialog>
+        </SideDrawer>
     );
 }

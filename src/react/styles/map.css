@@ -232,19 +232,6 @@
     stroke-opacity: 0.65;
 }
 
-@media (min-width: 60rem) {
-    .sheet--float {
-        position: fixed;
-        inset: auto var(--space-4) var(--space-4) auto;
-        width: 24rem;
-        height: auto;
-        max-height: 80dvh;
-        border: 1px solid var(--oak);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-lg);
-    }
-}
-
 /* ---- the wind rose ------------------------------------------------------ */
 
 .rose {

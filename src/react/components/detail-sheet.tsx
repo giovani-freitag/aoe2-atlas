@@ -52,7 +52,6 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
             label={t('sheet.details', { name: words.name })}
             open
             onClose={onClose}
-            wide="dock"
             head={
                 <div className="sheet__head--titled" style={{ borderColor: style.colour }}>
                     <img

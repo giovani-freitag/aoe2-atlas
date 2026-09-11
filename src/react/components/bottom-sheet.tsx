@@ -8,13 +8,6 @@ export interface BottomSheetProps {
     label: string;
     open: boolean;
     onClose: () => void;
-    /**
-     * Where the sheet goes once the screen is wide enough to stop sliding.
-     *
-     * `dock` pulls it into the layout grid as the right-hand column; `float` leaves it as a
-     * card in the corner. Narrow, both are the same sheet from the bottom.
-     */
-    wide: 'dock' | 'float';
     /** What sits beside the grip: usually a title and a line under it. */
     head: ReactNode;
     children: ReactNode;
@@ -29,7 +22,7 @@ export interface BottomSheetProps {
  * panel stops sliding up from the foot and comes in from the side or sits in a corner, over the
  * map rather than beside it, so the grip goes away rather than pretending to be draggable.
  */
-export function BottomSheet({ label, open, onClose, wide, head, children }: BottomSheetProps) {
+export function BottomSheet({ label, open, onClose, head, children }: BottomSheetProps) {
     const { t } = useTranslation();
     const isWide = useWideScreen();
     const drag = useSheetDrag({ open, onDismiss: onClose });
@@ -46,7 +39,7 @@ export function BottomSheet({ label, open, onClose, wide, head, children }: Bott
      */
     return (
         <div
-            className={`sheet leather sheet--${wide}`}
+            className="sheet sheet--dock leather"
             role="dialog"
             aria-label={label}
             aria-hidden={open ? undefined : true}

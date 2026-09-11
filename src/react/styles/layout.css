@@ -93,49 +93,66 @@
     z-index: 2;
 }
 
-/* ---- the roster, offcanvas from the left -------------------------------- */
+/* ---- the drawers, offcanvas from the sides ------------------------------ */
 
 /*
- * The roster takes the whole side, the year rail included.
- *
- * It opens modally, which makes the rest of the page inert — so a year rail left showing under
- * it would be a control the reader can see and cannot touch. The sheets are the other case:
- * they lie over the map with everything else still live, and stop at the rail rather than
- * crossing it.
+ * The two side panels are one panel mirrored: what is on the map comes in from the left, how it
+ * is drawn comes in from the right. Both take the whole side, the year rail included, because
+ * both open modally on a phone and make the rest of the page inert — a rail showing under them
+ * would be a control the reader can see and cannot touch. The civilization sheet is the other
+ * case and stops at the rail, because the map behind it stays live.
  */
-.roster {
+.drawer {
     position: fixed;
-    inset: 0 auto 0 0;
+    top: 0;
+    bottom: 0;
     width: min(20rem, 88vw);
     /*
      * A dialog is `height: fit-content` by the browser's own stylesheet, which quietly wins over
-     * a top and a bottom and makes the box as tall as fifty-six rows. The list inside then has
-     * nothing to be a fraction of, and its scroll goes away with it.
+     * a top and a bottom and makes the box as tall as its contents. Whatever scrolls inside then
+     * has nothing to be a fraction of, and its scroll goes away with it.
      */
     height: auto;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid var(--oak);
     box-shadow: var(--shadow-lg);
-    transform: translateX(-100%);
     transition:
         transform 240ms ease,
         overlay 240ms allow-discrete,
         display 240ms allow-discrete;
 }
 
-.roster[open] {
+.drawer--left {
+    left: 0;
+    right: auto;
+    border-right: 1px solid var(--oak);
+    transform: translateX(-100%);
+}
+
+.drawer--right {
+    left: auto;
+    right: 0;
+    border-left: 1px solid var(--oak);
+    transform: translateX(100%);
+}
+
+.drawer[open] {
     transform: translateX(0);
 }
 
-/* The panel has to start offscreen for the transition to have anywhere to come from. */
+/* A panel has to start offscreen for the transition to have anywhere to come from. */
 @starting-style {
-    .roster[open] {
+    .drawer--left[open] {
         transform: translateX(-100%);
+    }
+
+    .drawer--right[open] {
+        transform: translateX(100%);
     }
 }
 
-.roster__head {
+.drawer__head {
+    flex: none;
     display: flex;
     align-items: center;
     gap: var(--space-2);
@@ -143,9 +160,31 @@
     border-bottom: 1px solid var(--oak);
 }
 
-.roster__head h2 {
+.drawer__head h2 {
     flex: 1;
     font-size: 0.875rem;
+}
+
+.drawer__note {
+    font-size: 0.6875rem;
+    color: var(--text-faint);
+}
+
+.drawer__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.drawer__credit {
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    color: var(--text-faint);
 }
 
 .roster__list {
@@ -305,6 +344,20 @@
         transform: none;
         box-shadow: none;
         transition: none;
+    }
+
+    /*
+     * Wide, the preferences are a panel over the map rather than over everything.
+     *
+     * They open without a modal here, so the header and the year rail stay live behind them —
+     * and a live control covered is worse than one that is simply not there. On a phone the
+     * drawer is modal and makes the page inert, and then it takes the whole side.
+     */
+    .prefs {
+        top: var(--bar-height, 0px);
+        bottom: var(--rail-height, 0px);
+        width: 22rem;
+        border-radius: var(--radius-lg) 0 0 var(--radius-lg);
     }
 
     /*
