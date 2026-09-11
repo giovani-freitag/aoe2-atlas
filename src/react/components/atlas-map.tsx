@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { useTranslation } from 'react-i18next';
 import { Compass, Layers, Minus, Plus } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
+import type { GeoPoint } from '@/domain/values/geo-point.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import { LAND_RINGS } from '@/data/dataset.ts';
 import { AtlasProjection, SCALE_EXTENT, type Frame } from '@/services/geo/atlas-projection.ts';
@@ -22,6 +23,11 @@ const APART = 6;
 
 /** What the detail panel covers of the map once it stops sliding and lies over it, in pixels. */
 const PANEL_WIDTH = 352;
+
+/** Holds a scale inside what the map allows, for a view restored across a change of viewport. */
+function clamp(scale: number): number {
+    return Math.min(Math.max(scale, SCALE_EXTENT[0]), SCALE_EXTENT[1]);
+}
 
 /** The two points of a mark the Wikipedia preview can hang from. */
 const SHIELD = 'shield';
@@ -263,6 +269,18 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
      * after the sheet opens — and marking it as done too early lost the flight altogether.
      */
     const flown = useRef<{ focus: string | null; wide: boolean; projection: AtlasProjection } | null>(null);
+
+    /*
+     * Where the reader was before they opened a civilization, so closing it gives them that back.
+     *
+     * Flying out to the whole world instead threw away whatever they had set up — someone
+     * reading the Baltic at four times zoom, who opens a realm to check its area, wants the
+     * Baltic back and not the Pacific. It is kept as a place and a scale rather than as a frame
+     * of pixels, because the window may be a different size by the time it is asked for, and a
+     * pixel offset means nothing then while a longitude still does.
+     */
+    const kept = useRef<{ place: GeoPoint; scale: number } | null>(null);
+
     useEffect(() => {
         if (!projection) return;
 
@@ -273,8 +291,29 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
             // Wide, the panel lies over the right of the map; a realm centred under it is hidden.
             const covered = { right: focus && wide ? PANEL_WIDTH : 0 };
 
+            // Stepping from one civilization to the next keeps the view from before the first.
+            if (focus && !was?.focus) {
+                const { k, x, y } = painted.current;
+                const place = projection.placeOf([(projection.width / 2 - x) / k, (projection.height / 2 - y) / k]);
+
+                kept.current = place ? { place, scale: k * projection.baseScale } : null;
+            }
+
             if (!focus) {
                 flown.current = { focus, wide, projection };
+
+                const back = kept.current;
+                kept.current = null;
+
+                const anchor = back ? projection.pointOf(back.place) : null;
+                if (back && anchor) {
+                    const k = clamp(back.scale / projection.baseScale);
+
+                    flyTo({ k, x: projection.width / 2 - k * anchor[0], y: projection.height / 2 - k * anchor[1] });
+
+                    return;
+                }
+
                 flyTo(projection.wholeWorld(covered));
 
                 return;
