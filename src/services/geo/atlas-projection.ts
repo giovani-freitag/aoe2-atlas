@@ -79,6 +79,12 @@ export interface Frame {
     y: number;
 }
 
+/** How much of the map is hidden behind a panel, in pixels, per side. */
+export interface Covered {
+    left?: number;
+    right?: number;
+}
+
 /**
  * A projection fitted to the viewport, and the paths drawn on it.
  *
@@ -129,6 +135,29 @@ export class AtlasProjection {
      */
     public pointOf(point: GeoPoint): [number, number] | null {
         return this.projection([point.lon, point.lat]);
+    }
+
+    /**
+     * Centres a projected box in whatever of the map is still visible.
+     *
+     * @param box - The bounds to centre, in projected pixels.
+     * @param fill - How much of the free space the box should take.
+     * @param covered - Pixels hidden behind panels on each side.
+     */
+    private fit(box: { left: number; top: number; right: number; bottom: number }, fill: number, covered: Covered): Frame {
+        const hiddenLeft = covered.left ?? 0;
+        const hiddenRight = covered.right ?? 0;
+        const free = Math.max(this.width - hiddenLeft - hiddenRight, this.width * 0.3);
+
+        const spanX = Math.max(box.right - box.left, 1);
+        const spanY = Math.max(box.bottom - box.top, 1);
+        const k = clamp((fill * Math.min(free / spanX, this.visibleHeight / spanY)) || MIN_SCALE);
+
+        return {
+            k,
+            x: hiddenLeft + free / 2 - (k * (box.left + box.right)) / 2,
+            y: this.visibleHeight / 2 - (k * (box.top + box.bottom)) / 2,
+        };
     }
 
     /**
@@ -241,20 +270,14 @@ export class AtlasProjection {
      * The zoom that brings a realm into the middle of the frame.
      *
      * @param rings - The outline to frame.
+     * @param covered - Pixels of the map hidden under a panel, so the realm lands beside it
+     * rather than behind it. The projection is untouched: only where the middle is moves.
      * @returns A transform, clamped to the zoom the map allows.
      */
-    public frameFor(rings: MultiPolygonRings): Frame {
+    public frameFor(rings: MultiPolygonRings, covered: Covered = {}): Frame {
         const [[left, top], [right, bottom]] = this.path.bounds(asMultiPolygon(rings));
 
-        const spanX = Math.max(right - left, 1);
-        const spanY = Math.max(bottom - top, 1);
-        const k = clamp((FRAME_FILL * Math.min(this.width / spanX, this.visibleHeight / spanY)) || MIN_SCALE);
-
-        return {
-            k,
-            x: this.width / 2 - (k * (left + right)) / 2,
-            y: this.visibleHeight / 2 - (k * (top + bottom)) / 2,
-        };
+        return this.fit({ left, top, right, bottom }, FRAME_FILL, covered);
     }
 
     /**
@@ -265,7 +288,7 @@ export class AtlasProjection {
      * Fitting the window the atlas actually draws in gains a third of the size and loses no
      * civilization at all.
      */
-    public wholeWorld(): Frame {
+    public wholeWorld(covered: Covered = {}): Frame {
         /*
          * The corners are projected one by one rather than handed to `path.bounds`. d3 reads a
          * polygon's edges as great circles, so a four-corner box spanning two hundred and sixty
@@ -291,13 +314,7 @@ export class AtlasProjection {
 
         if (!Number.isFinite(left)) return { k: MIN_SCALE, x: 0, y: 0 };
 
-        const k = clamp(Math.min(this.width / Math.max(right - left, 1), this.visibleHeight / Math.max(bottom - top, 1)));
-
-        return {
-            k,
-            x: this.width / 2 - (k * (left + right)) / 2,
-            y: this.visibleHeight / 2 - (k * (top + bottom)) / 2,
-        };
+        return this.fit({ left, top, right, bottom }, 1, covered);
     }
 
 }

@@ -25,9 +25,9 @@ export interface BottomSheetProps {
  *
  * There is no close button. The grip drags the sheet between three heights and throws it away
  * past the lowest, a tap on it steps to the next height, and Escape or tapping the map closes
- * it — so a cross would be a fourth way to do what three already do. On a wide screen nothing
- * slides: the docked sheet is simply the column and the floating one is a card in the corner,
- * so the grip goes away rather than sitting there pretending to be draggable.
+ * it — so a cross would be a fourth way to do what three already do. On a wide screen the
+ * panel stops sliding up from the foot and comes in from the side or sits in a corner, over the
+ * map rather than beside it, so the grip goes away rather than pretending to be draggable.
  */
 export function BottomSheet({ label, open, onClose, wide, head, children }: BottomSheetProps) {
     const { t } = useTranslation();
@@ -35,27 +35,22 @@ export function BottomSheet({ label, open, onClose, wide, head, children }: Bott
     const drag = useSheetDrag({ open, onDismiss: onClose });
     const sheet = useRef<HTMLDivElement>(null);
 
-    // Docked, the sheet is part of the layout and the popover machinery must stay out of it.
-    const docked = isWide && wide === 'dock';
-
     useEffect(() => {
         const element = sheet.current;
-        if (!element || docked) return;
+        if (!element) return;
 
         const showing = element.matches(':popover-open');
         if (open === showing) return;
 
         if (open) element.showPopover();
         else element.hidePopover();
-    }, [open, docked]);
-
-    if (docked && !open) return null;
+    }, [open]);
 
     return (
         <div
             className={`sheet leather sheet--${wide}`}
             ref={sheet}
-            popover={docked ? undefined : 'manual'}
+            popover="manual"
             aria-label={label}
             data-dragging={drag.dragging}
             style={isWide ? undefined : { height: `${drag.height * 100}dvh` }}

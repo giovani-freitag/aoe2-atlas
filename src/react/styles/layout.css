@@ -228,10 +228,10 @@
 @media (min-width: 60rem) {
     .shell {
         grid-template-areas:
-            'bar bar bar'
-            'roster stage detail'
-            'rail rail rail';
-        grid-template-columns: 20rem 1fr auto;
+            'bar bar'
+            'roster stage'
+            'rail rail';
+        grid-template-columns: 20rem 1fr;
         grid-template-rows: auto 1fr auto;
     }
 
@@ -276,21 +276,39 @@
         transition: none;
     }
 
+    /*
+     * The detail panel lies over the map, it does not take a column from it.
+     *
+     * As a grid cell it took a third of the map's width on the way in and gave it back on the
+     * way out, and every path in the SVG was reprojected and redrawn at a new size in the same
+     * frame. However well the zoom was carried across, the map visibly heaved. Over the top it
+     * costs the map nothing: the projection never changes, nothing is reprojected, and the panel
+     * simply slides in from the right.
+     */
     .sheet--dock {
-        grid-area: detail;
-        position: relative;
-        inset: auto;
-        margin: 0;
+        inset: auto 0 0 auto;
         width: 22rem;
         height: auto;
-        min-height: 0;
+        top: 0;
         border-top: none;
         border-left: 1px solid var(--oak);
         border-radius: 0;
-        box-shadow: none;
-        transform: none;
-        transition: none;
         padding-bottom: 0;
+        transform: translateX(100%);
+        transition:
+            transform 240ms ease,
+            overlay 240ms allow-discrete,
+            display 240ms allow-discrete;
+    }
+
+    .sheet--dock:popover-open {
+        transform: translateX(0);
+    }
+
+    @starting-style {
+        .sheet--dock:popover-open {
+            transform: translateX(100%);
+        }
     }
 
     .sheet__head {

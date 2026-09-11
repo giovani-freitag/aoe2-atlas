@@ -10,6 +10,7 @@ import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useElementSize } from '@/react/hooks/use-element-size.ts';
 import { useMapZoom } from '@/react/hooks/use-map-zoom.ts';
+import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { CompassRose } from './compass-rose.tsx';
 import { HatchDefs } from './hatch-defs.tsx';
 import { WonderMarker } from './wonder-marker.tsx';
@@ -19,6 +20,9 @@ const LEGEND_SHARE = 0.36;
 
 /** Above this width the legend is a card in the corner and stops eating the map's height. */
 const CARD_LEGEND_WIDTH = 720;
+
+/** What the detail panel covers of the map once it stops sliding and lies over it, in pixels. */
+const PANEL_WIDTH = 352;
 
 /** Where the wind rose sits and how big it is, as a share of the shorter side. */
 const ROSE_SHARE = 0.11;
@@ -140,12 +144,16 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
      * only one that flies, and it flies to a frame that is already right.
      */
     const focus = state.focused;
+    const wide = useWideScreen();
     useEffect(() => {
         if (!projection) return;
 
         const frame = requestAnimationFrame(() => {
+            // Wide, the panel lies over the right of the map; a realm centred under it is hidden.
+            const covered = { right: focus && wide ? PANEL_WIDTH : 0 };
+
             if (!focus) {
-                flyTo(projection.wholeWorld());
+                flyTo(projection.wholeWorld(covered));
 
                 return;
             }
@@ -153,13 +161,13 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
             const border = borders.get(focus);
             if (!border) return;
 
-            flyTo(projection.frameFor(border.rings));
+            flyTo(projection.frameFor(border.rings, covered));
         });
 
         return () => {
             cancelAnimationFrame(frame);
         };
-    }, [focus, projection, borders, flyTo]);
+    }, [focus, projection, borders, flyTo, wide]);
 
     const roseRadius = Math.min(ROSE_MAX, Math.min(size.width, size.height) * ROSE_SHARE);
 
