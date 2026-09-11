@@ -78,7 +78,7 @@
         "year": "Año",
         "language": "Idioma",
         "projection": "Proyección",
-        "projectionHint": "Ninguna proyección es neutral. Las áreas de los paneles se miden sobre la esfera al generar los datos, así que cambiar aquí altera el dibujo y ningún número.",
+        "projectionHint": "Las áreas de los paneles se miden sobre la esfera al generar los datos, así que cambiar aquí altera el dibujo y ningún número.",
         "preserves": "conserva {{what}}",
         "chart": "Carta",
         "ruled": "Líneas de rumbo, ecuador y trópicos",

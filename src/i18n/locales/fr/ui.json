@@ -78,7 +78,7 @@
         "year": "Année",
         "language": "Langue",
         "projection": "Projection",
-        "projectionHint": "Aucune projection n'est neutre. Les superficies des panneaux sont mesurées sur la sphère lors de la génération des données : changer ici modifie le dessin et aucun chiffre.",
+        "projectionHint": "Les superficies des panneaux sont mesurées sur la sphère lors de la génération des données : changer ici modifie le dessin et aucun chiffre.",
         "preserves": "conserve {{what}}",
         "chart": "Carte",
         "ruled": "Loxodromies, équateur et tropiques",

@@ -78,7 +78,7 @@
         "year": "Ano",
         "language": "Idioma",
         "projection": "Projeção",
-        "projectionHint": "Nenhuma projeção é neutra. As áreas nos painéis são medidas na esfera quando os dados são gerados, então trocar aqui muda o desenho e nenhum número.",
+        "projectionHint": "As áreas nos painéis são medidas na esfera quando os dados são gerados, então trocar aqui muda o desenho e nenhum número.",
         "preserves": "preserva {{what}}",
         "chart": "Carta",
         "ruled": "Linhas de rumo, equador e trópicos",

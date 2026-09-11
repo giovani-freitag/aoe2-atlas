@@ -78,7 +78,7 @@
         "year": "Jahr",
         "language": "Sprache",
         "projection": "Projektion",
-        "projectionHint": "Keine Projektion ist neutral. Die Flächen in den Panels werden beim Erzeugen der Daten auf der Kugel gemessen; ein Wechsel hier ändert die Zeichnung und keine Zahl.",
+        "projectionHint": "Die Flächen in den Panels werden beim Erzeugen der Daten auf der Kugel gemessen; ein Wechsel hier ändert die Zeichnung und keine Zahl.",
         "preserves": "erhält {{what}}",
         "chart": "Seekarte",
         "ruled": "Kurslinien, Äquator und Wendekreise",

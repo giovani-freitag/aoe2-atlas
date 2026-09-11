@@ -78,7 +78,7 @@
         "year": "Tahun",
         "language": "Bahasa",
         "projection": "Unjuran",
-        "projectionHint": "Tiada unjuran yang neutral. Keluasan dalam panel diukur di atas sfera semasa data dijana, jadi menukar di sini mengubah lukisan dan bukan angka.",
+        "projectionHint": "Keluasan dalam panel diukur di atas sfera semasa data dijana, jadi menukar di sini mengubah lukisan dan bukan angka.",
         "preserves": "mengekalkan {{what}}",
         "chart": "Carta",
         "ruled": "Garis rumb, khatulistiwa dan garisan sartan",

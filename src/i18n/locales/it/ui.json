@@ -78,7 +78,7 @@
         "year": "Anno",
         "language": "Lingua",
         "projection": "Proiezione",
-        "projectionHint": "Nessuna proiezione è neutra. Le aree nei pannelli sono misurate sulla sfera quando i dati vengono generati, quindi cambiare qui modifica il disegno e nessun numero.",
+        "projectionHint": "Le aree nei pannelli sono misurate sulla sfera quando i dati vengono generati, quindi cambiare qui modifica il disegno e nessun numero.",
         "preserves": "conserva {{what}}",
         "chart": "Carta",
         "ruled": "Lossodromie, equatore e tropici",

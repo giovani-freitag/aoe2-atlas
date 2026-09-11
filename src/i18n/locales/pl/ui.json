@@ -78,7 +78,7 @@
         "year": "Rok",
         "language": "Język",
         "projection": "Odwzorowanie",
-        "projectionHint": "Żadne odwzorowanie nie jest neutralne. Powierzchnie w panelach mierzone są na sferze podczas generowania danych, więc zmiana tutaj zmienia rysunek, a nie liczby.",
+        "projectionHint": "Powierzchnie w panelach mierzone są na sferze podczas generowania danych, więc zmiana tutaj zmienia rysunek, a nie liczby.",
         "preserves": "zachowuje {{what}}",
         "chart": "Mapa",
         "ruled": "Loksodromy, równik i zwrotniki",

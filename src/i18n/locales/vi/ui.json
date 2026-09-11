@@ -78,7 +78,7 @@
         "year": "Năm",
         "language": "Ngôn ngữ",
         "projection": "Phép chiếu",
-        "projectionHint": "Không phép chiếu nào là trung lập. Diện tích trong các bảng được đo trên mặt cầu khi tạo dữ liệu, nên đổi ở đây chỉ đổi hình vẽ chứ không đổi con số nào.",
+        "projectionHint": "Diện tích trong các bảng được đo trên mặt cầu khi tạo dữ liệu, nên đổi ở đây chỉ đổi hình vẽ chứ không đổi con số nào.",
         "preserves": "giữ đúng {{what}}",
         "chart": "Hải đồ",
         "ruled": "Đường xiên đều, xích đạo và chí tuyến",

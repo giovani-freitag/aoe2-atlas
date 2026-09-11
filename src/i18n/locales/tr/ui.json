@@ -78,7 +78,7 @@
         "year": "Yıl",
         "language": "Dil",
         "projection": "Projeksiyon",
-        "projectionHint": "Hiçbir projeksiyon tarafsız değildir. Panellerdeki alanlar veri üretilirken küre üzerinde ölçülür; buradaki değişiklik çizimi değiştirir, sayıları değil.",
+        "projectionHint": "Panellerdeki alanlar veri üretilirken küre üzerinde ölçülür; buradaki değişiklik çizimi değiştirir, sayıları değil.",
         "preserves": "{{what}} korur",
         "chart": "Harita",
         "ruled": "Kerte hatları, ekvator ve dönenceler",
