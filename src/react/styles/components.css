@@ -891,3 +891,43 @@
     top: calc(100% + var(--space-2));
     bottom: auto;
 }
+
+/*
+ * The tip, drawn as two triangles: the outer one is the card's border, the inner one its face,
+ * a pixel in front. `--tip` is set as the card is placed, so the arrow stays over the link even
+ * after the card has been slid sideways to stay on screen.
+ */
+.wiki__card::before,
+.wiki__card::after {
+    content: '';
+    position: absolute;
+    left: var(--tip, 2rem);
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    transform: translateX(-50%);
+}
+
+.wiki__card::before {
+    top: 100%;
+    border-top-color: var(--oak);
+}
+
+.wiki__card::after {
+    top: calc(100% - 1px);
+    border-top-color: var(--leather);
+}
+
+.wiki__card[data-below='true']::before {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--oak);
+}
+
+.wiki__card[data-below='true']::after {
+    top: auto;
+    bottom: calc(100% - 1px);
+    border-top-color: transparent;
+    border-bottom-color: var(--leather);
+}

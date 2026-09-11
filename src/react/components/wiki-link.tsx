@@ -15,6 +15,9 @@ const DWELL_MS = 320;
 /** How close to the edge of the screen the card is allowed to come, in pixels. */
 const EDGE = 8;
 
+/** How near the card's own corner the tip may come, so it never points off the edge of it. */
+const TIP_INSET = 18;
+
 export interface WikiLinkProps {
     /** Which Wikipedia the article is on, as a language code. */
     language: string;
@@ -38,6 +41,7 @@ export function WikiLink({ language, title, children }: WikiLinkProps) {
     const [open, setOpen] = useState(false);
     const dwell = useRef<number | undefined>(undefined);
     const card = useRef<HTMLSpanElement>(null);
+    const anchor = useRef<HTMLAnchorElement>(null);
     const id = useId();
 
     useEffect(
@@ -55,7 +59,8 @@ export function WikiLink({ language, title, children }: WikiLinkProps) {
      */
     useLayoutEffect(() => {
         const node = card.current;
-        if (!node) return;
+        const link = anchor.current;
+        if (!node || !link) return;
 
         node.style.left = '0px';
         node.dataset.below = 'false';
@@ -64,6 +69,20 @@ export function WikiLink({ language, title, children }: WikiLinkProps) {
         const overhang = box.right - (window.innerWidth - EDGE);
         if (overhang > 0) node.style.left = `${-overhang}px`;
         if (box.top < EDGE) node.dataset.below = 'true';
+
+        /*
+         * The tip points at the link, not at the corner of the card.
+         *
+         * The card has just been slid sideways to stay on screen, so the two no longer line up;
+         * without this the arrow ends up under whatever text happened to be there. The link is
+         * measured by its first client rect because an inline link that has wrapped reports a
+         * box spanning both lines, whose middle is in neither of them.
+         */
+        const settled = node.getBoundingClientRect();
+        const line = link.getClientRects()[0] ?? link.getBoundingClientRect();
+        const tip = line.x + line.width / 2 - settled.x;
+
+        node.style.setProperty('--tip', `${Math.min(Math.max(tip, TIP_INSET), settled.width - TIP_INSET)}px`);
     }, [open, summary]);
 
     const show = (): void => {
@@ -82,6 +101,7 @@ export function WikiLink({ language, title, children }: WikiLinkProps) {
     return (
         <span className="wiki" onPointerLeave={hide}>
             <a
+                ref={anchor}
                 className="card__link"
                 href={articleUrl(language, title)}
                 target="_blank"
