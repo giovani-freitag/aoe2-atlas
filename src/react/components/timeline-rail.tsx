@@ -1,5 +1,6 @@
 import { useMemo, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
 
@@ -11,6 +12,8 @@ export interface TimelineRailProps {
     year: number;
     /** True while the chosen century is still being fetched. */
     loading: boolean;
+    /** Adds an arrow either side of the reading, for choosing a century without dragging. */
+    stepping?: boolean;
     onChange: (year: number) => void;
 }
 
@@ -25,8 +28,12 @@ export interface TimelineRailProps {
  * spaced — 1279 and 1300 sit a generation apart, 300 and 400 a century — so a slider ruled in
  * years would spend most of its travel on positions that redraw nothing and would report a year
  * the map does not actually show. One notch, one map.
+ *
+ * On a phone it also carries an arrow either side of the reading. Nineteen stops across a phone
+ * is seventeen pixels apiece, which a thumb can sweep but cannot aim — and telling 1279 from
+ * 1300 is exactly the kind of thing a reader comes here to do.
  */
-export function TimelineRail({ civilizations, years, year, loading, onChange }: TimelineRailProps) {
+export function TimelineRail({ civilizations, years, year, loading, stepping, onChange }: TimelineRailProps) {
     const { t } = useTranslation();
     const format = useFormat();
 
@@ -46,12 +53,44 @@ export function TimelineRail({ civilizations, years, year, loading, onChange }: 
     const at = Math.max(0, years.indexOf(year));
     const first = years[0] ?? year;
     const last = years[years.length - 1] ?? year;
+    const back = years[at - 1];
+    const forward = years[at + 1];
 
     return (
         <div className="rail-body">
             <div className="rail-body__reading">
-                <strong className="numeric">{format.year(year)}</strong>
-                <span className="eyebrow">{loading ? t('rail.loading') : t('rail.year')}</span>
+                {stepping ? (
+                    <button
+                        type="button"
+                        className="rail-body__step iron"
+                        onClick={() => {
+                            if (back !== undefined) onChange(back);
+                        }}
+                        disabled={back === undefined}
+                        aria-label={t('rail.back', { years: back === undefined ? 0 : year - back })}
+                    >
+                        <ChevronLeft size={20} aria-hidden />
+                    </button>
+                ) : null}
+
+                <span className="rail-body__now">
+                    <strong className="numeric">{format.year(year)}</strong>
+                    <span className="eyebrow">{loading ? t('rail.loading') : t('rail.year')}</span>
+                </span>
+
+                {stepping ? (
+                    <button
+                        type="button"
+                        className="rail-body__step iron"
+                        onClick={() => {
+                            if (forward !== undefined) onChange(forward);
+                        }}
+                        disabled={forward === undefined}
+                        aria-label={t('rail.forward', { years: forward === undefined ? 0 : forward - year })}
+                    >
+                        <ChevronRight size={20} aria-hidden />
+                    </button>
+                ) : null}
             </div>
 
             {/*

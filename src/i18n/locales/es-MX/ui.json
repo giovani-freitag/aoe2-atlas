@@ -75,7 +75,6 @@
     "settings": {
         "title": "Ajustes",
         "subtitle": "Cómo se dibuja el mundo",
-        "year": "Año",
         "language": "Idioma",
         "projection": "Proyección",
         "projectionHint": "Las áreas de los paneles se miden sobre la esfera al generar los datos, así que cambiar aquí altera el dibujo y ningún número.",

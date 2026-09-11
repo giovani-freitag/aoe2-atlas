@@ -75,7 +75,6 @@
     "settings": {
         "title": "Ustawienia",
         "subtitle": "Jak rysowany jest świat",
-        "year": "Rok",
         "language": "Język",
         "projection": "Odwzorowanie",
         "projectionHint": "Powierzchnie w panelach mierzone są na sferze podczas generowania danych, więc zmiana tutaj zmienia rysunek, a nie liczby.",

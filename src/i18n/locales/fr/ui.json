@@ -75,7 +75,6 @@
     "settings": {
         "title": "Réglages",
         "subtitle": "Comment le monde est dessiné",
-        "year": "Année",
         "language": "Langue",
         "projection": "Projection",
         "projectionHint": "Les superficies des panneaux sont mesurées sur la sphère lors de la génération des données : changer ici modifie le dessin et aucun chiffre.",

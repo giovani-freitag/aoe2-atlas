@@ -17,7 +17,6 @@ import { LegendPanel } from './legend-panel.tsx';
 import { RosterDrawer } from './roster-drawer.tsx';
 import { SettingsSheet } from './settings-sheet.tsx';
 import { TimelineRail } from './timeline-rail.tsx';
-import { YearStepper } from './year-stepper.tsx';
 
 /** The whole interface: a map that owns the screen, with everything else sliding over it. */
 export function AppShell() {
@@ -134,17 +133,20 @@ export function AppShell() {
                     </span>
                 ) : null}
 
-                {wide ? (
-                    <button
-                        type="button"
-                        className="bar__button iron"
-                        aria-expanded={settingsOpen}
-                        onClick={toggleSettings}
-                        aria-label={t(settingsOpen ? 'app.closeSettings' : 'app.openSettings')}
-                    >
-                        <SlidersHorizontal size={18} aria-hidden />
-                    </button>
-                ) : null}
+                {/*
+                 * Three questions, three places. Who is on the left, behind the roster; how the
+                 * world is drawn is here on the right; and when — the axis every reading on the
+                 * map is qualified by — is along the foot, always out and never behind a panel.
+                 */}
+                <button
+                    type="button"
+                    className="bar__button iron"
+                    aria-expanded={settingsOpen}
+                    onClick={toggleSettings}
+                    aria-label={t(settingsOpen ? 'app.closeSettings' : 'app.openSettings')}
+                >
+                    <SlidersHorizontal size={18} aria-hidden />
+                </button>
             </header>
 
             <main className="stage">
@@ -171,38 +173,25 @@ export function AppShell() {
                 />
             ) : null}
 
-            <SettingsSheet
-                civilizations={catalogue.all()}
-                years={SLICE_YEARS}
-                loading={loading}
-                open={settingsOpen}
-                onClose={closeSettings}
-            />
+            <SettingsSheet open={settingsOpen} onClose={closeSettings} />
 
             {/*
-             * The rail keeps the full instrument where there is room for it, and shrinks to the
-             * reading alone on a phone, where a histogram and a slider would be fighting the map
-             * for the bottom of the screen.
+             * The same instrument at both sizes, because the year is not a preference.
+             *
+             * It used to shrink to a bare reading on a phone and hand the slider to the settings
+             * panel, which put the map's only axis two taps inside a sheet about how the world
+             * is drawn — while the filters, which a reader touches far less often, had a drawer
+             * to themselves. On a phone the arrows come out, and that is the whole difference.
              */}
             <div className="rail leather" ref={rail}>
-                {wide ? (
-                    <TimelineRail
-                        civilizations={catalogue.all()}
-                        years={SLICE_YEARS}
-                        year={state.year}
-                        loading={loading}
-                        onChange={setYear}
-                    />
-                ) : (
-                    <YearStepper
-                        years={SLICE_YEARS}
-                        year={state.year}
-                        loading={loading}
-                        onChange={setYear}
-                        settingsOpen={settingsOpen}
-                        onToggleSettings={toggleSettings}
-                    />
-                )}
+                <TimelineRail
+                    civilizations={catalogue.all()}
+                    years={SLICE_YEARS}
+                    year={state.year}
+                    loading={loading}
+                    stepping={!wide}
+                    onChange={setYear}
+                />
             </div>
         </div>
     );

@@ -1,37 +1,28 @@
 import { useTranslation } from 'react-i18next';
 import { Grid2x2 } from 'lucide-react';
-import type { Civilization } from '@/domain/entities/civilization.ts';
 import { PROJECTION_KEYS, PROJECTIONS } from '@/domain/enums/projection.ts';
 import { GENERATED_AT } from '@/data/dataset.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
-import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { BottomSheet } from './bottom-sheet.tsx';
 import { LanguagePicker } from './language-picker.tsx';
-import { TimelineRail } from './timeline-rail.tsx';
 
 export interface SettingsSheetProps {
-    /** Every civilization, for the profile behind the year slider. */
-    civilizations: readonly Civilization[];
-    /** The years the atlas has maps for, oldest first. */
-    years: readonly number[];
-    loading: boolean;
     open: boolean;
     onClose: () => void;
 }
 
 /**
- * How the map is drawn, in which language, and — on a phone — for which year.
+ * How the map is drawn, and in which language. Nothing about what is on it.
  *
- * The time control lives here on narrow screens because the histogram and slider crowd the
- * bottom of a phone; the rail outside keeps only the reading. On a wide screen the rail keeps
- * the full instrument and this panel is the language, the projection and the ruling.
+ * The year used to be the first thing in here on a phone, which made the axis of the whole
+ * atlas a preference — something set once and left alone — when it is the control a reader
+ * touches more than any other. It lives on the rail now, at both sizes.
  */
-export function SettingsSheet({ civilizations, years, loading, open, onClose }: SettingsSheetProps) {
+export function SettingsSheet({ open, onClose }: SettingsSheetProps) {
     const { t } = useTranslation();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
-    const wide = useWideScreen();
 
     return (
         <BottomSheet
@@ -46,21 +37,6 @@ export function SettingsSheet({ civilizations, years, loading, open, onClose }: 
                 </div>
             }
         >
-            {wide ? null : (
-                <section className="card parchment singed">
-                    <h3 className="eyebrow">{t('settings.year')}</h3>
-                    <TimelineRail
-                        civilizations={civilizations}
-                        years={years}
-                        year={state.year}
-                        loading={loading}
-                        onChange={(year) => {
-                            dispatch({ type: 'year', value: year });
-                        }}
-                    />
-                </section>
-            )}
-
             <section className="card parchment singed">
                 <h3 className="eyebrow">{t('settings.language')}</h3>
                 <LanguagePicker />

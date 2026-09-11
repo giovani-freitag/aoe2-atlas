@@ -62,14 +62,6 @@ export interface AtlasProjectionConfig {
     height: number;
     /** Which projection to draw in; the measured areas never depend on it. */
     kind: ProjectionKey;
-    /**
-     * Pixels at the foot of the viewport the legend sits over.
-     *
-     * A world map is twice as wide as it is tall and a phone is the other way round, so the
-     * opening view always has spare height. Knowing what covers the bottom lets the map centre
-     * itself in what is actually visible instead of hiding behind the legend.
-     */
-    bottomInset?: number;
 }
 
 /** A zoom transform in the form d3-zoom and an SVG `transform` attribute both understand. */
@@ -98,7 +90,6 @@ export class AtlasProjection {
     public readonly width: number;
     public readonly height: number;
     public readonly kind: ProjectionKey;
-    private readonly visibleHeight: number;
     private readonly projection: GeoProjection;
     private readonly path: GeoPath;
 
@@ -106,7 +97,6 @@ export class AtlasProjection {
         this.width = config.width;
         this.height = config.height;
         this.kind = config.kind;
-        this.visibleHeight = Math.max(config.height - (config.bottomInset ?? 0), config.height * 0.4);
         this.projection = build(config.kind).fitExtent(
             [
                 [0, 0],
@@ -151,12 +141,12 @@ export class AtlasProjection {
 
         const spanX = Math.max(box.right - box.left, 1);
         const spanY = Math.max(box.bottom - box.top, 1);
-        const k = clamp((fill * Math.min(free / spanX, this.visibleHeight / spanY)) || MIN_SCALE);
+        const k = clamp((fill * Math.min(free / spanX, this.height / spanY)) || MIN_SCALE);
 
         return {
             k,
             x: hiddenLeft + free / 2 - (k * (box.left + box.right)) / 2,
-            y: this.visibleHeight / 2 - (k * (box.top + box.bottom)) / 2,
+            y: this.height / 2 - (k * (box.top + box.bottom)) / 2,
         };
     }
 
@@ -234,7 +224,7 @@ export class AtlasProjection {
     public centreLatitude(frame: Frame): number {
         const centre = this.projection.invert?.([
             (this.width / 2 - frame.x) / frame.k,
-            (this.visibleHeight / 2 - frame.y) / frame.k,
+            (this.height / 2 - frame.y) / frame.k,
         ]);
 
         return centre ? centre[1] : 0;

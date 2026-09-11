@@ -75,7 +75,6 @@
     "settings": {
         "title": "Ajustes",
         "subtitle": "Como o mundo é desenhado",
-        "year": "Ano",
         "language": "Idioma",
         "projection": "Projeção",
         "projectionHint": "As áreas nos painéis são medidas na esfera quando os dados são gerados, então trocar aqui muda o desenho e nenhum número.",

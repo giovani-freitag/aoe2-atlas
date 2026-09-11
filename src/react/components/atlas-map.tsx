@@ -17,12 +17,6 @@ import { HatchDefs, HAZE } from './hatch-defs.tsx';
 import { WikiCard } from './wiki-card.tsx';
 import { MARKER_SIZE, WonderMarker } from './wonder-marker.tsx';
 
-/** How much of the foot of the map the legend covers on a narrow screen. */
-const LEGEND_SHARE = 0.36;
-
-/** Above this width the legend is a card in the corner and stops eating the map's height. */
-const CARD_LEGEND_WIDTH = 720;
-
 /** How far apart the shield and its Wonder must land before the pin and its leader are drawn. */
 const APART = 6;
 
@@ -68,9 +62,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
     const projection = useMemo(() => {
         if (size.width === 0 || size.height === 0) return null;
 
-        const bottomInset = size.width < CARD_LEGEND_WIDTH ? size.height * LEGEND_SHARE : 0;
-
-        return new AtlasProjection({ width: size.width, height: size.height, bottomInset, kind: state.projection });
+        return new AtlasProjection({ width: size.width, height: size.height, kind: state.projection });
     }, [size.width, size.height, state.projection]);
 
     /*

@@ -75,7 +75,6 @@
     "settings": {
         "title": "Einstellungen",
         "subtitle": "Wie die Welt gezeichnet wird",
-        "year": "Jahr",
         "language": "Sprache",
         "projection": "Projektion",
         "projectionHint": "Die Flächen in den Panels werden beim Erzeugen der Daten auf der Kugel gemessen; ein Wechsel hier ändert die Zeichnung und keine Zahl.",

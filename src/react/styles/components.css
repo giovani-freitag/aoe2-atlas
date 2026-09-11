@@ -273,16 +273,40 @@
 .rail-body__reading {
     grid-area: reading;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: var(--space-2);
     min-width: 0;
 }
 
+/* The reading takes the middle so the two arrows sit at the ends of the line. */
+.rail-body__now {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
 .rail-body__reading strong {
     font-family: var(--title);
-    font-size: 1.25rem;
+    font-size: 1.375rem;
     line-height: 1.1;
     color: var(--brass-soft);
+}
+
+.rail-body__step {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: var(--control);
+    height: var(--control);
+    border-radius: var(--radius);
+}
+
+.rail-body__step:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
 }
 
 /*
@@ -422,7 +446,7 @@
 
 .rail-body__ends {
     grid-area: ends;
-    display: flex;
+    display: none;
     justify-content: space-between;
     font-size: 0.625rem;
     color: var(--text-faint);
@@ -442,11 +466,16 @@
         gap: 0 var(--space-3);
     }
 
-    .rail-body__reading {
+    .rail-body__now {
         flex-direction: column;
         align-items: stretch;
+        justify-content: start;
         gap: 0;
         min-width: 5.5rem;
+    }
+
+    .rail-body__reading strong {
+        font-size: 1.25rem;
     }
 
     .rail-body__track {
@@ -455,6 +484,10 @@
         --rope: 4px;
 
         height: 2.25rem;
+    }
+
+    .rail-body__ends {
+        display: flex;
     }
 }
 
@@ -851,42 +884,6 @@
 }
 
 /* ---- the year, as a phone gets it --------------------------------------- */
-
-.stepper {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-}
-
-.stepper__arrow,
-.stepper__more {
-    display: grid;
-    place-items: center;
-    flex: none;
-    width: var(--control);
-    height: var(--control);
-    border-radius: var(--radius);
-}
-
-.stepper__arrow:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-}
-
-.stepper__reading {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1.1;
-}
-
-.stepper__reading strong {
-    font-family: var(--title);
-    font-size: 1.375rem;
-    color: var(--brass-soft);
-}
 
 /* ---- settings ----------------------------------------------------------- */
 
