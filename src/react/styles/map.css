@@ -81,6 +81,32 @@
     stroke-dasharray: none;
 }
 
+/*
+ * The whole of the realm under the pointer, lit at once.
+ *
+ * Hit testing is on the fill rather than on what the hatch happens to paint, so the gaps
+ * between the strokes are part of the realm and not a hole through to whatever is behind it.
+ */
+.atlas__realm {
+    pointer-events: fill;
+}
+
+.atlas__lit__edge {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 5;
+    stroke-opacity: 0.5;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+
+.atlas__lit {
+    fill-opacity: 0.42;
+    stroke-width: 2;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+
 .atlas__marks {
     pointer-events: none;
 }

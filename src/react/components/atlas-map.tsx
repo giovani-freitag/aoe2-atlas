@@ -199,6 +199,8 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         });
     }, [projection, drawn, borders]);
 
+    const lit = state.hovered ? shapes.find((entry) => entry.civilization.key === state.hovered) : undefined;
+
     const styles = useMemo(
         () => shapes.map((entry) => palette.styleOf(entry.civilization.key)),
         [shapes, palette],
@@ -410,9 +412,45 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                                     stroke={style.colour}
                                     filter={border.precision === 'approximate' ? 'url(#frontier-haze)' : undefined}
                                     vectorEffect="non-scaling-stroke"
+                                    onPointerEnter={() => {
+                                        dispatch({ type: 'hover', value: civilization.key });
+                                    }}
+                                    onPointerLeave={() => {
+                                        dispatch({ type: 'hover', value: null });
+                                    }}
                                 />
                             );
                         })}
+
+                        {/*
+                         * The realm under the pointer, washed over in its own colour.
+                         *
+                         * A realm is one shape however many pieces it comes in, and the pieces are
+                         * the problem: a hue shared with its neighbours in the same region and a
+                         * hatch two degrees off theirs leaves a reader guessing which island in the
+                         * Aegean belongs to which empire. Lighting all of it at once answers that,
+                         * and it is drawn after every realm rather than in its own place in the
+                         * order, so nothing traced later paints over the answer.
+                         */}
+                        {lit ? (
+                            <>
+                                {/*
+                                 * A dark casing under the colour, because the colour is the very
+                                 * thing that cannot be relied on here: the realms that are hardest
+                                 * to tell apart are hardest precisely because they share a hue. Ink
+                                 * around the edge reads against parchment, against sea and against
+                                 * every hue in the palette.
+                                 */}
+                                <path className="atlas__lit__edge" d={lit.path} vectorEffect="non-scaling-stroke" />
+                                <path
+                                    className="atlas__lit"
+                                    d={lit.path}
+                                    fill={palette.styleOf(lit.civilization.key).colour}
+                                    stroke={palette.styleOf(lit.civilization.key).colour}
+                                    vectorEffect="non-scaling-stroke"
+                                />
+                            </>
+                        ) : null}
                     </g>
 
                     {state.ruled ? (
