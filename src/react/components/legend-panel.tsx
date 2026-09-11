@@ -54,7 +54,7 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
             </div>
 
             {detailed ? (
-                <ul>
+                <ul className="legend__civs">
                     {drawn.map((civilization) => {
                         const border = borders.get(civilization.key);
                         const words = text.civilization(civilization.key, false);
@@ -86,22 +86,32 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
                 </ul>
             ) : (
                 <>
-                    <p className="legend__hint">{t('legend.hint')}</p>
+                    {/*
+                     * Past a dozen realms the legend stops naming them and names the regions
+                     * instead, as a row of tokens rather than a column of rows: eight lines of
+                     * "N on the map" repeated the same three words eight times and pushed the
+                     * card halfway up the map. What is left on screen is a colour, a name and a
+                     * numeral; the sentence stays where a screen reader can still read it.
+                     */}
                     <ul className="legend__regions">
-                        {REGION_KEYS.filter((region) => regionsOnMap.has(region)).map((region) => (
-                            <li key={region}>
-                                <span
-                                    className="legend__dot"
-                                    style={{ background: palette.regionColour(region) }}
-                                    aria-hidden
-                                />
-                                <span className="legend__text">
-                                    <strong>{text.region(region)}</strong>
-                                    <small>{t('legend.onMap', { count: countIn(drawn, region) })}</small>
-                                </span>
-                            </li>
-                        ))}
+                        {REGION_KEYS.filter((region) => regionsOnMap.has(region)).map((region) => {
+                            const count = countIn(drawn, region);
+
+                            return (
+                                <li key={region}>
+                                    <span
+                                        className="legend__dot"
+                                        style={{ background: palette.regionColour(region) }}
+                                        aria-hidden
+                                    />
+                                    <span className="legend__region">{text.region(region)}</span>
+                                    <b className="numeric">{count}</b>
+                                    <span className="sr-only">{t('legend.onMap', { count })}</span>
+                                </li>
+                            );
+                        })}
                     </ul>
+                    <p className="legend__hint">{t('legend.hint')}</p>
                 </>
             )}
         </div>

@@ -101,6 +101,29 @@
     display: block;
 }
 
+/*
+ * The disc a drawn flag is cut into.
+ *
+ * The clipping lives here rather than in the SVG because an element can be trusted to clip its
+ * own children, whereas an SVG clip path has to be referenced by an id — and the same flag is
+ * on screen twice the moment the open list shows the language already chosen.
+ */
+.flag {
+    flex: none;
+    display: block;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgb(36 28 16 / 30%);
+}
+
+.flag svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
 /* ---- header ------------------------------------------------------------- */
 
 .bar__loading {
@@ -265,7 +288,7 @@
 .rail-body__track {
     grid-area: track;
     position: relative;
-    height: 2.5rem;
+    height: 2.25rem;
     overflow: clip;
 }
 
@@ -280,7 +303,7 @@
     --overhang: calc(50% / (var(--bars, 2) - 1));
 
     position: absolute;
-    inset: 0 calc(-1 * var(--overhang)) 1.15rem;
+    inset: 0 calc(-1 * var(--overhang)) 0.75rem;
     display: flex;
     align-items: flex-end;
     gap: 1px;
@@ -302,17 +325,17 @@
 /* The slider runs along a rail of oak, because a bare track looks like a form control. */
 .rail-body__rope {
     position: absolute;
-    inset: auto 0 1rem;
-    height: 6px;
+    inset: auto 0 0.5rem;
+    height: 4px;
     border-radius: 3px;
     box-shadow: var(--engrave);
 }
 
 .rail-body__track input {
     position: absolute;
-    inset: auto 0 0.55rem;
+    inset: auto 0 0;
     width: 100%;
-    height: 1.5rem;
+    height: 1.25rem;
     margin: 0;
     background: none;
     accent-color: var(--brass);
@@ -338,7 +361,14 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
+    gap: var(--space-2);
     margin-bottom: var(--space-2);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--oak);
+}
+
+.legend__head .eyebrow {
+    color: var(--brass-soft);
 }
 
 .legend__head button {
@@ -347,8 +377,10 @@
 }
 
 .legend__hint {
-    font-size: 0.75rem;
-    color: var(--text-muted);
+    margin-top: var(--space-2);
+    font-size: 0.6875rem;
+    line-height: 1.35;
+    color: var(--text-faint);
 }
 
 .legend ul {
@@ -356,6 +388,9 @@
     padding: 0;
     margin: 0;
     display: flex;
+}
+
+.legend__civs {
     flex-direction: column;
     gap: 2px;
 }
@@ -364,6 +399,46 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
+}
+
+/*
+ * The regions as a row of tokens, not a column of rows.
+ *
+ * Eight regions written out one per line, each carrying the same three words after its count,
+ * made a card tall enough to cover a third of the map to say very little. A colour, a name and
+ * a numeral is the whole of it, and eight of those fit on two lines.
+ */
+.legend__regions {
+    flex-wrap: wrap;
+    gap: var(--space-1);
+}
+
+.legend__regions li {
+    gap: 6px;
+    padding: 3px var(--space-2) 3px 5px;
+    border: 1px solid var(--oak);
+    border-radius: 999px;
+    background: var(--leather-raised);
+    box-shadow: var(--emboss);
+}
+
+.legend__region {
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+}
+
+.legend__regions b {
+    font-family: var(--title);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--brass-soft);
+}
+
+.legend__regions .legend__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 40%);
 }
 
 .legend__dot {
@@ -1013,9 +1088,12 @@
     text-align: left;
 }
 
-.picker__list button span {
+.picker__label {
     flex: 1;
     min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .picker__list button svg {

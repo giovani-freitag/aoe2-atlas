@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Check, ChevronDown, Languages } from 'lucide-react';
+import { Check, ChevronDown } from 'lucide-react';
 import { LOCALE_NAMES, SUPPORTED_LOCALES, toSupportedLocale } from '@/i18n/locales.ts';
 import { useListbox } from '@/react/hooks/use-listbox.ts';
+import { Flag } from './flag.tsx';
 
 /**
  * The language the atlas is read in, chosen from a list the atlas draws itself.
@@ -51,7 +52,7 @@ export function LanguagePicker() {
                 aria-label={`${t('settings.language')}: ${LOCALE_NAMES[locale]}`}
                 onClick={list.toggle}
             >
-                <Languages size={15} aria-hidden />
+                <Flag locale={locale} />
                 <span className="picker__value" lang={locale}>
                     {LOCALE_NAMES[locale]}
                 </span>
@@ -72,7 +73,8 @@ export function LanguagePicker() {
                                     list.pick(index);
                                 }}
                             >
-                                <span>{LOCALE_NAMES[tag]}</span>
+                                <Flag locale={tag} />
+                                <span className="picker__label">{LOCALE_NAMES[tag]}</span>
                                 {tag === locale ? <Check size={14} aria-hidden /> : null}
                             </button>
                         </li>
