@@ -16,8 +16,26 @@ function leaves(value: unknown, prefix = ''): string[] {
     );
 }
 
+const held = new Map<string, Record<string, unknown>>();
+
+/** Each bundle is read once and kept; the tests only ever look at it. */
 function bundle(locale: string, namespace: string): Record<string, unknown> {
-    return JSON.parse(readFileSync(join(LOCALES_DIR, locale, `${namespace}.json`), 'utf8')) as Record<string, unknown>;
+    const key = `${locale}/${namespace}`;
+    const kept = held.get(key);
+    if (kept) return kept;
+
+    const read = JSON.parse(readFileSync(join(LOCALES_DIR, locale, `${namespace}.json`), 'utf8')) as Record<
+        string,
+        unknown
+    >;
+    held.set(key, read);
+
+    return read;
+}
+
+/** The value at a dotted path, or undefined where the path runs out. */
+function at(bundleOf: Record<string, unknown>, path: string): unknown {
+    return path.split('.').reduce<unknown>((node, part) => (node as Record<string, unknown> | undefined)?.[part], bundleOf);
 }
 
 /** The placeholders a string interpolates, in order, so a translation cannot drop or rename one. */
@@ -39,11 +57,16 @@ describe('the locale bundles', () => {
         const reference = bundle('en', 'ui');
         const translated = bundle(locale, 'ui');
 
-        const missing = leaves(reference).filter((key) => !leaves(translated).includes(key));
-        const extra = leaves(translated).filter((key) => !leaves(reference).includes(key));
-        const drift = leaves(reference).filter((key) => {
-            const source = key.split('.').reduce<unknown>((node, part) => (node as Record<string, unknown>)[part], reference);
-            const target = key.split('.').reduce<unknown>((node, part) => (node as Record<string, unknown>)?.[part], translated);
+        // Walk each bundle once and compare through sets: this used to re-flatten both of them
+        // for every key it checked, which was most of the time the whole suite spent.
+        const expected = leaves(reference);
+        const actual = new Set(leaves(translated));
+
+        const missing = expected.filter((key) => !actual.has(key));
+        const extra = [...actual].filter((key) => !expected.includes(key));
+        const drift = expected.filter((key) => {
+            const source = at(reference, key);
+            const target = at(translated, key);
 
             return typeof target === 'string' && placeholders(source as string).join() !== placeholders(target).join();
         });

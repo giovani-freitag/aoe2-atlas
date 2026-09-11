@@ -1,0 +1,28 @@
+name: Links
+
+# The Wonder links point at articles nobody here controls. Wikipedia renames them, merges them
+# and turns them into disambiguation pages, and the atlas would go on linking into the dark
+# until a reader noticed. This is the thing that notices instead.
+on:
+    schedule:
+        # Mondays, early. A broken link is not an emergency; it is a week's worth of tidying.
+        - cron: '17 6 * * 1'
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    wikipedia:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+
+            - run: npm ci
+
+            - run: npm run test:links
