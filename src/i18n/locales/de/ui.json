@@ -66,7 +66,6 @@
         "shared": "Geteilter Boden in {{year}}",
         "sharedHint": "Nur Zeitgenossen gehören hierher: wer im selben Jahrhundert Boden mit dieser Zivilisation teilte. Ein",
         "sharedAbbr": "die Quelle kartiert eine der beiden in diesem Jahrhundert nicht, und die Linie stammt aus dem nächstgelegenen Schnitt",
-        "sharedHintTail": "kennzeichnet ein Maß gegen eine aus einem anderen Jahrhundert entliehene Grenze.",
         "overlay": "{{name}} auf der Karte überlagern"
     },
     "settings": {

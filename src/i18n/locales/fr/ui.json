@@ -66,7 +66,6 @@
         "shared": "Terrain partagé en {{year}}",
         "sharedHint": "Seuls les contemporains figurent ici : ceux qui ont partagé le sol avec cette civilisation au cours du même siècle. Un",
         "sharedAbbr": "la source ne cartographie pas l'un des deux pour ce siècle, et le tracé vient de la coupe la plus proche",
-        "sharedHintTail": "signale une mesure faite contre une frontière empruntée à un autre siècle.",
         "overlay": "Superposer {{name}} sur la carte"
     },
     "settings": {

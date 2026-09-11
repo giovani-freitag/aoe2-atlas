@@ -66,7 +66,6 @@
         "shared": "Đất chồng lấn năm {{year}}",
         "sharedHint": "Chỉ những nền văn minh cùng thời mới có mặt ở đây: những ai chia đất với nền văn minh này trong cùng thế kỷ. Dấu",
         "sharedAbbr": "nguồn không vẽ một trong hai bên ở thế kỷ này, và đường biên lấy từ lát cắt gần nhất",
-        "sharedHintTail": "đánh dấu phép đo dựa trên một biên giới mượn từ thế kỷ khác.",
         "overlay": "Chồng {{name}} lên bản đồ"
     },
     "settings": {

@@ -1,6 +1,7 @@
-import { type ReactNode } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSheetDrag } from '@/react/hooks/use-sheet-drag.ts';
+import { SheetProviderContext } from '@/react/providers/sheet-context.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 
 export interface BottomSheetProps {
@@ -26,6 +27,7 @@ export function BottomSheet({ label, open, onClose, head, children }: BottomShee
     const { t } = useTranslation();
     const isWide = useWideScreen();
     const drag = useSheetDrag({ open, onDismiss: onClose });
+    const sheet = useMemo(() => ({ collapse: drag.collapse }), [drag.collapse]);
 
     /*
      * An ordinary panel rather than a popover, on purpose.
@@ -38,30 +40,32 @@ export function BottomSheet({ label, open, onClose, head, children }: BottomShee
      * furniture, disappearing behind the rail instead of across it.
      */
     return (
-        <div
-            className="sheet sheet--dock leather"
-            role="dialog"
-            aria-label={label}
-            aria-hidden={open ? undefined : true}
-            data-open={open}
-            data-dragging={drag.dragging}
-            style={isWide ? undefined : { height: `${drag.height * 100}dvh` }}
-        >
-            {/* The grip resizes a sheet that slides; wide, neither sheet slides, so it would be a lie. */}
-            {isWide ? null : (
-                <button
-                    type="button"
-                    className="sheet__grip"
-                    onPointerDown={drag.onPointerDown}
-                    aria-label={t('sheet.grip')}
-                >
-                    <span aria-hidden />
-                </button>
-            )}
+        <SheetProviderContext value={sheet}>
+            <div
+                className="sheet sheet--dock leather"
+                role="dialog"
+                aria-label={label}
+                aria-hidden={open ? undefined : true}
+                data-open={open}
+                data-dragging={drag.dragging}
+                style={isWide ? undefined : { height: `${drag.height * 100}dvh` }}
+            >
+                {/* The grip resizes a sheet that slides; wide, neither sheet slides, so it would be a lie. */}
+                {isWide ? null : (
+                    <button
+                        type="button"
+                        className="sheet__grip"
+                        onPointerDown={drag.onPointerDown}
+                        aria-label={t('sheet.grip')}
+                    >
+                        <span aria-hidden />
+                    </button>
+                )}
 
-            <header className="sheet__head">{head}</header>
+                <header className="sheet__head">{head}</header>
 
-            <div className="sheet__body">{children}</div>
-        </div>
+                <div className="sheet__body">{children}</div>
+            </div>
+        </SheetProviderContext>
     );
 }

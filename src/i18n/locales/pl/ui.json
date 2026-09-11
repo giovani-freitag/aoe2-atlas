@@ -66,7 +66,6 @@
         "shared": "Wspólna ziemia w roku {{year}}",
         "sharedHint": "Tylko współcześni trafiają tutaj: ci, którzy dzielili ziemię z tą cywilizacją w tym samym stuleciu. Znak",
         "sharedAbbr": "źródło nie mapuje jednej z dwu stron w tym stuleciu, a linia pochodzi z najbliższego przekroju",
-        "sharedHintTail": "oznacza pomiar względem granicy zapożyczonej z innego stulecia.",
         "overlay": "Nałóż {{name}} na mapę"
     },
     "settings": {

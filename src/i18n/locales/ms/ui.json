@@ -66,7 +66,6 @@
         "shared": "Tanah yang dikongsi pada {{year}}",
         "sharedHint": "Hanya yang sezaman masuk di sini: mereka yang berkongsi tanah dengan tamadun ini dalam abad yang sama. Tanda",
         "sharedAbbr": "sumber tidak memetakan salah satu daripada dua pihak pada abad ini, dan garisnya diambil dari hirisan terdekat",
-        "sharedHintTail": "menandakan ukuran yang dibuat terhadap sempadan yang dipinjam dari abad lain.",
         "overlay": "Tindankan {{name}} di peta"
     },
     "settings": {

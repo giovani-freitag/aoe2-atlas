@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle, MapPin, MoveRight, PencilRuler, Swords } from 'lucide-react';
+import { AlertTriangle, MapPin, MoveRight, PencilRuler } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { Frontier } from '@/domain/values/frontier.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
@@ -9,6 +9,7 @@ import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
 import { BottomSheet } from './bottom-sheet.tsx';
+import { RivalStrip } from './rival-strip.tsx';
 import { WikiLink } from './wiki-link.tsx';
 
 /** How many neighbours the frontier list shows before it stops being a list. */
@@ -32,7 +33,7 @@ export interface DetailSheetProps {
  */
 export function DetailSheet({ civilization, border, frontiers, onClose }: DetailSheetProps) {
     const { t } = useTranslation();
-    const { catalogue, palette, text } = useServices();
+    const { palette, text } = useServices();
     const { state, dispatch } = useAtlas();
     const words = useCivilizationText(civilization);
     const format = useFormat();
@@ -53,16 +54,24 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
             onClose={onClose}
             head={
                 <div className="sheet__head--titled" style={{ borderColor: style.colour }}>
-                    <img
-                        src={`${import.meta.env.BASE_URL}img/civs/${civilization.icon}.png`}
-                        alt=""
-                        width={44}
-                        height={44}
-                    />
-                    <div>
-                        <h2>{words.name}</h2>
-                        <p className="sheet__region">{text.region(civilization.region)}</p>
+                    <div className="sheet__who">
+                        <img
+                            src={`${import.meta.env.BASE_URL}img/civs/${civilization.icon}.png`}
+                            alt=""
+                            width={44}
+                            height={44}
+                        />
+                        <div>
+                            <h2>{words.name}</h2>
+                            <p className="sheet__region">{text.region(civilization.region)}</p>
+                        </div>
                     </div>
+
+                    {/*
+                     * Who else stood here is part of the civilization's identity in this century,
+                     * so it belongs beside its name rather than at the bottom of the panel.
+                     */}
+                    <RivalStrip civilization={civilization} frontiers={neighbours} />
                 </div>
             }
         >
@@ -164,59 +173,6 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                                 date: format.date(expansion.releasedOn),
                             })}
                         </p>
-                    </section>
-                ) : null}
-
-                {neighbours.length > 0 ? (
-                    <section className="card parchment singed">
-                        <h3 className="eyebrow">
-                            <Swords size={13} aria-hidden /> {t('detail.shared', { year })}
-                        </h3>
-                        <p className="card__hint">
-                            {t('detail.sharedHint')} <abbr title={t('detail.sharedAbbr')}>≈</abbr>{' '}
-                            {t('detail.sharedHintTail')}
-                        </p>
-                        <ul className="frontiers">
-                            {neighbours.map((frontier) => {
-                                const otherKey = frontier.otherThan(civilization.key);
-                                const other = otherKey ? catalogue.find(otherKey) : null;
-                                if (!other) return null;
-
-                                const otherStyle = palette.styleOf(other.key);
-                                const otherName = text.civilization(other.key, false).name;
-
-                                return (
-                                    <li key={other.key}>
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                dispatch({ type: 'toggle-pin', value: other.key });
-                                            }}
-                                            title={t('detail.overlay', { name: otherName })}
-                                        >
-                                            <span
-                                                className="frontiers__dot"
-                                                style={{ background: otherStyle.colour }}
-                                                aria-hidden
-                                            />
-                                            <span className="frontiers__name">{otherName}</span>
-                                            <span className="frontiers__meter" aria-hidden>
-                                                <span
-                                                    style={{
-                                                        width: `${Math.min(1, frontier.shareOf(civilization.key)) * 100}%`,
-                                                        background: otherStyle.colour,
-                                                    }}
-                                                />
-                                            </span>
-                                            <span className="frontiers__share numeric" data-soft={frontier.carried}>
-                                                {frontier.carried ? '≈' : ''}
-                                                {format.share(frontier.shareOf(civilization.key))}
-                                            </span>
-                                        </button>
-                                    </li>
-                                );
-                            })}
-                        </ul>
                     </section>
                 ) : null}
             </>

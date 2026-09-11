@@ -66,7 +66,6 @@
         "shared": "Terreno condiviso nel {{year}}",
         "sharedHint": "Solo i contemporanei compaiono qui: chi ha condiviso il suolo con questa civiltà nello stesso secolo. Un",
         "sharedAbbr": "la fonte non mappa una delle due in questo secolo, e la linea viene dal taglio più vicino",
-        "sharedHintTail": "segnala una misura presa contro un confine preso in prestito da un altro secolo.",
         "overlay": "Sovrapponi {{name}} sulla mappa"
     },
     "settings": {

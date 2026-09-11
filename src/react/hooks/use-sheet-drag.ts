@@ -40,6 +40,8 @@ export interface SheetDrag {
     onPointerDown: (event: ReactPointerEvent<HTMLElement>) => void;
     /** Steps to the next stop, wrapping round; this is what a tap or the keyboard does. */
     cycle: () => void;
+    /** Drops the sheet back to the peek, for anything inside it that has business on the map. */
+    collapse: () => void;
 }
 
 /**
@@ -72,6 +74,11 @@ export function useSheetDrag({ open, onDismiss }: SheetDragConfig): SheetDrag {
             setHeight(STOPS[0]);
         }
     }
+
+    const collapse = useCallback(() => {
+        setStop(0);
+        setHeight(STOPS[0]);
+    }, []);
 
     const cycle = useCallback(() => {
         setStop((current) => {
@@ -137,5 +144,5 @@ export function useSheetDrag({ open, onDismiss }: SheetDragConfig): SheetDrag {
         [stop, cycle, onDismiss],
     );
 
-    return { height, dragging, onPointerDown, cycle };
+    return { height, dragging, onPointerDown, cycle, collapse };
 }

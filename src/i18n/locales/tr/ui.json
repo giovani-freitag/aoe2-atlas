@@ -66,7 +66,6 @@
         "shared": "{{year}} yılında paylaşılan toprak",
         "sharedHint": "Buraya yalnızca çağdaşlar girer: aynı yüzyılda bu uygarlıkla toprak paylaşanlar. Bir",
         "sharedAbbr": "kaynak bu yüzyılda iki taraftan birini haritalamıyor ve çizgi en yakın kesitten alındı",
-        "sharedHintTail": "işareti, başka bir yüzyıldan ödünç alınan bir sınıra göre yapılan ölçümü gösterir.",
         "overlay": "{{name}} uygarlığını haritaya bindir"
     },
     "settings": {

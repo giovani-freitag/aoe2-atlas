@@ -680,12 +680,19 @@
 
 .sheet__head--titled {
     display: flex;
-    align-items: center;
-    gap: var(--space-3);
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
     width: 100%;
 }
 
-.sheet__head--titled img {
+.sheet__who {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.sheet__who img {
     flex: none;
 }
 
@@ -797,68 +804,410 @@
     color: var(--ink);
 }
 
-.frontiers {
+/*
+ * The contemporaries, as a row of their own arms.
+ *
+ * Arms are how a civilization is known everywhere else here — on the map, in the roster, at the
+ * top of this very panel — so they are what a reader recognises fastest, and they take a
+ * quarter of the room a list of names does. The share rides under each one; the name is in the
+ * label, for a pointer resting on it and for anyone listening rather than looking.
+ */
+.rivals {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.rivals__label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--title);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+}
+
+.rivals ul {
+    display: flex;
+    gap: var(--space-1);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+}
+
+.rivals ul::-webkit-scrollbar {
+    display: none;
+}
+
+.rivals button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    padding: 3px var(--space-1);
+    border-radius: var(--radius);
+    color: var(--text-muted);
+}
+
+.rivals button:hover {
+    background: var(--leather-raised);
+}
+
+/* One already traced wears the brass, so the row reads as a set of switches, which it is. */
+.rivals button[data-active='true'] {
+    background: var(--brass-dim);
+    color: var(--brass-soft);
+}
+
+.rivals img {
+    display: block;
+    width: 26px;
+    height: 26px;
+    border: 1px solid;
+    border-radius: 3px;
+}
+
+.rivals span {
+    font-size: 0.625rem;
+}
+
+.rivals abbr {
+    text-decoration: none;
+}
+
+/* ---- legend ------------------------------------------------------------- */
+
+/*
+ * The header band: raised leather, a brass rule under it, and the title on the same mark the
+ * control that fills this card wears.
+ */
+.legend__head {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+    background: var(--leather-raised);
+    border-bottom: 1px solid var(--oak);
+    box-shadow:
+        var(--emboss),
+        0 1px 0 rgb(200 164 74 / 18%);
+}
+
+.legend__head > svg {
+    flex: none;
+    color: var(--brass);
+}
+
+.legend__head h2 {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--title);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--brass-soft);
+}
+
+.legend__clear {
+    flex: none;
+    min-height: 1.5rem;
+    padding: 0 var(--space-2);
+    border: 1px solid var(--oak);
+    border-radius: var(--radius-sm);
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+}
+
+.legend__clear:hover {
+    border-color: var(--brass-deep);
+    color: var(--brass-soft);
+}
+
+.legend__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-2);
+}
+
+.legend__hint {
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dashed var(--oak);
+    font-size: 0.6875rem;
+    line-height: 1.35;
+    color: var(--text-faint);
+}
+
+.legend ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
-    flex-direction: column;
-    gap: 2px;
 }
 
-.frontiers button {
+.legend__civs {
+    flex-direction: column;
+    gap: 1px;
+}
+
+.legend__civs li {
+    padding: 2px var(--space-1);
+    border-radius: var(--radius-sm);
+}
+
+.legend__civs li:hover {
+    background: var(--leather-raised);
+}
+
+.legend li {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    width: 100%;
-    min-height: 2rem;
-    padding: 2px var(--space-1);
-    border-radius: var(--radius-sm);
-    text-align: left;
-    color: var(--ink);
 }
 
-.frontiers button:hover {
-    background: rgb(36 28 16 / 7%);
+/*
+ * The regions as a row of tokens, not a column of rows.
+ *
+ * Eight regions written out one per line, each carrying the same three words after its count,
+ * made a card tall enough to cover a third of the map to say very little. A colour, a name and
+ * a numeral is the whole of it, and eight of those fit on two lines.
+ */
+.legend__regions {
+    flex-wrap: wrap;
+    gap: var(--space-1);
 }
 
-.frontiers__dot {
+.legend__regions li {
+    gap: 6px;
+    padding: 3px var(--space-2) 3px 5px;
+    border: 1px solid var(--oak);
+    border-radius: 999px;
+    background: var(--leather-raised);
+    box-shadow: var(--emboss);
+}
+
+.legend__region {
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+}
+
+.legend__regions b {
+    font-family: var(--title);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--brass-soft);
+}
+
+.legend__regions .legend__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 40%);
+}
+
+.legend__dot {
     flex: none;
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
     border-radius: 2px;
 }
 
-.frontiers__name {
-    flex: none;
-    width: 6.5rem;
+.legend__text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.legend__text strong {
+    font-size: 0.8125rem;
+    font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 0.8125rem;
 }
 
-.frontiers__meter {
-    flex: 1;
-    min-width: 0;
-    height: 6px;
-    background: var(--parchment-deep);
-    border-radius: 3px;
+.legend__text small {
+    font-size: 0.625rem;
+    color: var(--text-faint);
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.frontiers__meter span {
-    display: block;
-    height: 100%;
-    border-radius: 3px;
-}
-
-.frontiers__share {
+.legend__area {
     flex: none;
-    width: 2.5rem;
-    text-align: right;
+    font-size: 0.625rem;
+    color: var(--text-faint);
+}
+
+.legend li button {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-faint);
+}
+
+.legend li button:hover {
+    color: var(--danger-soft);
+}
+
+/* With a pointer the crosses stay out of the way until the row is under it. */
+@media (min-width: 60rem) {
+    .legend__civs li button {
+        opacity: 0;
+    }
+
+    .legend__civs li:hover button,
+    .legend__civs li button:focus-visible {
+        opacity: 1;
+    }
+}
+
+/* ---- detail sheet ------------------------------------------------------- */
+
+.sheet__head h2 {
+    font-size: 1.125rem;
+}
+
+.sheet__head--titled {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+    width: 100%;
+}
+
+.sheet__who {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.sheet__who img {
+    flex: none;
+}
+
+.sheet__region {
     font-size: 0.6875rem;
+    color: var(--text-faint);
+}
+
+.sheet__head > button {
+    margin-left: auto;
+}
+
+/*
+ * Cards are parchment even inside the leather panel: they carry the record, and the record
+ * should look like something written down rather than another slab of furniture.
+ */
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--parchment-deep);
+    border-radius: var(--radius);
+}
+
+.card .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--ink-faint);
+}
+
+.card__lead {
+    font-family: var(--title);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.card__line {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.8125rem;
     color: var(--ink-soft);
+}
+
+.card__hint,
+.card__source {
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+}
+
+.card__source svg {
+    vertical-align: -2px;
+}
+
+.card__source .card__link {
+    display: inline-flex;
+    min-height: 0;
+    font-size: inherit;
+}
+
+.card__note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    background: rgb(138 106 31 / 12%);
+    border-left: 2px solid var(--brass-deep);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+}
+
+.card__note svg {
+    flex: none;
+    margin-top: 2px;
+    color: var(--brass-deep);
+}
+
+.card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    align-self: flex-start;
+    min-height: 1.75rem;
+    font-size: 0.8125rem;
+    color: var(--brass-deep);
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2) var(--space-3);
+    margin: 0;
+}
+
+.stats dt {
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+.stats dd {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--ink);
 }
 
 /* ---- the year, as a phone gets it --------------------------------------- */
@@ -989,11 +1338,6 @@
 }
 
 /* A share measured against a borrowed border is shown as an estimate, not a figure. */
-.frontiers__share[data-soft='true'] {
-    color: var(--ink-faint);
-    font-style: italic;
-}
-
 .card__hint abbr {
     text-decoration: underline dotted;
     cursor: help;
