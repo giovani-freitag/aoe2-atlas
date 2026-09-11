@@ -1,22 +1,8 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { useId, type ReactNode } from 'react';
 import { ExternalLink } from 'lucide-react';
-import type { WikiSummary } from '@/services/wiki/wiki-service.ts';
 import { articleUrl } from '@/services/wiki/wiki-service.ts';
-import { useServices } from '@/react/providers/services-context.ts';
-
-/**
- * How long a pointer must rest on the link before the article is fetched.
- *
- * Wikipedia's own previews wait about this long. Without it, crossing the link on the way to
- * something else fires a request the reader never wanted.
- */
-const DWELL_MS = 320;
-
-/** How close to the edge of the screen the card is allowed to come, in pixels. */
-const EDGE = 8;
-
-/** How near the card's own corner the tip may come, so it never points off the edge of it. */
-const TIP_INSET = 18;
+import { useWikiHover } from '@/react/hooks/use-wiki-hover.ts';
+import { WikiCard } from './wiki-card.tsx';
 
 export interface WikiLinkProps {
     /** Which Wikipedia the article is on, as a language code. */
@@ -36,94 +22,29 @@ export interface WikiLinkProps {
  * it always did.
  */
 export function WikiLink({ language, title, children }: WikiLinkProps) {
-    const { wiki } = useServices();
-    const [summary, setSummary] = useState<WikiSummary | null>(null);
-    const [open, setOpen] = useState(false);
-    const dwell = useRef<number | undefined>(undefined);
-    const card = useRef<HTMLSpanElement>(null);
-    const anchor = useRef<HTMLAnchorElement>(null);
+    const hover = useWikiHover();
     const id = useId();
 
-    useEffect(
-        () => () => {
-            window.clearTimeout(dwell.current);
-        },
-        [],
-    );
-
-    /*
-     * The card hangs off the link, and the link is usually near the right edge of a panel that is
-     * itself against the right edge of the screen — so left-aligned it ran a quarter of its width
-     * off the viewport. It is nudged back by however much it overhangs, and dropped below the line
-     * when there is no room above, which is all the placement this ever needs.
-     */
-    useLayoutEffect(() => {
-        const node = card.current;
-        const link = anchor.current;
-        if (!node || !link) return;
-
-        node.style.left = '0px';
-        node.dataset.below = 'false';
-
-        const box = node.getBoundingClientRect();
-        const overhang = box.right - (window.innerWidth - EDGE);
-        if (overhang > 0) node.style.left = `${-overhang}px`;
-        if (box.top < EDGE) node.dataset.below = 'true';
-
-        /*
-         * The tip points at the link, not at the corner of the card.
-         *
-         * The card has just been slid sideways to stay on screen, so the two no longer line up;
-         * without this the arrow ends up under whatever text happened to be there. The link is
-         * measured by its first client rect because an inline link that has wrapped reports a
-         * box spanning both lines, whose middle is in neither of them.
-         */
-        const settled = node.getBoundingClientRect();
-        const line = link.getClientRects()[0] ?? link.getBoundingClientRect();
-        const tip = line.x + line.width / 2 - settled.x;
-
-        node.style.setProperty('--tip', `${Math.min(Math.max(tip, TIP_INSET), settled.width - TIP_INSET)}px`);
-    }, [open, summary]);
-
     const show = (): void => {
-        window.clearTimeout(dwell.current);
-        dwell.current = window.setTimeout(() => {
-            setOpen(true);
-            void wiki.summary(language, title).then(setSummary);
-        }, DWELL_MS);
-    };
-
-    const hide = (): void => {
-        window.clearTimeout(dwell.current);
-        setOpen(false);
+        hover.enter(id, language, title);
     };
 
     return (
-        <span className="wiki" onPointerLeave={hide}>
+        <span className="wiki" onPointerLeave={hover.leave}>
             <a
-                ref={anchor}
                 className="card__link"
                 href={articleUrl(language, title)}
                 target="_blank"
                 rel="noreferrer"
-                aria-describedby={open && summary ? id : undefined}
+                aria-describedby={hover.shown ? id : undefined}
                 onPointerEnter={show}
                 onFocus={show}
-                onBlur={hide}
+                onBlur={hover.leave}
             >
                 {children} <ExternalLink size={11} aria-hidden />
             </a>
 
-            {open && summary ? (
-                <span className="wiki__card leather" ref={card} id={id} role="tooltip">
-                    {summary.thumbnail ? <img src={summary.thumbnail.url} alt="" loading="lazy" /> : null}
-                    <span className="wiki__body">
-                        <strong>{summary.title}</strong>
-                        {summary.description ? <small>{summary.description}</small> : null}
-                        <span className="wiki__extract">{summary.extract}</span>
-                    </span>
-                </span>
-            ) : null}
+            {hover.shown ? <WikiCard summary={hover.shown.summary} id={id} /> : null}
         </span>
     );
 }

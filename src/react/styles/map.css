@@ -283,3 +283,24 @@
 .marker[data-standing='false'] .marker__shield {
     stroke-dasharray: 3 2;
 }
+
+/*
+ * The Wikipedia preview, hung off a Wonder rather than off a line of text.
+ *
+ * Fixed rather than absolute so it is free of the map's own clipping — a monument near the top
+ * of the frame would otherwise have its card sliced off by the edge of the map. The anchor
+ * itself has no size: it is a point, and the card places itself around it.
+ */
+.atlas__preview {
+    position: fixed;
+    width: 0;
+    height: 0;
+    z-index: 4;
+    pointer-events: none;
+}
+
+/* Over a point the card is centred on it; over a line of text it hangs from its start. */
+.atlas__preview .wiki__card {
+    transform: translateX(-50%);
+    bottom: calc(100% + 0.75rem);
+}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Compass, Layers, Minus, Plus } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
@@ -11,8 +11,10 @@ import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useElementSize } from '@/react/hooks/use-element-size.ts';
 import { useMapZoom } from '@/react/hooks/use-map-zoom.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
+import { useWikiHover } from '@/react/hooks/use-wiki-hover.ts';
 import { CompassRose } from './compass-rose.tsx';
 import { HatchDefs, HAZE } from './hatch-defs.tsx';
+import { WikiCard } from './wiki-card.tsx';
 import { MARKER_SIZE, WonderMarker } from './wonder-marker.tsx';
 
 /** How much of the foot of the map the legend covers on a narrow screen. */
@@ -139,11 +141,29 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         }
     }, []);
 
+    /*
+     * Hovering a Wonder brings up the same Wikipedia card the sheet's link does.
+     *
+     * The pin *is* the monument, so it is the one thing on the map a reader is most likely to
+     * want to know about, and the card is already built and already cached. Moving the map takes
+     * it away again: the card is pinned to a screen position, and a pan would leave it hanging
+     * over ground the monument has left.
+     */
+    const wiki = useWikiHover();
+    const dismiss = wiki.leave;
+    const onFrame = useCallback(
+        (next: Frame): void => {
+            paint(next);
+            dismiss();
+        },
+        [paint, dismiss],
+    );
+
     const { frame, flyTo, zoomBy } = useMapZoom(svg, {
         width: size.width,
         height: size.height,
         scaleExtent: SCALE_EXTENT,
-        onFrame: paint,
+        onFrame,
     });
 
     const base = useMemo(() => {
@@ -250,6 +270,23 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
     }, [focus, projection, borders, flyTo, wide]);
 
     const roseRadius = Math.min(ROSE_MAX, Math.min(size.width, size.height) * ROSE_SHARE);
+    const previewing = wiki.shown?.key;
+
+    /*
+     * Where the map's own corner is on the screen.
+     *
+     * The preview card is laid out against the viewport, because it has to be free of the map's
+     * clipping and to know how near the edge of the screen it has come. The Wonder's position is
+     * in the map's coordinates, so the two are joined by this offset — held in state rather than
+     * read in an effect, because the card measures itself before its parent gets a turn.
+     */
+    const [origin, setOrigin] = useState({ x: 0, y: 0 });
+    useLayoutEffect(() => {
+        const box = holder.current?.getBoundingClientRect();
+        if (!box) return;
+
+        setOrigin((was) => (was.x === box.left && was.y === box.top ? was : { x: box.left, y: box.top }));
+    }, [holder, size.width, size.height]);
 
     const traceLabel = state.showAll
         ? t('map.untraceAll')
@@ -384,7 +421,21 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                             const colour = palette.styleOf(civilization.key).colour;
 
                             return (
-                                <g key={civilization.key} data-civ={civilization.key}>
+                                <g
+                                    key={civilization.key}
+                                    data-civ={civilization.key}
+                                    onPointerEnter={(event) => {
+                                        // A tap opens the sheet, which carries the link itself.
+                                        if (event.pointerType !== 'mouse') return;
+
+                                        wiki.enter(
+                                            civilization.key,
+                                            civilization.wonder.wikipediaLang,
+                                            civilization.wonder.wikipedia,
+                                        );
+                                    }}
+                                    onPointerLeave={dismiss}
+                                >
                                     {lit ? (
                                         <line
                                             className="leader"
@@ -429,6 +480,29 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                     </g>
                 </svg>
             ) : null}
+
+            {/*
+             * The card hangs off a point rather than a line of text, so the anchor is a marker of
+             * zero size sitting exactly on the Wonder. Everything else about the placement — the
+             * slide back onto the screen, the flip below, the tip — is the card's own doing, and
+             * is the same here as it is on the link in the sheet.
+             */}
+            {marks.map(({ civilization, wonder }) => {
+                if (civilization.key !== previewing || !wiki.shown) return null;
+
+                return (
+                    <div
+                        key={civilization.key}
+                        className="atlas__preview"
+                        style={{
+                            left: origin.x + frame.k * wonder[0] + frame.x,
+                            top: origin.y + frame.k * wonder[1] + frame.y,
+                        }}
+                    >
+                        <WikiCard summary={wiki.shown.summary} />
+                    </div>
+                );
+            })}
 
             <div className="atlas__controls">
                 <button
