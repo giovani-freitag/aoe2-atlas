@@ -44,6 +44,10 @@ export function useWikiHover(): WikiHover {
 
     const enter = useCallback(
         (key: string, language: string, title: string): void => {
+            // Crossing from one part of a mark to another part of the same one is not a new hover;
+            // restarting the wait on every sub-shape the pointer touches means it never elapses.
+            if (wanted.current === key) return;
+
             window.clearTimeout(dwell.current);
             wanted.current = key;
 

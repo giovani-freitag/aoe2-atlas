@@ -29,6 +29,14 @@ const APART = 6;
 /** What the detail panel covers of the map once it stops sliding and lies over it, in pixels. */
 const PANEL_WIDTH = 352;
 
+/** The two points of a mark the Wikipedia preview can hang from. */
+const SHIELD = 'shield';
+const PIN = 'pin';
+
+/** How far above the point the preview's tip is held, so it clears the mark it came from. */
+const CLEAR_SHIELD = MARKER_SIZE / 2;
+const CLEAR_PIN = 6;
+
 /** Where the wind rose sits and how big it is, as a share of the shorter side. */
 const ROSE_SHARE = 0.11;
 const ROSE_MAX = 46;
@@ -270,7 +278,9 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
     }, [focus, projection, borders, flyTo, wide]);
 
     const roseRadius = Math.min(ROSE_MAX, Math.min(size.width, size.height) * ROSE_SHARE);
-    const previewing = wiki.shown?.key;
+
+    // Which civilization is being previewed, and which of its two points the card hangs from.
+    const [previewing, hungOn] = (wiki.shown?.key ?? '').split(':');
 
     /*
      * Where the map's own corner is on the screen.
@@ -424,12 +434,21 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                                 <g
                                     key={civilization.key}
                                     data-civ={civilization.key}
-                                    onPointerEnter={(event) => {
+                                    onPointerOver={(event) => {
                                         // A tap opens the sheet, which carries the link itself.
                                         if (event.pointerType !== 'mouse') return;
 
+                                        /*
+                                         * The card hangs off whichever of the mark's two points
+                                         * the pointer is actually on. Always hanging it off the
+                                         * Wonder meant that resting on a shield in the middle of
+                                         * a realm threw the card a hundred pixels away, over a
+                                         * pin the reader was not pointing at.
+                                         */
+                                        const on = (event.target as Element).closest('.pin') ? PIN : SHIELD;
+
                                         wiki.enter(
-                                            civilization.key,
+                                            `${civilization.key}:${on}`,
                                             civilization.wonder.wikipediaLang,
                                             civilization.wonder.wikipedia,
                                         );
@@ -487,16 +506,21 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
              * slide back onto the screen, the flip below, the tip — is the card's own doing, and
              * is the same here as it is on the link in the sheet.
              */}
-            {marks.map(({ civilization, wonder }) => {
+            {marks.map(({ civilization, anchor, wonder }) => {
                 if (civilization.key !== previewing || !wiki.shown) return null;
+
+                const on = hungOn === PIN ? wonder : anchor;
+                const clear = hungOn === PIN ? CLEAR_PIN : CLEAR_SHIELD;
 
                 return (
                     <div
                         key={civilization.key}
                         className="atlas__preview"
                         style={{
-                            left: origin.x + frame.k * wonder[0] + frame.x,
-                            top: origin.y + frame.k * wonder[1] + frame.y,
+                            left: origin.x + frame.k * on[0] + frame.x,
+                            top: origin.y + frame.k * on[1] + frame.y - clear,
+                            // Tall as the mark, so the card clears it whether it opens above or below.
+                            height: clear * 2,
                         }}
                     >
                         <WikiCard summary={wiki.shown.summary} />
