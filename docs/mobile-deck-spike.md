@@ -220,6 +220,26 @@ washes out the numbers it is lighting is a veil.
 The deck slides out of the rail and tucks back under it, rather than over. The year is what
 everything else on screen is measured against, so it is the thing that casts a shadow.
 
+## One breakpoint, swept
+
+The legend turned at forty-five rem while everything else turned at sixty, so between the two
+the panel believed it was on a desktop — unfolded, in the bottom corner — while the atlas was
+still a phone with its deck sitting in that same corner. They overlapped, and the legend had
+folded its own chip away so there was no way to move it. Both now turn where `useWideScreen`
+does, and that is the only breakpoint in the stylesheets.
+
+The sweep that found it runs twelve widths from 360 to 1920, each with a realm traced and a
+civilization open, and asks whether the legend shares ground with the deck, the panel, the
+controls, the bar or the rail, whether the page overflows sideways, and whether any text is
+clipped. It turned up a second collision the eye had not: at exactly 960, where the map is
+narrowest on a desktop, a fixed nineteen-rem legend ran under the docked panel. It is now as
+wide as the room between them allows.
+
+| Width | Legend | Layout |
+| --- | --- | --- |
+| 360–916 | folded to a pill | phone: deck, pill, filters on the rail |
+| 960–1920 | open, bottom corner | desktop: columns, docked panel |
+
 ## Where it stands
 
 Checked at three widths with nothing open, a civilization open, a neighbour traced and both
