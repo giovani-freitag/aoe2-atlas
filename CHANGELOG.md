@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.5.0...v1.5.1) (2026-09-12)
+
+
+### Fixed
+
+* **sheet:** square the docked panel on desktop ([a6802ac](https://github.com/giovani-freitag/aoe2-atlas/commit/a6802aca2d9436f02bb3af2a9940e1a852a2721f))
+
 ## [1.5.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.4.0...v1.5.0) (2026-09-12)
 
 
