@@ -3,6 +3,7 @@
         "title": "AoE2 Atlas",
         "tagline": "Meraviglie e territori, secolo per secolo",
         "documentTitle": "Le 56 civiltà di Age of Empires II su un'unica mappa",
+        "focusedTitle": "{{name}} nel {{year}}",
         "openRoster": "Apri l'elenco delle civiltà",
         "openSettings": "Apri le impostazioni della mappa",
         "closeSettings": "Chiudi le impostazioni della mappa",

@@ -3,6 +3,7 @@
         "title": "AoE2 Atlas",
         "tagline": "Wonders and territories, century by century",
         "documentTitle": "The 56 civilizations of Age of Empires II on one map",
+        "focusedTitle": "{{name}} in {{year}}",
         "openRoster": "Open the list of civilizations",
         "openSettings": "Open the map settings",
         "closeSettings": "Close the map settings",

@@ -3,6 +3,7 @@
         "title": "AoE2 Atlas",
         "tagline": "Weltwunder und Territorien, Jahrhundert für Jahrhundert",
         "documentTitle": "Die 56 Zivilisationen von Age of Empires II auf einer Karte",
+        "focusedTitle": "{{name}} im Jahr {{year}}",
         "openRoster": "Liste der Zivilisationen öffnen",
         "openSettings": "Karteneinstellungen öffnen",
         "closeSettings": "Karteneinstellungen schließen",

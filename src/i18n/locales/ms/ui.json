@@ -3,6 +3,7 @@
         "title": "AoE2 Atlas",
         "tagline": "Keajaiban dan wilayah, abad demi abad",
         "documentTitle": "56 tamadun Age of Empires II dalam satu peta",
+        "focusedTitle": "{{name}} pada {{year}}",
         "openRoster": "Buka senarai tamadun",
         "openSettings": "Buka tetapan peta",
         "closeSettings": "Tutup tetapan peta",

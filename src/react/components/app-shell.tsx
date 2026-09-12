@@ -6,6 +6,7 @@ import { useServices } from '@/react/providers/services-context.ts';
 import { drawnRealms, useAtlas } from '@/react/providers/atlas-context.ts';
 import { useAddress } from '@/react/hooks/use-address.ts';
 import { useEscape } from '@/react/hooks/use-escape.ts';
+import { useFormat } from '@/react/hooks/use-format.ts';
 import { useMeasuredHeight, useMeasuredWidth } from '@/react/hooks/use-measured-height.ts';
 import { useTimeSlice } from '@/react/hooks/use-time-slice.ts';
 import { useSheetHistory } from '@/react/hooks/use-sheet-history.ts';
@@ -23,7 +24,8 @@ import { TimelineRail } from './timeline-rail.tsx';
 /** The whole interface: a map that owns the screen, with everything else sliding over it. */
 export function AppShell() {
     const { t, i18n } = useTranslation();
-    const { catalogue, slices } = useServices();
+    const { catalogue, slices, text } = useServices();
+    const format = useFormat();
     const { state, dispatch } = useAtlas();
     const wide = useWideScreen();
     const [rosterOpen, setRosterOpen] = useState(false);
@@ -42,19 +44,11 @@ export function AppShell() {
     // On a phone the bar is a pill floating over the map, and the legend stands beside it.
     const brand = useMeasuredWidth<HTMLDivElement>('--brand-width');
 
-    /*
-     * The document follows the language: its tag for screen readers and fonts, its title for the
-     * tab and for whatever indexes the page.
-     *
-     * The title was the wordmark and the tagline, and not one of the seventeen taglines names the
-     * game — so the title that ends up indexed, which is this one and not the one index.html
-     * served, was missing the only phrase a search for this thing is certain to contain.
-     */
+    // The document's language tag follows the reader's, for screen readers, hyphenation and fonts.
     const language = i18n.language;
     useEffect(() => {
         document.documentElement.lang = language;
-        document.title = `${t('app.documentTitle')} — ${t('app.title')}`;
-    }, [language, t]);
+    }, [language]);
 
     const { slice, loading, failed } = useTimeSlice(slices, state.year);
 
@@ -70,6 +64,23 @@ export function AppShell() {
     const standing = useMemo(() => listed.filter((civ) => borders.has(civ.key)), [listed, borders]);
     const drawn = useMemo(() => drawnRealms(state, standing), [state, standing]);
     const focused = state.focused ? catalogue.find(state.focused) : null;
+
+    /*
+     * The title says what is on the map, in the reader's language.
+     *
+     * At rest it names the game — none of the seventeen taglines did, so the title that gets
+     * indexed, which is this one and not the one index.html served, used to be missing the one
+     * phrase every search for this thing contains. With a civilization open it names that
+     * civilization and the year instead: a link to "the Byzantines in 800" now says so in the
+     * tab, in the history, and in the text the share sheet offers alongside the address.
+     */
+    const focusedName = focused ? text.civilization(focused.key, focused.wonder.anachronistic).name : null;
+    const yearLabel = format.year(state.year);
+    useEffect(() => {
+        const subject = focusedName ? t('app.focusedTitle', { name: focusedName, year: yearLabel }) : t('app.documentTitle');
+
+        document.title = `${subject} — ${t('app.title')}`;
+    }, [focusedName, yearLabel, t]);
 
     const closeSheet = useCallback(() => {
         dispatch({ type: 'focus', value: null });
