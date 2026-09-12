@@ -235,10 +235,20 @@ const page = `<!doctype html>
                 padding: 0.6rem 0.75rem;
                 text-align: left;
                 border-bottom: 1px solid var(--rule);
+            }
+
+            /* Only the figures refuse to break; a place name is free to wrap and often must. */
+            .num,
+            th[scope='row'] {
                 white-space: nowrap;
             }
 
-            th {
+            /*
+             * The column headings, and only those: a bare "th" also catches the fifty-six
+             * civilization names, which are the subject of their row rather than a label for it.
+             * Sticky and dimmed, they turned each name into a grey band pinned to the top.
+             */
+            thead th {
                 position: sticky;
                 top: 0;
                 background: var(--raised);
@@ -248,12 +258,13 @@ const page = `<!doctype html>
                 color: var(--faint);
             }
 
-            tbody tr:nth-child(odd) {
-                background: rgb(255 255 255 / 2%);
+            th[scope='row'] {
+                font-weight: 600;
+                color: var(--ink);
             }
 
-            td:first-child {
-                font-weight: 600;
+            tbody tr:nth-child(odd) {
+                background: rgb(255 255 255 / 2%);
             }
 
             .num {
@@ -267,6 +278,85 @@ const page = `<!doctype html>
                 font-size: 0.875rem;
                 color: var(--faint);
             }
+
+            /*
+             * Narrow: one card per civilization instead of one row.
+             *
+             * Six columns of dates and areas measured 1183 pixels, which on a phone is three and a
+             * half screens of sideways scrolling to read one line — the reader loses the name by
+             * the time they reach the year. Stacked, every civilization is a short block that
+             * reads top to bottom, and nothing scrolls but the page.
+             */
+            @media (max-width: 56rem) {
+                .sheet {
+                    border: none;
+                    border-radius: 0;
+                    overflow-x: visible;
+                }
+
+                thead {
+                    position: absolute;
+                    width: 1px;
+                    height: 1px;
+                    overflow: hidden;
+                    clip-path: inset(50%);
+                }
+
+                table,
+                tbody,
+                tr,
+                th,
+                td {
+                    display: block;
+                }
+
+                tr {
+                    margin-bottom: 0.75rem;
+                    padding: 0.75rem 0.9rem 0.9rem;
+                    border: 1px solid var(--rule);
+                    border-radius: 8px;
+                    background: rgb(255 255 255 / 2%);
+                }
+
+                th[scope='row'] {
+                    padding: 0 0 0.5rem;
+                    border: none;
+                    font-size: 1.0625rem;
+                    color: var(--brass);
+                    white-space: normal;
+                }
+
+                /* Nothing sticks in a card: the name belongs to the block it heads, not to the top. */
+                tbody tr:nth-child(odd) {
+                    background: none;
+                }
+
+                td {
+                    display: flex;
+                    gap: 0.75rem;
+                    justify-content: space-between;
+                    padding: 0.3rem 0;
+                    border: none;
+                }
+
+                td + td {
+                    border-top: 1px solid rgb(255 255 255 / 5%);
+                }
+
+                td::before {
+                    content: attr(data-label);
+                    flex: none;
+                    font-size: 0.75rem;
+                    letter-spacing: 0.06em;
+                    text-transform: uppercase;
+                    color: var(--faint);
+                }
+
+                /* The value is the thing being read, so it takes the side the eye returns to. */
+                td {
+                    text-align: right;
+                }
+            }
         </style>
     </head>
     <body>
@@ -276,10 +366,19 @@ const page = `<!doctype html>
             <p>${escape(LEAD)}</p>
             <p>${escape(METHOD)}</p>
 
+            <!--
+                The roles are written out because the narrow layout takes them away.
+
+                Below the breakpoint every part of this table is laid out as a block — six columns
+                of dates and areas are four screens of sideways scrolling on a phone — and a
+                browser drops the implicit table semantics the moment "display" stops being
+                "table-cell". Stating them keeps the thing a table for a screen reader at every
+                width, while "data-label" gives each figure back the heading it lost.
+            -->
             <div class="sheet">
-                <table>
-                    <thead>
-                        <tr>
+                <table role="table">
+                    <thead role="rowgroup">
+                        <tr role="row">
                             <th scope="col">Civilization</th>
                             <th scope="col">The Wonder is modelled on</th>
                             <th scope="col">Where it stands</th>
@@ -288,16 +387,16 @@ const page = `<!doctype html>
                             <th scope="col">At its widest</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody role="rowgroup">
 ${rows
     .map(
-        (row) => `                        <tr>
-                            <th scope="row">${escape(row.name)}</th>
-                            <td><a href="${row.wikipedia}">${escape(row.monument)}</a></td>
-                            <td>${escape(row.where)}</td>
-                            <td class="num">${row.from}–${row.to}</td>
-                            <td class="num">${escape(span(row))}</td>
-                            <td class="num">${escape(area(row.peakAreaKm2))} in ${row.peakYear}</td>
+        (row) => `                        <tr role="row">
+                            <th scope="row" role="rowheader">${escape(row.name)}</th>
+                            <td role="cell" data-label="Wonder"><a href="${row.wikipedia}">${escape(row.monument)}</a></td>
+                            <td role="cell" data-label="Stands in">${escape(row.where)}</td>
+                            <td role="cell" data-label="On stage" class="num">${row.from}–${row.to}</td>
+                            <td role="cell" data-label="Drawn on" class="num">${escape(span(row))}</td>
+                            <td role="cell" data-label="At its widest" class="num">${escape(area(row.peakAreaKm2))} in ${row.peakYear}</td>
                         </tr>`,
     )
     .join('\n')}
