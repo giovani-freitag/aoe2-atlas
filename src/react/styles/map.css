@@ -335,3 +335,71 @@
 .atlas__preview .wiki__card {
     transform: translateX(-50%);
 }
+
+/*
+ * Folded up, the legend is a pill: the count and a dot per region.
+ *
+ * A caption that covers a third of what it captions is worth less than the ground it takes. The
+ * dots are the legend in miniature — enough to see how many colours are in play and which — and
+ * a tap unfolds the rest. Where there is room to sit in a corner and bother nobody, it stays
+ * open and there is no pill at all.
+ */
+.legend[data-open='false'] {
+    right: auto;
+    max-height: none;
+    border-radius: 999px;
+    overflow: visible;
+}
+
+.legend__chip {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2rem;
+    padding: 0 var(--space-3) 0 var(--space-2);
+    border-radius: 999px;
+    color: var(--brass-soft);
+}
+
+.legend__chip > svg {
+    flex: none;
+    color: var(--brass);
+}
+
+.legend__chip b {
+    font-family: var(--title);
+    font-size: 0.8125rem;
+}
+
+.legend__dots {
+    display: flex;
+    gap: 3px;
+}
+
+.legend__dots i {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 40%);
+}
+
+/* Unfolded, the pill is the panel's head: it carries the count, the fold and the way out. */
+.legend__pill {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding-right: var(--space-1);
+}
+
+.legend[data-open='true'] .legend__pill {
+    border-bottom: 1px solid var(--oak);
+    background: var(--leather-raised);
+    box-shadow: var(--emboss);
+}
+
+.legend[data-open='true'] .legend__chip {
+    flex: 1;
+    border-radius: var(--radius-lg) 0 0 0;
+}

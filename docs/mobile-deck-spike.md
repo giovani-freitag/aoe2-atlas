@@ -65,6 +65,18 @@ onto the rail's own top padding and no further, because any deeper and it starts
 year. The rail itself was trimmed from 93 to 83 pixels. Bar and rail together now stand 129
 pixels tall against the 153 they did, and the sheet they replace stood 93 + its own 226.
 
+## Two more passes
+
+The legend folds. On a phone it is a pill — the layers mark, the count and a dot per region,
+which is the legend in miniature — and a tap unfolds the panel under it. The pill stays as the
+panel's head, carrying the fold and the "clear" beside it, so there is always a way back. On a
+wide screen nothing changed: it sits in a corner and bothers nobody, so it stays open.
+
+Every icon button is one size. The atlas had three on one screen — 36 in the header, 44 on the
+map, 36 again in the deck — because the header shrank its own. It now uses the size the skin
+calls a control, which is a thumb on a phone and a pointer's worth on a desktop. Measured on a
+phone: header, map controls, deck tabs, deck close and the year arrows, all 44 by 44.
+
 ## What I would decide before going further
 
 Whether the map should reframe when a panel opens and closes. It does not in the spike: the

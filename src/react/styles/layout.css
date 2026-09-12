@@ -16,12 +16,15 @@
 /* ---- header ------------------------------------------------------------- */
 
 /*
- * On a phone the bar is a strip, not a banner: the buttons come down to the small control size
- * and the padding to a quarter rem, so the header spends as little of the screen as the rail.
+ * On a phone the bar is a strip, not a banner: a quarter of a rem of padding, so the header
+ * spends as little of the screen as the rail does.
+ *
+ * The buttons used to be shrunk here as well, which left the atlas with icon buttons in three
+ * sizes on one screen — 36 in the header, 44 on the map, 36 again in the deck. They are one
+ * size now, the one the skin calls a control, which is a thumb on a phone and a pointer's worth
+ * on a desktop.
  */
 .bar {
-    --control: 2.25rem;
-
     position: relative;
     display: flex;
     align-items: center;
@@ -457,8 +460,8 @@
 .deck__close {
     display: grid;
     place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: var(--control);
+    height: var(--control);
     border-radius: var(--radius);
 }
 
