@@ -75,9 +75,9 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
     return (
         <div className="deck" ref={deck}>
             {open ? (
-                <div className="deck__panel leather" role="group" aria-label={tabs.find((tab) => tab.key === open)?.label}>
+                <div className="deck__panel parchment" role="group" aria-label={tabs.find((tab) => tab.key === open)?.label}>
                     {open === 'realm' ? (
-                        <div className="deck__card parchment singed">
+                        <div className="deck__sheet">
                             <p className="card__lead">{words.realm}</p>
                             {border ? (
                                 <>
@@ -168,7 +168,7 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
                     ) : null}
 
                     {open === 'wonder' ? (
-                        <div className="deck__card parchment singed">
+                        <div className="deck__sheet">
                             <p className="card__lead">{words.monument}</p>
                             <p className="card__line">{words.place}</p>
                             <WikiLink language={civilization.wonder.wikipediaLang} title={civilization.wonder.wikipedia}>
@@ -183,7 +183,7 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
                     ) : null}
 
                     {open === 'expansion' && expansion ? (
-                        <div className="deck__card parchment singed">
+                        <div className="deck__sheet">
                             <p className="card__lead">{expansion.name}</p>
                             <p className="card__line">
                                 {t(expansion.released ? 'detail.releasedOn' : 'detail.plannedFor', {

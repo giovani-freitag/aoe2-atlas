@@ -83,6 +83,38 @@ The deck's categories sit together after the arms rather than spread across the 
 they read as five unrelated things; grouped they read as one set, with the close alone at the
 far end where a close belongs.
 
+## A pass over every panel, measured
+
+Driven through the harness on an iPhone 13 viewport, opening each panel in turn and measuring
+what it costs. The panel heights before and after a density pass:
+
+| Panel | Was | Now | Map covered |
+| --- | --- | --- | --- |
+| Realm | 243 px | 211 px | 47% |
+| Wonder | 215 px | 178 px | 41% |
+| Expansion | 95 px | 71 px | 21% |
+| Contemporaries, one row | 61 px | 57 px | 18% |
+
+Two things were doing it. The panel was leather with a parchment card inside — two frames, two
+paddings and two borders around one paragraph, which on a phone was most of the height. It is
+one surface now, a parchment sheet rising out of the toolbar, with the civilization's colour
+along the seam. And the type inside was set for a document rather than for a glance over a map,
+so the lead, the stats, the sources and the notes all came down a size.
+
+The neighbour rows were full thumb-sized, 44 pixels, which made four of them taller than the
+panel holding them. A row there is a reading with a switch behind it rather than a button in a
+form, so it is now the height of what it shows: 32 pixels, with 20-pixel arms.
+
+What the sweep also turned up, left alone:
+
+- The roster's expansion chips are 28 pixels tall, under any reasonable target. They are the
+  only controls in the atlas that small.
+- A share that rounds to nothing prints as "0%", which reads as "they shared none" when it
+  means "they shared a little". It wants a "<1%".
+- The roster's rows are 44 pixels and 56 of them, which is right: that list is scrolled and
+  tapped with a thumb.
+- No clipped text anywhere, at any panel, in any of the four.
+
 ## What I would decide before going further
 
 Whether the map should reframe when a panel opens and closes. It does not in the spike: the
