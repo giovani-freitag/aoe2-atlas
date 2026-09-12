@@ -26,9 +26,9 @@ Measured on an iPhone 13 viewport, as a share of the map area:
 | State | Map covered |
 | --- | --- |
 | Bar alone | 8% |
-| Contemporaries open | 28% |
-| Wonder open | 33% |
-| Realm open | 54% |
+| Contemporaries open | 27% |
+| Wonder open | 32% |
+| Realm open | 53% |
 
 The sheet it would replace covers 34% at its peek and 88% at its tallest, and covers it whether
 or not the reader is reading anything.
@@ -44,8 +44,8 @@ or not the reader is reading anything.
 
 - ~~The legend collides with the bar.~~ Fixed: on a phone the legend moved to the head of the
   map, clear of the wind rose. On a wide screen it keeps the foot, where nothing disputes it.
-- **The zoom controls are covered by an open panel.** They are bottom-right inside the map; the
-  panel is full width. Either the panel stops short of them or they move.
+- ~~The zoom controls are covered by an open panel.~~ Fixed: the deck publishes its height and
+  the controls stand on top of it, sliding as panels open and close.
 - **There is no close label in the bundles.** The spike borrows the panel's own label for the
   cross. A real one needs a key in all seventeen languages.
 - **Nothing tells the reader the buttons are categories** before the first tap. Excalidraw gets
@@ -54,6 +54,11 @@ or not the reader is reading anything.
   components describe the same civilization and can drift apart.
 
 ## Since the first pass
+
+The bar runs edge to edge, the way a phone's toolbar does, with the civilization's colour as
+the rule along its top. The name is gone: a toolbar is read by its buttons, and a word in the
+middle of one only takes the room the buttons wanted. The arms stay on the left and carry the
+identity, which is what they do everywhere else here.
 
 The bar is glued onto the rail rather than floating above it, overlapping it by six pixels —
 onto the rail's own top padding and no further, because any deeper and it starts eating the

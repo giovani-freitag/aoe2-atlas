@@ -423,8 +423,7 @@
     z-index: 3;
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
-    padding: 0 var(--space-2);
+    gap: 0;
     pointer-events: none;
 }
 
@@ -432,14 +431,13 @@
     pointer-events: auto;
 }
 
+/* Edge to edge, the way a phone's toolbar is, with the civilization's colour as its rule. */
 .deck__bar {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2);
-    border: 1px solid;
-    border-left-width: 3px;
-    border-radius: var(--radius-lg);
+    padding: var(--space-1) var(--space-2);
+    border-top: 2px solid;
     box-shadow: var(--shadow-lg);
 }
 
@@ -448,20 +446,10 @@
     border-radius: 3px;
 }
 
-.deck__name {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-family: var(--title);
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--brass-soft);
-}
-
 .deck__bar nav {
+    flex: 1;
     display: flex;
+    justify-content: space-evenly;
     gap: 2px;
 }
 
@@ -490,8 +478,8 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: var(--space-2);
-    border: 1px solid var(--oak);
-    border-radius: var(--radius-lg);
+    border-top: 1px solid var(--oak);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     box-shadow: var(--shadow-lg);
 }
 

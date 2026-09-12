@@ -9,13 +9,14 @@ import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
+import { useMeasuredHeight } from '@/react/hooks/use-measured-height.ts';
 import { WikiLink } from './wiki-link.tsx';
 
 /** How many neighbours the list shows before it stops being a list. */
 const MAX_FRONTIERS = 6;
 
-/** The height of the bar alone, in pixels, which is what the map has to keep clear. */
-export const DECK_BAR = 52;
+/** The height of the bar alone, in pixels, which is what the map frames its realms above. */
+export const DECK_BAR = 46;
 
 type Drawerful = 'realm' | 'rivals' | 'wonder' | 'expansion';
 
@@ -45,6 +46,12 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
     const format = useFormat();
     const [open, setOpen] = useState<Drawerful | null>(null);
 
+    /*
+     * The deck publishes its height, panel and all, so the map's own controls can stand on top
+     * of it. They live at the foot of the map, which is exactly where the deck now is.
+     */
+    const deck = useMeasuredHeight<HTMLDivElement>('--deck-height');
+
     const style = palette.styleOf(civilization.key);
     const expansion = EXPANSION_RECORDS.find((entry) => entry.key === civilization.expansion);
     const year = format.year(state.year);
@@ -66,7 +73,7 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
     ];
 
     return (
-        <div className="deck">
+        <div className="deck" ref={deck}>
             {open ? (
                 <div className="deck__panel leather" role="group" aria-label={tabs.find((tab) => tab.key === open)?.label}>
                     {open === 'realm' ? (
@@ -188,14 +195,19 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
                 </div>
             ) : null}
 
-            <div className="deck__bar leather" style={{ borderColor: style.colour }}>
+            {/*
+             * The name is gone and the arms carry the identity, which is what they do everywhere
+             * else here. A toolbar on a phone is read by its buttons; a word in the middle of it
+             * only takes the room the buttons wanted.
+             */}
+            <div className="deck__bar leather" style={{ borderTopColor: style.colour }}>
                 <img
                     src={`${import.meta.env.BASE_URL}img/civs/${civilization.icon}.png`}
-                    alt=""
+                    alt={words.name}
+                    title={words.name}
                     width={30}
                     height={30}
                 />
-                <span className="deck__name">{words.name}</span>
 
                 <nav>
                     {tabs.map(({ key, icon: Icon, label }) => (
