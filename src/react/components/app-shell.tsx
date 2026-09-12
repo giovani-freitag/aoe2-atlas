@@ -11,6 +11,7 @@ import { useSheetHistory } from '@/react/hooks/use-sheet-history.ts';
 import { useSpecular } from '@/react/hooks/use-specular.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { AtlasMap } from './atlas-map.tsx';
+import { CivDeck } from './civ-deck.tsx';
 import { DetailSheet } from './detail-sheet.tsx';
 import { EmberCanvas } from './ember-canvas.tsx';
 import { LegendPanel } from './legend-panel.tsx';
@@ -164,13 +165,23 @@ export function AppShell() {
                 }}
             />
 
+{/* SPIKE: on a phone the civilization is a bar over the year rail, not a sheet over the map. */}
             {focused ? (
-                <DetailSheet
-                    civilization={focused}
-                    border={borders.get(focused.key) ?? null}
-                    frontiers={slice?.frontiers ?? []}
-                    onClose={closeSheet}
-                />
+                wide ? (
+                    <DetailSheet
+                        civilization={focused}
+                        border={borders.get(focused.key) ?? null}
+                        frontiers={slice?.frontiers ?? []}
+                        onClose={closeSheet}
+                    />
+                ) : (
+                    <CivDeck
+                        civilization={focused}
+                        border={borders.get(focused.key) ?? null}
+                        frontiers={slice?.frontiers ?? []}
+                        onClose={closeSheet}
+                    />
+                )
             ) : null}
 
             <SettingsSheet open={settingsOpen} onClose={closeSettings} />

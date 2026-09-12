@@ -399,3 +399,155 @@
         padding-top: var(--space-3);
     }
 }
+
+/* ---- SPIKE: the civilization as a deck over the year rail -------------- */
+
+/*
+ * The shape Excalidraw uses on a phone, tried here: nothing takes the screen.
+ *
+ * A strip sits on the year rail naming what is open, with one thumb-sized button per category.
+ * A tap lifts that category over the map and a second tap puts it away, so the reader is one
+ * tap from the whole map at any moment and never has to remember what is underneath. The sheet
+ * this replaces answered every question at once, and covered the map to do it.
+ */
+.deck {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: var(--rail-height, 0px);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: 0 var(--space-2) var(--space-2);
+    pointer-events: none;
+}
+
+.deck > * {
+    pointer-events: auto;
+}
+
+.deck__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2);
+    border: 1px solid;
+    border-left-width: 3px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.deck__bar img {
+    flex: none;
+    border-radius: 3px;
+}
+
+.deck__name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--title);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--brass-soft);
+}
+
+.deck__bar nav {
+    display: flex;
+    gap: 2px;
+}
+
+.deck__bar nav button,
+.deck__close {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius);
+}
+
+/* The category on show wears the same sunk plate the traced-realms switch does. */
+.deck__bar nav button[data-active='true'] {
+    box-shadow:
+        inset 0 2px 4px rgb(0 0 0 / 70%),
+        inset 0 0 0 1px rgb(200 164 74 / 45%);
+}
+
+.deck__close {
+    margin-left: var(--space-1);
+}
+
+.deck__panel {
+    max-height: 42dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-2);
+    border: 1px solid var(--oak);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.deck__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--parchment-deep);
+    border-radius: var(--radius);
+}
+
+.deck__rivals {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.deck__rivals button {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    min-height: var(--tap);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius);
+    text-align: left;
+    color: var(--text);
+}
+
+.deck__rivals button[data-active='true'] {
+    background: var(--brass-dim);
+    color: var(--brass-soft);
+}
+
+.deck__rivals img {
+    flex: none;
+    border: 1px solid;
+    border-radius: 3px;
+}
+
+.deck__rivals span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+}
+
+.deck__rivals b {
+    flex: none;
+    font-family: var(--title);
+    color: var(--brass-soft);
+}
+
+@media (min-width: 60rem) {
+    .deck {
+        display: none;
+    }
+}
