@@ -36,6 +36,9 @@ const AREA_PER_EMBER = 2600;
  * crowd: enough of them overlapping that the bloom of one meets the bloom of the next.
  */
 const EMBERS_PER_COLUMN = 24;
+/** How far below the canvas the unseen fire sits, in pixels. */
+const GLOW_DEPTH = 70;
+
 const MAX_PIXEL_RATIO = 2;
 
 /** No banner is wider than this; anything beyond it is a layout mistake, not a request. */
@@ -127,7 +130,17 @@ export class EmberField {
             return;
         }
 
-        this.wash(this.paint.createLinearGradient(0, this.height, 0, this.height * 0.1), breath, light);
+        /*
+         * The fire is below the screen, not against it.
+         *
+         * Starting the gradient at the canvas floor put the hottest part of it right on the edge,
+         * which reads as a strip of orange rather than as a light from somewhere. Beginning it
+         * well below means only the tail of the glow ever shows, and the source stays off stage
+         * where it belongs.
+         */
+        const below = this.height + GLOW_DEPTH;
+
+        this.wash(this.paint.createLinearGradient(0, below, 0, this.height * 0.05), breath, light);
         this.paint.fillRect(0, 0, this.width, this.height);
     }
 
@@ -138,8 +151,8 @@ export class EmberField {
             glow.addColorStop(0.5, `rgb(214 74 18 / ${(0.08 * breath).toFixed(3)})`);
             glow.addColorStop(1, 'rgb(214 74 18 / 0%)');
         } else {
-            glow.addColorStop(0, `rgb(255 172 74 / ${(0.42 * breath).toFixed(3)})`);
-            glow.addColorStop(0.4, `rgb(255 116 26 / ${(0.17 * breath).toFixed(3)})`);
+            glow.addColorStop(0, `rgb(255 172 74 / ${(0.3 * breath).toFixed(3)})`);
+            glow.addColorStop(0.4, `rgb(255 116 26 / ${(0.1 * breath).toFixed(3)})`);
             glow.addColorStop(1, 'rgb(255 100 18 / 0%)');
         }
 
