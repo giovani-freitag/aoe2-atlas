@@ -38,16 +38,22 @@ only ever share the screen if they shared the century.
 
 ## ✨ Features
 
-- 🗺️ **All 56 civilizations** — each emblem stands in its own territory, with a pin on the Wonder's real monument ([the whole table](docs/civilizations.md))
-- 🕰️ **Nineteen maps, 200 to 1600** — drag the year and every border redraws; a civilization shows up only in the years it existed
-- 📐 **Areas you can compare** — measured on the globe, so two realms compare fairly whatever projection is on screen
-- 〰️ **Borders as honest as the record** — a firm line where the border is known, soft and dashed where it is a guess, faint when it had to be borrowed from the century next door
-- 🎨 **Overlap you can read** — where two realms met, both hatchings show through: the colour is the region, the angle is the civilization
-- 🌍 **Three projections** — Equal Earth, Natural Earth, Mercator. The shape of the world changes; none of the numbers do
-- 🗣️ **17 languages** — civilization and monument names, cities, numbers, dates, and the order the list sorts in
-- 🔗 **Links that mean something** — the address follows the map: `?year=800&civ=byzantines&pin=bulgarians` opens exactly that, and the share button hands it to you
-- 📱 **Made for a phone** — the map keeps the screen, the year stays under your thumb, and a civilization opens as a strip you read without losing sight of its territory
-- 🏰 **Dressed like the game** — aged parchment, iron and leather, and embers burning under the timeline
+- 🗺️ **Every civilization the game has** — all 56, through The Viking Sagas. Each emblem stands in
+  its own territory, with a pin on the real monument its Wonder was modelled on. [The whole table
+  is here](docs/civilizations.md): monument, city, the years each realm stood, and the ground it
+  held at its widest.
+- 🕰️ **Nineteen dated maps, AD 200 to 1600** — drag the year and every border redraws; a
+  civilization appears only in the years it existed. The borders are cut per century from
+  [aourednik/historical-basemaps](https://github.com/aourednik/historical-basemaps) and drawn as
+  well as they are known: firm where the record is firm, dashed where it is a guess, faint where
+  the line had to be borrowed from the century next door. The areas are approximate for the same
+  reason — but all measured the same way, on the globe, so they are worth something against each
+  other.
+- 🎨 **Overlap that means something** — two realms share the screen only if they shared the
+  century, and where they met both hatchings show through. It is the reason the atlas is cut into
+  centuries at all: on a single map of everyone's greatest extent, the Mongols and the Persians
+  look like they are fighting over the same ground, and the Persian outline is from 600 while the
+  Mongol one is from 1279.
 
 <p align="center">
   <img src="docs/realm.png" alt="The Byzantines opened on the 1200 map: their border traced, the pin on Hagia Sophia, and the 5% of their ground shared with a contemporary" width="100%">
