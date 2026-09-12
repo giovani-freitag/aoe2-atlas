@@ -64,7 +64,7 @@ describe('the shipped geography', () => {
 
     it('ships the emblem every civilization points at', () => {
         const missing = CIVILIZATIONS.filter(
-            (civ) => !existsSync(join(process.cwd(), 'public', 'img', 'civs', `${civ.icon}.png`)),
+            (civ) => !existsSync(join(process.cwd(), 'public', 'img', 'civs', `${civ.icon}.webp`)),
         );
 
         expect(missing.map((civ) => civ.key)).toEqual([]);

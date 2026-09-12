@@ -10,5 +10,5 @@ import type { Civilization } from '@/domain/entities/civilization.ts';
  * @param civilization - The civilization whose arms are wanted.
  */
 export function armsUrl(civilization: Civilization): string {
-    return `${import.meta.env.BASE_URL}img/civs/${civilization.icon}.png`;
+    return `${import.meta.env.BASE_URL}img/civs/${civilization.icon}.webp`;
 }

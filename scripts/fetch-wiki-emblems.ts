@@ -80,9 +80,9 @@ for (const [key, title] of Object.entries(EMBLEMS)) {
     // The wiki serves these as WebP whatever the file name says, so the format is never assumed.
     const plate = await sharp(Buffer.from(await response.arrayBuffer()))
         .resize(SIZE, SIZE, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-        .png({ compressionLevel: 9 })
+        .webp({ quality: 90, alphaQuality: 100, effort: 6 })
         .toBuffer();
 
-    writeFileSync(join(OUT, `${key}.png`), plate);
-    console.log(`  ${key}.png  ${SIZE}x${SIZE}  ${(plate.length / 1024).toFixed(0)} kB  ← ${title}`);
+    writeFileSync(join(OUT, `${key}.webp`), plate);
+    console.log(`  ${key}.webp  ${SIZE}x${SIZE}  ${(plate.length / 1024).toFixed(0)} kB  ← ${title}`);
 }
