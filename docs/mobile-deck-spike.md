@@ -200,6 +200,20 @@ pointer's worth on a desktop, like every other control.
   who counts as a contemporary — the two pieces that moved out of the panels and had nothing
   watching them.
 
+## The same sides at every width
+
+The filters went to the right on a desktop too, and the preferences to the left, so the two
+drawers are on the side their own button is on whatever the screen. That moved two other things
+with it: the civilization's panel now docks on the left, because docking on the right would have
+covered the very list the reader picked it from, and the legend took the opposite corner, clear
+of the column of map controls.
+
+The embers moved as well. They used to drift across the header, which on a phone is a pill the
+size of two buttons and on a desktop a strip of furniture — neither a place where a fire means
+anything. They rise from the year's handle now, following it as it moves, so the century being
+held is the one that is alight. Measured: the lit pixels centre within twenty pixels of the
+handle, at either end of the rail.
+
 ## Where it stands
 
 Checked at three widths with nothing open, a civilization open, a neighbour traced and both

@@ -101,11 +101,26 @@ export function AppShell() {
         [dispatch],
     );
 
+    /*
+     * Where the embers are allowed to appear: a hand's width around the slider's handle.
+     *
+     * The filled stretch of rail ends exactly under the middle of the handle, so its right edge
+     * is the handle's position without having to redo the arithmetic that put it there. Measured
+     * on every spawn rather than held, because the handle moves and the fire should follow it.
+     */
+    const emberColumn = useCallback(() => {
+        const fill = document.querySelector('.rail-body__fill');
+        const band = document.querySelector('.rail');
+        if (!fill || !band) return { from: 0, width: 0 };
+
+        const width = 84;
+
+        return { from: fill.getBoundingClientRect().right - band.getBoundingClientRect().left - width / 2, width };
+    }, []);
+
     return (
         <div className="shell">
             <header className="bar leather" ref={bar}>
-                <EmberCanvas className="bar__embers" density={0.7} wind={0.6} />
-
                 <div className="bar__brand" ref={brand}>
                     {/* On a phone the name beside it is hidden, so the mark carries it on hover. */}
                     <img
@@ -193,6 +208,16 @@ export function AppShell() {
              * to themselves. On a phone the arrows come out, and that is the whole difference.
              */}
             <div className="rail leather" ref={rail}>
+                {/*
+                 * The fire burns under the year.
+                 *
+                 * The embers used to drift across the header, which on a phone is a pill the size
+                 * of two buttons and on a desktop a strip of furniture — neither of them a place
+                 * where a fire means anything. Here they rise from the handle itself, so the
+                 * century the reader is holding is the one that is alight.
+                 */}
+                <EmberCanvas className="rail__embers" density={0.8} wind={0.5} column={emberColumn} />
+
                 <TimelineRail
                     civilizations={catalogue.all()}
                     years={SLICE_YEARS}

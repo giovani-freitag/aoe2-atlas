@@ -72,13 +72,9 @@
     white-space: nowrap;
 }
 
-/*
- * The rail already says "loading…" where a reader is looking, so the pill needs no second word —
- * and a field of embers in a space this size is an animation frame a second spent on nothing.
- */
+/* The rail already says "loading…" where a reader is looking; the pill needs no second word. */
 .bar__spacer,
-.bar__loading,
-.bar__embers {
+.bar__loading {
     display: none;
 }
 
@@ -92,13 +88,13 @@
     border-radius: 999px;
 }
 
-.bar__embers {
+.rail__embers {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    opacity: 0.55;
+    opacity: 0.7;
 }
 
 .bar__brand {
@@ -151,6 +147,7 @@
 .rail {
     grid-area: rail;
     position: relative;
+    isolation: isolate;
     padding: var(--space-2) var(--space-3);
     border-top: 1px solid var(--oak);
     z-index: 2;
@@ -393,8 +390,7 @@
     }
 
     .bar__spacer,
-    .bar__loading,
-    .bar__embers {
+    .bar__loading {
         display: block;
     }
 
