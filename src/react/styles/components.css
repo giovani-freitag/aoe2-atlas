@@ -238,9 +238,17 @@
  * thumb can work: nineteen centuries were crammed into about a hundred and forty pixels, so
  * every stop was seven pixels wide. The reading goes above it instead, on one line.
  */
+/*
+ * Held to a readable width rather than run edge to edge.
+ *
+ * Nineteen centuries across a fourteen-hundred-pixel screen gave every one of them sixty-eight
+ * pixels, which is a wide bar for a single number and a long way to drag for a short journey.
+ */
 .rail-body {
     position: relative;
     z-index: 1;
+    max-width: 60rem;
+    margin-inline: auto;
     display: grid;
     grid-template-areas:
         'reading'
@@ -346,11 +354,14 @@
     background: var(--stitch);
     opacity: 0.45;
     border-radius: 1px 1px 0 0;
+    transition:
+        background-color 160ms ease,
+        opacity 160ms ease;
 }
 
-.rail-body__profile span[data-reached='true'] {
+.rail-body__profile span[data-current='true'] {
     background: var(--brass);
-    opacity: 0.8;
+    opacity: 0.95;
 }
 
 /* The slider runs along a rail of oak, because a bare track looks like a form control. */

@@ -26,6 +26,10 @@ export interface TimelineRailProps {
  * above it is drawn as it stood in the year selected here, which is the one arrangement in
  * which two realms overlapping actually means they met.
  *
+ * One bar is lit and the rest are not. The bars are a reading of how crowded each century was,
+ * not a tally that fills up as the reader moves: lighting everything to the left of the handle
+ * said the centuries accumulate, and they do not — each is its own map, complete on its own.
+ *
  * The slider counts maps, not years. The atlas holds nineteen of them and they are not evenly
  * spaced — 1279 and 1300 sit a generation apart, 300 and 400 a century — so a slider ruled in
  * years would spend most of its travel on positions that redraw nothing and would report a year
@@ -94,7 +98,7 @@ export function TimelineRail({ civilizations, years, year, loading, stepping, tr
                         {profile.map((count, index) => (
                             <span
                                 key={years[index]}
-                                data-reached={index <= at}
+                                data-current={index === at}
                                 style={{ height: `${Math.max(6, (count / tallest) * 100)}%` }}
                             />
                         ))}
@@ -132,8 +136,6 @@ export function TimelineRail({ civilizations, years, year, loading, stepping, tr
 
                 {trailing}
             </div>
-
-
 
             <div className="rail-body__ends numeric" aria-hidden>
                 <span>{format.year(first)}</span>
