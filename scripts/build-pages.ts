@@ -128,9 +128,19 @@ function escape(text: string): string {
     return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-const TITLE = 'Every Age of Empires II civilization, its Wonder and the centuries it stood';
+/*
+ * Two headings, because they answer to different readers.
+ *
+ * The tab and the search result get the short one, and it leads with the dates: that is the
+ * question this page is the best answer to on the open web — the thread that collects them
+ * collects them in prose and stops at forty-three of the fifty-six — while 'Wonder' leads to a
+ * wiki with a page per monument and a domain this one will never outweigh. The heading on the
+ * page itself is free to say the whole thing, because nothing truncates it.
+ */
+const TITLE = 'The dates of all 56 Age of Empires II civilizations';
+const HEADING = 'Every Age of Empires II civilization: the years it stood, and the Wonder it built';
 const DESCRIPTION =
-    'All 56 Age of Empires II civilizations in one table: the real monument each Wonder was modelled on, the city it stands in, the centuries the atlas draws the realm, and the ground it held at its widest.';
+    'When each of the 56 Age of Empires II civilizations stood, the dated maps the atlas draws its realm on, and the real monument its Wonder was modelled on.';
 
 const maps = index.years.length;
 const first = index.years[0];
@@ -262,7 +272,7 @@ const page = `<!doctype html>
     <body>
         <main>
             <a class="back" href="../">← The atlas</a>
-            <h1>${escape(TITLE)}</h1>
+            <h1>${escape(HEADING)}</h1>
             <p>${escape(LEAD)}</p>
             <p>${escape(METHOD)}</p>
 
@@ -312,7 +322,7 @@ ${rows
 </html>
 `;
 
-const markdown = `# ${TITLE}
+const markdown = `# ${HEADING}
 
 ${LEAD}
 

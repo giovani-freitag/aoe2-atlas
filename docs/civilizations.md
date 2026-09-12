@@ -1,4 +1,4 @@
-# Every Age of Empires II civilization, its Wonder and the centuries it stood
+# Every Age of Empires II civilization: the years it stood, and the Wonder it built
 
 Every civilization in Age of Empires II builds a Wonder modelled on a building that exists. This table names the building and the city it stands in, the years the game's own lore gives the realm, the dated maps the atlas draws it on, and how much ground it held when it was at its widest.
 
