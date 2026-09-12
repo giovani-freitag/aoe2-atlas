@@ -22,7 +22,7 @@
         "hint": "La couleur donne la région ; l'angle des hachures distingue les civilisations qui la composent."
     },
     "roster": {
-        "title": "Civilisations",
+        "title": "Filtres",
         "search": "Rechercher une civilisation",
         "placeholder": "Civilisation, monument, ville…",
         "orderBy": "Trier par",

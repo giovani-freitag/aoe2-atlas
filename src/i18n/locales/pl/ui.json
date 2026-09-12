@@ -22,7 +22,7 @@
         "hint": "Kolor wskazuje region; kąt kreskowania rozróżnia cywilizacje w jego obrębie."
     },
     "roster": {
-        "title": "Cywilizacje",
+        "title": "Filtry",
         "search": "Szukaj cywilizacji",
         "placeholder": "Cywilizacja, budowla, miasto…",
         "orderBy": "Sortuj według",

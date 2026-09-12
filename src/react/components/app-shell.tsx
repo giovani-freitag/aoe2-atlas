@@ -107,7 +107,7 @@ export function AppShell() {
                 {wide ? null : (
                     <button
                         type="button"
-                        className="bar__button iron riveted"
+                        className="bar__button bar__filter iron riveted"
                         onClick={() => {
                             setRosterOpen(true);
                         }}
@@ -141,7 +141,7 @@ export function AppShell() {
                  */}
                 <button
                     type="button"
-                    className="bar__button iron"
+                    className="bar__button bar__settings iron"
                     aria-expanded={settingsOpen}
                     onClick={toggleSettings}
                     aria-label={t(settingsOpen ? 'app.closeSettings' : 'app.openSettings')}

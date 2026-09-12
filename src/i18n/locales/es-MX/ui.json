@@ -22,7 +22,7 @@
         "hint": "El color indica la región; el ángulo del rayado distingue a las civilizaciones dentro de ella."
     },
     "roster": {
-        "title": "Civilizaciones",
+        "title": "Filtros",
         "search": "Buscar civilización",
         "placeholder": "Civilización, monumento, ciudad…",
         "orderBy": "Ordenar por",

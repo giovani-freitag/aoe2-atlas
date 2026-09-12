@@ -22,7 +22,7 @@
         "hint": "Die Farbe nennt die Region; der Winkel der Schraffur unterscheidet die Zivilisationen darin."
     },
     "roster": {
-        "title": "Zivilisationen",
+        "title": "Filter",
         "search": "Zivilisation suchen",
         "placeholder": "Zivilisation, Bauwerk, Stadt…",
         "orderBy": "Sortieren nach",

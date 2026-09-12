@@ -115,6 +115,27 @@ What the sweep also turned up, left alone:
   tapped with a thumb.
 - No clipped text anywhere, at any panel, in any of the four.
 
+## The layout turned upside down
+
+On a phone the header moved below the year rail, to the lowest strip of the screen. Reaching the
+top corner of a six-inch phone is a two-handed operation, and the atlas asked for it every time
+a reader wanted the filters. Everything a thumb reaches for is now at the bottom: the map takes
+the screen from the very top, the year sits under it, and the bar is the last band.
+
+The two buttons swapped sides with it. How the world is drawn goes to the left, what is on it to
+the right, and the name sits between them. The roster's title is "Filters" now, in all
+seventeen languages — which is what that drawer actually is, once the year stopped living in
+the settings and the list became the thing you narrow.
+
+On a wide screen nothing moved: the header is back at the top of the grid, the buttons lose
+their order, and the roster is still a column.
+
+| Band | Top | Bottom |
+| --- | --- | --- |
+| Map | 0 | 533 |
+| Year | 533 | 619 |
+| Bar | 619 | 664 |
+
 ## What I would decide before going further
 
 Whether the map should reframe when a panel opens and closes. It does not in the spike: the

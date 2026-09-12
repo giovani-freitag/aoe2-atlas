@@ -22,7 +22,7 @@
         "hint": "Colour tells the region; the angle of the hatching tells the civilizations within it apart."
     },
     "roster": {
-        "title": "Civilizations",
+        "title": "Filters",
         "search": "Search civilizations",
         "placeholder": "Civilization, monument, city…",
         "orderBy": "Order by",

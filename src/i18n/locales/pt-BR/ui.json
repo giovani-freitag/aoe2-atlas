@@ -22,7 +22,7 @@
         "hint": "A cor diz a região; o ângulo da hachura separa as civilizações dentro dela."
     },
     "roster": {
-        "title": "Civilizações",
+        "title": "Filtros",
         "search": "Buscar civilização",
         "placeholder": "Civilização, monumento, cidade…",
         "orderBy": "Ordenar por",

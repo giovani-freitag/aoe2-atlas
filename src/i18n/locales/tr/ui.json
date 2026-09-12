@@ -22,7 +22,7 @@
         "hint": "Renk bölgeyi söyler; tarama açısı o bölgedeki uygarlıkları birbirinden ayırır."
     },
     "roster": {
-        "title": "Uygarlıklar",
+        "title": "Filtreler",
         "search": "Uygarlık ara",
         "placeholder": "Uygarlık, anıt, şehir…",
         "orderBy": "Sırala",

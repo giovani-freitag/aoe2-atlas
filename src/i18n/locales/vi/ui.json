@@ -22,7 +22,7 @@
         "hint": "Màu cho biết khu vực; góc gạch chéo phân biệt các nền văn minh trong khu vực đó."
     },
     "roster": {
-        "title": "Các nền văn minh",
+        "title": "Bộ lọc",
         "search": "Tìm nền văn minh",
         "placeholder": "Nền văn minh, công trình, thành phố…",
         "orderBy": "Sắp xếp theo",

@@ -6,9 +6,21 @@
  * legend. The roster and the detail arrive as offcanvas panels and leave again.
  */
 
+/*
+ * SPIKE: on a phone everything a thumb reaches for is at the bottom.
+ *
+ * The map takes the screen, the year sits under it, and the header — which on a phone is two
+ * buttons and a name — goes below both, where a hand holding a phone actually is. Reaching the
+ * top corner of a six-inch screen is a two-handed operation, and the atlas asked for it every
+ * time a reader wanted the filters.
+ */
 .shell {
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        'stage'
+        'rail'
+        'bar';
+    grid-template-rows: 1fr auto auto;
     height: 100%;
     min-height: 0;
 }
@@ -25,13 +37,28 @@
  * on a desktop.
  */
 .bar {
+    grid-area: bar;
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--space-2);
-    padding: var(--space-1) var(--space-2);
-    border-bottom: 1px solid var(--oak);
+    padding: var(--space-1) var(--space-2) calc(var(--space-1) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--oak);
     z-index: 2;
+}
+
+/* How the world is drawn to the left, what is on it to the right, the name between them. */
+.bar__settings {
+    order: -1;
+}
+
+.bar__filter {
+    order: 1;
+}
+
+.bar__spacer {
+    display: none;
 }
 
 .bar__embers {
@@ -81,6 +108,7 @@
 /* ---- map ---------------------------------------------------------------- */
 
 .stage {
+    grid-area: stage;
     position: relative;
     min-width: 0;
     min-height: 0;
@@ -90,8 +118,9 @@
 /* ---- timeline rail ------------------------------------------------------ */
 
 .rail {
+    grid-area: rail;
     position: relative;
-    padding: var(--space-2) var(--space-3) calc(var(--space-1) + env(safe-area-inset-bottom));
+    padding: var(--space-2) var(--space-3);
     border-top: 1px solid var(--oak);
     z-index: 2;
 }
@@ -311,8 +340,19 @@
     }
 
     .bar {
-        grid-area: bar;
+        justify-content: flex-start;
         padding: var(--space-2) var(--space-4);
+        border-top: none;
+        border-bottom: 1px solid var(--oak);
+    }
+
+    .bar__settings,
+    .bar__filter {
+        order: 0;
+    }
+
+    .bar__spacer {
+        display: block;
     }
 
     .bar__brand h1 {
@@ -422,7 +462,7 @@
      * the rail's own top padding. Any deeper and the bar starts eating the year, which is the
      * one reading on this screen that everything else is measured against.
      */
-    bottom: calc(var(--rail-height, 0px) - 6px);
+    bottom: calc(var(--rail-height, 0px) + var(--bar-height, 0px) - 6px);
     z-index: 3;
     display: flex;
     flex-direction: column;

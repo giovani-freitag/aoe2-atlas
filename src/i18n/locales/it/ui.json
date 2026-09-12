@@ -22,7 +22,7 @@
         "hint": "Il colore indica la regione; l'angolo del tratteggio distingue le civiltà al suo interno."
     },
     "roster": {
-        "title": "Civiltà",
+        "title": "Filtri",
         "search": "Cerca una civiltà",
         "placeholder": "Civiltà, monumento, città…",
         "orderBy": "Ordina per",
