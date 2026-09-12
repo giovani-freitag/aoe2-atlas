@@ -1,0 +1,109 @@
+<!doctype html>
+<!--
+    The card a pasted link becomes: 1200 × 630, read at a third of that.
+
+    WhatsApp, Discord and the rest shrink this to about 360 pixels wide, so anything under forty
+    pixels of type here is unreadable there. The first card was a screenshot of the interface with
+    its 24-pixel header, which at a third of the size was a smear over a map. This one puts the
+    map behind a band that can be read at any size the card is shown at.
+
+    To regenerate public/social-card.png: build the atlas, open the preview, screenshot the map
+    at 1200 × 630 with the world in 1200 and every realm traced, set it as --map below (a data
+    URI or a file path), open this file at exactly 1200 × 630 and screenshot it at 1×. The
+    scratch script that did so is not kept; the steps are these.
+-->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <style>
+            @font-face {
+                font-family: Cinzel;
+                src: url('../src/react/styles/fonts/cinzel-latin.woff2') format('woff2');
+                font-weight: 400 900;
+            }
+
+            :root {
+                --map: url('social-card-map.png');
+            }
+
+            html,
+            body {
+                margin: 0;
+                width: 1200px;
+                height: 630px;
+                overflow: hidden;
+            }
+
+            .card {
+                position: relative;
+                width: 1200px;
+                height: 630px;
+                background: #1a130d var(--map) center / cover no-repeat;
+                font-family: Cinzel, Georgia, serif;
+                color: #efe6d0;
+            }
+
+            /* The band the words sit on: leather fading up into the map, dark enough for the type. */
+            .band {
+                position: absolute;
+                inset: auto 0 0 0;
+                height: 300px;
+                background: linear-gradient(180deg, rgb(26 19 13 / 0%) 0%, rgb(26 19 13 / 88%) 38%, rgb(26 19 13 / 96%) 100%);
+            }
+
+            .words {
+                position: absolute;
+                left: 72px;
+                right: 72px;
+                bottom: 64px;
+            }
+
+            .mark {
+                position: absolute;
+                right: 72px;
+                bottom: 72px;
+                width: 132px;
+                height: 132px;
+                opacity: 0.95;
+            }
+
+            h1 {
+                margin: 0 0 14px;
+                font-size: 104px;
+                font-weight: 700;
+                line-height: 1;
+                letter-spacing: 0.02em;
+                color: #e6bb6b;
+                text-shadow: 0 2px 0 rgb(0 0 0 / 45%);
+            }
+
+            p {
+                margin: 0;
+                max-width: 900px;
+                font-size: 40px;
+                font-weight: 500;
+                line-height: 1.2;
+                letter-spacing: 0.01em;
+                color: #efe6d0;
+            }
+
+            .rule {
+                width: 120px;
+                height: 4px;
+                margin: 0 0 26px;
+                background: #c8a44a;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <div class="band"></div>
+            <img class="mark" src="../public/brand.svg" alt="" />
+            <div class="words">
+                <div class="rule"></div>
+                <h1>AoE2 Atlas</h1>
+                <p>The 56 civilizations of Age of Empires II on one map, century by century.</p>
+            </div>
+        </div>
+    </body>
+</html>
