@@ -129,9 +129,12 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
             ) : null}
 
             {/*
-             * The name is not here and the arms carry the identity, which is what they do
-             * everywhere else. A toolbar on a phone is read by its buttons; a word in the middle
-             * of it only takes the room the buttons wanted.
+             * The arms carry the identity and the name comes with them where there is room.
+             *
+             * A toolbar is read by its buttons, so the name never takes room from them: it sits
+             * between the arms and the categories and is dropped on a screen narrow enough that
+             * a word would cost a button. Whether there is room is a question about this bar and
+             * not about the window, which is what a container query is for.
              */}
             <div
                 className="deck__bar leather"
@@ -140,6 +143,7 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
                 style={{ borderTopColor: style.colour }}
             >
                 <CivArms civilization={civilization} size={30} label={words.name} />
+                <span className="deck__name">{words.name}</span>
 
                 <nav>
                     {tabs.map(({ key, icon: Icon, label }) => (

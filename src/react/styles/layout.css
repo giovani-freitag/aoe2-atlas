@@ -518,6 +518,7 @@
  * this replaces answered every question at once, and covered the map to do it.
  */
 .deck {
+    container-type: inline-size;
     position: fixed;
     left: 0;
     right: 0;
@@ -552,6 +553,31 @@
 .deck__bar img {
     flex: none;
     border-radius: 3px;
+}
+
+/*
+ * Shown only where the bar is wide enough that a name costs no button.
+ *
+ * Below this the categories and the way out need every pixel, and an ellipsis where a name
+ * should be is worse than the arms alone — which say the same thing to anyone who has just
+ * tapped them.
+ */
+.deck__name {
+    display: none;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--title);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--brass-soft);
+}
+
+@container (min-width: 24rem) {
+    .deck__name {
+        display: block;
+    }
 }
 
 .deck__bar nav {

@@ -94,7 +94,28 @@ export function TimelineRail({ civilizations, years, year, loading, stepping, tr
                     className="rail-body__track"
                     style={{ '--bars': profile.length, '--at': at / Math.max(1, years.length - 1) } as CSSProperties}
                 >
-                    <div className="rail-body__profile" aria-hidden>
+                    {/*
+                     * The columns are a target as well as a reading.
+                     *
+                     * A reader who wants the crowded century points at the tall bar, not at the
+                     * rail under it — so the bar answers. The handler sits on the row rather than
+                     * on nineteen buttons, and the row stays hidden from assistive technology:
+                     * the slider beside it already offers the same nineteen choices by name, and
+                     * a second set of them would only be the same control said twice.
+                     */}
+                    <div
+                        className="rail-body__profile"
+                        aria-hidden
+                        onPointerDown={(event) => {
+                            const row = event.currentTarget.getBoundingClientRect();
+                            /* The bars divide the row evenly, so the one pointed at is a floor. */
+                            const across = (event.clientX - row.left) / row.width;
+                            const index = Math.floor(across * years.length);
+                            const chosen = years[Math.min(years.length - 1, Math.max(0, index))];
+
+                            if (chosen !== undefined) onChange(chosen);
+                        }}
+                    >
                         {profile.map((count, index) => (
                             <span
                                 key={years[index]}
