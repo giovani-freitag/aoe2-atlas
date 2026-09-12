@@ -72,9 +72,13 @@
     white-space: nowrap;
 }
 
-/* The rail already says "loading…" where a reader is looking; the pill needs no second word. */
+/*
+ * The rail already says "loading…" where a reader is looking, so the pill needs no second word —
+ * and a field of embers in a space this size is an animation frame a second spent on nothing.
+ */
 .bar__spacer,
-.bar__loading {
+.bar__loading,
+.bar__embers {
     display: none;
 }
 
@@ -387,7 +391,8 @@
     }
 
     .bar__spacer,
-    .bar__loading {
+    .bar__loading,
+    .bar__embers {
         display: block;
     }
 
@@ -563,8 +568,15 @@
  * two frames, two paddings and two borders around one paragraph of text — and on a phone that
  * doubling was most of the panel's height. The panel is the sheet now.
  */
+/*
+ * Capped at a third of the screen, and scrolling past it.
+ *
+ * The realm's panel is the long one, and it was covering half the map while describing how much
+ * ground the realm held — which is the one thing the reader opened it to compare against what is
+ * drawn. Scrolling inside a panel is an ordinary thing to do; losing the map is not.
+ */
 .deck__panel {
-    max-height: 42dvh;
+    max-height: 32dvh;
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: var(--space-3);

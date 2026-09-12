@@ -184,6 +184,22 @@ Two things the earlier sweep had flagged are fixed. A share that rounds to nothi
 chips, the only controls in the atlas under any reasonable target, are a thumb on a phone and a
 pointer's worth on a desktop, like every other control.
 
+## What else the time bought
+
+- **The panels are capped at a third of the screen** and scroll past it. The realm's was covering
+  half the map while describing how much ground the realm held, which is the one thing the reader
+  opened it to compare against what is drawn.
+- **Flights honour `prefers-reduced-motion`.** The stylesheet already cut every transition and
+  animation to nothing, but a flight across the map is neither: it is d3 interpolating a
+  transform sixty times a second, and it went on gliding for anyone who had asked it not to.
+  Verified: with the preference set, the map is already where it is going a tenth of a second in.
+- **The pill stopped burning embers.** A field of them in a space 86 by 44 is an animation frame
+  a second spent on something nobody can see, and the "loading" word it sat beside is already on
+  the rail where a reader is looking.
+- **The extracted logic has tests.** Fourteen of them, over the share formatter and the rule for
+  who counts as a contemporary — the two pieces that moved out of the panels and had nothing
+  watching them.
+
 ## Where it stands
 
 Checked at three widths with nothing open, a civilization open, a neighbour traced and both
