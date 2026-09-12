@@ -79,12 +79,18 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
 
     return (
         <div className="deck" ref={deck}>
+            {/*
+             * The panel says what it is.
+             *
+             * Nothing tells a reader that a scroll, a pair of swords and a temple are categories
+             * until they have tried one — Excalidraw gets away with it because its icons are
+             * tools, and a tool shows what it does the moment it is used. A heading here names
+             * the icon that opened the panel, so the second tap is an informed one.
+             */}
             {open ? (
-                <div
-                    className="deck__panel parchment"
-                    role="group"
-                    aria-label={tabs.find((tab) => tab.key === open)?.label}
-                >
+                <section className="deck__panel parchment">
+                    <h2 className="eyebrow">{tabs.find((tab) => tab.key === open)?.label}</h2>
+
                     {open === 'realm' ? (
                         <div className="deck__sheet">
                             <RealmFacts civilization={civilization} border={border} />
@@ -108,7 +114,7 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
                             <ExpansionFacts civilization={civilization} />
                         </div>
                     ) : null}
-                </div>
+                </section>
             ) : null}
 
             {/*
@@ -116,7 +122,12 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
              * everywhere else. A toolbar on a phone is read by its buttons; a word in the middle
              * of it only takes the room the buttons wanted.
              */}
-            <div className="deck__bar leather" style={{ borderTopColor: style.colour }}>
+            <div
+                className="deck__bar leather"
+                role="toolbar"
+                aria-label={t('sheet.details', { name: words.name })}
+                style={{ borderTopColor: style.colour }}
+            >
                 <CivArms civilization={civilization} size={30} label={words.name} />
 
                 <nav>

@@ -57,8 +57,24 @@
     z-index: 3;
 }
 
-.bar__brand h1,
-.bar__spacer {
+/*
+ * The name is not painted here, but it is still the page's heading.
+ *
+ * Hiding it with `display: none` took it out of the accessibility tree as well, which left a
+ * phone reading an atlas with no title at all. It is only invisible.
+ */
+.bar__brand h1 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* The rail already says "loading…" where a reader is looking; the pill needs no second word. */
+.bar__spacer,
+.bar__loading {
     display: none;
 }
 
@@ -362,8 +378,16 @@
         z-index: 2;
     }
 
-    .bar__brand h1,
-    .bar__spacer {
+    .bar__brand h1 {
+        position: static;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        clip-path: none;
+    }
+
+    .bar__spacer,
+    .bar__loading {
         display: block;
     }
 
@@ -548,6 +572,12 @@
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     box-shadow: var(--shadow-lg);
     color: var(--ink);
+}
+
+.deck__panel > .eyebrow {
+    display: block;
+    margin-bottom: var(--space-2);
+    color: var(--ink-faint);
 }
 
 .deck__sheet {

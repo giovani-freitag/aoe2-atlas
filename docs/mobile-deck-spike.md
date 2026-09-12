@@ -46,12 +46,12 @@ or not the reader is reading anything.
   map, clear of the wind rose. On a wide screen it keeps the foot, where nothing disputes it.
 - ~~The zoom controls are covered by an open panel.~~ Fixed: the deck publishes its height and
   the controls stand on top of it, sliding as panels open and close.
-- **There is no close label in the bundles.** The spike borrows the panel's own label for the
-  cross. A real one needs a key in all seventeen languages.
-- **Nothing tells the reader the buttons are categories** before the first tap. Excalidraw gets
-  away with this because its icons are tools; here an icon for "realm" is a guess.
-- **Desktop is unchanged** — it keeps the docked panel, which is right, but it means two
-  components describe the same civilization and can drift apart.
+- ~~There is no close label in the bundles.~~ Fixed: `sheet.close` in all seventeen languages.
+- ~~Nothing tells the reader the buttons are categories.~~ Fixed: each panel carries a heading
+  naming the icon that opened it, so the second tap is an informed one. Excalidraw gets away
+  without one because its icons are tools, and a tool shows what it does the moment it is used.
+- ~~Two components describe the same civilization and can drift apart.~~ Fixed: they share their
+  words. Desktop still keeps the docked panel, which is right for the room it has.
 
 ## Since the first pass
 
@@ -183,6 +183,21 @@ Two things the earlier sweep had flagged are fixed. A share that rounds to nothi
 "<1%" rather than "0%", which said the one thing it could not mean. And the roster's expansion
 chips, the only controls in the atlas under any reasonable target, are a thumb on a phone and a
 pointer's worth on a desktop, like every other control.
+
+## Where it stands
+
+Checked at three widths with nothing open, a civilization open, a neighbour traced and both
+drawers used:
+
+| Width | Sideways overflow | Console errors | Smallest control |
+| --- | --- | --- | --- |
+| 360 px | none | none | 30 px, the map's own marks |
+| 390 px | none | none | 30 px, the map's own marks |
+| 1440 px | none | none | 24 px, a pointer-only cross |
+
+Every control on screen has a name, the headings run in order, no image is without alt text, and
+the page keeps its `h1` on a phone — invisible, but in the accessibility tree, which `display:
+none` had taken it out of.
 
 ## What I would decide before going further
 
