@@ -290,12 +290,12 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
 
         const frame = requestAnimationFrame(() => {
             /*
-             * Wide, the panel lies over the right of the map; narrow, the sheet lies over its
+             * Wide, the panel lies over the left of the map; narrow, the deck lies over its
              * foot. Either way a realm centred in the whole viewport ends up behind it.
              */
             const covered =
                 wide
-                    ? { right: focus ? PANEL_WIDTH : 0 }
+                    ? { left: focus ? PANEL_WIDTH : 0 }
                     : { bottom: focus ? DECK_BAR : 0 };
 
             // Stepping from one civilization to the next keeps the view from before the first.

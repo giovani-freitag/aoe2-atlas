@@ -131,9 +131,10 @@ export function AppShell() {
                 ) : null}
 
                 {/*
-                 * Three questions, three places. Who is on the left, behind the roster; how the
-                 * world is drawn is here on the right; and when — the axis every reading on the
-                 * map is qualified by — is along the foot, always out and never behind a panel.
+                 * Three questions, three places, and the same three at every width. How the world
+                 * is drawn comes in from the left; what is on it comes in from the right; and
+                 * when — the axis every reading on the map is qualified by — is along the foot,
+                 * always out and never behind a panel.
                  */}
                 <button
                     type="button"
@@ -155,7 +156,7 @@ export function AppShell() {
             <RosterDrawer
                 civilizations={listed}
                 borders={borders}
-                side={wide ? 'left' : 'right'}
+                side="right"
                 open={rosterOpen}
                 onClose={() => {
                     setRosterOpen(false);
@@ -181,7 +182,7 @@ export function AppShell() {
                 )
             ) : null}
 
-            <SettingsSheet side={wide ? 'right' : 'left'} open={settingsOpen} onClose={closeSettings} />
+            <SettingsSheet side="left" open={settingsOpen} onClose={closeSettings} />
 
             {/*
              * The same instrument at both sizes, because the year is not a preference.
