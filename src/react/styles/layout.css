@@ -594,6 +594,22 @@
     .deck__name {
         display: block;
     }
+
+    /*
+     * The bar has taken the name, so the heading gives it up rather than saying it twice.
+     *
+     * Hidden the way `.sr-only` hides things and not with `display: none`, because a heading
+     * that reads "Wonder" on its own tells a screen reader nothing about whose Wonder it is.
+     */
+    .deck__whose {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
 }
 
 .deck__bar nav {

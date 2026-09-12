@@ -92,13 +92,17 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
                     {/*
                      * Whose panel this is, and which of their questions it answers.
                      *
-                     * The bar carries the arms and no name, which is enough to know a panel is
-                     * open but not enough to read one: a card saying "Eastern Roman Empire,
-                     * 407,885 km²" never mentions the Byzantines anywhere, and the realm's name
-                     * is often not the civilization's.
+                     * The name is said once between the two of them. Where the bar is wide
+                     * enough to print it beside the arms, this heading is only the category;
+                     * where it is not, the heading carries it, because a card saying "Eastern
+                     * Roman Empire, 407,885 km²" never mentions the Byzantines anywhere and the
+                     * realm's name is often not the civilization's. Which of the two happens is
+                     * a question about the width of this bar rather than of the window, so the
+                     * stylesheet answers it — and the name stays in the accessibility tree
+                     * either way, so the heading never reads as a bare category.
                      */}
                     <h2 className="deck__title">
-                        {words.name}
+                        <span className="deck__whose">{words.name}</span>
                         <small className="eyebrow">{tabs.find((tab) => tab.key === open)?.label}</small>
                     </h2>
 
