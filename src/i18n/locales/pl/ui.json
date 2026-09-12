@@ -14,7 +14,9 @@
         "untraceAll": "Przestań kreślić wszystkie królestwa",
         "zoomIn": "Przybliż",
         "zoomOut": "Oddal",
-        "wholeWorld": "Pokaż cały świat"
+        "wholeWorld": "Pokaż cały świat",
+        "share": "Skopiuj link do tego widoku",
+        "shared": "Link skopiowany"
     },
     "legend": {
         "onMap": "{{count}} na mapie",

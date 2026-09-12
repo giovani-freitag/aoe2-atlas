@@ -14,7 +14,9 @@
         "untraceAll": "Stop tracing every realm",
         "zoomIn": "Zoom in",
         "zoomOut": "Zoom out",
-        "wholeWorld": "See the whole world"
+        "wholeWorld": "See the whole world",
+        "share": "Copy a link to this view",
+        "shared": "Link copied"
     },
     "legend": {
         "onMap": "{{count}} on the map",

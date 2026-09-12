@@ -16,6 +16,7 @@ import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { useWikiHover } from '@/react/hooks/use-wiki-hover.ts';
 import { CompassRose } from './compass-rose.tsx';
 import { HatchDefs, HAZE } from './hatch-defs.tsx';
+import { ShareButton } from './share-button.tsx';
 import { WikiCard } from './wiki-card.tsx';
 import { MARKER_SIZE, WonderMarker } from './wonder-marker.tsx';
 
@@ -670,6 +671,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                 >
                     <Compass size={18} aria-hidden />
                 </button>
+                <ShareButton />
             </div>
         </div>
     );

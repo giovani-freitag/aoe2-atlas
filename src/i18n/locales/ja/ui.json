@@ -14,7 +14,9 @@
         "untraceAll": "すべての国の描画をやめる",
         "zoomIn": "拡大",
         "zoomOut": "縮小",
-        "wholeWorld": "世界全体を見る"
+        "wholeWorld": "世界全体を見る",
+        "share": "この表示へのリンクをコピー",
+        "shared": "リンクをコピーしました"
     },
     "legend": {
         "onMap": "地図上に{{count}}",

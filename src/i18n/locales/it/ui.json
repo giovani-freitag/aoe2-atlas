@@ -14,7 +14,9 @@
         "untraceAll": "Smetti di tracciare tutti i regni",
         "zoomIn": "Avvicina",
         "zoomOut": "Allontana",
-        "wholeWorld": "Vedi il mondo intero"
+        "wholeWorld": "Vedi il mondo intero",
+        "share": "Copia un link a questa vista",
+        "shared": "Link copiato"
     },
     "legend": {
         "onMap": "{{count}} sulla mappa",

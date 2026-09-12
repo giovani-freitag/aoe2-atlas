@@ -14,7 +14,9 @@
         "untraceAll": "停止绘出全部政权",
         "zoomIn": "放大",
         "zoomOut": "缩小",
-        "wholeWorld": "查看整个世界"
+        "wholeWorld": "查看整个世界",
+        "share": "复制此视图的链接",
+        "shared": "链接已复制"
     },
     "legend": {
         "onMap": "地图上 {{count}} 个",

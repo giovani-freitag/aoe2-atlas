@@ -14,7 +14,9 @@
         "untraceAll": "Berhenti melukis semua kerajaan",
         "zoomIn": "Zum masuk",
         "zoomOut": "Zum keluar",
-        "wholeWorld": "Lihat seluruh dunia"
+        "wholeWorld": "Lihat seluruh dunia",
+        "share": "Salin pautan ke paparan ini",
+        "shared": "Pautan disalin"
     },
     "legend": {
         "onMap": "{{count}} di peta",

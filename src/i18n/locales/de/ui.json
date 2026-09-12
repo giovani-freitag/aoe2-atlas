@@ -14,7 +14,9 @@
         "untraceAll": "Nicht mehr alle Reiche einzeichnen",
         "zoomIn": "Vergrößern",
         "zoomOut": "Verkleinern",
-        "wholeWorld": "Die ganze Welt zeigen"
+        "wholeWorld": "Die ganze Welt zeigen",
+        "share": "Link zu dieser Ansicht kopieren",
+        "shared": "Link kopiert"
     },
     "legend": {
         "onMap": "{{count}} auf der Karte",

@@ -178,6 +178,12 @@
     filter: drop-shadow(0 0 4px rgb(255 214 140 / 85%)) drop-shadow(0 0 12px rgb(255 146 71 / 45%));
 }
 
+/* The tick that stands in for the share icon while the copied link is fresh. */
+.atlas__controls button[data-done='true'] > svg {
+    color: var(--brass);
+    filter: drop-shadow(0 0 4px rgb(255 214 140 / 70%));
+}
+
 .stage__error {
     position: absolute;
     left: 50%;

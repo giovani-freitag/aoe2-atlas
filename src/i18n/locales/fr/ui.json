@@ -14,7 +14,9 @@
         "untraceAll": "Ne plus tracer tous les royaumes",
         "zoomIn": "Zoom avant",
         "zoomOut": "Zoom arrière",
-        "wholeWorld": "Voir le monde entier"
+        "wholeWorld": "Voir le monde entier",
+        "share": "Copier un lien vers cette vue",
+        "shared": "Lien copié"
     },
     "legend": {
         "onMap": "{{count}} sur la carte",

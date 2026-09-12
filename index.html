@@ -17,6 +17,18 @@
         <link rel="icon" type="image/svg+xml" href="./brand.svg" />
 
         <!--
+            The century the atlas opens on, asked for while the bundle is still downloading.
+
+            The map used to wait for the bundle, mount, and only then ask for its first century —
+            one round trip after another. This starts the second download alongside the first.
+            The year is the one `OPENING_YEAR` names in atlas-context.ts; a link that opens on
+            another year wastes these forty kilobytes, which is the right trade for everyone else.
+            The mode and credentials match the plain fetch the slice service makes, or the browser
+            would fetch it twice and warn about the one it did not use.
+        -->
+        <link rel="preload" href="./data/slice-1200.json" as="fetch" crossorigin="anonymous" />
+
+        <!--
             The game's name belongs in the title, because it is the one phrase every search for
             this thing contains. The bundle rewrites this on mount, in the reader's language, and
             what a crawler indexes is the rewritten one — so `app.documentTitle` in every locale

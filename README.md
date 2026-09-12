@@ -45,6 +45,7 @@ only ever share the screen if they shared the century.
 - 🎨 **Overlap you can read** — where two realms met, both hatchings show through: the colour is the region, the angle is the civilization
 - 🌍 **Three projections** — Equal Earth, Natural Earth, Mercator. The shape of the world changes; none of the numbers do
 - 🗣️ **17 languages** — civilization and monument names, cities, numbers, dates, and the order the list sorts in
+- 🔗 **Links that mean something** — the address follows the map: `?year=800&civ=byzantines&pin=bulgarians` opens exactly that, and the share button hands it to you
 - 📱 **Made for a phone** — the map keeps the screen, the year stays under your thumb, and a civilization opens as a strip you read without losing sight of its territory
 - 🏰 **Dressed like the game** — aged parchment, iron and leather, and embers burning under the timeline
 

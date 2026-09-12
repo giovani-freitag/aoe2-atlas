@@ -14,7 +14,9 @@
         "untraceAll": "Tüm krallıkları çizmeyi bırak",
         "zoomIn": "Yaklaştır",
         "zoomOut": "Uzaklaştır",
-        "wholeWorld": "Tüm dünyayı gör"
+        "wholeWorld": "Tüm dünyayı gör",
+        "share": "Bu görünümün bağlantısını kopyala",
+        "shared": "Bağlantı kopyalandı"
     },
     "legend": {
         "onMap": "Haritada {{count}}",

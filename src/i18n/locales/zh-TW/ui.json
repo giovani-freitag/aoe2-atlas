@@ -14,7 +14,9 @@
         "untraceAll": "停止繪出全部政權",
         "zoomIn": "放大",
         "zoomOut": "縮小",
-        "wholeWorld": "檢視整個世界"
+        "wholeWorld": "檢視整個世界",
+        "share": "複製此檢視的連結",
+        "shared": "連結已複製"
     },
     "legend": {
         "onMap": "地圖上 {{count}} 個",

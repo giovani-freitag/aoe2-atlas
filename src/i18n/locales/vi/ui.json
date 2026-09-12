@@ -14,7 +14,9 @@
         "untraceAll": "Ngừng vẽ mọi vương quốc",
         "zoomIn": "Phóng to",
         "zoomOut": "Thu nhỏ",
-        "wholeWorld": "Xem toàn thế giới"
+        "wholeWorld": "Xem toàn thế giới",
+        "share": "Sao chép liên kết đến khung nhìn này",
+        "shared": "Đã sao chép liên kết"
     },
     "legend": {
         "onMap": "{{count}} trên bản đồ",

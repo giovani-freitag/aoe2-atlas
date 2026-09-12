@@ -4,6 +4,7 @@ import { ListFilter, Loader, SlidersHorizontal } from 'lucide-react';
 import { SLICE_YEARS } from '@/data/dataset.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { drawnRealms, useAtlas } from '@/react/providers/atlas-context.ts';
+import { useAddress } from '@/react/hooks/use-address.ts';
 import { useEscape } from '@/react/hooks/use-escape.ts';
 import { useMeasuredHeight, useMeasuredWidth } from '@/react/hooks/use-measured-height.ts';
 import { useTimeSlice } from '@/react/hooks/use-time-slice.ts';
@@ -29,6 +30,9 @@ export function AppShell() {
     const [settingsOpen, setSettingsOpen] = useState(false);
 
     useSpecular('.iron');
+
+    // The address bar is always a link to what is on the map: the year, the open realm, the pins.
+    useAddress(state);
 
     // The panels slide over the map, never over the header or the year rail; this is what tells
     // the stylesheet where those two end.
