@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.5.1...v1.6.0) (2026-09-12)
+
+
+### Added
+
+* **pages:** lead the civilizations table with the dates, not the Wonders ([0f06458](https://github.com/giovani-freitag/aoe2-atlas/commit/0f0645869835473e4a7118ba7c67a1c25b2262d7))
+
+
+### Fixed
+
+* **deck:** say the civilization's name once, in whichever of the two has room ([0247844](https://github.com/giovani-freitag/aoe2-atlas/commit/02478441f6d91c621017510f7bd930016a7c4d3d))
+
 ## [1.5.1](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.5.0...v1.5.1) (2026-09-12)
 
 
