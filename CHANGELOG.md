@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.2.0...v1.3.0) (2026-09-12)
+
+
+### Added
+
+* publish a civilizations table and fix the title that gets indexed ([9c05324](https://github.com/giovani-freitag/aoe2-atlas/commit/9c053244a5b30237dcefda1eb663affbe892a9fa))
+
 ## [1.2.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.1.0...v1.2.0) (2026-09-12)
 
 
