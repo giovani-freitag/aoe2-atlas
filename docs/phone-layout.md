@@ -35,13 +35,19 @@ the map and a second tap puts it away.
 | State | Map covered |
 | --- | --- |
 | Bar alone | 8% |
-| Contemporaries open | 27% |
+| Contemporaries open | 23% |
+| Expansion open | 26% |
 | Wonder open | 32% |
-| Realm open | 44% |
+| Realm open | 45% |
 
-No panel may take more than a third of the screen; past that it scrolls. The realm's was covering
-half the map while describing how much ground the realm held, which is the one thing the reader
-opened it to compare against what is drawn.
+<p align="center">
+  <img src="phone.png" alt="A phone with the Byzantines open: the map above, the realm panel over the foot, the deck bar and the year rail below it" width="320">
+</p>
+
+No panel may take more than a third of the screen's height; past that it scrolls. The map is
+shorter than the screen — the year's band is under it — so even the longest panel, the realm's,
+stops at a little under half of it, where it had been covering half the map while describing how
+much ground that realm held: the one thing the reader opened it to compare against what is drawn.
 
 The bar slides out of the year's own band and tucks back under it. The year is what everything
 else is measured against, so it is the thing that casts a shadow rather than the thing covered.

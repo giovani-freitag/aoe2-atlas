@@ -29,10 +29,10 @@
 </p>
 
 <p align="center">
-  <img src="docs/century.png" alt="The world in 1200, with the 34 civilizations that stood in it" width="100%">
+  <img src="docs/century.png" alt="The world in 1200, with the 35 civilizations that stood in it" width="100%">
 </p>
 
-Drag the year and civilizations appear and vanish: 21 of them in 800, 34 in 1200, none of the
+Drag the year and civilizations appear and vanish: 21 of them in 800, 35 in 1200, none of the
 Aztecs before 1325, no China between 1279 and 1368 because it was the Mongol Yuan. Two realms
 only ever share the screen if they shared the century.
 
@@ -47,6 +47,15 @@ only ever share the screen if they shared the century.
 - 🗣️ **17 languages** — names, monuments, places, realms, numbers, dates, search and sorting all follow
 - 📱 **Built for a phone first** — the map owns the screen; the year sits at the foot where a thumb is, and a civilization becomes a toolbar rather than a sheet over the ground it describes
 - 🏰 **Age skin** — parchment, leather, engraved iron, oak, embers and Cinzel
+
+<p align="center">
+  <img src="docs/realm.png" alt="The Byzantines opened on the 1200 map: their border traced, the pin on Hagia Sophia, and the 5% of their ground shared with a contemporary" width="100%">
+</p>
+
+<p align="center">
+  <sub>Open a civilization and the map flies to it. Close it and the map goes back to where you
+  were, not out to the whole world.</sub>
+</p>
 
 ## 🚀 Run it
 
