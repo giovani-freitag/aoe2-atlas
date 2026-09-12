@@ -4,8 +4,8 @@ import { Compass, Layers, Minus, Plus } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { GeoPoint } from '@/domain/values/geo-point.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
-import { LAND_RINGS } from '@/data/dataset.ts';
 import { AtlasProjection, SCALE_EXTENT, type Frame } from '@/services/geo/atlas-projection.ts';
+import { useCoastline } from '@/react/hooks/use-coastline.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
@@ -62,8 +62,9 @@ export interface AtlasMapProps {
 export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
     const { t } = useTranslation();
     const format = useFormat();
-    const { palette, text } = useServices();
+    const { palette, text, coastline } = useServices();
     const { state, dispatch } = useAtlas();
+    const coast = useCoastline(coastline);
     const [holder, size] = useElementSize<HTMLDivElement>();
     const svg = useRef<SVGSVGElement>(null);
 
@@ -182,11 +183,12 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         return {
             sphere: projection.spherePath(),
             graticule: projection.graticulePath(),
-            land: projection.pathOf(LAND_RINGS),
+            // Null until the coastline arrives; the sea and the realms do not wait for it.
+            land: coast ? projection.pathOf(coast) : null,
             equator,
             tropics,
         };
-    }, [projection]);
+    }, [projection, coast]);
 
     const shapes = useMemo(() => {
         if (!projection) return [];
@@ -429,7 +431,9 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
 
                     <g ref={zoomed} transform={`translate(${frame.x},${frame.y}) scale(${frame.k})`}>
                         <path className="atlas__sea" d={base.sphere} />
-                        <path className="atlas__land" d={base.land} vectorEffect="non-scaling-stroke" />
+                        {base.land ? (
+                            <path className="atlas__land" d={base.land} vectorEffect="non-scaling-stroke" />
+                        ) : null}
 
                         {/* The ruled lines an old chart is laid out on, heaviest at the equator. */}
                         {state.ruled ? (

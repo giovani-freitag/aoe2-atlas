@@ -1,10 +1,8 @@
 import { Civilization } from '@/domain/entities/civilization.ts';
 import { REGION_KEYS, type RegionKey } from '@/domain/enums/region.ts';
-import type { MultiPolygonRings } from '@/domain/values/geo-shape.ts';
 import { YearSpan } from '@/domain/values/year-span.ts';
 import { CIVILIZATION_RECORDS } from '@/data/civilizations.ts';
 import index from '@/data/generated/atlas-index.json';
-import landShape from '@/data/generated/land.json';
 
 interface AtlasIndexJson {
     generatedAt: string;
@@ -14,9 +12,6 @@ interface AtlasIndexJson {
 
 const atlas: AtlasIndexJson = index;
 const reachOf = new Map(atlas.civilizations.map((entry) => [entry.civ, entry]));
-
-/** The coastline the realms are drawn over, from Natural Earth by way of world-atlas. */
-export const LAND_RINGS: MultiPolygonRings = (landShape as { coordinates: number[][][][] }).coordinates;
 
 /** The centuries the atlas has maps for, oldest first. */
 export const SLICE_YEARS: readonly number[] = atlas.years;

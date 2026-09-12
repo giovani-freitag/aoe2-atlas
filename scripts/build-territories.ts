@@ -6,7 +6,7 @@
  * comes from Natural Earth by way of world-atlas, which is public domain.
  *
  * Two kinds of output leave here. A small index in src/data/generated is bundled and always
- * loaded; the slices themselves land in public/data as one file per year, fetched on demand,
+ * loaded; the slices and the coastline land in public/data, fetched when they are needed,
  * because six hundred polygons in one bundle is not something a phone should have to swallow
  * to look at a single century.
  */
@@ -98,7 +98,7 @@ rmSync(SLICE_OUT, { recursive: true, force: true });
 mkdirSync(SLICE_OUT, { recursive: true });
 
 const landShape: MultiPolygon = { type: 'MultiPolygon', coordinates: land };
-console.log(`  land.json  ${(write(INDEX_OUT, 'land.json', landShape) / 1024).toFixed(0)} kB`);
+console.log(`  land.json  ${(write(SLICE_OUT, 'land.json', landShape) / 1024).toFixed(0)} kB`);
 
 const index = {
     generatedAt: dataset.generatedAt,

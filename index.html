@@ -27,6 +27,13 @@
             would fetch it twice and warn about the one it did not use.
         -->
         <link rel="preload" href="./data/slice-1200.json" as="fetch" crossorigin="anonymous" />
+        <!--
+            The coastline is deliberately NOT preloaded. It left the bundle — it was forty per
+            cent of the JavaScript, as code — and it is fetched after the map mounts, behind the
+            two things the first shield actually needs. Preloading it too was measured on a
+            throttled phone: the three downloads shared one slow pipe and the first shield came
+            later, not sooner. The shore filling in a moment after the shields is the right order.
+        -->
 
         <!--
             The game's name belongs in the title, because it is the one phrase every search for

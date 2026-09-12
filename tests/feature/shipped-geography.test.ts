@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { geoArea, geoContains, geoDistance } from 'd3-geo';
-import { CIVILIZATIONS, LAND_RINGS, REGION_MEMBERSHIP, SLICE_YEARS } from '@/data/dataset.ts';
+import { CIVILIZATIONS, REGION_MEMBERSHIP, SLICE_YEARS } from '@/data/dataset.ts';
 import { EXPANSION_RECORDS } from '@/data/expansions.ts';
 import { REGION_KEYS } from '@/domain/enums/region.ts';
 import type { MultiPolygonRings, Ring } from '@/domain/values/geo-shape.ts';
@@ -23,6 +23,13 @@ interface SliceJson {
 const SLICES: SliceJson[] = SLICE_YEARS.map(
     (year) => JSON.parse(readFileSync(join(process.cwd(), 'public', 'data', `slice-${year}.json`), 'utf8')) as SliceJson,
 );
+
+/** The coastline, read the way the browser gets it: from public/data, not from the bundle. */
+const LAND_RINGS: MultiPolygonRings = (
+    JSON.parse(readFileSync(join(process.cwd(), 'public', 'data', 'land.json'), 'utf8')) as {
+        coordinates: MultiPolygonRings;
+    }
+).coordinates;
 
 const CIV_KEYS = new Set(CIVILIZATIONS.map((civ) => civ.key));
 const SPANS = new Map(CIVILIZATIONS.map((civ) => [civ.key, civ.span]));
