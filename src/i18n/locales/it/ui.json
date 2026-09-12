@@ -67,7 +67,8 @@
         "shared": "Terreno condiviso nel {{year}}",
         "sharedHint": "Solo i contemporanei compaiono qui: chi ha condiviso il suolo con questa civiltà nello stesso secolo. Un",
         "sharedAbbr": "la fonte non mappa una delle due in questo secolo, e la linea viene dal taglio più vicino",
-        "overlay": "Sovrapponi {{name}} sulla mappa"
+        "overlay": "Sovrapponi {{name}} sulla mappa",
+        "wonder": "Meraviglia"
     },
     "settings": {
         "title": "Impostazioni",

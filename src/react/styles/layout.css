@@ -86,7 +86,9 @@
     padding-left: var(--space-1);
 }
 
-.bar__settings {
+/* The way out of the atlas sits before its name, on the side the drawer it opens comes from. */
+.bar .bar__settings {
+    order: -1;
     border-radius: 999px;
 }
 
@@ -401,6 +403,7 @@
     }
 
     .bar__settings {
+        order: 0;
         border-radius: var(--radius);
     }
 

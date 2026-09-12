@@ -67,7 +67,8 @@
         "shared": "Terrain partagé en {{year}}",
         "sharedHint": "Seuls les contemporains figurent ici : ceux qui ont partagé le sol avec cette civilisation au cours du même siècle. Un",
         "sharedAbbr": "la source ne cartographie pas l'un des deux pour ce siècle, et le tracé vient de la coupe la plus proche",
-        "overlay": "Superposer {{name}} sur la carte"
+        "overlay": "Superposer {{name}} sur la carte",
+        "wonder": "Merveille"
     },
     "settings": {
         "title": "Réglages",

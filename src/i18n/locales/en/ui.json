@@ -67,7 +67,8 @@
         "shared": "Ground shared in {{year}}",
         "sharedHint": "Only contemporaries belong here: whoever shared ground with this civilization in this same century. A",
         "sharedAbbr": "the source does not map one of the two in this century, and the line came from the nearest slice",
-        "overlay": "Overlay {{name}} on the map"
+        "overlay": "Overlay {{name}} on the map",
+        "wonder": "Wonder"
     },
     "settings": {
         "title": "Settings",

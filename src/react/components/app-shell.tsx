@@ -107,7 +107,14 @@ export function AppShell() {
                 <EmberCanvas className="bar__embers" density={0.7} wind={0.6} />
 
                 <div className="bar__brand" ref={brand}>
-                    <img src={`${import.meta.env.BASE_URL}brand.svg`} alt="" width={26} height={26} />
+                    {/* On a phone the name beside it is hidden, so the mark carries it on hover. */}
+                    <img
+                        src={`${import.meta.env.BASE_URL}brand.svg`}
+                        alt=""
+                        title={t('app.title')}
+                        width={26}
+                        height={26}
+                    />
                     <div>
                         <h1>{t('app.title')}</h1>
                         <p>{t('app.tagline')}</p>

@@ -353,11 +353,17 @@
     overflow: visible;
 }
 
+/*
+ * The same height as the pill beside it.
+ *
+ * Two pills at the head of the map that nearly match read as a mistake; the icon size plus the
+ * padding the other one uses is what makes them one row rather than two near-misses.
+ */
 .legend__chip {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    min-height: 2rem;
+    min-height: calc(var(--icon) + 6px);
     padding: 0 var(--space-3) 0 var(--space-2);
     border-radius: 999px;
     color: var(--brass-soft);

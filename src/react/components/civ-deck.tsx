@@ -71,7 +71,7 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
         ...(neighbours.length > 0
             ? [{ key: 'rivals' as const, icon: Swords, label: t('detail.shared', { year }) }]
             : []),
-        { key: 'wonder', icon: Landmark, label: words.monument },
+        { key: 'wonder', icon: Landmark, label: t('detail.wonder') },
         ...(expansionOf(civilization)
             ? [{ key: 'expansion' as const, icon: Package, label: t('detail.expansion') }]
             : []),

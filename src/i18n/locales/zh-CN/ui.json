@@ -67,7 +67,8 @@
         "shared": "{{year}} 年共有的土地",
         "sharedHint": "此处只列同时代者：在同一世纪与这一文明共处一地的政权。符号",
         "sharedAbbr": "数据源在本世纪未绘出双方之一，此线取自最近的切片",
-        "overlay": "将{{name}}叠加到地图上"
+        "overlay": "将{{name}}叠加到地图上",
+        "wonder": "奇观"
     },
     "settings": {
         "title": "设置",

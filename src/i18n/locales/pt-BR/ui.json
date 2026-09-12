@@ -67,7 +67,8 @@
         "shared": "Terreno dividido em {{year}}",
         "sharedHint": "Só contemporâneos entram aqui: quem dividiu chão com esta civilização neste mesmo século. Um",
         "sharedAbbr": "a fonte não mapeia um dos dois neste século, e a linha veio da fatia mais próxima",
-        "overlay": "Sobrepor {{name}} no mapa"
+        "overlay": "Sobrepor {{name}} no mapa",
+        "wonder": "Maravilha"
     },
     "settings": {
         "title": "Ajustes",
