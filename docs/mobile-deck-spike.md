@@ -210,9 +210,15 @@ of the column of map controls.
 
 The embers moved as well. They used to drift across the header, which on a phone is a pill the
 size of two buttons and on a desktop a strip of furniture — neither a place where a fire means
-anything. They rise from the year's handle now, following it as it moves, so the century being
-held is the one that is alight. Measured: the lit pixels centre within twenty pixels of the
-handle, at either end of the rail.
+anything. They were tried on the year's handle next, following it as it moved, which turned out
+to be a decoration on a control: a fire that chases a slider is a fidget rather than a hearth.
+Where they ended up is loose across the rail, with the glow laid along the bottom edge of the
+screen — something burning under the last band of the atlas, throwing its light up onto it, with
+sparks straying into the band. Behind the instrument rather than over it, because a light that
+washes out the numbers it is lighting is a veil.
+
+The deck slides out of the rail and tucks back under it, rather than over. The year is what
+everything else on screen is measured against, so it is the thing that casts a shadow.
 
 ## Where it stands
 

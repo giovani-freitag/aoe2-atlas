@@ -101,36 +101,49 @@ export class EmberField {
     }
 
     /**
-     * The coals the embers come off, as a low glow at the foot of the column.
+     * The coals the embers come off, breathing slowly and unevenly.
      *
      * Sparks on their own read as sparks from nowhere. What makes a fire is the bed underneath
-     * it: a warm wash at the base, breathing slowly and unevenly — two beats of different speeds
-     * rather than one, because a real one never pulses on a count.
+     * it, and where that bed is depends on what the field was given: a column puts it under that
+     * column, and no column lays it along the bottom edge — something burning off the screen,
+     * below the last band of the interface, throwing its light up onto it.
+     *
+     * Two beats of different speeds rather than one, because a real fire never pulses on a count.
      */
     private hearth(light: boolean): void {
-        const column = this.config.column?.();
-        if (!column || column.width <= 0) return;
-
         const breath = 0.78 + 0.14 * Math.sin(this.clock * 1.7) + 0.08 * Math.sin(this.clock * 4.3 + 1.1);
-        const middle = column.from + column.width / 2;
-        const base = column.base ?? this.height;
-        const reach = column.width * 0.72;
-        const glow = this.paint.createRadialGradient(middle, base, 0, middle, base, reach);
+        const column = this.config.column?.();
 
+        if (column && column.width > 0) {
+            const middle = column.from + column.width / 2;
+            const base = column.base ?? this.height;
+            const reach = column.width * 0.72;
+
+            this.wash(this.paint.createRadialGradient(middle, base, 0, middle, base, reach), breath, light);
+            this.paint.beginPath();
+            this.paint.arc(middle, base, reach, 0, Math.PI * 2);
+            this.paint.fill();
+
+            return;
+        }
+
+        this.wash(this.paint.createLinearGradient(0, this.height, 0, this.height * 0.1), breath, light);
+        this.paint.fillRect(0, 0, this.width, this.height);
+    }
+
+    /** The colours of a fire seen through whatever stands in front of it, hot end first. */
+    private wash(glow: CanvasGradient, breath: number, light: boolean): void {
         if (light) {
             glow.addColorStop(0, `rgb(226 96 24 / ${(0.2 * breath).toFixed(3)})`);
             glow.addColorStop(0.5, `rgb(214 74 18 / ${(0.08 * breath).toFixed(3)})`);
             glow.addColorStop(1, 'rgb(214 74 18 / 0%)');
         } else {
-            glow.addColorStop(0, `rgb(255 176 74 / ${(0.3 * breath).toFixed(3)})`);
-            glow.addColorStop(0.45, `rgb(255 122 30 / ${(0.13 * breath).toFixed(3)})`);
-            glow.addColorStop(1, 'rgb(255 104 20 / 0%)');
+            glow.addColorStop(0, `rgb(255 172 74 / ${(0.42 * breath).toFixed(3)})`);
+            glow.addColorStop(0.4, `rgb(255 116 26 / ${(0.17 * breath).toFixed(3)})`);
+            glow.addColorStop(1, 'rgb(255 100 18 / 0%)');
         }
 
         this.paint.fillStyle = glow;
-        this.paint.beginPath();
-        this.paint.arc(middle, base, reach, 0, Math.PI * 2);
-        this.paint.fill();
     }
 
     private fill(): void {

@@ -101,30 +101,6 @@ export function AppShell() {
         [dispatch],
     );
 
-    /*
-     * Where the fire burns: a hand's width around the slider's handle, on the rail it rides.
-     *
-     * The filled stretch of rail ends exactly under the middle of the handle and is as tall as
-     * the rope, so it gives both the position and the line without redoing the arithmetic that
-     * put them there. Measured on every spawn rather than held, because the handle moves and the
-     * fire should follow it.
-     */
-    const emberColumn = useCallback(() => {
-        const fill = document.querySelector('.rail-body__fill');
-        const band = document.querySelector('.rail');
-        if (!fill || !band) return { from: 0, width: 0 };
-
-        const rope = fill.getBoundingClientRect();
-        const box = band.getBoundingClientRect();
-        const width = 84;
-
-        return {
-            from: rope.right - box.left - width / 2,
-            width,
-            base: rope.top + rope.height / 2 - box.top,
-        };
-    }, []);
-
     return (
         <div className="shell">
             <header className="bar leather" ref={bar}>
@@ -216,14 +192,15 @@ export function AppShell() {
              */}
             <div className="rail leather" ref={rail}>
                 {/*
-                 * The fire burns under the year.
+                 * Something is burning below the screen.
                  *
-                 * The embers used to drift across the header, which on a phone is a pill the size
-                 * of two buttons and on a desktop a strip of furniture — neither of them a place
-                 * where a fire means anything. Here they rise from the handle itself, so the
-                 * century the reader is holding is the one that is alight.
+                 * The embers used to be tied to the year's handle, which made them a decoration
+                 * on a control: they moved when it moved, and a fire that follows a slider is a
+                 * fidget rather than a hearth. Loosed across the rail they read as what they are,
+                 * a light thrown up from under the last band of the atlas with sparks straying
+                 * into it.
                  */}
-                <EmberCanvas className="rail__embers" density={0.8} wind={0.5} column={emberColumn} />
+                <EmberCanvas className="rail__embers" density={1.6} wind={0.7} />
 
                 <TimelineRail
                     civilizations={catalogue.all()}
