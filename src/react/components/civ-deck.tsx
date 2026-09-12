@@ -89,7 +89,18 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
              */}
             {open ? (
                 <section className="deck__panel parchment">
-                    <h2 className="eyebrow">{tabs.find((tab) => tab.key === open)?.label}</h2>
+                    {/*
+                     * Whose panel this is, and which of their questions it answers.
+                     *
+                     * The bar carries the arms and no name, which is enough to know a panel is
+                     * open but not enough to read one: a card saying "Eastern Roman Empire,
+                     * 407,885 km²" never mentions the Byzantines anywhere, and the realm's name
+                     * is often not the civilization's.
+                     */}
+                    <h2 className="deck__title">
+                        {words.name}
+                        <small className="eyebrow">{tabs.find((tab) => tab.key === open)?.label}</small>
+                    </h2>
 
                     {open === 'realm' ? (
                         <div className="deck__sheet">

@@ -593,9 +593,19 @@
     color: var(--ink);
 }
 
-.deck__panel > .eyebrow {
-    display: block;
+.deck__title {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-2);
     margin-bottom: var(--space-2);
+    font-family: var(--title);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.deck__title .eyebrow {
     color: var(--ink-faint);
 }
 
