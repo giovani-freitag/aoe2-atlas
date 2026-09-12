@@ -45,7 +45,7 @@ only ever share the screen if they shared the century.
 - 🎨 **Overlap you can read** — contemporaries cross-hatch, colour for the region and hatch angle for the civilization
 - 🌍 **Three projections** — Equal Earth, Natural Earth, Mercator; the drawing changes, no number does
 - 🗣️ **17 languages** — names, monuments, places, realms, numbers, dates, search and sorting all follow
-- 📱 **Built for a phone first** — the map owns the screen; list, detail and filters slide over it
+- 📱 **Built for a phone first** — the map owns the screen; the year sits at the foot where a thumb is, and a civilization becomes a toolbar rather than a sheet over the ground it describes
 - 🏰 **Age skin** — parchment, leather, engraved iron, oak, embers and Cinzel
 
 ## 🚀 Run it
@@ -88,6 +88,7 @@ Arch of Constantine is Roman and the Huns never reached Rome.
 
 ## 📚 Docs
 
+- [The shape of the atlas on a phone](docs/phone-layout.md) — where everything sits, and the measurements that settled it
 - [Changelog](CHANGELOG.md) — what shipped, release by release
 - [Releases](https://github.com/giovani-freitag/aoe2-atlas/releases) — the tagged builds
 - Source layout: `src/domain` (entities), `src/services` (catalogue, slices, projection, palette),

@@ -161,7 +161,7 @@ export function AppShell() {
                 }}
             />
 
-{/* SPIKE: on a phone the civilization is a bar over the year rail, not a sheet over the map. */}
+            {/* On a phone a civilization is a bar over the year rail, not a sheet over the map. */}
             {focused ? (
                 wide ? (
                     <DetailSheet

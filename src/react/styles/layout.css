@@ -7,7 +7,7 @@
  */
 
 /*
- * SPIKE: on a phone everything a thumb reaches for is at the bottom.
+ * On a phone everything a thumb reaches for is at the bottom.
  *
  * The map takes the screen, the year sits under it, and the header — which on a phone is two
  * buttons and a name — goes below both, where a hand holding a phone actually is. Reaching the
@@ -507,7 +507,7 @@
     }
 }
 
-/* ---- SPIKE: the civilization as a deck over the year rail -------------- */
+/* ---- the civilization, as a deck over the year rail --------------------- */
 
 /*
  * The shape Excalidraw uses on a phone, tried here: nothing takes the screen.

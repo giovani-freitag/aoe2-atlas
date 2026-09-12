@@ -31,10 +31,10 @@ export interface CivDeckProps {
 /**
  * The civilization as a bar over the year rail, with one panel out at a time.
  *
- * A spike on the shape Excalidraw uses on a phone: nothing takes the screen. What is always
- * there is a strip of categories, each the size of a thumb; a tap lifts that category's panel
- * over the map and a second tap puts it away. The reader is never more than one tap from the
- * whole map, and never has to remember what was underneath.
+ * Nothing here takes the screen, which is the shape a drawing tool uses on a phone. What is
+ * always there is a strip of categories, each the size of a thumb; a tap lifts that category's
+ * panel over the map and a second tap puts it away. The reader is never more than one tap from
+ * the whole map, and never has to remember what was underneath.
  *
  * The sheet it replaces answered every question at once and covered the map to do it. This
  * answers one at a time, and the one being asked is the one on screen. What each answer says is
