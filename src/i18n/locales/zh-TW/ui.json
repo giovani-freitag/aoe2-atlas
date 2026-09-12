@@ -22,7 +22,7 @@
         "hint": "顏色表示地區；影線角度區分同一地區內的各個文明。"
     },
     "roster": {
-        "title": "文明",
+        "title": "篩選",
         "search": "搜尋文明",
         "placeholder": "文明、建築、城市…",
         "orderBy": "排序方式",
@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "調整面板高度",
-        "details": "{{name}}詳情"
+        "details": "{{name}}詳情",
+        "close": "關閉"
     },
     "marker": {
         "label": "{{name}} — {{monument}}，{{place}}"
@@ -66,7 +67,8 @@
         "shared": "{{year}} 年共有的土地",
         "sharedHint": "此處只列同時代者：在同一世紀與這一文明共處一地的政權。符號",
         "sharedAbbr": "資料來源在本世紀未繪出雙方之一，此線取自最近的切片",
-        "overlay": "將{{name}}疊加到地圖上"
+        "overlay": "將{{name}}疊加到地圖上",
+        "wonder": "奇觀"
     },
     "settings": {
         "title": "設定",

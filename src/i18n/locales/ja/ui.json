@@ -22,7 +22,7 @@
         "hint": "色は地域を示し、ハッチングの角度がその地域内の文明を区別します。"
     },
     "roster": {
-        "title": "文明",
+        "title": "フィルター",
         "search": "文明を検索",
         "placeholder": "文明、建造物、都市…",
         "orderBy": "並び替え",
@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "パネルの高さを変える",
-        "details": "{{name}}の詳細"
+        "details": "{{name}}の詳細",
+        "close": "閉じる"
     },
     "marker": {
         "label": "{{name}} — {{monument}}、{{place}}"
@@ -66,7 +67,8 @@
         "shared": "{{year}}年に重なる土地",
         "sharedHint": "ここに載るのは同時代の国だけ、つまり同じ世紀にこの文明と土地を分け合った国です。",
         "sharedAbbr": "出典がこの世紀に両者のどちらかを描いておらず、線は最も近い断面から借りたもの",
-        "overlay": "{{name}}を地図に重ねる"
+        "overlay": "{{name}}を地図に重ねる",
+        "wonder": "象徴"
     },
     "settings": {
         "title": "設定",

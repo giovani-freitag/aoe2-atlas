@@ -22,7 +22,7 @@
         "hint": "Die Farbe nennt die Region; der Winkel der Schraffur unterscheidet die Zivilisationen darin."
     },
     "roster": {
-        "title": "Zivilisationen",
+        "title": "Filter",
         "search": "Zivilisation suchen",
         "placeholder": "Zivilisation, Bauwerk, Stadt…",
         "orderBy": "Sortieren nach",
@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "Höhe des Panels ändern",
-        "details": "Details zu {{name}}"
+        "details": "Details zu {{name}}",
+        "close": "Schließen"
     },
     "marker": {
         "label": "{{name}} — {{monument}}, {{place}}"
@@ -66,7 +67,8 @@
         "shared": "Geteilter Boden in {{year}}",
         "sharedHint": "Nur Zeitgenossen gehören hierher: wer im selben Jahrhundert Boden mit dieser Zivilisation teilte. Ein",
         "sharedAbbr": "die Quelle kartiert eine der beiden in diesem Jahrhundert nicht, und die Linie stammt aus dem nächstgelegenen Schnitt",
-        "overlay": "{{name}} auf der Karte überlagern"
+        "overlay": "{{name}} auf der Karte überlagern",
+        "wonder": "Weltwunder"
     },
     "settings": {
         "title": "Einstellungen",

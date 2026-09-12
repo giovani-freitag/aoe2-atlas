@@ -22,7 +22,7 @@
         "hint": "Màu cho biết khu vực; góc gạch chéo phân biệt các nền văn minh trong khu vực đó."
     },
     "roster": {
-        "title": "Các nền văn minh",
+        "title": "Bộ lọc",
         "search": "Tìm nền văn minh",
         "placeholder": "Nền văn minh, công trình, thành phố…",
         "orderBy": "Sắp xếp theo",
@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "Đổi chiều cao bảng",
-        "details": "Chi tiết về {{name}}"
+        "details": "Chi tiết về {{name}}",
+        "close": "Đóng"
     },
     "marker": {
         "label": "{{name}} — {{monument}}, {{place}}"
@@ -66,7 +67,8 @@
         "shared": "Đất chồng lấn năm {{year}}",
         "sharedHint": "Chỉ những nền văn minh cùng thời mới có mặt ở đây: những ai chia đất với nền văn minh này trong cùng thế kỷ. Dấu",
         "sharedAbbr": "nguồn không vẽ một trong hai bên ở thế kỷ này, và đường biên lấy từ lát cắt gần nhất",
-        "overlay": "Chồng {{name}} lên bản đồ"
+        "overlay": "Chồng {{name}} lên bản đồ",
+        "wonder": "Kỳ quan"
     },
     "settings": {
         "title": "Cài đặt",

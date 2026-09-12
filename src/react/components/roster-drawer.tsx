@@ -18,6 +18,8 @@ export interface RosterDrawerProps {
     /** Every civilization the filters leave, whether or not it stood in the year on the rail. */
     civilizations: readonly Civilization[];
     borders: ReadonlyMap<string, RealmBorder>;
+    /** Which edge it comes in from; it follows the button that opens it. */
+    side: 'left' | 'right';
     open: boolean;
     onClose: () => void;
 }
@@ -30,7 +32,7 @@ export interface RosterDrawerProps {
  * search, the sort, the expansions, the fifty-six of them — and everything about *how* it is
  * drawn comes in from the other side.
  */
-export function RosterDrawer({ civilizations, borders, open, onClose }: RosterDrawerProps) {
+export function RosterDrawer({ civilizations, borders, side, open, onClose }: RosterDrawerProps) {
     const { t } = useTranslation();
     const { palette } = useServices();
     const { state, dispatch } = useAtlas();
@@ -45,7 +47,7 @@ export function RosterDrawer({ civilizations, borders, open, onClose }: RosterDr
     const standingCount = civilizations.filter((civ) => borders.has(civ.key)).length;
 
     return (
-        <SideDrawer label={t('roster.title')} open={open} onClose={onClose} side="left" pinnedWhenWide className="roster">
+        <SideDrawer label={t('roster.title')} open={open} onClose={onClose} side={side} pinnedWhenWide className="roster">
             <div className="drawer__head">
                 <h2>{t('roster.title')}</h2>
             </div>

@@ -22,7 +22,7 @@
         "hint": "El color indica la región; el ángulo del rayado distingue a las civilizaciones dentro de ella."
     },
     "roster": {
-        "title": "Civilizaciones",
+        "title": "Filtros",
         "search": "Buscar civilización",
         "placeholder": "Civilización, monumento, ciudad…",
         "orderBy": "Ordenar por",
@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "Cambiar la altura del panel",
-        "details": "Detalles de {{name}}"
+        "details": "Detalles de {{name}}",
+        "close": "Cerrar"
     },
     "marker": {
         "label": "{{name}} — {{monument}}, {{place}}"
@@ -66,7 +67,8 @@
         "shared": "Terreno compartido en {{year}}",
         "sharedHint": "Solo entran contemporáneos: quienes compartieron suelo con esta civilización en este mismo siglo. Un",
         "sharedAbbr": "la fuente no mapea a uno de los dos en este siglo, y la línea vino del corte más cercano",
-        "overlay": "Superponer {{name}} en el mapa"
+        "overlay": "Superponer {{name}} en el mapa",
+        "wonder": "Maravilla"
     },
     "settings": {
         "title": "Ajustes",

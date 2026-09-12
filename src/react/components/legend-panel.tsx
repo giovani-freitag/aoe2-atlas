@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Layers, X } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
@@ -6,6 +7,7 @@ import { REGION_KEYS, type RegionKey } from '@/domain/enums/region.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { LEGEND_DETAIL_LIMIT, useAtlas } from '@/react/providers/atlas-context.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
+import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { HatchSwatch } from './hatch-swatch.tsx';
 
 export interface LegendPanelProps {
@@ -28,6 +30,18 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
     const { palette, text } = useServices();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
+    const wide = useWideScreen();
+    const [open, setOpen] = useState(false);
+
+    /*
+     * On a phone the legend is a pill until it is asked for.
+     *
+     * It is a caption, and a caption that covers a third of what it captions is worth less than
+     * the ground it takes. Folded up it is the count and a dot per region — a legend in
+     * miniature, and enough to see that five colours are in play and which they are. Where
+     * there is room for it to sit in a corner and bother nobody, it stays open.
+     */
+    const shown = wide || open;
 
     const detailed = drawn.length <= LEGEND_DETAIL_LIMIT;
     const regionsOnMap = new Set(drawn.map((civ) => civ.region));
@@ -40,7 +54,48 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
     if (drawn.length === 0) return null;
 
     return (
-        <section className="legend leather" aria-label={t('legend.onMap', { count: drawn.length })}>
+        <section
+            className="legend leather"
+            data-open={shown}
+            aria-label={t('legend.onMap', { count: drawn.length })}
+        >
+            {/* On a phone the pill is the header: it folds the panel, and carries the way out. */}
+            {wide ? null : (
+                <div className="legend__pill">
+                    <button
+                        type="button"
+                        className="legend__chip"
+                        aria-expanded={open}
+                        aria-label={t('legend.onMap', { count: drawn.length })}
+                        onClick={() => {
+                            setOpen((was) => !was);
+                        }}
+                    >
+                        <Layers size={13} aria-hidden />
+                        <b className="numeric">{drawn.length}</b>
+                        <span className="legend__dots" aria-hidden>
+                            {REGION_KEYS.filter((region) => regionsOnMap.has(region)).map((region) => (
+                                <i key={region} style={{ background: palette.regionColour(region) }} />
+                            ))}
+                        </span>
+                    </button>
+
+                    {open ? (
+                        <button
+                            type="button"
+                            className="legend__clear"
+                            onClick={() => {
+                                dispatch({ type: 'clear-map' });
+                            }}
+                        >
+                            {t('legend.clear')}
+                        </button>
+                    ) : null}
+                </div>
+            )}
+
+            {shown ? (
+                <>
             {/*
              * A titled header, the way every other panel in the atlas is headed.
              *
@@ -49,6 +104,7 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
              * band of its own, in the title face, behind the same mark the trace control wears,
              * the card reads as a panel — and the header holds still while the list scrolls.
              */}
+            {wide ? (
             <header className="legend__head">
                 <Layers size={14} aria-hidden />
                 <h2>{t('legend.onMap', { count: drawn.length })}</h2>
@@ -62,6 +118,7 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
                     {t('legend.clear')}
                 </button>
             </header>
+            ) : null}
 
             <div className="legend__body">
                 {detailed ? (
@@ -132,6 +189,8 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
                     </>
                 )}
             </div>
+                </>
+            ) : null}
         </section>
     );
 }

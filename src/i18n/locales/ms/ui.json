@@ -22,7 +22,7 @@
         "hint": "Warna menunjukkan rantau; sudut lorekan membezakan tamadun di dalamnya."
     },
     "roster": {
-        "title": "Tamadun",
+        "title": "Penapis",
         "search": "Cari tamadun",
         "placeholder": "Tamadun, monumen, bandar…",
         "orderBy": "Susun mengikut",
@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "Ubah ketinggian panel",
-        "details": "Butiran {{name}}"
+        "details": "Butiran {{name}}",
+        "close": "Tutup"
     },
     "marker": {
         "label": "{{name}} — {{monument}}, {{place}}"
@@ -66,7 +67,8 @@
         "shared": "Tanah yang dikongsi pada {{year}}",
         "sharedHint": "Hanya yang sezaman masuk di sini: mereka yang berkongsi tanah dengan tamadun ini dalam abad yang sama. Tanda",
         "sharedAbbr": "sumber tidak memetakan salah satu daripada dua pihak pada abad ini, dan garisnya diambil dari hirisan terdekat",
-        "overlay": "Tindankan {{name}} di peta"
+        "overlay": "Tindankan {{name}} di peta",
+        "wonder": "Keajaiban"
     },
     "settings": {
         "title": "Tetapan",

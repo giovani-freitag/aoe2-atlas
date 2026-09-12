@@ -1,19 +1,17 @@
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle, MapPin, MoveRight, PencilRuler } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { Frontier } from '@/domain/values/frontier.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
-import { EXPANSION_RECORDS } from '@/data/expansions.ts';
+import { expansionOf } from '@/data/expansions.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
 import { BottomSheet } from './bottom-sheet.tsx';
-import { RivalStrip } from './rival-strip.tsx';
-import { WikiLink } from './wiki-link.tsx';
-
-/** How many neighbours the frontier list shows before it stops being a list. */
-const MAX_FRONTIERS = 6;
+import { CivArms } from './civ-arms.tsx';
+import { ExpansionFacts, RealmFacts, WonderFacts } from './civ-facts.tsx';
+import { contemporaries } from './contemporaries.ts';
+import { Rivals } from './rivals.tsx';
 
 export interface DetailSheetProps {
     civilization: Civilization;
@@ -25,27 +23,22 @@ export interface DetailSheetProps {
 }
 
 /**
- * One civilization, in the century the rail is parked on.
+ * One civilization, in the century the rail is parked on, as a panel beside the map.
  *
  * Everything here is dated. The area is the area it held *then*, the neighbours are the ones it
- * actually had *then*, and when the line on the map was borrowed from another century the
- * panel says which — a reader should never have to wonder what year they are looking at.
+ * actually had *then*, and when the line on the map was borrowed from another century the panel
+ * says which — a reader should never have to wonder what year they are looking at. The wording
+ * of all that lives in `civ-facts`, which the phone's deck reads from as well; this file decides
+ * only how much of it is on screen at once and in what order.
  */
 export function DetailSheet({ civilization, border, frontiers, onClose }: DetailSheetProps) {
     const { t } = useTranslation();
     const { palette, text } = useServices();
-    const { state, dispatch } = useAtlas();
+    const { state } = useAtlas();
     const words = useCivilizationText(civilization);
     const format = useFormat();
     const style = palette.styleOf(civilization.key);
-    const expansion = EXPANSION_RECORDS.find((entry) => entry.key === civilization.expansion);
-    const year = format.year(state.year);
-    const { peakYear, peakAreaKm2 } = civilization.reach;
-
-    const neighbours = frontiers
-        .filter((frontier) => frontier.otherThan(civilization.key) !== null)
-        .sort((left, right) => right.shareOf(civilization.key) - left.shareOf(civilization.key))
-        .slice(0, MAX_FRONTIERS);
+    const neighbours = contemporaries(civilization, frontiers);
 
     return (
         <BottomSheet
@@ -55,12 +48,7 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
             head={
                 <div className="sheet__head--titled" style={{ borderColor: style.colour }}>
                     <div className="sheet__who">
-                        <img
-                            src={`${import.meta.env.BASE_URL}img/civs/${civilization.icon}.png`}
-                            alt=""
-                            width={44}
-                            height={44}
-                        />
+                        <CivArms civilization={civilization} size={44} />
                         <div>
                             <h2>{words.name}</h2>
                             <p className="sheet__region">{text.region(civilization.region)}</p>
@@ -71,108 +59,21 @@ export function DetailSheet({ civilization, border, frontiers, onClose }: Detail
                      * Who else stood here is part of the civilization's identity in this century,
                      * so it belongs beside its name rather than at the bottom of the panel.
                      */}
-                    <RivalStrip civilization={civilization} frontiers={neighbours} />
+                    <Rivals civilization={civilization} frontiers={neighbours} layout="arms" />
                 </div>
             }
         >
             <>
                 <section className="card parchment singed">
-                    <h3 className="eyebrow">{t('detail.in', { year })}</h3>
-                    <p className="card__lead">{words.realm}</p>
-
-                    {border ? (
-                        <>
-                            <dl className="stats">
-                                <div>
-                                    <dt>{t('detail.area')}</dt>
-                                    <dd className="numeric">{format.area(border.areaKm2)}</dd>
-                                </div>
-                                <div>
-                                    <dt>{t('detail.border')}</dt>
-                                    <dd>{t(`detail.precision.${border.precision}`)}</dd>
-                                </div>
-                                <div>
-                                    <dt>{t('detail.onStage')}</dt>
-                                    <dd className="numeric">{format.span(civilization.span.from, civilization.span.to)}</dd>
-                                </div>
-                            </dl>
-
-                            {border.isHandDrawn ? (
-                                <p className="card__note">
-                                    <PencilRuler size={14} aria-hidden /> {t('detail.handDrawn')}
-                                </p>
-                            ) : (
-                                <p className="card__source">
-                                    {t('detail.dissolved', {
-                                        sources: border.sourceNames.join(', '),
-                                        year: format.year(border.from),
-                                    })}
-                                </p>
-                            )}
-
-                            {border.isOfItsCentury ? null : (
-                                <p className="card__note">
-                                    <AlertTriangle size={14} aria-hidden />{' '}
-                                    {t('detail.carried', {
-                                        year,
-                                        from: format.year(border.from),
-                                        years: border.carriedYears,
-                                    })}
-                                </p>
-                            )}
-                        </>
-                    ) : (
-                        <p className="card__note">
-                            <AlertTriangle size={14} aria-hidden />{' '}
-                            {t('detail.absent')}
-                        </p>
-                    )}
-
-                    <p className="card__source">
-                        {t('detail.peak', { year: format.year(peakYear), area: format.area(peakAreaKm2) })}
-                    </p>
-
-                    {/*
-                     * Telling a reader that a realm was bigger somewhere else in time and leaving them
-                     * to find the year by hand is half an answer. The rail is the whole atlas, so the
-                     * sheet moves it.
-                     */}
-                    {state.year === peakYear ? null : (
-                        <button
-                            type="button"
-                            className="card__jump"
-                            onClick={() => {
-                                dispatch({ type: 'year', value: peakYear });
-                            }}
-                        >
-                            {t('detail.goToPeak', { year: format.year(peakYear) })}
-                            <MoveRight size={13} aria-hidden />
-                        </button>
-                    )}
-
-                    {/* The Wonder is the pin on the map; here it is one line, not a card of its own. */}
-                    <p className="card__source">
-                        <MapPin size={12} aria-hidden /> {words.monument}, {words.place} ·{' '}
-                        <WikiLink language={civilization.wonder.wikipediaLang} title={civilization.wonder.wikipedia}>
-                            {t('detail.wikipedia')}
-                        </WikiLink>
-                    </p>
-                    {words.anachronism ? (
-                        <p className="card__note">
-                            <AlertTriangle size={14} aria-hidden /> {words.anachronism}
-                        </p>
-                    ) : null}
+                    <h3 className="eyebrow">{t('detail.in', { year: format.year(state.year) })}</h3>
+                    <RealmFacts civilization={civilization} border={border} />
+                    <WonderFacts civilization={civilization} />
                 </section>
 
-                {expansion ? (
+                {expansionOf(civilization) ? (
                     <section className="card parchment singed">
                         <h3 className="eyebrow">{t('detail.expansion')}</h3>
-                        <p className="card__lead">{expansion.name}</p>
-                        <p className="card__line">
-                            {t(expansion.released ? 'detail.releasedOn' : 'detail.plannedFor', {
-                                date: format.date(expansion.releasedOn),
-                            })}
-                        </p>
+                        <ExpansionFacts civilization={civilization} />
                     </section>
                 ) : null}
             </>

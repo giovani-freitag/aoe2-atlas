@@ -22,7 +22,7 @@
         "hint": "A cor diz a região; o ângulo da hachura separa as civilizações dentro dela."
     },
     "roster": {
-        "title": "Civilizações",
+        "title": "Filtros",
         "search": "Buscar civilização",
         "placeholder": "Civilização, monumento, cidade…",
         "orderBy": "Ordenar por",
@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "Mudar a altura do painel",
-        "details": "Detalhes de {{name}}"
+        "details": "Detalhes de {{name}}",
+        "close": "Fechar"
     },
     "marker": {
         "label": "{{name}} — {{monument}}, {{place}}"
@@ -66,7 +67,8 @@
         "shared": "Terreno dividido em {{year}}",
         "sharedHint": "Só contemporâneos entram aqui: quem dividiu chão com esta civilização neste mesmo século. Um",
         "sharedAbbr": "a fonte não mapeia um dos dois neste século, e a linha veio da fatia mais próxima",
-        "overlay": "Sobrepor {{name}} no mapa"
+        "overlay": "Sobrepor {{name}} no mapa",
+        "wonder": "Maravilha"
     },
     "settings": {
         "title": "Ajustes",

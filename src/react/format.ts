@@ -1,7 +1,7 @@
 export interface Formatters {
     /** An area in square kilometres, grouped the way the language writes numbers. */
     area(km2: number): string;
-    /** A fraction as a percentage. */
+    /** A fraction as a percentage, never rounded down to nothing. */
     share(fraction: number): string;
     /** A year, with the era spelled out when it is before the common one. */
     year(year: number): string;
@@ -35,7 +35,13 @@ export function createFormatters(config: FormattersConfig): Formatters {
 
     return {
         area: (km2) => `${area.format(Math.round(km2))} km²`,
-        share: (fraction) => percent.format(fraction),
+        /*
+         * Anything that would round to nothing is written as under one per cent instead.
+         *
+         * A neighbour listed at "0%" reads as one that shared no ground at all, which is the one
+         * thing it cannot mean: it is on the list because the two realms overlapped.
+         */
+        share: (fraction) => (fraction > 0 && fraction < 0.005 ? `<${percent.format(0.01)}` : percent.format(fraction)),
         year,
         span: (from, to) => `${year(from)} – ${year(to)}`,
         date: (iso) => date.format(new Date(`${iso}T00:00:00Z`)),

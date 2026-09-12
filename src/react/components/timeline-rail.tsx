@@ -1,4 +1,4 @@
-import { useMemo, type CSSProperties } from 'react';
+import { useMemo, type CSSProperties, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
@@ -14,6 +14,8 @@ export interface TimelineRailProps {
     loading: boolean;
     /** Adds an arrow either side of the reading, for choosing a century without dragging. */
     stepping?: boolean;
+    /** A control to stand at the end of the track's row, where the thumb already is. */
+    trailing?: ReactNode;
     onChange: (year: number) => void;
 }
 
@@ -23,6 +25,10 @@ export interface TimelineRailProps {
  * This is not a filter bolted onto a map of peaks — it is the map's only axis. Everything drawn
  * above it is drawn as it stood in the year selected here, which is the one arrangement in
  * which two realms overlapping actually means they met.
+ *
+ * One bar is lit and the rest are not. The bars are a reading of how crowded each century was,
+ * not a tally that fills up as the reader moves: lighting everything to the left of the handle
+ * said the centuries accumulate, and they do not — each is its own map, complete on its own.
  *
  * The slider counts maps, not years. The atlas holds nineteen of them and they are not evenly
  * spaced — 1279 and 1300 sit a generation apart, 300 and 400 a century — so a slider ruled in
@@ -34,7 +40,7 @@ export interface TimelineRailProps {
  * exactly the kind of thing a reader comes here to do. They sit beside the track rather than on
  * a line of their own, because a line of their own cost the map thirty pixels of its height.
  */
-export function TimelineRail({ civilizations, years, year, loading, stepping, onChange }: TimelineRailProps) {
+export function TimelineRail({ civilizations, years, year, loading, stepping, trailing, onChange }: TimelineRailProps) {
     const { t } = useTranslation();
     const format = useFormat();
 
@@ -88,11 +94,32 @@ export function TimelineRail({ civilizations, years, year, loading, stepping, on
                     className="rail-body__track"
                     style={{ '--bars': profile.length, '--at': at / Math.max(1, years.length - 1) } as CSSProperties}
                 >
-                    <div className="rail-body__profile" aria-hidden>
+                    {/*
+                     * The columns are a target as well as a reading.
+                     *
+                     * A reader who wants the crowded century points at the tall bar, not at the
+                     * rail under it — so the bar answers. The handler sits on the row rather than
+                     * on nineteen buttons, and the row stays hidden from assistive technology:
+                     * the slider beside it already offers the same nineteen choices by name, and
+                     * a second set of them would only be the same control said twice.
+                     */}
+                    <div
+                        className="rail-body__profile"
+                        aria-hidden
+                        onPointerDown={(event) => {
+                            const row = event.currentTarget.getBoundingClientRect();
+                            /* The bars divide the row evenly, so the one pointed at is a floor. */
+                            const across = (event.clientX - row.left) / row.width;
+                            const index = Math.floor(across * years.length);
+                            const chosen = years[Math.min(years.length - 1, Math.max(0, index))];
+
+                            if (chosen !== undefined) onChange(chosen);
+                        }}
+                    >
                         {profile.map((count, index) => (
                             <span
                                 key={years[index]}
-                                data-reached={index <= at}
+                                data-current={index === at}
                                 style={{ height: `${Math.max(6, (count / tallest) * 100)}%` }}
                             />
                         ))}
@@ -127,9 +154,9 @@ export function TimelineRail({ civilizations, years, year, loading, stepping, on
                         <ChevronRight size={20} aria-hidden />
                     </button>
                 ) : null}
+
+                {trailing}
             </div>
-
-
 
             <div className="rail-body__ends numeric" aria-hidden>
                 <span>{format.year(first)}</span>

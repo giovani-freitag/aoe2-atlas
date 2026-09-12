@@ -12,6 +12,18 @@ const FLIGHT_MS = 640;
 /** How long a button-driven zoom step takes. */
 const STEP_MS = 220;
 
+/**
+ * Whether the reader has asked for less movement.
+ *
+ * The stylesheet already cuts every transition and animation to nothing for them, but a flight
+ * across the map is neither: it is d3 interpolating a transform sixty times a second, and it
+ * went on gliding for anyone who had asked it not to. Asked each time rather than once, because
+ * the setting can be changed while the atlas is open.
+ */
+function stillness(): boolean {
+    return matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 export interface MapZoom {
     /** The current pan and scale, to hang on the SVG group. */
     frame: Frame;
@@ -120,7 +132,7 @@ export function useMapZoom(svg: React.RefObject<SVGSVGElement | null>, options: 
         const selection = select(current.element);
         const transform = zoomIdentity.translate(target.x, target.y).scale(target.k);
 
-        if (animated) {
+        if (animated && !stillness()) {
             current.behaviour.transform(selection.transition().duration(FLIGHT_MS), transform);
             return;
         }
@@ -132,7 +144,15 @@ export function useMapZoom(svg: React.RefObject<SVGSVGElement | null>, options: 
         const current = bound.current;
         if (!current) return;
 
-        current.behaviour.scaleBy(select(current.element).transition().duration(STEP_MS), factor);
+        const selection = select(current.element);
+
+        if (stillness()) {
+            current.behaviour.scaleBy(selection, factor);
+
+            return;
+        }
+
+        current.behaviour.scaleBy(selection.transition().duration(STEP_MS), factor);
     }, []);
 
     return { frame, flyTo, zoomBy };

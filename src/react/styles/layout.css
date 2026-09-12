@@ -6,9 +6,20 @@
  * legend. The roster and the detail arrive as offcanvas panels and leave again.
  */
 
+/*
+ * On a phone everything a thumb reaches for is at the bottom.
+ *
+ * The map takes the screen, the year sits under it, and the header — which on a phone is two
+ * buttons and a name — goes below both, where a hand holding a phone actually is. Reaching the
+ * top corner of a six-inch screen is a two-handed operation, and the atlas asked for it every
+ * time a reader wanted the filters.
+ */
 .shell {
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        'stage'
+        'rail';
+    grid-template-rows: 1fr auto;
     height: 100%;
     min-height: 0;
 }
@@ -16,28 +27,80 @@
 /* ---- header ------------------------------------------------------------- */
 
 /*
- * On a phone the bar is a strip, not a banner: the buttons come down to the small control size
- * and the padding to a quarter rem, so the header spends as little of the screen as the rail.
+ * On a phone the bar is a strip, not a banner: a quarter of a rem of padding, so the header
+ * spends as little of the screen as the rail does.
+ *
+ * The buttons used to be shrunk here as well, which left the atlas with icon buttons in three
+ * sizes on one screen — 36 in the header, 44 on the map, 36 again in the deck. They are one
+ * size now, the one the skin calls a control, which is a thumb on a phone and a pointer's worth
+ * on a desktop.
+ */
+/*
+ * On a phone the bar is not a band at all: it is a pill on the map.
+ *
+ * Two buttons and a mark do not need a strip of their own across the screen, and the strip was
+ * costing the map its full height. The mark and the way into the preferences ride together in
+ * one pill at the head of the map, and the legend stands beside it. What is on the map — the
+ * filters — went to the other end of the year rail, where the thumb already is.
  */
 .bar {
-    --control: 2.25rem;
-
-    position: relative;
+    position: fixed;
+    top: var(--space-2);
+    left: var(--space-2);
     display: flex;
     align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-1) var(--space-2);
-    border-bottom: 1px solid var(--oak);
-    z-index: 2;
+    gap: var(--space-1);
+    padding: 3px;
+    border: 1px solid var(--oak);
+    border-radius: 999px;
+    box-shadow: var(--shadow-lg);
+    z-index: 3;
 }
 
-.bar__embers {
+/*
+ * The name is not painted here, but it is still the page's heading.
+ *
+ * Hiding it with `display: none` took it out of the accessibility tree as well, which left a
+ * phone reading an atlas with no title at all. It is only invisible.
+ */
+.bar__brand h1 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* The rail already says "loading…" where a reader is looking; the pill needs no second word. */
+.bar__spacer,
+.bar__loading {
+    display: none;
+}
+
+.bar__brand {
+    padding-left: var(--space-1);
+}
+
+/* The way out of the atlas sits before its name, on the side the drawer it opens comes from. */
+.bar .bar__settings {
+    order: -1;
+    border-radius: 999px;
+}
+
+/*
+ * Behind the instrument, because it is a light and not a veil.
+ *
+ * The glow comes up from the bottom edge of the screen and the year is read against it. Painted
+ * over the top it washed the very numbers it is there to light.
+ */
+.rail__embers {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    opacity: 0.55;
+    opacity: 0.9;
 }
 
 .bar__brand {
@@ -69,8 +132,8 @@
     display: grid;
     place-items: center;
     flex: none;
-    width: var(--control);
-    height: var(--control);
+    width: var(--icon);
+    height: var(--icon);
     border-radius: var(--radius);
     z-index: 1;
 }
@@ -78,6 +141,7 @@
 /* ---- map ---------------------------------------------------------------- */
 
 .stage {
+    grid-area: stage;
     position: relative;
     min-width: 0;
     min-height: 0;
@@ -87,8 +151,12 @@
 /* ---- timeline rail ------------------------------------------------------ */
 
 .rail {
+    grid-area: rail;
     position: relative;
-    padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom));
+    /* Above the deck sliding out from under it, and casting onto it. */
+    z-index: 2;
+    box-shadow: 0 -8px 14px rgb(0 0 0 / 45%);
+    padding: var(--space-2) var(--space-3);
     border-top: 1px solid var(--oak);
     z-index: 2;
 }
@@ -301,15 +369,46 @@
     .shell {
         grid-template-areas:
             'bar bar'
-            'roster stage'
+            'stage roster'
             'rail rail';
-        grid-template-columns: 20rem 1fr;
+        grid-template-columns: 1fr 20rem;
         grid-template-rows: auto 1fr auto;
     }
 
     .bar {
         grid-area: bar;
+        position: relative;
+        top: auto;
+        left: auto;
+        gap: var(--space-2);
         padding: var(--space-2) var(--space-4);
+        border: none;
+        border-bottom: 1px solid var(--oak);
+        border-radius: 0;
+        box-shadow: none;
+        z-index: 2;
+    }
+
+    .bar__brand h1 {
+        position: static;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        clip-path: none;
+    }
+
+    .bar__spacer,
+    .bar__loading {
+        display: block;
+    }
+
+    .bar__brand {
+        padding-left: 0;
+    }
+
+    .bar__settings {
+        order: 0;
+        border-radius: var(--radius);
     }
 
     .bar__brand h1 {
@@ -326,7 +425,7 @@
 
     .rail {
         grid-area: rail;
-        padding-inline: var(--space-4);
+        padding: var(--space-2) var(--space-4);
     }
 
     /*
@@ -343,6 +442,8 @@
         max-width: none;
         height: auto;
         min-height: 0;
+        border-right: none;
+        border-left: 1px solid var(--oak);
         transform: none;
         box-shadow: none;
         transition: none;
@@ -371,15 +472,21 @@
      * costs the map nothing: the projection never changes, nothing is reprojected, and the panel
      * simply slides in from the right.
      */
+    /*
+     * Opposite the roster, not over it.
+     *
+     * The list is a column on the right now, and a panel docking on that side would cover the
+     * very list the reader picked the civilization from.
+     */
     .sheet--dock {
-        inset: var(--bar-height, 0px) 0 var(--rail-height, 0px) auto;
+        inset: var(--bar-height, 0px) auto var(--rail-height, 0px) 0;
         width: 22rem;
         height: auto;
         max-height: none;
         border-top: none;
-        border-left: 1px solid var(--oak);
-        border-radius: var(--radius-lg) 0 0 var(--radius-lg);
-        transform: translateX(100%);
+        border-right: 1px solid var(--oak);
+        border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+        transform: translateX(-100%);
         transition:
             transform 240ms ease,
             visibility 240ms;
@@ -391,11 +498,185 @@
 
     @starting-style {
         .sheet--dock[data-open='true'] {
-            transform: translateX(100%);
+            transform: translateX(-100%);
         }
     }
 
     .sheet__head {
         padding-top: var(--space-3);
+    }
+}
+
+/* ---- the civilization, as a deck over the year rail --------------------- */
+
+/*
+ * The shape Excalidraw uses on a phone, tried here: nothing takes the screen.
+ *
+ * A strip sits on the year rail naming what is open, with one thumb-sized button per category.
+ * A tap lifts that category over the map and a second tap puts it away, so the reader is one
+ * tap from the whole map at any moment and never has to remember what is underneath. The sheet
+ * this replaces answered every question at once, and covered the map to do it.
+ */
+.deck {
+    container-type: inline-size;
+    position: fixed;
+    left: 0;
+    right: 0;
+    /*
+     * Tucked under the rail, not laid over it.
+     *
+     * The bar slides up out of the year's own band and its last few pixels stay behind it, which
+     * is the right way round: the year is the thing everything else is measured against, so it is
+     * the thing that shadows the rest rather than the thing that gets covered.
+     */
+    bottom: calc(var(--rail-height, 0px) - 8px);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    pointer-events: none;
+}
+
+.deck > * {
+    pointer-events: auto;
+}
+
+/* Edge to edge, the way a phone's toolbar is, with the civilization's colour as its rule. */
+.deck__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2) calc(var(--space-1) + 8px);
+    border-top: 2px solid;
+}
+
+.deck__bar img {
+    flex: none;
+    border-radius: 3px;
+}
+
+/*
+ * Shown only where the bar is wide enough that a name costs no button.
+ *
+ * Below this the categories and the way out need every pixel, and an ellipsis where a name
+ * should be is worse than the arms alone — which say the same thing to anyone who has just
+ * tapped them.
+ */
+.deck__name {
+    display: none;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--title);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--brass-soft);
+}
+
+@container (min-width: 24rem) {
+    .deck__name {
+        display: block;
+    }
+}
+
+.deck__bar nav {
+    display: flex;
+    gap: var(--space-1);
+}
+
+.deck__bar nav button,
+.deck__close {
+    display: grid;
+    place-items: center;
+    width: var(--icon);
+    height: var(--icon);
+    border-radius: var(--radius);
+}
+
+/* The category on show wears the same sunk plate the traced-realms switch does. */
+.deck__bar nav button[data-active='true'] {
+    box-shadow:
+        inset 0 2px 4px rgb(0 0 0 / 70%),
+        inset 0 0 0 1px rgb(200 164 74 / 45%);
+}
+
+.deck__close {
+    margin-left: auto;
+}
+
+/*
+ * One surface, not two. The panel used to be leather with a parchment card inside it, which is
+ * two frames, two paddings and two borders around one paragraph of text — and on a phone that
+ * doubling was most of the panel's height. The panel is the sheet now.
+ */
+/*
+ * Capped at a third of the screen, and scrolling past it.
+ *
+ * The realm's panel is the long one, and it was covering half the map while describing how much
+ * ground the realm held — which is the one thing the reader opened it to compare against what is
+ * drawn. Scrolling inside a panel is an ordinary thing to do; losing the map is not.
+ */
+.deck__panel {
+    max-height: 32dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-3);
+    border-top: 1px solid var(--brass-deep);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: var(--shadow-lg);
+    color: var(--ink);
+}
+
+.deck__title {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+    font-family: var(--title);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.deck__title .eyebrow {
+    color: var(--ink-faint);
+}
+
+.deck__sheet {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+/* Everything in here is read at a glance over a map, so it is set a size down from a document. */
+.deck__panel .card__lead {
+    font-size: 0.9375rem;
+}
+
+.deck__panel .stats {
+    gap: var(--space-1) var(--space-3);
+}
+
+.deck__panel .stats dd {
+    font-size: 0.8125rem;
+}
+
+.deck__panel .card__source,
+.deck__panel .card__line {
+    font-size: 0.6875rem;
+    line-height: 1.4;
+}
+
+.deck__panel .card__note {
+    padding: var(--space-1) var(--space-2);
+    font-size: 0.6875rem;
+}
+
+
+@media (min-width: 60rem) {
+    .deck {
+        display: none;
     }
 }

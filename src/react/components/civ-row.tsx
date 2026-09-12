@@ -5,6 +5,7 @@ import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import type { CivilizationStyle } from '@/services/palette/palette-service.ts';
 import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
+import { CivArms } from './civ-arms.tsx';
 import { HatchSwatch } from './hatch-swatch.tsx';
 
 export interface CivRowProps {
@@ -59,14 +60,7 @@ export function CivRow({
             >
                 <span className="civ__bar" style={{ width: `${share * 100}%`, background: style.colour }} aria-hidden />
                 <HatchSwatch style={style} size={14} />
-                <img
-                    className="civ__arms"
-                    src={`${import.meta.env.BASE_URL}img/civs/${civilization.icon}.png`}
-                    alt=""
-                    width={26}
-                    height={26}
-                    loading="lazy"
-                />
+                <CivArms civilization={civilization} size={26} />
                 <span className="civ__name">{words.name}</span>
                 <span className="civ__area numeric">{border ? format.area(border.areaKm2) : '—'}</span>
             </button>

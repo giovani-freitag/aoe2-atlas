@@ -6,8 +6,13 @@ export interface EmberFieldConfig {
     wind?: number;
     /** Answers whether the surface underneath is currently light. */
     isLight: () => boolean;
-    /** Keeps new embers inside one part of the canvas, such as the open tab. */
-    column?: () => { from: number; width: number };
+    /**
+     * Keeps new embers inside one part of the canvas, such as the handle of a slider.
+     *
+     * `base` is the line the fire burns on. Without it the coals sit on the floor of the canvas,
+     * which is right for a banner and wrong for a rail where the thing alight is halfway up.
+     */
+    column?: () => { from: number; width: number; base?: number };
 }
 
 interface Ember {
@@ -23,6 +28,17 @@ interface Ember {
 }
 
 const AREA_PER_EMBER = 2600;
+
+/**
+ * How many embers a column carries, at the calm setting.
+ *
+ * Seven was a handful of sparks, which is a hint of a fire rather than a fire. A brazier is a
+ * crowd: enough of them overlapping that the bloom of one meets the bloom of the next.
+ */
+const EMBERS_PER_COLUMN = 24;
+/** How far below the canvas the unseen fire sits, in pixels. */
+const GLOW_DEPTH = 70;
+
 const MAX_PIXEL_RATIO = 2;
 
 /** No banner is wider than this; anything beyond it is a layout mistake, not a request. */
@@ -76,6 +92,7 @@ export class EmberField {
         const light = this.config.isLight();
         this.paint.globalCompositeOperation = light ? 'source-over' : 'lighter';
 
+        this.hearth(light);
         for (const ember of this.embers) this.advance(ember, light);
 
         this.paint.globalCompositeOperation = 'source-over';
@@ -86,10 +103,66 @@ export class EmberField {
         this.paint.clearRect(0, 0, this.width, this.height);
     }
 
+    /**
+     * The coals the embers come off, breathing slowly and unevenly.
+     *
+     * Sparks on their own read as sparks from nowhere. What makes a fire is the bed underneath
+     * it, and where that bed is depends on what the field was given: a column puts it under that
+     * column, and no column lays it along the bottom edge — something burning off the screen,
+     * below the last band of the interface, throwing its light up onto it.
+     *
+     * Two beats of different speeds rather than one, because a real fire never pulses on a count.
+     */
+    private hearth(light: boolean): void {
+        const breath = 0.78 + 0.14 * Math.sin(this.clock * 1.7) + 0.08 * Math.sin(this.clock * 4.3 + 1.1);
+        const column = this.config.column?.();
+
+        if (column && column.width > 0) {
+            const middle = column.from + column.width / 2;
+            const base = column.base ?? this.height;
+            const reach = column.width * 0.72;
+
+            this.wash(this.paint.createRadialGradient(middle, base, 0, middle, base, reach), breath, light);
+            this.paint.beginPath();
+            this.paint.arc(middle, base, reach, 0, Math.PI * 2);
+            this.paint.fill();
+
+            return;
+        }
+
+        /*
+         * The fire is below the screen, not against it.
+         *
+         * Starting the gradient at the canvas floor put the hottest part of it right on the edge,
+         * which reads as a strip of orange rather than as a light from somewhere. Beginning it
+         * well below means only the tail of the glow ever shows, and the source stays off stage
+         * where it belongs.
+         */
+        const below = this.height + GLOW_DEPTH;
+
+        this.wash(this.paint.createLinearGradient(0, below, 0, this.height * 0.05), breath, light);
+        this.paint.fillRect(0, 0, this.width, this.height);
+    }
+
+    /** The colours of a fire seen through whatever stands in front of it, hot end first. */
+    private wash(glow: CanvasGradient, breath: number, light: boolean): void {
+        if (light) {
+            glow.addColorStop(0, `rgb(226 96 24 / ${(0.2 * breath).toFixed(3)})`);
+            glow.addColorStop(0.5, `rgb(214 74 18 / ${(0.08 * breath).toFixed(3)})`);
+            glow.addColorStop(1, 'rgb(214 74 18 / 0%)');
+        } else {
+            glow.addColorStop(0, `rgb(255 172 74 / ${(0.3 * breath).toFixed(3)})`);
+            glow.addColorStop(0.4, `rgb(255 116 26 / ${(0.1 * breath).toFixed(3)})`);
+            glow.addColorStop(1, 'rgb(255 100 18 / 0%)');
+        }
+
+        this.paint.fillStyle = glow;
+    }
+
     private fill(): void {
         const density = this.config.density ?? 1;
         const wanted = this.config.column
-            ? Math.round(7 * density)
+            ? Math.round(EMBERS_PER_COLUMN * density)
             : Math.round(((this.width * this.height) / AREA_PER_EMBER) * density);
 
         while (this.embers.length < wanted) this.embers.push(this.spawn(true));
@@ -98,18 +171,31 @@ export class EmberField {
 
     private spawn(seeded: boolean): Ember {
         const brisk = this.config.column !== undefined;
-        const size = brisk ? 0.4 + Math.random() * 0.9 : 0.5 + Math.random() ** 2 * 2.1;
+        const size = brisk ? 0.5 + Math.random() ** 2 * 1.6 : 0.5 + Math.random() ** 2 * 2.1;
         const column = this.config.column?.() ?? { from: 0, width: this.width };
 
+        /*
+         * Thickest in the middle of the column, thinning towards its edges.
+         *
+         * Two rolls averaged rather than one is a triangle instead of a flat line, which is what
+         * a fire looks like from above: a heart with sparks straying off it, not a rectangle of
+         * evenly scattered dots.
+         */
+        const across = brisk ? (Math.random() + Math.random()) / 2 : Math.random();
+
         return {
-            x: column.from + Math.random() * column.width,
-            y: seeded ? Math.random() * this.height : this.height + Math.random() * 12,
+            x: column.from + across * column.width,
+            y: brisk
+                ? (column.base ?? this.height) - (seeded ? Math.random() * this.height : -Math.random() * 6)
+                : seeded
+                  ? Math.random() * this.height
+                  : this.height + Math.random() * 8,
             size,
-            rise: (brisk ? 0.34 : 0.16) + size * 0.055 + Math.random() * 0.12,
+            rise: (brisk ? 0.3 : 0.16) + size * 0.055 + Math.random() * 0.16,
             sway: 0.4 + Math.random() * 1.1,
             phase: Math.random() * Math.PI * 2,
             beat: 0.5 + Math.random() * 2.4,
-            heat: 0.45 + Math.random() * 0.55,
+            heat: brisk ? 0.6 + Math.random() * 0.4 : 0.45 + Math.random() * 0.55,
             drift: (Math.random() - 0.5) * 0.14,
         };
     }

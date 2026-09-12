@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
+import { armsUrl } from '@/react/assets.ts';
 
 /**
  * Side of the icon plate, in screen pixels.
@@ -83,7 +84,7 @@ export function WonderMarker({
                 strokeWidth={focused || highlighted ? 2.5 : 1.5}
             />
             <image
-                href={`${import.meta.env.BASE_URL}img/civs/${civilization.icon}.png`}
+                href={armsUrl(civilization)}
                 x={5}
                 y={4}
                 width={SIZE - 10}

@@ -5,12 +5,13 @@ import { SLICE_YEARS } from '@/data/dataset.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { drawnRealms, useAtlas } from '@/react/providers/atlas-context.ts';
 import { useEscape } from '@/react/hooks/use-escape.ts';
-import { useMeasuredHeight } from '@/react/hooks/use-measured-height.ts';
+import { useMeasuredHeight, useMeasuredWidth } from '@/react/hooks/use-measured-height.ts';
 import { useTimeSlice } from '@/react/hooks/use-time-slice.ts';
 import { useSheetHistory } from '@/react/hooks/use-sheet-history.ts';
 import { useSpecular } from '@/react/hooks/use-specular.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { AtlasMap } from './atlas-map.tsx';
+import { CivDeck } from './civ-deck.tsx';
 import { DetailSheet } from './detail-sheet.tsx';
 import { EmberCanvas } from './ember-canvas.tsx';
 import { LegendPanel } from './legend-panel.tsx';
@@ -33,6 +34,9 @@ export function AppShell() {
     // the stylesheet where those two end.
     const bar = useMeasuredHeight<HTMLElement>('--bar-height');
     const rail = useMeasuredHeight<HTMLDivElement>('--rail-height');
+
+    // On a phone the bar is a pill floating over the map, and the legend stands beside it.
+    const brand = useMeasuredWidth<HTMLDivElement>('--brand-width');
 
     // The document follows the language: its tag for screen readers and fonts, its title for the tab.
     const language = i18n.language;
@@ -100,24 +104,15 @@ export function AppShell() {
     return (
         <div className="shell">
             <header className="bar leather" ref={bar}>
-                <EmberCanvas className="bar__embers" density={0.7} wind={0.6} />
-
-                {/* Wide, the roster is already a column of the grid, so the handle that opens it would open nothing. */}
-                {wide ? null : (
-                    <button
-                        type="button"
-                        className="bar__button iron riveted"
-                        onClick={() => {
-                            setRosterOpen(true);
-                        }}
-                        aria-label={t('app.openRoster')}
-                    >
-                        <ListFilter size={20} aria-hidden />
-                    </button>
-                )}
-
-                <div className="bar__brand">
-                    <img src={`${import.meta.env.BASE_URL}brand.svg`} alt="" width={26} height={26} />
+                <div className="bar__brand" ref={brand}>
+                    {/* On a phone the name beside it is hidden, so the mark carries it on hover. */}
+                    <img
+                        src={`${import.meta.env.BASE_URL}brand.svg`}
+                        alt=""
+                        title={t('app.title')}
+                        width={26}
+                        height={26}
+                    />
                     <div>
                         <h1>{t('app.title')}</h1>
                         <p>{t('app.tagline')}</p>
@@ -134,13 +129,14 @@ export function AppShell() {
                 ) : null}
 
                 {/*
-                 * Three questions, three places. Who is on the left, behind the roster; how the
-                 * world is drawn is here on the right; and when — the axis every reading on the
-                 * map is qualified by — is along the foot, always out and never behind a panel.
+                 * Three questions, three places, and the same three at every width. How the world
+                 * is drawn comes in from the left; what is on it comes in from the right; and
+                 * when — the axis every reading on the map is qualified by — is along the foot,
+                 * always out and never behind a panel.
                  */}
                 <button
                     type="button"
-                    className="bar__button iron"
+                    className="bar__button bar__settings iron"
                     aria-expanded={settingsOpen}
                     onClick={toggleSettings}
                     aria-label={t(settingsOpen ? 'app.closeSettings' : 'app.openSettings')}
@@ -158,22 +154,33 @@ export function AppShell() {
             <RosterDrawer
                 civilizations={listed}
                 borders={borders}
+                side="right"
                 open={rosterOpen}
                 onClose={() => {
                     setRosterOpen(false);
                 }}
             />
 
+            {/* On a phone a civilization is a bar over the year rail, not a sheet over the map. */}
             {focused ? (
-                <DetailSheet
-                    civilization={focused}
-                    border={borders.get(focused.key) ?? null}
-                    frontiers={slice?.frontiers ?? []}
-                    onClose={closeSheet}
-                />
+                wide ? (
+                    <DetailSheet
+                        civilization={focused}
+                        border={borders.get(focused.key) ?? null}
+                        frontiers={slice?.frontiers ?? []}
+                        onClose={closeSheet}
+                    />
+                ) : (
+                    <CivDeck
+                        civilization={focused}
+                        border={borders.get(focused.key) ?? null}
+                        frontiers={slice?.frontiers ?? []}
+                        onClose={closeSheet}
+                    />
+                )
             ) : null}
 
-            <SettingsSheet open={settingsOpen} onClose={closeSettings} />
+            <SettingsSheet side="left" open={settingsOpen} onClose={closeSettings} />
 
             {/*
              * The same instrument at both sizes, because the year is not a preference.
@@ -184,6 +191,17 @@ export function AppShell() {
              * to themselves. On a phone the arrows come out, and that is the whole difference.
              */}
             <div className="rail leather" ref={rail}>
+                {/*
+                 * Something is burning below the screen.
+                 *
+                 * The embers used to be tied to the year's handle, which made them a decoration
+                 * on a control: they moved when it moved, and a fire that follows a slider is a
+                 * fidget rather than a hearth. Loosed across the rail they read as what they are,
+                 * a light thrown up from under the last band of the atlas with sparks straying
+                 * into it.
+                 */}
+                <EmberCanvas className="rail__embers" density={1.6} wind={0.7} />
+
                 <TimelineRail
                     civilizations={catalogue.all()}
                     years={SLICE_YEARS}
@@ -191,6 +209,20 @@ export function AppShell() {
                     loading={loading}
                     stepping={!wide}
                     onChange={setYear}
+                    trailing={
+                        wide ? null : (
+                            <button
+                                type="button"
+                                className="rail-body__step iron riveted"
+                                onClick={() => {
+                                    setRosterOpen(true);
+                                }}
+                                aria-label={t('app.openRoster')}
+                            >
+                                <ListFilter size={18} aria-hidden />
+                            </button>
+                        )
+                    }
                 />
             </div>
         </div>
