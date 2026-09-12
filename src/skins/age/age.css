@@ -49,6 +49,15 @@
     --control: 2.75rem;
     --tap: 2.75rem;
 
+    /*
+     * Icon buttons are their own size, and the same one everywhere.
+     *
+     * A control that holds text or takes a finger dragging — a field, a roster row, the year's
+     * arrows on a slider — earns the full thumb. A square with a picture in it does not, and the
+     * atlas had three sizes of them on one screen before this existed.
+     */
+    --icon: 2.25rem;
+
     --radius-sm: 2px;
     --radius: 3px;
     --radius-lg: 6px;

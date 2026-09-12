@@ -158,8 +158,8 @@
 .atlas__controls button {
     display: grid;
     place-items: center;
-    width: var(--control);
-    height: var(--control);
+    width: var(--icon);
+    height: var(--icon);
     border-radius: var(--radius);
 }
 

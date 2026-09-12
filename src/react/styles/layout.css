@@ -72,8 +72,8 @@
     display: grid;
     place-items: center;
     flex: none;
-    width: var(--control);
-    height: var(--control);
+    width: var(--icon);
+    height: var(--icon);
     border-radius: var(--radius);
     z-index: 1;
 }
@@ -450,18 +450,16 @@
 }
 
 .deck__bar nav {
-    flex: 1;
     display: flex;
-    justify-content: space-evenly;
-    gap: 2px;
+    gap: var(--space-1);
 }
 
 .deck__bar nav button,
 .deck__close {
     display: grid;
     place-items: center;
-    width: var(--control);
-    height: var(--control);
+    width: var(--icon);
+    height: var(--icon);
     border-radius: var(--radius);
 }
 
@@ -473,7 +471,7 @@
 }
 
 .deck__close {
-    margin-left: var(--space-1);
+    margin-left: auto;
 }
 
 .deck__panel {

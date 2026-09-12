@@ -72,10 +72,16 @@ which is the legend in miniature — and a tap unfolds the panel under it. The p
 panel's head, carrying the fold and the "clear" beside it, so there is always a way back. On a
 wide screen nothing changed: it sits in a corner and bothers nobody, so it stays open.
 
-Every icon button is one size. The atlas had three on one screen — 36 in the header, 44 on the
-map, 36 again in the deck — because the header shrank its own. It now uses the size the skin
-calls a control, which is a thumb on a phone and a pointer's worth on a desktop. Measured on a
-phone: header, map controls, deck tabs, deck close and the year arrows, all 44 by 44.
+Every icon button is one size, and it is the small one. The atlas had three on one screen — 36
+in the header, 44 on the map, 36 again in the deck — so the skin gained a token of its own for
+them, apart from the control size. A control that holds text, or takes a finger dragging, still
+earns the full thumb: fields, roster rows, the year's slider. A square with a picture in it does
+not. Measured on a phone: header, map controls, deck tabs, deck close and the year arrows, all
+36 by 36, and the header is back to 45 pixels tall.
+
+The deck's categories sit together after the arms rather than spread across the bar. Spread out
+they read as five unrelated things; grouped they read as one set, with the close alone at the
+far end where a close belongs.
 
 ## What I would decide before going further
 
