@@ -115,7 +115,11 @@ URL with any weight.
    have: the crawl stats and robots.txt reports are both host-level only.
 2. **URL Inspection → Test live URL** on that address, then read the rendered HTML and the
    screenshot. It is the only direct way to settle what Googlebot makes of a page whose content
-   arrives with the bundle.
+   arrives with the bundle. **Settled on 12 September 2026:** the smartphone Googlebot's own
+   screenshot shows the finished map — thirty-five shields on their realms, the controls, the
+   rail on 1200. It runs the bundle, fetches the century and draws the emblems. Every proposal
+   that existed as insurance against it not doing so — a prerender, a `<noscript>` copy, text
+   outside `#root` — is closed for good.
 3. **Request Indexing**, once. Repeating it does nothing.
 4. **Bing** by importing the Search Console property rather than adding the site again.
 5. **Two real links** — the Age of Empires forum thread that already hosts a static-image version
