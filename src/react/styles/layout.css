@@ -500,7 +500,8 @@
         max-height: none;
         border-top: none;
         border-right: 1px solid var(--oak);
-        border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+        /* Docked between the bar and the rail it is a column, not a card: square, like the roster opposite. */
+        border-radius: 0;
         transform: translateX(-100%);
         transition:
             transform 240ms ease,
