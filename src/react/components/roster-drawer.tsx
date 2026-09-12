@@ -46,6 +46,27 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
 
     const standingCount = civilizations.filter((civ) => borders.has(civ.key)).length;
 
+    const chips = (
+        <div className="chips">
+            {EXPANSION_RECORDS.map((expansion) => (
+                <button
+                    key={expansion.key}
+                    type="button"
+                    className="chip"
+                    data-active={state.expansions.includes(expansion.key)}
+                    data-upcoming={!expansion.released}
+                    title={`${expansion.name} · ${expansion.releasedOn.slice(0, 4)}`}
+                    aria-pressed={state.expansions.includes(expansion.key)}
+                    onClick={() => {
+                        dispatch({ type: 'toggle-expansion', value: expansion.key });
+                    }}
+                >
+                    {expansion.shortName}
+                </button>
+            ))}
+        </div>
+    );
+
     return (
         <SideDrawer label={t('roster.title')} open={open} onClose={onClose} side={side} pinnedWhenWide className="roster">
             <div className="drawer__head">
@@ -81,24 +102,24 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
                     ))}
                 </div>
 
-                <div className="chips">
-                    {EXPANSION_RECORDS.map((expansion) => (
-                        <button
-                            key={expansion.key}
-                            type="button"
-                            className="chip"
-                            data-active={state.expansions.includes(expansion.key)}
-                            data-upcoming={!expansion.released}
-                            title={`${expansion.name} · ${expansion.releasedOn.slice(0, 4)}`}
-                            aria-pressed={state.expansions.includes(expansion.key)}
-                            onClick={() => {
-                                dispatch({ type: 'toggle-expansion', value: expansion.key });
-                            }}
-                        >
-                            {expansion.shortName}
-                        </button>
-                    ))}
-                </div>
+                {/*
+                 * Fourteen expansion chips are three rows on a phone, and three rows of chips
+                 * left the list they filter three hundred pixels to show fifty-six rows in. On a
+                 * narrow screen they fold behind one chip that says how many are on; a reader
+                 * who has set a filter finds it open, so the thing shaping the list is never out
+                 * of sight. Where there is room, they are simply there.
+                 */}
+                {wide ? (
+                    chips
+                ) : (
+                    <details className="chips__fold" open={state.expansions.length > 0}>
+                        <summary className="chip" data-active={state.expansions.length > 0}>
+                            {t('roster.order.expansion')}
+                            {state.expansions.length > 0 ? ` · ${state.expansions.length}` : ''}
+                        </summary>
+                        {chips}
+                    </details>
+                )}
 
                 <p className="roster__count">
                     {t('roster.count', {

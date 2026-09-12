@@ -69,6 +69,34 @@
     color: var(--brass-soft);
 }
 
+/* The fold the expansion chips sit behind on a phone: one chip closed, the row of them open. */
+.chips__fold > summary {
+    display: inline-flex;
+    align-items: center;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.chips__fold > summary::-webkit-details-marker {
+    display: none;
+}
+
+.chips__fold > summary::after {
+    content: '▾';
+    margin-left: var(--space-1);
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.chips__fold[open] > summary::after {
+    content: '▴';
+}
+
+.chips__fold[open] > .chips {
+    margin-top: var(--space-1);
+}
+
 .chip[data-upcoming='true']::after {
     content: '·';
     margin-left: 3px;
