@@ -267,6 +267,21 @@
     margin: 0;
 }
 
+/* Under the list rather than inside it: fifty-six rows should not have to be scrolled to find it. */
+.roster__more {
+    flex: none;
+    padding: var(--space-2) var(--space-3);
+    border-top: 1px solid var(--stitch);
+    font-size: 0.75rem;
+    color: var(--brass);
+    text-decoration: none;
+}
+
+.roster__more:hover,
+.roster__more:focus-visible {
+    text-decoration: underline;
+}
+
 /* ---- sheets, offcanvas from the bottom ---------------------------------- */
 
 /*

@@ -61,7 +61,20 @@ export function CivRow({
                 <span className="civ__bar" style={{ width: `${share * 100}%`, background: style.colour }} aria-hidden />
                 <HatchSwatch style={style} size={14} />
                 <CivArms civilization={civilization} size={26} />
-                <span className="civ__name">{words.name}</span>
+                {/*
+                 * The monument under the name, not only behind a tap.
+                 *
+                 * "Hagia Sophia" is what a reader came here knowing, and it was the one thing the
+                 * list would not tell them — every one of the fifty-six lived inside the panel
+                 * that opens on click. The place it stands in stays there: at the width this
+                 * column has on a phone, a second line would clip on most of the roster.
+                 */}
+                <span className="civ__text">
+                    <span className="civ__name">{words.name}</span>
+                    <span className="civ__monument" title={words.monument}>
+                        {words.monument}
+                    </span>
+                </span>
                 <span className="civ__area numeric">{border ? format.area(border.areaKm2) : '—'}</span>
             </button>
             <button

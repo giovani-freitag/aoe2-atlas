@@ -1,6 +1,6 @@
 import { useId, type ReactNode } from 'react';
 import { ExternalLink } from 'lucide-react';
-import { articleUrl } from '@/services/wiki/wiki-service.ts';
+import { articleUrl } from '@/data/wikipedia.ts';
 import { useWikiHover } from '@/react/hooks/use-wiki-hover.ts';
 import { WikiCard } from './wiki-card.tsx';
 

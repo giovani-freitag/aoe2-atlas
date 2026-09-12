@@ -38,11 +38,18 @@ export function AppShell() {
     // On a phone the bar is a pill floating over the map, and the legend stands beside it.
     const brand = useMeasuredWidth<HTMLDivElement>('--brand-width');
 
-    // The document follows the language: its tag for screen readers and fonts, its title for the tab.
+    /*
+     * The document follows the language: its tag for screen readers and fonts, its title for the
+     * tab and for whatever indexes the page.
+     *
+     * The title was the wordmark and the tagline, and not one of the seventeen taglines names the
+     * game — so the title that ends up indexed, which is this one and not the one index.html
+     * served, was missing the only phrase a search for this thing is certain to contain.
+     */
     const language = i18n.language;
     useEffect(() => {
         document.documentElement.lang = language;
-        document.title = `${t('app.title')} — ${t('app.tagline')}`;
+        document.title = `${t('app.documentTitle')} — ${t('app.title')}`;
     }, [language, t]);
 
     const { slice, loading, failed } = useTimeSlice(slices, state.year);

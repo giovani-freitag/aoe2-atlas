@@ -2,6 +2,7 @@
     "app": {
         "title": "AoE2 Atlas",
         "tagline": "以世紀為序的奇觀與疆域",
+        "documentTitle": "一張地圖上的 Age of Empires II 全部 56 個文明",
         "openRoster": "開啟文明列表",
         "openSettings": "開啟地圖設定",
         "closeSettings": "關閉地圖設定",
@@ -34,7 +35,8 @@
         },
         "count": "{{year}} 年存續 {{standing}} 個 · 列表中 {{listed}} 個",
         "trace": "在地圖上繪出{{name}}",
-        "untrace": "將{{name}}移出地圖"
+        "untrace": "將{{name}}移出地圖",
+        "everyCivilization": "全部 56 個文明，含年代與建築（英文）"
     },
     "sheet": {
         "grip": "調整面板高度",

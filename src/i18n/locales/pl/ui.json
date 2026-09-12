@@ -2,6 +2,7 @@
     "app": {
         "title": "AoE2 Atlas",
         "tagline": "Cuda i terytoria, stulecie po stuleciu",
+        "documentTitle": "56 cywilizacji Age of Empires II na jednej mapie",
         "openRoster": "Otwórz listę cywilizacji",
         "openSettings": "Otwórz ustawienia mapy",
         "closeSettings": "Zamknij ustawienia mapy",
@@ -34,7 +35,8 @@
         },
         "count": "{{standing}} istnieje w roku {{year}} · {{listed}} na liście",
         "trace": "Nakreśl {{name}} na mapie",
-        "untrace": "Usuń {{name}} z mapy"
+        "untrace": "Usuń {{name}} z mapy",
+        "everyCivilization": "Wszystkie 56, z datami i budowlami (po angielsku)"
     },
     "sheet": {
         "grip": "Zmień wysokość panelu",

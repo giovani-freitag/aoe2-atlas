@@ -2,6 +2,7 @@
     "app": {
         "title": "AoE2 Atlas",
         "tagline": "अजूबे और भूभाग, सदी दर सदी",
+        "documentTitle": "एक ही नक्शे पर Age of Empires II की 56 सभ्यताएँ",
         "openRoster": "सभ्यताओं की सूची खोलें",
         "openSettings": "मानचित्र की सेटिंग खोलें",
         "closeSettings": "मानचित्र की सेटिंग बंद करें",
@@ -34,7 +35,8 @@
         },
         "count": "{{year}} में {{standing}} विद्यमान · सूची में {{listed}}",
         "trace": "{{name}} को मानचित्र पर आरेखित करें",
-        "untrace": "{{name}} को मानचित्र से हटाएँ"
+        "untrace": "{{name}} को मानचित्र से हटाएँ",
+        "everyCivilization": "सभी 56, तिथियों और स्मारकों के साथ (अंग्रेज़ी में)"
     },
     "sheet": {
         "grip": "पैनल की ऊँचाई बदलें",

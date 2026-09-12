@@ -2,6 +2,7 @@
     "app": {
         "title": "AoE2 Atlas",
         "tagline": "Keajaiban dan wilayah, abad demi abad",
+        "documentTitle": "56 tamadun Age of Empires II dalam satu peta",
         "openRoster": "Buka senarai tamadun",
         "openSettings": "Buka tetapan peta",
         "closeSettings": "Tutup tetapan peta",
@@ -34,7 +35,8 @@
         },
         "count": "{{standing}} wujud pada {{year}} · {{listed}} dalam senarai",
         "trace": "Lukis {{name}} di peta",
-        "untrace": "Buang {{name}} dari peta"
+        "untrace": "Buang {{name}} dari peta",
+        "everyCivilization": "Kesemua 56, dengan tarikh dan monumen (bahasa Inggeris)"
     },
     "sheet": {
         "grip": "Ubah ketinggian panel",

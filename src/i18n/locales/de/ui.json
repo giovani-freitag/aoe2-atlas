@@ -2,6 +2,7 @@
     "app": {
         "title": "AoE2 Atlas",
         "tagline": "Weltwunder und Territorien, Jahrhundert für Jahrhundert",
+        "documentTitle": "Die 56 Zivilisationen von Age of Empires II auf einer Karte",
         "openRoster": "Liste der Zivilisationen öffnen",
         "openSettings": "Karteneinstellungen öffnen",
         "closeSettings": "Karteneinstellungen schließen",
@@ -34,7 +35,8 @@
         },
         "count": "{{standing}} bestehen in {{year}} · {{listed}} in der Liste",
         "trace": "{{name}} auf der Karte einzeichnen",
-        "untrace": "{{name}} von der Karte nehmen"
+        "untrace": "{{name}} von der Karte nehmen",
+        "everyCivilization": "Alle 56, mit Daten und Bauwerken (englisch)"
     },
     "sheet": {
         "grip": "Höhe des Panels ändern",

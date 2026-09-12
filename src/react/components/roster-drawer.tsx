@@ -132,6 +132,20 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
                     />
                 ))}
             </ul>
+
+            {/*
+             * The way out of the map and into the table.
+             *
+             * The atlas answers "where was this realm in 1200" and refuses to answer "which
+             * centuries is it drawn in at all" without nineteen drags of the rail. That question
+             * has a page, built from these same files; it is written in English only, which the
+             * label says in the other sixteen languages rather than leaving as a surprise. The
+             * address goes through BASE_URL because the page is a build artefact and does not
+             * exist under `npm run dev`.
+             */}
+            <a className="roster__more" href={`${import.meta.env.BASE_URL}civilizations/`} hrefLang="en">
+                {t('roster.everyCivilization')}
+            </a>
         </SideDrawer>
     );
 }

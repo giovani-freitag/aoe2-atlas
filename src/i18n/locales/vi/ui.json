@@ -2,6 +2,7 @@
     "app": {
         "title": "AoE2 Atlas",
         "tagline": "Kỳ quan và lãnh thổ, qua từng thế kỷ",
+        "documentTitle": "56 nền văn minh của Age of Empires II trên một bản đồ",
         "openRoster": "Mở danh sách nền văn minh",
         "openSettings": "Mở cài đặt bản đồ",
         "closeSettings": "Đóng cài đặt bản đồ",
@@ -34,7 +35,8 @@
         },
         "count": "{{standing}} tồn tại năm {{year}} · {{listed}} trong danh sách",
         "trace": "Vẽ {{name}} lên bản đồ",
-        "untrace": "Bỏ {{name}} khỏi bản đồ"
+        "untrace": "Bỏ {{name}} khỏi bản đồ",
+        "everyCivilization": "Cả 56, kèm niên đại và công trình (tiếng Anh)"
     },
     "sheet": {
         "grip": "Đổi chiều cao bảng",

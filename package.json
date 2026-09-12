@@ -9,13 +9,13 @@
         "url": "https://github.com/giovani-freitag/aoe2-atlas"
     },
     "homepage": "https://giovani-freitag.github.io/aoe2-atlas/",
-    "description": "Interactive map of Age of Empires II: where each civilization's Wonder really stands, and the reconstructed extent of its realm, century by century.",
+    "description": "All 56 Age of Empires II civilizations on one map: each Wonder on the real monument it was modelled on, each realm at the size it held in the year you pick.",
     "engines": {
         "node": ">=20.19"
     },
     "scripts": {
         "dev": "vite",
-        "build": "tsc -b && vite build",
+        "build": "tsc -b && vite build && vite-node scripts/build-pages.ts",
         "preview": "vite preview",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
@@ -25,6 +25,7 @@
         "test:coverage": "vitest run --coverage",
         "data:build": "vite-node scripts/build-territories.ts",
         "data:icons": "vite-node scripts/fetch-wiki-emblems.ts",
+        "docs:table": "vite-node scripts/build-pages.ts -- --docs",
         "test:links": "vitest run --config vitest.links.config.ts"
     },
     "dependencies": {

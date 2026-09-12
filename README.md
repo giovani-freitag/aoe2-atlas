@@ -38,7 +38,7 @@ only ever share the screen if they shared the century.
 
 ## ✨ Features
 
-- 🗺️ **All 56 civilizations** — each emblem stands in its own territory, with a pin on the Wonder's real monument
+- 🗺️ **All 56 civilizations** — each emblem stands in its own territory, with a pin on the Wonder's real monument ([the whole table](docs/civilizations.md))
 - 🕰️ **Nineteen maps, 200 to 1600** — drag the year and every border redraws; a civilization shows up only in the years it existed
 - 📐 **Areas you can compare** — measured on the globe, so two realms compare fairly whatever projection is on screen
 - 〰️ **Borders as honest as the record** — a firm line where the border is known, soft and dashed where it is a guess, faint when it had to be borrowed from the century next door
@@ -71,6 +71,7 @@ npm run dev        # http://localhost:5174
 | `npm test` | Vitest |
 | `npm run data:build` | rebuild the 19 dated maps |
 | `npm run data:icons` | fetch the three emblems the game does not ship yet |
+| `npm run docs:table` | rewrite docs/civilizations.md from the data |
 
 ## 🧭 Where the data comes from
 
@@ -97,7 +98,9 @@ Arch of Constantine is Roman and the Huns never reached Rome.
 
 ## 📚 Docs
 
+- [Every civilization, its Wonder and the centuries it stood](docs/civilizations.md) — the 56 in one table, generated from the same files the map is drawn from
 - [The shape of the atlas on a phone](docs/phone-layout.md) — where everything sits, and the measurements that settled it
+- [Being found](docs/search-visibility.md) — what was done for search, what was deliberately not, and why
 - [Changelog](CHANGELOG.md) — what shipped, release by release
 - [Releases](https://github.com/giovani-freitag/aoe2-atlas/releases) — the tagged builds
 - Source layout: `src/domain` (entities), `src/services` (catalogue, slices, projection, palette),

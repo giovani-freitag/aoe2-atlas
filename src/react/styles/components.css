@@ -174,13 +174,34 @@
     border-radius: 2px;
 }
 
-.civ__name {
+/*
+ * The name and its monument, stacked in the one column the row has room for.
+ *
+ * Both lines fit inside the 44px the row already reserves for a thumb, so the list is no taller
+ * than it was with the name alone.
+ */
+.civ__text {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     min-width: 0;
+    line-height: 1.25;
+}
+
+.civ__name,
+.civ__monument {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.civ__name {
     font-size: 0.875rem;
+}
+
+.civ__monument {
+    font-size: 0.75rem;
+    color: var(--text-faint);
 }
 
 .civ__area {

@@ -2,6 +2,7 @@
     "app": {
         "title": "AoE2 Atlas",
         "tagline": "Чудеса и территории, век за веком",
+        "documentTitle": "56 цивилизаций Age of Empires II на одной карте",
         "openRoster": "Открыть список цивилизаций",
         "openSettings": "Открыть настройки карты",
         "closeSettings": "Закрыть настройки карты",
@@ -34,7 +35,8 @@
         },
         "count": "{{standing}} существуют в {{year}} г. · {{listed}} в списке",
         "trace": "Начертить {{name}} на карте",
-        "untrace": "Убрать {{name}} с карты"
+        "untrace": "Убрать {{name}} с карты",
+        "everyCivilization": "Все 56 — с датами и памятниками (на английском)"
     },
     "sheet": {
         "grip": "Изменить высоту панели",

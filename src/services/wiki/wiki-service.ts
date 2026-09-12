@@ -1,3 +1,5 @@
+import { articleUrl } from '@/data/wikipedia.ts';
+
 /** What a Wikipedia article says about itself, in the two lines a preview can hold. */
 export interface WikiSummary {
     title: string;
@@ -92,12 +94,3 @@ export class WikiService {
     }
 }
 
-/**
- * Where an article lives.
- *
- * @param language - Which Wikipedia, as a language code.
- * @param title - The article title.
- */
-export function articleUrl(language: string, title: string): string {
-    return `https://${language}.wikipedia.org/wiki/${encodeURIComponent(title)}`;
-}

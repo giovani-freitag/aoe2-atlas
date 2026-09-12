@@ -7,14 +7,30 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-        <meta name="theme-color" content="#0f1216" />
-        <meta name="color-scheme" content="dark light" />
+        <!-- The colour of the running atlas, not of the second it spends loading. -->
+        <meta name="theme-color" content="#1a130d" />
+        <meta name="color-scheme" content="dark" />
         <meta
             name="description"
-            content="Interactive map of Age of Empires II: where each civilization's Wonder really stands, and the reconstructed extent of its realm, century by century. In seventeen languages."
+            content="All 56 Age of Empires II civilizations on one map: each Wonder on the real monument it was modelled on, each realm at the size it held in the year you pick."
         />
         <link rel="icon" type="image/svg+xml" href="./brand.svg" />
-        <title>AoE2 Atlas — Wonders and territories of Age of Empires II</title>
+
+        <!--
+            The game's name belongs in the title, because it is the one phrase every search for
+            this thing contains. The bundle rewrites this on mount, in the reader's language, and
+            what a crawler indexes is the rewritten one — so `app.documentTitle` in every locale
+            has to keep the name too, and does.
+        -->
+        <title>The 56 civilizations of Age of Empires II on one map — AoE2 Atlas</title>
+
+        <!--
+            One page, several addresses: index.html, a doubled slash and any tracking parameter
+            an inbound link carries all answer with this same document. A static host has nothing
+            else to say which of them is the page.
+        -->
+        <link rel="canonical" href="https://giovani-freitag.github.io/aoe2-atlas/" />
+        <meta name="robots" content="max-image-preview:large" />
 
         <!--
             What a pasted link becomes on Discord, WhatsApp and the rest. Absolute, because a
@@ -24,10 +40,10 @@
         -->
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="AoE2 Atlas" />
-        <meta property="og:title" content="AoE2 Atlas — Wonders and territories of Age of Empires II" />
+        <meta property="og:title" content="The 56 civilizations of Age of Empires II on one map — AoE2 Atlas" />
         <meta
             property="og:description"
-            content="Interactive map of Age of Empires II: where each civilization's Wonder really stands, and the reconstructed extent of its realm, century by century. In seventeen languages."
+            content="All 56 Age of Empires II civilizations on one map: each Wonder on the real monument it was modelled on, each realm at the size it held in the year you pick."
         />
         <meta property="og:url" content="https://giovani-freitag.github.io/aoe2-atlas/" />
         <meta property="og:image" content="https://giovani-freitag.github.io/aoe2-atlas/social-card.png" />
@@ -43,23 +59,86 @@
         <!-- The wide card rather than the thumbnail: the map is the point, and a world shrunk to a
              thumbnail is a beige square. -->
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="AoE2 Atlas — Wonders and territories of Age of Empires II" />
+        <meta name="twitter:title" content="The 56 civilizations of Age of Empires II on one map — AoE2 Atlas" />
         <meta
             name="twitter:description"
-            content="Interactive map of Age of Empires II: where each civilization's Wonder really stands, and the reconstructed extent of its realm, century by century. In seventeen languages."
+            content="All 56 Age of Empires II civilizations on one map: each Wonder on the real monument it was modelled on, each realm at the size it held in the year you pick."
         />
         <meta name="twitter:image" content="https://giovani-freitag.github.io/aoe2-atlas/social-card.png" />
         <meta
             name="twitter:image:alt"
             content="A world map on parchment with the arms of 35 Age of Empires II civilizations standing on their territories in the year 1200."
         />
+
+        <!--
+            The atlas described as what it is underneath: a dataset of borders, with the sources it
+            was cut from and the licence they carry. Dataset is the one schema.org type on this
+            page with a documented consumer — Google's Dataset Search reads it. It claims nothing
+            the page does not show and nothing the repository does not ship.
+        -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Dataset",
+                "name": "AoE2 Atlas: the realms of the 56 Age of Empires II civilizations, AD 200 to 1600",
+                "description": "The territorial extent of every Age of Empires II civilization in each of nineteen dated maps between AD 200 and 1600, with the real monument each civilization's Wonder was modelled on. Borders are cut per century from historical basemaps, simplified, and measured on the sphere; a border carried from a neighbouring century is marked as such. Overlap is only ever reported between realms that stood in the same year.",
+                "url": "https://giovani-freitag.github.io/aoe2-atlas/",
+                "sameAs": "https://github.com/giovani-freitag/aoe2-atlas",
+                "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+                "inLanguage": ["en", "de", "es", "es-MX", "fr", "hi", "it", "ja", "ko", "ms", "pl", "pt-BR", "ru", "tr", "vi", "zh-CN", "zh-TW"],
+                "creator": {
+                    "@type": "Person",
+                    "name": "Giovani Freitag",
+                    "url": "https://github.com/giovani-freitag"
+                },
+                "temporalCoverage": "0200/1600",
+                "spatialCoverage": {
+                    "@type": "Place",
+                    "name": "World"
+                },
+                "keywords": [
+                    "Age of Empires II",
+                    "historical atlas",
+                    "historical borders",
+                    "territorial extent",
+                    "Wonders",
+                    "cartography"
+                ],
+                "measurementTechnique": "Borders cut per century from historical basemaps and simplified; areas measured on the sphere, so they are independent of the projection the map is drawn in.",
+                "variableMeasured": [
+                    {
+                        "@type": "PropertyValue",
+                        "name": "Realm area",
+                        "description": "The ground a civilization held in a given year, in square kilometres, measured on the sphere.",
+                        "unitText": "km2"
+                    },
+                    {
+                        "@type": "PropertyValue",
+                        "name": "Shared ground",
+                        "description": "The fraction of a realm's area that overlapped a contemporary's in the same year."
+                    }
+                ],
+                "isBasedOn": [
+                    "https://github.com/aourednik/historical-basemaps",
+                    "https://github.com/topojson/world-atlas",
+                    "https://ageofempires.fandom.com/wiki/Wonder_(Age_of_Empires_II)"
+                ],
+                "distribution": {
+                    "@type": "DataDownload",
+                    "name": "The nineteen century slices and the civilization catalogue",
+                    "encodingFormat": "application/json",
+                    "contentUrl": "https://github.com/giovani-freitag/aoe2-atlas/archive/refs/heads/main.zip"
+                }
+            }
+        </script>
     </head>
     <body>
         <!--
             The mark stands in until the bundle mounts and replaces it.
 
             Its styles are inline because the stylesheet arrives with the bundle it is waiting for,
-            and a reader looking at a blank page for two seconds decides the atlas is broken.
+            and a reader looking at a blank page for two seconds decides the atlas is broken. The
+            colour is the atlas's own, so the first paint and the mounted map agree.
         -->
         <div id="root">
             <div
@@ -70,7 +149,7 @@
                     align-items: center;
                     justify-content: center;
                     min-height: 100dvh;
-                    background: #0f1216;
+                    background: #1a130d;
                     color: #e6bb6b;
                     font-family: system-ui, sans-serif;
                     letter-spacing: 0.14em;

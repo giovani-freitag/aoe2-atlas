@@ -2,6 +2,7 @@
     "app": {
         "title": "AoE2 Atlas",
         "tagline": "Yüzyıl yüzyıl harikalar ve topraklar",
+        "documentTitle": "Age of Empires II'nin 56 uygarlığı tek bir haritada",
         "openRoster": "Uygarlık listesini aç",
         "openSettings": "Harita ayarlarını aç",
         "closeSettings": "Harita ayarlarını kapat",
@@ -34,7 +35,8 @@
         },
         "count": "{{year}} yılında {{standing}} ayakta · listede {{listed}}",
         "trace": "{{name}} uygarlığını haritaya çiz",
-        "untrace": "{{name}} uygarlığını haritadan kaldır"
+        "untrace": "{{name}} uygarlığını haritadan kaldır",
+        "everyCivilization": "56 uygarlığın tamamı, tarih ve anıtlarıyla (İngilizce)"
     },
     "sheet": {
         "grip": "Panel yüksekliğini değiştir",
