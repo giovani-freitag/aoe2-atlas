@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "Ubah ketinggian panel",
-        "details": "Butiran {{name}}"
+        "details": "Butiran {{name}}",
+        "close": "Tutup"
     },
     "marker": {
         "label": "{{name}} — {{monument}}, {{place}}"

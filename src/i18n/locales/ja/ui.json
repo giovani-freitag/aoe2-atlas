@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "パネルの高さを変える",
-        "details": "{{name}}の詳細"
+        "details": "{{name}}の詳細",
+        "close": "閉じる"
     },
     "marker": {
         "label": "{{name}} — {{monument}}、{{place}}"

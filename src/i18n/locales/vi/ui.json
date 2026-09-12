@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "Đổi chiều cao bảng",
-        "details": "Chi tiết về {{name}}"
+        "details": "Chi tiết về {{name}}",
+        "close": "Đóng"
     },
     "marker": {
         "label": "{{name}} — {{monument}}, {{place}}"

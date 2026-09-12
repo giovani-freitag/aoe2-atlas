@@ -580,65 +580,6 @@
     font-size: 0.6875rem;
 }
 
-.deck__rivals {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-/*
- * A row per neighbour, and no taller than the arms it carries.
- *
- * These used to be full thumb-sized rows, which made four neighbours as tall as the panel that
- * held them. The row is a reading with a switch behind it, not a button in a form, so it is set
- * to the height of what it shows.
- */
-.deck__rivals button {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    width: 100%;
-    min-height: 2rem;
-    padding: 2px var(--space-1);
-    border-radius: var(--radius-sm);
-    text-align: left;
-    color: var(--ink);
-}
-
-.deck__rivals button:hover {
-    background: rgb(36 28 16 / 7%);
-}
-
-.deck__rivals button[data-active='true'] {
-    background: rgb(138 106 31 / 16%);
-}
-
-.deck__rivals img {
-    flex: none;
-    width: 20px;
-    height: 20px;
-    border: 1px solid;
-    border-radius: 2px;
-}
-
-.deck__rivals span {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 0.8125rem;
-}
-
-.deck__rivals b {
-    flex: none;
-    font-family: var(--title);
-    font-size: 0.8125rem;
-    color: var(--brass-deep);
-}
 
 @media (min-width: 60rem) {
     .deck {

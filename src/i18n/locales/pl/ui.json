@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "Zmień wysokość panelu",
-        "details": "Szczegóły: {{name}}"
+        "details": "Szczegóły: {{name}}",
+        "close": "Zamknij"
     },
     "marker": {
         "label": "{{name}} — {{monument}}, {{place}}"

@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "पैनल की ऊँचाई बदलें",
-        "details": "{{name}} का विवरण"
+        "details": "{{name}} का विवरण",
+        "close": "बंद करें"
     },
     "marker": {
         "label": "{{name}} — {{monument}}, {{place}}"

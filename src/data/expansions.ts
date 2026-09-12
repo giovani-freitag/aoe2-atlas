@@ -32,3 +32,15 @@ export const EXPANSION_RECORDS: readonly ExpansionRecord[] = [
     { key: 'tlc', name: 'The Last Chieftains', shortName: 'TLC', releasedOn: '2026-02-17', released: true },
     { key: 'tvs', name: 'The Viking Sagas', shortName: 'TVS', releasedOn: '2026-09-22', released: false },
 ];
+
+/**
+ * The release a civilization arrived in, if it was not there from the start.
+ *
+ * A panel asks this before it frames anything: an empty card with a heading over it is worse
+ * than no card at all.
+ *
+ * @param civilization - The civilization being described.
+ */
+export function expansionOf(civilization: { expansion: string }): ExpansionRecord | undefined {
+    return EXPANSION_RECORDS.find((entry) => entry.key === civilization.expansion);
+}

@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "Изменить высоту панели",
-        "details": "Подробности: {{name}}"
+        "details": "Подробности: {{name}}",
+        "close": "Закрыть"
     },
     "marker": {
         "label": "{{name}} — {{monument}}, {{place}}"

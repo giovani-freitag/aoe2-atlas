@@ -52,7 +52,7 @@
 }
 
 .chip {
-    min-height: 1.75rem;
+    min-height: var(--icon);
     padding: 2px var(--space-2);
     border: 1px solid var(--oak);
     border-radius: var(--radius-sm);
@@ -168,11 +168,9 @@
     opacity: 0.18;
 }
 
-.civ__arms {
+.arms {
     flex: none;
     display: block;
-    width: 26px;
-    height: 26px;
     border-radius: 2px;
 }
 
@@ -467,12 +465,6 @@
     .rail-body__ends {
         display: flex;
     }
-}
-
-.rail__credit {
-    margin-top: var(--space-2);
-    font-size: 0.625rem;
-    color: var(--text-faint);
 }
 
 /* ---- legend ------------------------------------------------------------- */
@@ -805,12 +797,12 @@
 }
 
 /*
- * The contemporaries, as a row of their own arms.
+ * The contemporaries, in whichever of two shapes the room allows.
  *
  * Arms are how a civilization is known everywhere else here — on the map, in the roster, at the
- * top of this very panel — so they are what a reader recognises fastest, and they take a
- * quarter of the room a list of names does. The share rides under each one; the name is in the
- * label, for a pointer resting on it and for anyone listening rather than looking.
+ * head of its own panel — so packed into a row under the name they are what a reader recognises
+ * fastest, and they take a quarter of the room a list of names does. Given a panel of its own,
+ * the same list names them.
  */
 .rivals {
     display: flex;
@@ -831,54 +823,100 @@
 }
 
 .rivals ul {
-    display: flex;
-    gap: var(--space-1);
     list-style: none;
     padding: 0;
     margin: 0;
+}
+
+.rivals button {
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius);
+}
+
+.rivals abbr {
+    text-decoration: none;
+}
+
+/* Packed: a row of arms with the share under each, scrolled sideways if there are many. */
+.rivals[data-layout='arms'] ul {
+    display: flex;
+    gap: var(--space-1);
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
 }
 
-.rivals ul::-webkit-scrollbar {
+.rivals[data-layout='arms'] ul::-webkit-scrollbar {
     display: none;
 }
 
-.rivals button {
-    display: flex;
+.rivals[data-layout='arms'] button {
     flex-direction: column;
-    align-items: center;
     gap: 1px;
     padding: 3px var(--space-1);
-    border-radius: var(--radius);
     color: var(--text-muted);
 }
 
-.rivals button:hover {
+.rivals[data-layout='arms'] button:hover {
     background: var(--leather-raised);
 }
 
-/* One already traced wears the brass, so the row reads as a set of switches, which it is. */
-.rivals button[data-active='true'] {
+.rivals[data-layout='arms'] button[data-active='true'] {
     background: var(--brass-dim);
     color: var(--brass-soft);
 }
 
-.rivals img {
-    display: block;
-    width: 26px;
-    height: 26px;
-    border: 1px solid;
-    border-radius: 3px;
-}
-
-.rivals span {
+.rivals[data-layout='arms'] b {
     font-size: 0.625rem;
+    font-weight: 400;
 }
 
-.rivals abbr {
-    text-decoration: none;
+/*
+ * Named: a row per neighbour, no taller than the arms it carries.
+ *
+ * These were full thumb-sized rows, which made four neighbours as tall as the panel holding
+ * them. A row here is a reading with a switch behind it, not a button in a form, so it is set
+ * to the height of what it shows.
+ */
+.rivals[data-layout='rows'] ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rivals[data-layout='rows'] button {
+    gap: var(--space-2);
+    width: 100%;
+    min-height: 2rem;
+    padding: 2px var(--space-1);
+    border-radius: var(--radius-sm);
+    text-align: left;
+    color: var(--ink);
+}
+
+.rivals[data-layout='rows'] button:hover {
+    background: rgb(36 28 16 / 7%);
+}
+
+.rivals[data-layout='rows'] button[data-active='true'] {
+    background: rgb(138 106 31 / 16%);
+}
+
+.rivals[data-layout='rows'] span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.8125rem;
+}
+
+.rivals[data-layout='rows'] b {
+    flex: none;
+    font-family: var(--title);
+    font-size: 0.8125rem;
+    color: var(--brass-deep);
 }
 
 /* ---- legend ------------------------------------------------------------- */
@@ -1214,39 +1252,6 @@
 
 /* ---- settings ----------------------------------------------------------- */
 
-.sheet--settings .card .rail-body {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-        'reading'
-        'track'
-        'ends';
-}
-
-.sheet--settings .rail-body__reading strong,
-.sheet--settings .rail-body__ends,
-.sheet--settings .rail-body__reading .eyebrow {
-    color: var(--ink-soft);
-}
-
-.sheet--settings .rail-body__reading strong {
-    color: var(--ink);
-}
-
-.sheet--settings .rail-body__profile span {
-    background: var(--parchment-deep);
-    opacity: 1;
-}
-
-.sheet--settings .rail-body__profile span[data-reached='true'] {
-    background: var(--brass-deep);
-}
-
-.sheet--settings .rail-body__rope {
-    background: var(--parchment-deep);
-    background-image: none;
-    box-shadow: none;
-}
-
 .options {
     display: flex;
     flex-direction: column;
@@ -1330,11 +1335,6 @@
 
 .switch[data-active='true'] .switch__knob {
     transform: translateX(1.25rem);
-}
-
-.sheet__credit {
-    font-size: 0.6875rem;
-    color: var(--text-faint);
 }
 
 /* A share measured against a borrowed border is shown as an estimate, not a figure. */

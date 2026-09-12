@@ -83,6 +83,7 @@
     :root {
         /* A pointer is precise, so controls can stop being thumb-sized. */
         --control: 2.25rem;
+        --icon: 2rem;
     }
 }
 
@@ -149,21 +150,6 @@
         13px 11px,
         19px 17px,
         23px 29px;
-}
-
-/* A stitched edge, the way a tooled panel is finished. */
-.stitched {
-    position: relative;
-}
-
-.stitched::after {
-    content: '';
-    position: absolute;
-    inset: var(--space-1);
-    border: 1px dashed var(--stitch);
-    border-radius: inherit;
-    opacity: 0.45;
-    pointer-events: none;
 }
 
 /* Oak, for the rails a control slides along. */

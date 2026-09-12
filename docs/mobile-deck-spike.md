@@ -156,6 +156,34 @@ their order, and the roster is still a column.
 | Year | 533 | 619 |
 | Bar | 619 | 664 |
 
+## A pass for duplication
+
+Two panels describing the same civilization is two copies of every line, and a copy is a promise
+to change both. The phone's had already drifted: it had lost the hand-drawn note and the
+carried-border warning that the desktop's still showed. What each thing *says* now lives in one
+place and the panels only arrange it.
+
+| Extracted | Was written in | Now |
+| --- | --- | --- |
+| The realm's facts, the Wonder's, the expansion's | both panels | `civ-facts.tsx` |
+| Who the contemporaries are, and how many is too many | both panels | `contemporaries.ts` |
+| The neighbours, packed as arms or named in rows | two components | `rivals.tsx`, one prop apart |
+| A civilization's arms | five `img` tags, five spellings | `civ-arms.tsx` and `assets.ts` |
+| The lookup of a civilization's release | both panels | `expansions.ts` |
+
+The refactor turned up a bug it had caused on the way: with the neighbours moved into a shared
+component, tapping one in the deck traced the realm behind a panel the reader could not see
+past, because only the sheet knew how to get out of the way. The deck now answers the same
+question the sheet does — it closes the drawer.
+
+Dead weight went with it: the styles for a settings sheet that has not carried the year for some
+time, two credit lines with no user, and a stitched edge the legend stopped wearing.
+
+Two things the earlier sweep had flagged are fixed. A share that rounds to nothing now prints as
+"<1%" rather than "0%", which said the one thing it could not mean. And the roster's expansion
+chips, the only controls in the atlas under any reasonable target, are a thumb on a phone and a
+pointer's worth on a desktop, like every other control.
+
 ## What I would decide before going further
 
 Whether the map should reframe when a panel opens and closes. It does not in the spike: the

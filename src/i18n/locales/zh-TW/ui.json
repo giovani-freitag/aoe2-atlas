@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "調整面板高度",
-        "details": "{{name}}詳情"
+        "details": "{{name}}詳情",
+        "close": "關閉"
     },
     "marker": {
         "label": "{{name}} — {{monument}}，{{place}}"

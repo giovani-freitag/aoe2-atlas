@@ -38,7 +38,8 @@
     },
     "sheet": {
         "grip": "Panel yüksekliğini değiştir",
-        "details": "{{name}} ayrıntıları"
+        "details": "{{name}} ayrıntıları",
+        "close": "Kapat"
     },
     "marker": {
         "label": "{{name}} — {{monument}}, {{place}}"
