@@ -38,15 +38,15 @@ only ever share the screen if they shared the century.
 
 ## ✨ Features
 
-- 🗺️ **All 56 civilizations** — arms standing inside their own territory, with a pin on the Wonder itself
-- 🕰️ **19 centuries** — one map per slice from 200 to 1600, fetched as you move the rail
-- 📐 **Areas you can compare** — measured on the sphere, so the numbers hold whichever projection you pick
-- 〰️ **Borders drawn as well as they are known** — solid where surveyed, dashed and soft where approximate, faint when the line had to come from a neighbouring century
-- 🎨 **Overlap you can read** — contemporaries cross-hatch, colour for the region and hatch angle for the civilization
-- 🌍 **Three projections** — Equal Earth, Natural Earth, Mercator; the drawing changes, no number does
-- 🗣️ **17 languages** — names, monuments, places, realms, numbers, dates, search and sorting all follow
-- 📱 **Built for a phone first** — the map owns the screen; the year sits at the foot where a thumb is, and a civilization becomes a toolbar rather than a sheet over the ground it describes
-- 🏰 **Age skin** — parchment, leather, engraved iron, oak, embers and Cinzel
+- 🗺️ **All 56 civilizations** — each emblem stands in its own territory, with a pin on the Wonder's real monument
+- 🕰️ **Nineteen maps, 200 to 1600** — drag the year and every border redraws; a civilization shows up only in the years it existed
+- 📐 **Areas you can compare** — measured on the globe, so two realms compare fairly whatever projection is on screen
+- 〰️ **Borders as honest as the record** — a firm line where the border is known, soft and dashed where it is a guess, faint when it had to be borrowed from the century next door
+- 🎨 **Overlap you can read** — where two realms met, both hatchings show through: the colour is the region, the angle is the civilization
+- 🌍 **Three projections** — Equal Earth, Natural Earth, Mercator. The shape of the world changes; none of the numbers do
+- 🗣️ **17 languages** — civilization and monument names, cities, numbers, dates, and the order the list sorts in
+- 📱 **Made for a phone** — the map keeps the screen, the year stays under your thumb, and a civilization opens as a strip you read without losing sight of its territory
+- 🏰 **Dressed like the game** — aged parchment, iron and leather, and embers burning under the timeline
 
 <p align="center">
   <img src="docs/realm.png" alt="The Byzantines opened on the 1200 map: their border traced, the pin on Hagia Sophia, and the 5% of their ground shared with a contemporary" width="100%">
@@ -69,7 +69,7 @@ npm run dev        # http://localhost:5174
 | `npm run build` | `tsc -b` plus the production build |
 | `npm run lint` | ESLint, type-aware |
 | `npm test` | Vitest |
-| `npm run data:build` | regenerate the 19 century slices |
+| `npm run data:build` | rebuild the 19 dated maps |
 | `npm run data:icons` | fetch the three emblems the game does not ship yet |
 
 ## 🧭 Where the data comes from
