@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.6.0...v1.6.1) (2026-09-12)
+
+
+### Fixed
+
+* **pages:** let the civilizations table fit the screen it is read on ([d0b0af2](https://github.com/giovani-freitag/aoe2-atlas/commit/d0b0af241075b95835069be53426342cf6682018))
+
 ## [1.6.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.5.1...v1.6.0) (2026-09-12)
 
 
