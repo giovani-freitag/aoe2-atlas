@@ -1,4 +1,4 @@
-import { useMemo, type CSSProperties } from 'react';
+import { useMemo, type CSSProperties, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
@@ -14,6 +14,8 @@ export interface TimelineRailProps {
     loading: boolean;
     /** Adds an arrow either side of the reading, for choosing a century without dragging. */
     stepping?: boolean;
+    /** A control to stand at the end of the track's row, where the thumb already is. */
+    trailing?: ReactNode;
     onChange: (year: number) => void;
 }
 
@@ -34,7 +36,7 @@ export interface TimelineRailProps {
  * exactly the kind of thing a reader comes here to do. They sit beside the track rather than on
  * a line of their own, because a line of their own cost the map thirty pixels of its height.
  */
-export function TimelineRail({ civilizations, years, year, loading, stepping, onChange }: TimelineRailProps) {
+export function TimelineRail({ civilizations, years, year, loading, stepping, trailing, onChange }: TimelineRailProps) {
     const { t } = useTranslation();
     const format = useFormat();
 
@@ -127,6 +129,8 @@ export function TimelineRail({ civilizations, years, year, loading, stepping, on
                         <ChevronRight size={20} aria-hidden />
                     </button>
                 ) : null}
+
+                {trailing}
             </div>
 
 

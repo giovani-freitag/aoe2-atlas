@@ -200,9 +200,9 @@
  */
 .legend {
     position: absolute;
-    left: var(--space-2);
-    /* Clear of the wind rose, which has the other top corner. */
-    right: 5.5rem;
+    /* Beside the pill that carries the mark and the preferences, at the head of the map. */
+    left: calc(var(--brand-width, 0px) + 5.25rem);
+    right: var(--space-2);
     top: var(--space-2);
     display: flex;
     flex-direction: column;

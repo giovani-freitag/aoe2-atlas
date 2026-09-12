@@ -115,6 +115,26 @@ What the sweep also turned up, left alone:
   tapped with a thumb.
 - No clipped text anywhere, at any panel, in any of the four.
 
+## The bar stopped being a bar
+
+Two buttons and a mark do not need a band across the screen, and the band was costing the map
+its full height. On a phone the header is now a pill floating at the head of the map, carrying
+the mark and the way into the preferences; the legend pill stands beside it, and the wind rose
+has the far corner. The filters went to the other end of the year rail, next to the arrows,
+where the thumb already is.
+
+Each drawer comes in from the side its own button is on, so they swapped: preferences from the
+left, filters from the right. On a wide screen the header is a band again at the top of the
+grid, the roster is the left column and the preferences still come from the right.
+
+| Band | Top | Bottom |
+| --- | --- | --- |
+| Map | 0 | 578 |
+| Year | 578 | 664 |
+
+The map gained 45 pixels over the version with a bar at the foot, and 98 over the one with a bar
+at the head.
+
 ## The layout turned upside down
 
 On a phone the header moved below the year rail, to the lowest strip of the screen. Reaching the

@@ -5,7 +5,7 @@ import { SLICE_YEARS } from '@/data/dataset.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { drawnRealms, useAtlas } from '@/react/providers/atlas-context.ts';
 import { useEscape } from '@/react/hooks/use-escape.ts';
-import { useMeasuredHeight } from '@/react/hooks/use-measured-height.ts';
+import { useMeasuredHeight, useMeasuredWidth } from '@/react/hooks/use-measured-height.ts';
 import { useTimeSlice } from '@/react/hooks/use-time-slice.ts';
 import { useSheetHistory } from '@/react/hooks/use-sheet-history.ts';
 import { useSpecular } from '@/react/hooks/use-specular.ts';
@@ -34,6 +34,9 @@ export function AppShell() {
     // the stylesheet where those two end.
     const bar = useMeasuredHeight<HTMLElement>('--bar-height');
     const rail = useMeasuredHeight<HTMLDivElement>('--rail-height');
+
+    // On a phone the bar is a pill floating over the map, and the legend stands beside it.
+    const brand = useMeasuredWidth<HTMLDivElement>('--brand-width');
 
     // The document follows the language: its tag for screen readers and fonts, its title for the tab.
     const language = i18n.language;
@@ -103,21 +106,7 @@ export function AppShell() {
             <header className="bar leather" ref={bar}>
                 <EmberCanvas className="bar__embers" density={0.7} wind={0.6} />
 
-                {/* Wide, the roster is already a column of the grid, so the handle that opens it would open nothing. */}
-                {wide ? null : (
-                    <button
-                        type="button"
-                        className="bar__button bar__filter iron riveted"
-                        onClick={() => {
-                            setRosterOpen(true);
-                        }}
-                        aria-label={t('app.openRoster')}
-                    >
-                        <ListFilter size={20} aria-hidden />
-                    </button>
-                )}
-
-                <div className="bar__brand">
+                <div className="bar__brand" ref={brand}>
                     <img src={`${import.meta.env.BASE_URL}brand.svg`} alt="" width={26} height={26} />
                     <div>
                         <h1>{t('app.title')}</h1>
@@ -159,6 +148,7 @@ export function AppShell() {
             <RosterDrawer
                 civilizations={listed}
                 borders={borders}
+                side={wide ? 'left' : 'right'}
                 open={rosterOpen}
                 onClose={() => {
                     setRosterOpen(false);
@@ -184,7 +174,7 @@ export function AppShell() {
                 )
             ) : null}
 
-            <SettingsSheet open={settingsOpen} onClose={closeSettings} />
+            <SettingsSheet side={wide ? 'right' : 'left'} open={settingsOpen} onClose={closeSettings} />
 
             {/*
              * The same instrument at both sizes, because the year is not a preference.
@@ -202,6 +192,20 @@ export function AppShell() {
                     loading={loading}
                     stepping={!wide}
                     onChange={setYear}
+                    trailing={
+                        wide ? null : (
+                            <button
+                                type="button"
+                                className="rail-body__step iron riveted"
+                                onClick={() => {
+                                    setRosterOpen(true);
+                                }}
+                                aria-label={t('app.openRoster')}
+                            >
+                                <ListFilter size={18} aria-hidden />
+                            </button>
+                        )
+                    }
                 />
             </div>
         </div>

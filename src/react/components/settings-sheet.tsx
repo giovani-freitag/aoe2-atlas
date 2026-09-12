@@ -8,6 +8,8 @@ import { LanguagePicker } from './language-picker.tsx';
 import { SideDrawer } from './side-drawer.tsx';
 
 export interface SettingsSheetProps {
+    /** Which edge it comes in from; it follows the button that opens it. */
+    side: 'left' | 'right';
     open: boolean;
     onClose: () => void;
 }
@@ -24,13 +26,13 @@ export interface SettingsSheetProps {
  * atlas a preference — something set once and left alone — when it is the control a reader
  * touches more than any other. It lives on the rail now, at both sizes.
  */
-export function SettingsSheet({ open, onClose }: SettingsSheetProps) {
+export function SettingsSheet({ side, open, onClose }: SettingsSheetProps) {
     const { t } = useTranslation();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
 
     return (
-        <SideDrawer label={t('settings.title')} open={open} onClose={onClose} side="right" className="prefs">
+        <SideDrawer label={t('settings.title')} open={open} onClose={onClose} side={side} className="prefs">
             <div className="drawer__head">
                 <div>
                     <h2>{t('settings.title')}</h2>

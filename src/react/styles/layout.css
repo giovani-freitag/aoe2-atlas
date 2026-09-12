@@ -18,9 +18,8 @@
     display: grid;
     grid-template-areas:
         'stage'
-        'rail'
-        'bar';
-    grid-template-rows: 1fr auto auto;
+        'rail';
+    grid-template-rows: 1fr auto;
     height: 100%;
     min-height: 0;
 }
@@ -36,29 +35,39 @@
  * size now, the one the skin calls a control, which is a thumb on a phone and a pointer's worth
  * on a desktop.
  */
+/*
+ * On a phone the bar is not a band at all: it is a pill on the map.
+ *
+ * Two buttons and a mark do not need a strip of their own across the screen, and the strip was
+ * costing the map its full height. The mark and the way into the preferences ride together in
+ * one pill at the head of the map, and the legend stands beside it. What is on the map — the
+ * filters — went to the other end of the year rail, where the thumb already is.
+ */
 .bar {
-    grid-area: bar;
-    position: relative;
+    position: fixed;
+    top: var(--space-2);
+    left: var(--space-2);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2);
-    padding: var(--space-1) var(--space-2) calc(var(--space-1) + env(safe-area-inset-bottom));
-    border-top: 1px solid var(--oak);
-    z-index: 2;
+    gap: var(--space-1);
+    padding: 3px;
+    border: 1px solid var(--oak);
+    border-radius: 999px;
+    box-shadow: var(--shadow-lg);
+    z-index: 3;
 }
 
-/* How the world is drawn to the left, what is on it to the right, the name between them. */
-.bar__settings {
-    order: -1;
-}
-
-.bar__filter {
-    order: 1;
-}
-
+.bar__brand h1,
 .bar__spacer {
     display: none;
+}
+
+.bar__brand {
+    padding-left: var(--space-1);
+}
+
+.bar__settings {
+    border-radius: 999px;
 }
 
 .bar__embers {
@@ -340,19 +349,30 @@
     }
 
     .bar {
-        justify-content: flex-start;
+        grid-area: bar;
+        position: relative;
+        top: auto;
+        left: auto;
+        gap: var(--space-2);
         padding: var(--space-2) var(--space-4);
-        border-top: none;
+        border: none;
         border-bottom: 1px solid var(--oak);
+        border-radius: 0;
+        box-shadow: none;
+        z-index: 2;
     }
 
-    .bar__settings,
-    .bar__filter {
-        order: 0;
-    }
-
+    .bar__brand h1,
     .bar__spacer {
         display: block;
+    }
+
+    .bar__brand {
+        padding-left: 0;
+    }
+
+    .bar__settings {
+        border-radius: var(--radius);
     }
 
     .bar__brand h1 {
@@ -462,7 +482,7 @@
      * the rail's own top padding. Any deeper and the bar starts eating the year, which is the
      * one reading on this screen that everything else is measured against.
      */
-    bottom: calc(var(--rail-height, 0px) + var(--bar-height, 0px) - 6px);
+    bottom: calc(var(--rail-height, 0px) - 6px);
     z-index: 3;
     display: flex;
     flex-direction: column;
