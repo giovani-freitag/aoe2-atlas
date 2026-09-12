@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.3.0...v1.4.0) (2026-09-12)
+
+
+### Added
+
+* put the year, the open realm and the pins in the address, with a share button ([2e7ac52](https://github.com/giovani-freitag/aoe2-atlas/commit/2e7ac524d32a2e0fe07eb61379b83d91bcedd8dc))
+
+
+### Performance
+
+* serve the civilization emblems as WebP ([b22c6e7](https://github.com/giovani-freitag/aoe2-atlas/commit/b22c6e792d2ac15c48dabdaed4ffdcfdabdec317))
+
 ## [1.3.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.2.0...v1.3.0) (2026-09-12)
 
 
