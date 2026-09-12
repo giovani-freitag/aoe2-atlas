@@ -88,13 +88,21 @@
     border-radius: 999px;
 }
 
+/*
+ * Over the instrument rather than behind it.
+ *
+ * Behind it the sparks were swallowed by the histogram, which is opaque and stands exactly where
+ * they rise. Painted over it they add light instead of taking it away — the canvas composites
+ * with lighter on the dark rail — so the brass bars glow where a spark crosses them.
+ */
 .rail__embers {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
+    z-index: 2;
     pointer-events: none;
-    opacity: 0.7;
+    opacity: 0.75;
 }
 
 .bar__brand {
@@ -147,7 +155,9 @@
 .rail {
     grid-area: rail;
     position: relative;
-    isolation: isolate;
+    /* Above the deck sliding out from under it, and casting onto it. */
+    z-index: 2;
+    box-shadow: 0 -8px 14px rgb(0 0 0 / 45%);
     padding: var(--space-2) var(--space-3);
     border-top: 1px solid var(--oak);
     z-index: 2;
@@ -514,12 +524,14 @@
     left: 0;
     right: 0;
     /*
-     * Overlapped onto the rail, which then reads as sliding out from under it — but only onto
-     * the rail's own top padding. Any deeper and the bar starts eating the year, which is the
-     * one reading on this screen that everything else is measured against.
+     * Tucked under the rail, not laid over it.
+     *
+     * The bar slides up out of the year's own band and its last few pixels stay behind it, which
+     * is the right way round: the year is the thing everything else is measured against, so it is
+     * the thing that shadows the rest rather than the thing that gets covered.
      */
-    bottom: calc(var(--rail-height, 0px) - 6px);
-    z-index: 3;
+    bottom: calc(var(--rail-height, 0px) - 8px);
+    z-index: 1;
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -535,9 +547,8 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-1) var(--space-2);
+    padding: var(--space-1) var(--space-2) calc(var(--space-1) + 8px);
     border-top: 2px solid;
-    box-shadow: var(--shadow-lg);
 }
 
 .deck__bar img {

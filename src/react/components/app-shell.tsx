@@ -102,20 +102,27 @@ export function AppShell() {
     );
 
     /*
-     * Where the embers are allowed to appear: a hand's width around the slider's handle.
+     * Where the fire burns: a hand's width around the slider's handle, on the rail it rides.
      *
-     * The filled stretch of rail ends exactly under the middle of the handle, so its right edge
-     * is the handle's position without having to redo the arithmetic that put it there. Measured
-     * on every spawn rather than held, because the handle moves and the fire should follow it.
+     * The filled stretch of rail ends exactly under the middle of the handle and is as tall as
+     * the rope, so it gives both the position and the line without redoing the arithmetic that
+     * put them there. Measured on every spawn rather than held, because the handle moves and the
+     * fire should follow it.
      */
     const emberColumn = useCallback(() => {
         const fill = document.querySelector('.rail-body__fill');
         const band = document.querySelector('.rail');
         if (!fill || !band) return { from: 0, width: 0 };
 
+        const rope = fill.getBoundingClientRect();
+        const box = band.getBoundingClientRect();
         const width = 84;
 
-        return { from: fill.getBoundingClientRect().right - band.getBoundingClientRect().left - width / 2, width };
+        return {
+            from: rope.right - box.left - width / 2,
+            width,
+            base: rope.top + rope.height / 2 - box.top,
+        };
     }, []);
 
     return (
