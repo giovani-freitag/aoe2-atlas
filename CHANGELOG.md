@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.5.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.4.0...v1.5.0) (2026-09-12)
+
+
+### Added
+
+* name the open civilization and the year in the document title ([d29a651](https://github.com/giovani-freitag/aoe2-atlas/commit/d29a651d9b7c2ad6693b74ae99c846d877c20aa6))
+* redraw the social card so it reads at the size a pasted link shows it ([b63eedf](https://github.com/giovani-freitag/aoe2-atlas/commit/b63eedfca7a2a181f31862e7f4712dbb9f7f627a))
+* **roster:** fold the expansion chips behind one on a phone ([d093564](https://github.com/giovani-freitag/aoe2-atlas/commit/d093564738ea968edf409e08b645229d4e59b870))
+
+
+### Performance
+
+* fetch the coastline as data instead of shipping it inside the bundle ([8755255](https://github.com/giovani-freitag/aoe2-atlas/commit/8755255e094649c23ccdbe55835905dc9760d55d))
+
 ## [1.4.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.3.0...v1.4.0) (2026-09-12)
 
 
