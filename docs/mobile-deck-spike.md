@@ -25,10 +25,10 @@ Measured on an iPhone 13 viewport, as a share of the map area:
 
 | State | Map covered |
 | --- | --- |
-| Bar alone | 10% |
-| Contemporaries open | 32% |
-| Wonder open | 36% |
-| Realm open | 57% |
+| Bar alone | 8% |
+| Contemporaries open | 28% |
+| Wonder open | 33% |
+| Realm open | 54% |
 
 The sheet it would replace covers 34% at its peek and 88% at its tallest, and covers it whether
 or not the reader is reading anything.
@@ -42,9 +42,8 @@ or not the reader is reading anything.
 
 ## What it breaks, unfixed in the spike
 
-- **The legend collides with the bar.** The legend card is anchored to the foot of the map and
-  the deck now sits there. It would have to be lifted by the deck's height, the way the sheets
-  were lifted by the rail's.
+- ~~The legend collides with the bar.~~ Fixed: on a phone the legend moved to the head of the
+  map, clear of the wind rose. On a wide screen it keeps the foot, where nothing disputes it.
 - **The zoom controls are covered by an open panel.** They are bottom-right inside the map; the
   panel is full width. Either the panel stops short of them or they move.
 - **There is no close label in the bundles.** The spike borrows the panel's own label for the
@@ -53,6 +52,13 @@ or not the reader is reading anything.
   away with this because its icons are tools; here an icon for "realm" is a guess.
 - **Desktop is unchanged** — it keeps the docked panel, which is right, but it means two
   components describe the same civilization and can drift apart.
+
+## Since the first pass
+
+The bar is glued onto the rail rather than floating above it, overlapping it by six pixels —
+onto the rail's own top padding and no further, because any deeper and it starts eating the
+year. The rail itself was trimmed from 93 to 83 pixels. Bar and rail together now stand 129
+pixels tall against the 153 they did, and the sheet they replace stood 93 + its own 226.
 
 ## What I would decide before going further
 

@@ -246,7 +246,7 @@
         'reading'
         'track'
         'ends';
-    gap: var(--space-1);
+    gap: 2px;
 }
 
 .rail-body__reading {
@@ -268,7 +268,7 @@
 
 .rail-body__reading strong {
     font-family: var(--title);
-    font-size: 1.375rem;
+    font-size: 1.1875rem;
     line-height: 1.1;
     color: var(--brass-soft);
 }
@@ -302,7 +302,7 @@
      * track is placed against those two so one set of rules serves both sizes.
      */
     --knob: 1.125rem;
-    --lane: 1.75rem;
+    --lane: 1.5rem;
     --rope: 5px;
 
     /*
