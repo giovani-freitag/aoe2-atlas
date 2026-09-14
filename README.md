@@ -25,7 +25,7 @@
 
 <p align="center">
   <a href="https://giovani-freitag.github.io/aoe2-atlas/"><strong>Open the atlas →</strong></a><br>
-  <sub>Runs in the browser. Drag the year and every border redraws.</sub>
+  <sub>Drag the year and every border redraws.</sub>
 </p>
 
 <p align="center">
@@ -46,22 +46,27 @@ only ever share the screen if they shared the century.
   civilization appears only in the years it existed. The borders are cut per century from
   [aourednik/historical-basemaps](https://github.com/aourednik/historical-basemaps) and drawn as
   well as they are known: firm where the record is firm, dashed where it is a guess, faint where
-  the line had to be borrowed from the century next door. The areas are approximate for the same
-  reason — but all measured the same way, on the globe, so they are worth something against each
-  other.
+  the line had to be borrowed from the century next door. The areas carry that same uncertainty,
+  and say so.
 - 🎨 **Overlap that means something** — two realms share the screen only if they shared the
   century, and where they met both hatchings show through. It is the reason the atlas is cut into
   centuries at all: on a single map of everyone's greatest extent, the Mongols and the Persians
   look like they are fighting over the same ground, and the Persian outline is from 600 while the
   Mongol one is from 1279.
+- 🧭 **Three projections, and the atlas says what each one costs you** — Equal Earth keeps area
+  and leans the shapes at the edges; Mercator keeps angle and inflates everything far from the
+  equator; Natural Earth errs a little in both. Whichever you pick, not one number in the panels
+  moves: every area was measured on the sphere when the data was built, all of them the same way,
+  so the projection changes the drawing and never the figure you are comparing it against.
 
 <p align="center">
   <img src="docs/realm.png" alt="The Byzantines opened on the 1200 map: their border traced, the pin on Hagia Sophia, and the 5% of their ground shared with a contemporary" width="100%">
 </p>
 
 <p align="center">
-  <sub>Open a civilization and the map flies to its realm. Close it and you are back where you
-  were looking, at the zoom you had set.</sub>
+  <sub>The Byzantines in 1200: a border the panel marks <em>approximate</em> because the source
+  does, and 5% of their ground shared — counted only against realms alive in the same year to
+  contest it. Their height was 600, three times this size, and the panel will take you there.</sub>
 </p>
 
 ## 🚀 Run it

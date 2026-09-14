@@ -91,8 +91,8 @@ a real browser at twelve widths from 360 to 1920, each with a realm traced and a
 open, asking at each one whether the legend shares ground with the deck, the panel, the controls,
 the pill or the rail, whether the page overflows sideways, and whether any text is clipped.
 
-Every control has a name, the headings run in order, no image is without alt text, and the page
-keeps its `h1` on a phone — out of sight, but present in the accessibility tree.
+The one a phone is apt to lose is the `h1`. The wordmark shrinks to a pill the size of two
+buttons, and the heading has to go on standing behind it in the accessibility tree.
 
 Flights honour `prefers-reduced-motion`, and they have to ask for themselves. Cutting every CSS
 transition and animation does not reach them: a flight across the map is neither of those but d3
