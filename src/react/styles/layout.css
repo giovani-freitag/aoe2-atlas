@@ -445,11 +445,6 @@
         padding-left: 0;
     }
 
-    .bar__settings {
-        order: 0;
-        border-radius: var(--radius);
-    }
-
     .bar__brand h1 {
         font-size: 0.9375rem;
     }

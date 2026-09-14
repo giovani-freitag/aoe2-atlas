@@ -86,10 +86,16 @@ thrown up from under the last band of the atlas.
 ## How it is checked
 
 `npm test` covers the rules underneath — the share formatter, who counts as a contemporary, and
-the framing maths with a panel over one side or the foot. The layout itself is checked by driving
-a real browser at twelve widths from 360 to 1920, each with a realm traced and a civilization
-open, asking at each one whether the legend shares ground with the deck, the panel, the controls,
-the pill or the rail, whether the page overflows sideways, and whether any text is clipped.
+the framing maths with a panel over one side or the foot. The layout itself is not in the suite.
+It is checked by driving a real browser across a dozen widths from 360 to 1920 and asking at each
+one which panels share ground with the pill, the controls and the rail, and whether the page
+overflows sideways.
+
+That sweep is run twice and the two passes have to agree: once opening the atlas at each width,
+and once opening it wide and dragging the window down to that width. A `dialog` cannot change
+modality while it is open, so a panel keeps whichever mode it was opened in until something closes
+it — and the two modes sit in different stacking worlds. A modal one is in the top layer, above
+every `z-index` on the page; a docked one is subject to them all.
 
 The one a phone is apt to lose is the `h1`. The wordmark shrinks to a pill the size of two
 buttons, and the heading has to go on standing behind it in the accessibility tree.

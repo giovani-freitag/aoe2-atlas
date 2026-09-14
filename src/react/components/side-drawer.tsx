@@ -33,22 +33,54 @@ export function SideDrawer({ label, open, onClose, side, pinnedWhenWide, classNa
     const dialog = useRef<HTMLDialogElement>(null);
     const pinned = wide && pinnedWhenWide === true;
 
+    /** Which of the two modes the panel is currently open in, so a change of width is noticed. */
+    const openedWide = useRef<boolean | null>(null);
+
+    /** Set while the panel is being reopened in the other mode, so that close is not reported. */
+    const swapping = useRef(false);
+
     useEffect(() => {
         const element = dialog.current;
         if (!element) return;
 
         const shouldOpen = pinned || open;
-        if (shouldOpen === element.open) return;
 
         if (!shouldOpen) {
-            element.close();
+            if (element.open) element.close();
+            openedWide.current = null;
 
             return;
         }
 
+        /*
+         * A dialog cannot change modality while it is open, and the two modes differ in the
+         * things this layout depends on: a modal one rides the top layer, above every z-index on
+         * the page, and makes the rest inert. Carrying the mode the panel was opened in across a
+         * change of width left a panel opened on a desktop still non-modal on a phone, where the
+         * header pill and the year rail are painted over it — the rail covering the very line
+         * that credits where the borders came from.
+         */
+        if (element.open && openedWide.current === wide) return;
+        if (element.open) {
+            swapping.current = true;
+            element.close();
+        }
+
+        openedWide.current = wide;
         if (wide) element.show();
         else element.showModal();
     }, [wide, pinned, open]);
+
+    const reportClose = (): void => {
+        if (swapping.current) {
+            swapping.current = false;
+
+            return;
+        }
+
+        openedWide.current = null;
+        onClose();
+    };
 
     const closeOnBackdrop = (event: MouseEvent<HTMLDialogElement>): void => {
         if (pinned || event.target !== event.currentTarget) return;
@@ -69,7 +101,7 @@ export function SideDrawer({ label, open, onClose, side, pinnedWhenWide, classNa
             ref={dialog}
             aria-label={label}
             onCancel={onClose}
-            onClose={onClose}
+            onClose={reportClose}
             onClick={closeOnBackdrop}
         >
             {children}
