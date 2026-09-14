@@ -44,8 +44,12 @@ be at the host root, and the host root is a 404 nobody here controls. Google tre
 robots.txt as "crawl everything", which is already what this site wants. It is *crawl* control
 that is unavailable, not *index* control: `<meta name="robots">` in `index.html` works fine.
 
-**sitemap.xml** — it would hold one `<url>`, and an unmaintained `<lastmod>` becomes a lie within
-two releases. Worth revisiting only if the atlas ever gains real URLs.
+**sitemap.xml** — refused while the atlas was one address, and reversed on 14 September 2026
+when the civilizations table was written in all seventeen languages. Eighteen addresses now, of
+which sixteen have no inbound link at all and are reachable only from a drawer inside a map that
+no crawler opens. It is generated with the pages, so it cannot rot, and it has to be handed over
+by hand in Search Console — a `Sitemap:` line belongs in a robots.txt at a host root nobody here
+owns.
 
 **IndexNow** — announces URLs that appeared, changed or were deleted. There is one URL and it has
 never moved.
