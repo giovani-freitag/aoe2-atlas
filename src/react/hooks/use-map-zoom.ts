@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { interpolate } from 'd3-interpolate';
 import { select } from 'd3-selection';
-import { zoom, zoomIdentity, type D3ZoomEvent, type ZoomBehavior } from 'd3-zoom';
+import { zoom, zoomIdentity, zoomTransform, type D3ZoomEvent, type ZoomBehavior } from 'd3-zoom';
 // Selection.transition() is bolted on by this module; importing it is what makes flights glide.
 import 'd3-transition';
 import type { Frame } from '@/services/geo/atlas-projection.ts';
@@ -94,6 +94,28 @@ export function useMapZoom(svg: React.RefObject<SVGSVGElement | null>, options: 
              * gives a plain pan and scale from wherever the reader is.
              */
             .interpolate(interpolate)
+            /*
+             * A swipe across a trackpad moves the map; it does not scale it.
+             *
+             * d3 reads every wheel event as a zoom and looks only at `deltaY`, which for a
+             * two-finger swipe throws away the sideways half of the gesture and turns the other
+             * half into a change of scale — so the one gesture a laptop has for moving a map
+             * made it jump in and out instead, and would not move it east at all.
+             *
+             * A horizontal component is the tell, because only a trackpad produces one. Pinching
+             * is left to the zoom, which is what the browser's synthetic `ctrlKey` marks it as,
+             * and so is a plain mouse wheel — vertical and alone, it still means scale, the way
+             * it does on every other map.
+             */
+            .filter((event: Event) => {
+                if (event.type === 'wheel') {
+                    const wheel = event as WheelEvent;
+
+                    return wheel.ctrlKey || wheel.deltaX === 0;
+                }
+
+                return !(event as MouseEvent).button;
+            })
             .scaleExtent([scaleExtent[0], scaleExtent[1]])
             .translateExtent([
                 [0, 0],
@@ -117,10 +139,24 @@ export function useMapZoom(svg: React.RefObject<SVGSVGElement | null>, options: 
             });
 
         bound.current = { element, behaviour };
-        select(element).call(behaviour);
+        const selection = select(element);
+        selection.call(behaviour);
+
+        // The other half of the bargain above: the gestures the filter turned away are the ones
+        // that mean "move", and they are carried out here. `translateBy` works in the map's own
+        // coordinates rather than the screen's, so the distance is divided by the scale — a
+        // swipe covers the same ground under the finger whatever the zoom.
+        selection.on('wheel.pan', (event: WheelEvent) => {
+            if (event.ctrlKey || event.deltaX === 0) return;
+
+            event.preventDefault();
+            const { k } = zoomTransform(element);
+            behaviour.translateBy(selection, -event.deltaX / k, -event.deltaY / k);
+        });
 
         return () => {
-            select(element).on('.zoom', null);
+            selection.on('.zoom', null);
+            selection.on('wheel.pan', null);
             bound.current = null;
         };
     }, [svg, width, height, scaleExtent]);

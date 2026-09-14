@@ -475,7 +475,8 @@
         top: var(--bar-height, 0px);
         bottom: var(--rail-height, 0px);
         width: 22rem;
-        border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+        /* Square, like the panel opposite: both are columns between the bar and the rail. */
+        border-radius: 0;
     }
 
     /*
