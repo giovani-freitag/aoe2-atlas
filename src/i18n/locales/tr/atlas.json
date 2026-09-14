@@ -31,7 +31,7 @@
         "inca": { "name": "İnkalar", "monument": "Machu Picchu İntihuatana'sı", "place": "Machu Picchu", "country": "Peru", "realm": "Tavantinsuyu" },
         "italians": { "name": "İtalyanlar", "monument": "Cenova Katedrali (San Lorenzo)", "place": "Cenova", "country": "İtalya", "realm": "İtalya Yarımadası'nın cumhuriyet ve dükalıkları" },
         "magyars": { "name": "Macarlar", "monument": "Corvin Kalesi", "place": "Hunedoara", "country": "Romanya", "realm": "Macaristan Krallığı" },
-        "slavs": { "name": "Slavlar", "monument": "Kiji Pogostu", "place": "Kiji Adası, Karelya", "country": "Rusya", "realm": "Slav kabileleri", "anachronism": "17. yüzyılda, oyunun döneminden çok sonra inşa edildi." },
+        "slavs": { "name": "Slavlar", "monument": "Kiji Pogostu", "place": "Kiji Adası, Karelya", "country": "Rusya", "realm": "Slav kabileleri", "anachronism": "1714'te yapıldı, oyunun döneminden bir yüzyıldan fazla sonra." },
         "berbers": { "name": "Berberiler", "monument": "Hasan Kulesi", "place": "Rabat", "country": "Fas", "realm": "Mağrip'in Berberi hanedanları" },
         "ethiopians": { "name": "Etiyopyalılar", "monument": "Biete Amanuel", "place": "Lalibela", "country": "Etiyopya", "realm": "Aksum ve Süleymani Etiyopya" },
         "malians": { "name": "Malililer", "monument": "Djenné Ulu Camii", "place": "Djenné", "country": "Mali", "realm": "Mali İmparatorluğu", "anachronism": "Bugünkü cami 20. yüzyıl başında yeniden inşa edildi." },

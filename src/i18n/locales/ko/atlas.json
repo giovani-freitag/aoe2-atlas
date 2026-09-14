@@ -31,7 +31,7 @@
         "inca": { "name": "잉카", "monument": "마추픽추의 인티와타나", "place": "마추픽추", "country": "페루", "realm": "타완틴수유" },
         "italians": { "name": "이탈리아", "monument": "제노바 대성당(산 로렌초)", "place": "제노바", "country": "이탈리아", "realm": "이탈리아 반도의 공화국과 공국들" },
         "magyars": { "name": "마자르", "monument": "코르빈 성", "place": "후네도아라", "country": "루마니아", "realm": "헝가리 왕국" },
-        "slavs": { "name": "슬라브", "monument": "키지 포고스트", "place": "키지 섬, 카렐리야", "country": "러시아", "realm": "슬라브 부족들", "anachronism": "17세기에 지어져 게임의 시대보다 훨씬 뒤입니다." },
+        "slavs": { "name": "슬라브", "monument": "키지 포고스트", "place": "키지 섬, 카렐리야", "country": "러시아", "realm": "슬라브 부족들", "anachronism": "1714년에 지어졌으니, 게임의 시대보다 한 세기 넘게 뒤입니다." },
         "berbers": { "name": "베르베르", "monument": "하산 탑", "place": "라바트", "country": "모로코", "realm": "마그레브의 베르베르 왕조들" },
         "ethiopians": { "name": "에티오피아", "monument": "비에테 아마누엘", "place": "랄리벨라", "country": "에티오피아", "realm": "악숨과 솔로몬 왕조 에티오피아" },
         "malians": { "name": "말리", "monument": "젠네 대모스크", "place": "젠네", "country": "말리", "realm": "말리 제국", "anachronism": "현재의 모스크는 20세기 초에 재건된 것입니다." },

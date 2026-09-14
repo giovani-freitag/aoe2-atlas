@@ -31,7 +31,7 @@
         "inca": { "name": "Inca", "monument": "Intihuatana di Machu Picchu", "place": "Machu Picchu", "country": "Perù", "realm": "Tawantinsuyu" },
         "italians": { "name": "Italiani", "monument": "Cattedrale di Genova (San Lorenzo)", "place": "Genova", "country": "Italia", "realm": "Repubbliche e ducati della penisola italiana" },
         "magyars": { "name": "Magiari", "monument": "Castello di Corvino", "place": "Hunedoara", "country": "Romania", "realm": "Regno d'Ungheria" },
-        "slavs": { "name": "Slavi", "monument": "Pogost di Kiži", "place": "Isola di Kiži, Carelia", "country": "Russia", "realm": "Tribù slave", "anachronism": "Costruito nel XVII secolo, molto dopo il periodo del gioco." },
+        "slavs": { "name": "Slavi", "monument": "Pogost di Kiži", "place": "Isola di Kiži, Carelia", "country": "Russia", "realm": "Tribù slave", "anachronism": "Costruito nel 1714, più di un secolo dopo il periodo del gioco." },
         "berbers": { "name": "Berberi", "monument": "Torre Hassan", "place": "Rabat", "country": "Marocco", "realm": "Dinastie berbere del Maghreb" },
         "ethiopians": { "name": "Etiopi", "monument": "Biete Amanuel", "place": "Lalibela", "country": "Etiopia", "realm": "Axum e l'Etiopia salomonide" },
         "malians": { "name": "Maliani", "monument": "Grande moschea di Djenné", "place": "Djenné", "country": "Mali", "realm": "Impero del Mali", "anachronism": "La moschea attuale è una ricostruzione dell'inizio del XX secolo." },

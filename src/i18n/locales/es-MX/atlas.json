@@ -31,7 +31,7 @@
         "inca": { "name": "Incas", "monument": "Intihuatana de Machu Picchu", "place": "Machu Picchu", "country": "Perú", "realm": "Tahuantinsuyo" },
         "italians": { "name": "Italianos", "monument": "Catedral de Génova (San Lorenzo)", "place": "Génova", "country": "Italia", "realm": "Repúblicas y ducados de la península itálica" },
         "magyars": { "name": "Magiares", "monument": "Castillo de Corvin", "place": "Hunedoara", "country": "Rumania", "realm": "Reino de Hungría" },
-        "slavs": { "name": "Eslavos", "monument": "Pogost de Kizhí", "place": "Isla de Kizhí, Carelia", "country": "Rusia", "realm": "Tribus eslavas", "anachronism": "Construido en el siglo XVII, mucho después del periodo del juego." },
+        "slavs": { "name": "Eslavos", "monument": "Pogost de Kizhí", "place": "Isla de Kizhí, Carelia", "country": "Rusia", "realm": "Tribus eslavas", "anachronism": "Construido en 1714, más de un siglo después del período del juego." },
         "berbers": { "name": "Bereberes", "monument": "Torre Hasán", "place": "Rabat", "country": "Marruecos", "realm": "Dinastías bereberes del Magreb" },
         "ethiopians": { "name": "Etíopes", "monument": "Biete Amanuel", "place": "Lalibela", "country": "Etiopía", "realm": "Aksum y la Etiopía salomónica" },
         "malians": { "name": "Malienses", "monument": "Gran Mezquita de Djenné", "place": "Djenné", "country": "Malí", "realm": "Imperio de Malí", "anachronism": "La mezquita actual es una reconstrucción de principios del siglo XX." },

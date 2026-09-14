@@ -75,7 +75,7 @@ The game puts every Wonder on a building that exists, and for most of them the b
 
 **Malians — Great Mosque of Djenné, Djenné, Mali.** The present mosque is an early twentieth-century rebuilding.
 
-**Slavs — Kizhi Pogost, Kizhi Island, Karelia, Russia.** Built in the seventeenth century, long after the game's period.
+**Slavs — Kizhi Pogost, Kizhi Island, Karelia, Russia.** Built in 1714, more than a century after the game's period.
 
 **Spanish — Torre del Oro, Seville, Spain.** Raised by the Berber Almohads; the Castilian crown only inherited it later.
 

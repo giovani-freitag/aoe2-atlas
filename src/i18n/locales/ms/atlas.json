@@ -31,7 +31,7 @@
         "inca": { "name": "Inca", "monument": "Intihuatana Machu Picchu", "place": "Machu Picchu", "country": "Peru", "realm": "Tawantinsuyu" },
         "italians": { "name": "Itali", "monument": "Katedral Genoa (San Lorenzo)", "place": "Genoa", "country": "Itali", "realm": "Republik dan kadipaten Semenanjung Itali" },
         "magyars": { "name": "Magyar", "monument": "Istana Corvin", "place": "Hunedoara", "country": "Romania", "realm": "Kerajaan Hungary" },
-        "slavs": { "name": "Slav", "monument": "Pogost Kizhi", "place": "Pulau Kizhi, Karelia", "country": "Rusia", "realm": "Suku-suku Slav", "anachronism": "Dibina pada abad ke-17, lama selepas zaman permainan ini." },
+        "slavs": { "name": "Slav", "monument": "Pogost Kizhi", "place": "Pulau Kizhi, Karelia", "country": "Rusia", "realm": "Suku-suku Slav", "anachronism": "Dibina pada 1714, lebih seabad selepas zaman permainan ini." },
         "berbers": { "name": "Berber", "monument": "Menara Hassan", "place": "Rabat", "country": "Maghribi", "realm": "Dinasti Berber di Maghreb" },
         "ethiopians": { "name": "Ethiopia", "monument": "Biete Amanuel", "place": "Lalibela", "country": "Ethiopia", "realm": "Aksum dan Ethiopia Solomon" },
         "malians": { "name": "Mali", "monument": "Masjid Agung Djenné", "place": "Djenné", "country": "Mali", "realm": "Empayar Mali", "anachronism": "Masjid yang ada kini ialah binaan semula awal abad ke-20." },

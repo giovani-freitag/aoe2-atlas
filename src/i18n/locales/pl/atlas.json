@@ -31,7 +31,7 @@
         "inca": { "name": "Inkowie", "monument": "Intihuatana w Machu Picchu", "place": "Machu Picchu", "country": "Peru", "realm": "Tawantinsuyu" },
         "italians": { "name": "Włosi", "monument": "Katedra w Genui (San Lorenzo)", "place": "Genua", "country": "Włochy", "realm": "Republiki i księstwa Półwyspu Apenińskiego" },
         "magyars": { "name": "Madziarzy", "monument": "Zamek Korwina", "place": "Hunedoara", "country": "Rumunia", "realm": "Królestwo Węgier" },
-        "slavs": { "name": "Słowianie", "monument": "Pogost Kiży", "place": "Wyspa Kiży, Karelia", "country": "Rosja", "realm": "Plemiona słowiańskie", "anachronism": "Zbudowany w XVII wieku, długo po okresie gry." },
+        "slavs": { "name": "Słowianie", "monument": "Pogost Kiży", "place": "Wyspa Kiży, Karelia", "country": "Rosja", "realm": "Plemiona słowiańskie", "anachronism": "Zbudowany w 1714 roku, ponad wiek po epoce gry." },
         "berbers": { "name": "Berberowie", "monument": "Wieża Hassana", "place": "Rabat", "country": "Maroko", "realm": "Dynastie berberyjskie Maghrebu" },
         "ethiopians": { "name": "Etiopczycy", "monument": "Biete Amanuel", "place": "Lalibela", "country": "Etiopia", "realm": "Aksum i Etiopia Salomonidów" },
         "malians": { "name": "Malijczycy", "monument": "Wielki Meczet w Djenné", "place": "Djenné", "country": "Mali", "realm": "Imperium Mali", "anachronism": "Obecny meczet to rekonstrukcja z początku XX wieku." },

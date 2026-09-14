@@ -31,7 +31,7 @@
         "inca": { "name": "Incas", "monument": "Intihuatana of Machu Picchu", "place": "Machu Picchu", "country": "Peru", "realm": "Tawantinsuyu" },
         "italians": { "name": "Italians", "monument": "Genoa Cathedral (San Lorenzo)", "place": "Genoa", "country": "Italy", "realm": "Republics and duchies of the Italian peninsula" },
         "magyars": { "name": "Magyars", "monument": "Corvin Castle", "place": "Hunedoara", "country": "Romania", "realm": "Kingdom of Hungary" },
-        "slavs": { "name": "Slavs", "monument": "Kizhi Pogost", "place": "Kizhi Island, Karelia", "country": "Russia", "realm": "Slavic tribes", "anachronism": "Built in the seventeenth century, long after the game's period." },
+        "slavs": { "name": "Slavs", "monument": "Kizhi Pogost", "place": "Kizhi Island, Karelia", "country": "Russia", "realm": "Slavic tribes", "anachronism": "Built in 1714, more than a century after the game's period." },
         "berbers": { "name": "Berbers", "monument": "Hassan Tower", "place": "Rabat", "country": "Morocco", "realm": "Berber dynasties of the Maghreb" },
         "ethiopians": { "name": "Ethiopians", "monument": "Biete Amanuel", "place": "Lalibela", "country": "Ethiopia", "realm": "Aksum and Solomonic Ethiopia" },
         "malians": { "name": "Malians", "monument": "Great Mosque of Djenné", "place": "Djenné", "country": "Mali", "realm": "Mali Empire", "anachronism": "The present mosque is an early twentieth-century rebuilding." },

@@ -31,7 +31,7 @@
         "inca": { "name": "印加", "monument": "馬丘比丘的拴日石", "place": "馬丘比丘", "country": "秘魯", "realm": "塔萬廷蘇尤" },
         "italians": { "name": "義大利", "monument": "熱那亞主教座堂（聖老楞佐）", "place": "熱那亞", "country": "義大利", "realm": "亞平寧半島的共和國與公國" },
         "magyars": { "name": "馬扎爾", "monument": "科爾溫城堡", "place": "胡內多阿拉", "country": "羅馬尼亞", "realm": "匈牙利王國" },
-        "slavs": { "name": "斯拉夫", "monument": "基日島木教堂群", "place": "卡累利阿基日島", "country": "俄羅斯", "realm": "斯拉夫諸部", "anachronism": "建於 17 世紀，遠晚於遊戲所涵蓋的年代。" },
+        "slavs": { "name": "斯拉夫", "monument": "基日島木教堂群", "place": "卡累利阿基日島", "country": "俄羅斯", "realm": "斯拉夫諸部", "anachronism": "建於 1714 年，比遊戲所涵蓋的年代晚了一個多世紀。" },
         "berbers": { "name": "柏柏爾", "monument": "哈桑塔", "place": "拉巴特", "country": "摩洛哥", "realm": "馬格里布的柏柏爾王朝" },
         "ethiopians": { "name": "衣索比亞", "monument": "以馬內利岩石教堂", "place": "拉利貝拉", "country": "衣索比亞", "realm": "阿克蘇姆與所羅門王朝的衣索比亞" },
         "malians": { "name": "馬利", "monument": "傑內大清真寺", "place": "傑內", "country": "馬利", "realm": "馬利帝國", "anachronism": "現存清真寺是 20 世紀初的重建之作。" },

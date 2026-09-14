@@ -31,7 +31,7 @@
         "inca": { "name": "インカ", "monument": "マチュ・ピチュのインティワタナ", "place": "マチュ・ピチュ", "country": "ペルー", "realm": "タワンティン・スウユ" },
         "italians": { "name": "イタリア", "monument": "ジェノヴァ大聖堂（サン・ロレンツォ）", "place": "ジェノヴァ", "country": "イタリア", "realm": "イタリア半島の諸共和国と諸公国" },
         "magyars": { "name": "マジャール", "monument": "コルヴィン城", "place": "フネドアラ", "country": "ルーマニア", "realm": "ハンガリー王国" },
-        "slavs": { "name": "スラヴ", "monument": "キジ・ポゴスト", "place": "キジ島、カレリア", "country": "ロシア", "realm": "スラヴ諸部族", "anachronism": "建てられたのは17世紀で、ゲームの時代よりはるかに後です。" },
+        "slavs": { "name": "スラヴ", "monument": "キジ・ポゴスト", "place": "キジ島、カレリア", "country": "ロシア", "realm": "スラヴ諸部族", "anachronism": "建てられたのは1714年で、ゲームの時代より一世紀以上あとです。" },
         "berbers": { "name": "ベルベル", "monument": "ハッサンの塔", "place": "ラバト", "country": "モロッコ", "realm": "マグリブのベルベル諸王朝" },
         "ethiopians": { "name": "エチオピア", "monument": "ベテ・アマヌエル", "place": "ラリベラ", "country": "エチオピア", "realm": "アクスムとソロモン朝エチオピア" },
         "malians": { "name": "マリ", "monument": "ジェンネの大モスク", "place": "ジェンネ", "country": "マリ", "realm": "マリ帝国", "anachronism": "現在のモスクは20世紀初頭に再建されたものです。" },

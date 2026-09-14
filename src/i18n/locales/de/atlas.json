@@ -31,7 +31,7 @@
         "inca": { "name": "Inka", "monument": "Intihuatana von Machu Picchu", "place": "Machu Picchu", "country": "Peru", "realm": "Tawantinsuyu" },
         "italians": { "name": "Italiener", "monument": "Kathedrale von Genua (San Lorenzo)", "place": "Genua", "country": "Italien", "realm": "Republiken und Herzogtümer der italienischen Halbinsel" },
         "magyars": { "name": "Magyaren", "monument": "Burg Corvin", "place": "Hunedoara", "country": "Rumänien", "realm": "Königreich Ungarn" },
-        "slavs": { "name": "Slawen", "monument": "Pogost von Kischi", "place": "Insel Kischi, Karelien", "country": "Russland", "realm": "Slawische Stämme", "anachronism": "Im 17. Jahrhundert erbaut, lange nach der Zeit des Spiels." },
+        "slavs": { "name": "Slawen", "monument": "Pogost von Kischi", "place": "Insel Kischi, Karelien", "country": "Russland", "realm": "Slawische Stämme", "anachronism": "1714 erbaut, mehr als ein Jahrhundert nach der Zeit des Spiels." },
         "berbers": { "name": "Berber", "monument": "Hassan-Turm", "place": "Rabat", "country": "Marokko", "realm": "Berberdynastien des Maghreb" },
         "ethiopians": { "name": "Äthiopier", "monument": "Biete Amanuel", "place": "Lalibela", "country": "Äthiopien", "realm": "Aksum und das salomonische Äthiopien" },
         "malians": { "name": "Malier", "monument": "Große Moschee von Djenné", "place": "Djenné", "country": "Mali", "realm": "Reich von Mali", "anachronism": "Die heutige Moschee ist ein Neubau vom Anfang des 20. Jahrhunderts." },
