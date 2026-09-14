@@ -107,8 +107,18 @@
     pointer-events: none;
 }
 
+/*
+ * The marks are given a layer of their own.
+ *
+ * A pan writes nothing but the transforms of the map group and of each mark — the hatching and
+ * the blur are only rewritten when the scale moves. Sharing the map's layer, Blink never grew
+ * its raster to take in a shield that had been off screen, so a civilization dragged into view
+ * kept its territory and lost its shield until the gesture ended. `will-change` is ignored on an
+ * SVG group; a transform is not.
+ */
 .atlas__marks {
     pointer-events: none;
+    transform: translateZ(0);
 }
 
 .marker {
