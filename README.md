@@ -60,8 +60,8 @@ only ever share the screen if they shared the century.
 </p>
 
 <p align="center">
-  <sub>Open a civilization and the map flies to it. Close it and the map goes back to where you
-  were, not out to the whole world.</sub>
+  <sub>Open a civilization and the map flies to its realm. Close it and you are back where you
+  were looking, at the zoom you had set.</sub>
 </p>
 
 ## 🚀 Run it
@@ -98,10 +98,12 @@ then Frankish Kingdom, then Carolingian Empire — and the builder resolves whic
 each slice. Six realms the source does not carry are drawn by hand, deliberately rough, with the
 reason written beside them; the panel always says which of the two produced the outline on screen.
 
-The build refuses to finish if a Wonder ends up outside its own civilization's territory. The
-first version shipped ten that did — the Somnath temple sat 248 km beyond the Gurjaras. Cutting
-per century fixed eight; the other two are listed as exceptions with their reasons, because the
-Arch of Constantine is Roman and the Huns never reached Rome.
+The build refuses to finish if a Wonder ends up outside its own civilization's territory, which
+is almost always a wrong coordinate or a wrong set of source names. A monument on the coast is
+given twelve kilometres of slack, because simplifying a coastline moves the line and not the
+point. Two stand outside on purpose and are listed with their reason: the Arch of Constantine is
+Roman and the Huns never reached Rome, and the Kizhi Pogost is in Karelia, well beyond any
+medieval Slavic border.
 
 ## 📚 Docs
 
