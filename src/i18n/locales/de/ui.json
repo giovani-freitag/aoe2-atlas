@@ -84,6 +84,7 @@
         "preserves": "erhält {{what}}",
         "chart": "Seekarte",
         "ruled": "Kurslinien, Äquator und Wendekreise",
+        "project": "Das Projekt auf GitHub, Version {{version}}",
         "creditsBorders": "Grenzen aus",
         "creditsRest": "(GPL-3.0) · Küsten von Natural Earth · Weltwunder und Wappen aus dem Age of Empires Series Wiki · Geometrie vom {{date}}"
     },

@@ -84,6 +84,7 @@
         "preserves": "{{what}} 보존",
         "chart": "해도",
         "ruled": "항정선, 적도, 회귀선",
+        "project": "GitHub의 프로젝트, 버전 {{version}}",
         "creditsBorders": "국경:",
         "creditsRest": "(GPL-3.0) · 해안선 Natural Earth · 불가사의와 문양 Age of Empires Series Wiki · 도형 데이터 {{date}}"
     },

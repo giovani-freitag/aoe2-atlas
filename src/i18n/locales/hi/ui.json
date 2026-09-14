@@ -84,6 +84,7 @@
         "preserves": "{{what}} बनाए रखता है",
         "chart": "चार्ट",
         "ruled": "दिशा रेखाएँ, भूमध्य रेखा और कटिबंध",
+        "project": "GitHub पर यह परियोजना, संस्करण {{version}}",
         "creditsBorders": "सीमाएँ:",
         "creditsRest": "(GPL-3.0) · तटरेखा Natural Earth से · अजूबे और प्रतीक Age of Empires Series Wiki से · ज्यामिति {{date}} की"
     },

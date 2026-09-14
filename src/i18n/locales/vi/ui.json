@@ -84,6 +84,7 @@
         "preserves": "giữ đúng {{what}}",
         "chart": "Hải đồ",
         "ruled": "Đường xiên đều, xích đạo và chí tuyến",
+        "project": "Dự án trên GitHub, phiên bản {{version}}",
         "creditsBorders": "Biên giới từ",
         "creditsRest": "(GPL-3.0) · đường bờ biển từ Natural Earth · kỳ quan và huy hiệu từ Age of Empires Series Wiki · hình học ngày {{date}}"
     },

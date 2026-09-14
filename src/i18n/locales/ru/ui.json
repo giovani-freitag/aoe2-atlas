@@ -84,6 +84,7 @@
         "preserves": "сохраняет {{what}}",
         "chart": "Карта",
         "ruled": "Локсодромии, экватор и тропики",
+        "project": "Проект на GitHub, версия {{version}}",
         "creditsBorders": "Границы из",
         "creditsRest": "(GPL-3.0) · береговая линия Natural Earth · чудеса и эмблемы из Age of Empires Series Wiki · геометрия от {{date}}"
     },

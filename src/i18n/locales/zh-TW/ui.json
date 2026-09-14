@@ -84,6 +84,7 @@
         "preserves": "保持{{what}}",
         "chart": "海圖",
         "ruled": "恆向線、赤道與回歸線",
+        "project": "GitHub 上的專案，版本 {{version}}",
         "creditsBorders": "疆界來自",
         "creditsRest": "（GPL-3.0）· 海岸線來自 Natural Earth · 奇觀與徽記來自 Age of Empires Series Wiki · 幾何資料產生於 {{date}}"
     },

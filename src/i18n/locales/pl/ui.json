@@ -84,6 +84,7 @@
         "preserves": "zachowuje {{what}}",
         "chart": "Mapa",
         "ruled": "Loksodromy, równik i zwrotniki",
+        "project": "Projekt na GitHubie, wersja {{version}}",
         "creditsBorders": "Granice z",
         "creditsRest": "(GPL-3.0) · wybrzeża z Natural Earth · cuda i herby z Age of Empires Series Wiki · geometria z dnia {{date}}"
     },
