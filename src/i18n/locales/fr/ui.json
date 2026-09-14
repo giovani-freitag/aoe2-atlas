@@ -39,7 +39,7 @@
         "count": "{{standing}} debout en {{year}} · {{listed}} dans la liste",
         "trace": "Tracer {{name}} sur la carte",
         "untrace": "Retirer {{name}} de la carte",
-        "everyCivilization": "Les 56, avec dates et monuments (en anglais)"
+        "everyCivilization": "Les 56, avec dates et monuments"
     },
     "sheet": {
         "grip": "Changer la hauteur du panneau",

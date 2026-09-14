@@ -39,7 +39,7 @@
         "count": "{{standing}} istnieje w roku {{year}} · {{listed}} na liście",
         "trace": "Nakreśl {{name}} na mapie",
         "untrace": "Usuń {{name}} z mapy",
-        "everyCivilization": "Wszystkie 56, z datami i budowlami (po angielsku)"
+        "everyCivilization": "Wszystkie 56, z datami i budowlami"
     },
     "sheet": {
         "grip": "Zmień wysokość panelu",

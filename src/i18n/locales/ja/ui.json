@@ -39,7 +39,7 @@
         "count": "{{year}}年に{{standing}}が存在 · 一覧に{{listed}}",
         "trace": "{{name}}を地図に描く",
         "untrace": "{{name}}を地図から外す",
-        "everyCivilization": "全56文明、年代と建造物つき（英語）"
+        "everyCivilization": "全56文明、年代と建造物つき"
     },
     "sheet": {
         "grip": "パネルの高さを変える",

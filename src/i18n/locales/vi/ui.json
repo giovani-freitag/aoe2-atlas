@@ -39,7 +39,7 @@
         "count": "{{standing}} tồn tại năm {{year}} · {{listed}} trong danh sách",
         "trace": "Vẽ {{name}} lên bản đồ",
         "untrace": "Bỏ {{name}} khỏi bản đồ",
-        "everyCivilization": "Cả 56, kèm niên đại và công trình (tiếng Anh)"
+        "everyCivilization": "Cả 56, kèm niên đại và công trình"
     },
     "sheet": {
         "grip": "Đổi chiều cao bảng",

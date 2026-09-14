@@ -39,7 +39,7 @@
         "count": "{{year}} 年存續 {{standing}} 個 · 列表中 {{listed}} 個",
         "trace": "在地圖上繪出{{name}}",
         "untrace": "將{{name}}移出地圖",
-        "everyCivilization": "全部 56 個文明，含年代與建築（英文）"
+        "everyCivilization": "全部 56 個文明，含年代與建築"
     },
     "sheet": {
         "grip": "調整面板高度",

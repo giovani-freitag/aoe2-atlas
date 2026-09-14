@@ -39,7 +39,7 @@
         "count": "{{standing}} bestehen in {{year}} · {{listed}} in der Liste",
         "trace": "{{name}} auf der Karte einzeichnen",
         "untrace": "{{name}} von der Karte nehmen",
-        "everyCivilization": "Alle 56, mit Daten und Bauwerken (englisch)"
+        "everyCivilization": "Alle 56, mit Daten und Bauwerken"
     },
     "sheet": {
         "grip": "Höhe des Panels ändern",

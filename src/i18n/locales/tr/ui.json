@@ -39,7 +39,7 @@
         "count": "{{year}} yılında {{standing}} ayakta · listede {{listed}}",
         "trace": "{{name}} uygarlığını haritaya çiz",
         "untrace": "{{name}} uygarlığını haritadan kaldır",
-        "everyCivilization": "56 uygarlığın tamamı, tarih ve anıtlarıyla (İngilizce)"
+        "everyCivilization": "56 uygarlığın tamamı, tarih ve anıtlarıyla"
     },
     "sheet": {
         "grip": "Panel yüksekliğini değiştir",

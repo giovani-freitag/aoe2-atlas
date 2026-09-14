@@ -1,5 +1,5 @@
 /**
- * Builds the one page of the atlas that is text.
+ * Builds the one part of the atlas that is text, in every language the atlas speaks.
  *
  * The map answers "where was this civilization in 1200" better than any table could, and answers
  * "which centuries is the Byzantine realm drawn in, and what is its Wonder modelled on" worse
@@ -22,11 +22,13 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CIVILIZATION_RECORDS } from '@/data/civilizations.ts';
 import { articleUrl } from '@/data/wikipedia.ts';
+import { FALLBACK_LOCALE, LOCALE_NAMES, type SupportedLocale } from '@/i18n/locales.ts';
+import { fill, PAGE_COPY, PAGE_LOCALES, type PageCopy } from './pages/copy.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://giovani-freitag.github.io/aoe2-atlas/';
 
-/** What one civilization is called, in English; the other sixteen languages stay in the app. */
+/** What one civilization is called, in one language. */
 interface AtlasText {
     name: string;
     monument: string;
@@ -61,7 +63,7 @@ interface Row {
     cut: number;
     peakYear: number;
     peakAreaKm2: number;
-    /** Set for the seven whose Wonder stands somewhere its civilization never did. */
+    /** Set for the few whose Wonder stands somewhere its civilization never did. */
     anachronism: string | null;
 }
 
@@ -70,7 +72,6 @@ function read<T>(...path: string[]): T {
 }
 
 const index = read<AtlasIndex>('src', 'data', 'generated', 'atlas-index.json');
-const words = read<{ civs: Record<string, AtlasText> }>('src', 'i18n', 'locales', 'en', 'atlas.json').civs;
 
 /*
  * What the map actually draws, which is not what the source cut.
@@ -89,103 +90,127 @@ for (const year of index.years) {
     }
 }
 
-const rows: Row[] = CIVILIZATION_RECORDS.map((civilization) => {
-    const text = words[civilization.key];
-    const reach = index.civilizations.find((entry) => entry.civ === civilization.key);
-    const map = drawn.get(civilization.key);
+/**
+ * The table, told in one language.
+ *
+ * @param locale - Which one.
+ * @returns Its rows, in that language's own alphabetical order.
+ */
+function rowsIn(locale: SupportedLocale): Row[] {
+    const words = read<{ civs: Record<string, AtlasText> }>('src', 'i18n', 'locales', locale, 'atlas.json').civs;
 
-    if (!text) throw new Error(`No English text for "${civilization.key}".`);
-    if (!reach) throw new Error(`No index entry for "${civilization.key}".`);
-    if (!map || map.years.length === 0) throw new Error(`"${civilization.key}" is drawn on no map.`);
+    return CIVILIZATION_RECORDS.map((civilization) => {
+        const text = words[civilization.key];
+        const reach = index.civilizations.find((entry) => entry.civ === civilization.key);
+        const map = drawn.get(civilization.key);
 
-    return {
-        name: text.name,
-        monument: text.monument,
-        where: `${text.place}, ${text.country}`,
-        wikipedia: articleUrl(civilization.wonder.wikipediaLang ?? 'en', civilization.wonder.wikipedia),
-        from: civilization.realm.from,
-        to: civilization.realm.to,
-        drawn: map.years,
-        cut: map.cut,
-        peakYear: reach.peakYear,
-        peakAreaKm2: reach.peakAreaKm2,
-        anachronism: text.anachronism ?? null,
-    };
-}).sort((left, right) => left.name.localeCompare(right.name, 'en'));
+        if (!text) throw new Error(`No ${locale} text for "${civilization.key}".`);
+        if (!reach) throw new Error(`No index entry for "${civilization.key}".`);
+        if (!map || map.years.length === 0) throw new Error(`"${civilization.key}" is drawn on no map.`);
 
-const numbers = new Intl.NumberFormat('en-GB');
-const carried = rows.reduce((total, row) => total + (row.drawn.length - row.cut), 0);
-
-/** The stretch of dated maps a realm appears on, and how many of them there are. */
-function span(row: Row): string {
-    const first = row.drawn[0];
-    const last = row.drawn[row.drawn.length - 1];
-    const range = first === last ? String(first) : `${first}–${last}`;
-
-    return `${range} · ${row.drawn.length} ${row.drawn.length === 1 ? 'map' : 'maps'}`;
+        return {
+            name: text.name,
+            monument: text.monument,
+            where: `${text.place}, ${text.country}`,
+            wikipedia: articleUrl(civilization.wonder.wikipediaLang ?? 'en', civilization.wonder.wikipedia),
+            from: civilization.realm.from,
+            to: civilization.realm.to,
+            drawn: map.years,
+            cut: map.cut,
+            peakYear: reach.peakYear,
+            peakAreaKm2: reach.peakAreaKm2,
+            anachronism: text.anachronism ?? null,
+        };
+    }).sort((left, right) => left.name.localeCompare(right.name, locale));
 }
 
-function area(value: number): string {
-    return `${numbers.format(value)} km²`;
+/** Where a language's page answers from; English keeps the address the others hang off. */
+function addressOf(locale: SupportedLocale): string {
+    return locale === FALLBACK_LOCALE ? `${SITE}civilizations/` : `${SITE}civilizations/${locale}/`;
 }
 
 function escape(text: string): string {
     return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-/*
- * Two headings, because they answer to different readers.
- *
- * The tab and the search result get the short one, and it leads with where rather than when.
- * Both questions are asked of this table and it answers both, but the one people phrase out
- * loud is where a civilization actually was — and what stands against it there is a forum
- * thread with a picture in it, while 'Wonder' leads to a wiki with a page per monument and a
- * domain this one will never outweigh. The heading on the page is free to say the whole thing,
- * because nothing truncates it.
- */
-const TITLE = 'Where the 56 Age of Empires II civilizations stood, and when';
-const HEADING = 'Where every Age of Empires II civilization really stood, and for how long';
-const DESCRIPTION =
-    'Where each of the 56 Age of Empires II civilizations actually was: the real monument its Wonder was modelled on, the city that monument stands in, and the centuries the atlas draws its realm.';
-
 const maps = index.years.length;
 const first = index.years[0];
 const last = index.years[index.years.length - 1];
 
-const odd = rows.filter((row) => row.anachronism !== null);
-
-/*
- * The part of this page nobody else has written.
+/**
+ * One language's page, written whole.
  *
- * A list of civilization against Wonder can be copied off a wiki in an afternoon. Which of them
- * stand somewhere their civilization never did, and why, is a judgement with a reason attached —
- * and it is the honest answer to what a reader means by asking where these civilizations really
- * were. The notes are the ones the atlas already shows on each civilization's own panel.
+ * @param locale - Which language it is in.
+ * @returns The HTML, and the Markdown twin for the copy kept under docs/.
  */
-const ODD_HEADING = `${odd.length} Wonders that stand where their civilization never did`;
-const ODD_LEAD = 'The game puts every Wonder on a building that exists, and for most of them the building is where the civilization was. These are the exceptions, and the atlas says so on each one rather than drawing the pin and leaving it. The monument is still real; what does not hold is the claim that the civilization stood there.';
+function pageIn(locale: SupportedLocale): { html: string; markdown: string } {
+    const said: PageCopy = PAGE_COPY[locale];
+    const rows = rowsIn(locale);
+    const odd = rows.filter((row) => row.anachronism !== null);
+    const carried = rows.reduce((total, row) => total + (row.drawn.length - row.cut), 0);
+    const numbers = new Intl.NumberFormat(locale);
 
-/* The two sentences that say what the numbers in the table mean, used by both outputs. */
-const LEAD = `Every civilization in Age of Empires II builds a Wonder modelled on a building that exists. This table names the building and the city it stands in, the years the game's own lore gives the realm, the dated maps the atlas draws it on, and how much ground it held when it was at its widest.`;
-const METHOD = `The atlas is cut into ${maps} dated maps between AD ${first} and ${last}. A realm is listed for every map it is drawn on, which includes the ${carried} cases across all ${rows.length} civilizations where the border had to be borrowed from the nearest mapped century — the atlas draws those faint. Areas are measured on the globe, so they compare whatever projection the map is opened in.`;
+    const counts = { maps, first, last, carried, civs: rows.length, odd: odd.length };
+    const heading = said.heading;
+    const oddHeading = fill(said.oddHeading, counts);
+    const method = fill(said.method, counts);
 
-const page = `<!doctype html>
-<html lang="en">
+    const area = (value: number): string => `${numbers.format(value)} km²`;
+
+    // Plain digits, the way the atlas writes a year and every language does: grouped, 1200 comes
+    // out as "1,200" or "1.200" and reads as a quantity rather than as a date.
+    const years = (value: number): string => String(value);
+
+    /** The stretch of dated maps a realm appears on, and how many of them there are. */
+    const span = (row: Row): string => {
+        const from = row.drawn[0];
+        const to = row.drawn[row.drawn.length - 1];
+        const range = from === to ? years(from) : `${years(from)}–${years(to)}`;
+        const word = row.drawn.length === 1 ? said.maps.one : said.maps.many;
+
+        return `${range} · ${row.drawn.length} ${word}`;
+    };
+
+    const basemaps = '<a href="https://github.com/aourednik/historical-basemaps">aourednik/historical-basemaps</a>';
+    const wiki =
+        '<a href="https://ageofempires.fandom.com/wiki/Wonder_(Age_of_Empires_II)">Age of Empires Series Wiki</a>';
+
+    /*
+     * Every language points at every other, and at English for a reader neither was written for.
+     *
+     * All seventeen exist, so the set is complete by construction — there is no page here that
+     * can be annotated with an address that answers nothing.
+     */
+    const alternates = [
+        ...PAGE_LOCALES.map(
+            (code) => `        <link rel="alternate" hreflang="${code}" href="${addressOf(code)}" />`,
+        ),
+        `        <link rel="alternate" hreflang="x-default" href="${addressOf(FALLBACK_LOCALE)}" />`,
+    ].join('\n');
+
+    const elsewhere = PAGE_LOCALES.filter((code) => code !== locale)
+        .map((code) => `<a href="${addressOf(code)}" hreflang="${code}">${escape(LOCALE_NAMES[code])}</a>`)
+        .join(' · ');
+
+    const html = `<!doctype html>
+<html lang="${locale}">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#1a130d" />
         <meta name="color-scheme" content="dark" />
-        <meta name="description" content="${escape(DESCRIPTION)}" />
-        <link rel="icon" type="image/svg+xml" href="../brand.svg" />
-        <title>${escape(TITLE)} — AoE2 Atlas</title>
-        <link rel="canonical" href="${SITE}civilizations/" />
+        <meta name="description" content="${escape(said.description)}" />
+        <link rel="icon" type="image/svg+xml" href="${locale === FALLBACK_LOCALE ? '../' : '../../'}brand.svg" />
+        <title>${escape(said.title)} — AoE2 Atlas</title>
+        <link rel="canonical" href="${addressOf(locale)}" />
+${alternates}
         <meta name="robots" content="max-image-preview:large" />
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="AoE2 Atlas" />
-        <meta property="og:title" content="${escape(TITLE)}" />
-        <meta property="og:description" content="${escape(DESCRIPTION)}" />
-        <meta property="og:url" content="${SITE}civilizations/" />
+        <meta property="og:title" content="${escape(said.title)}" />
+        <meta property="og:description" content="${escape(said.description)}" />
+        <meta property="og:url" content="${addressOf(locale)}" />
+        <meta property="og:locale" content="${locale.replace('-', '_')}" />
         <meta property="og:image" content="${SITE}social-card.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <style>
@@ -223,6 +248,12 @@ const page = `<!doctype html>
                 margin: 0 0 1rem;
                 font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
                 line-height: 1.2;
+            }
+
+            h2 {
+                margin: 2.5rem 0 0;
+                font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem);
+                line-height: 1.25;
             }
 
             p {
@@ -286,10 +317,6 @@ const page = `<!doctype html>
                 background: rgb(255 255 255 / 2%);
             }
 
-            .num {
-                font-variant-numeric: tabular-nums;
-            }
-
             dl.odd {
                 margin: 1.25rem 0 0;
                 max-width: 46rem;
@@ -305,12 +332,6 @@ const page = `<!doctype html>
                 color: var(--faint);
             }
 
-            h2 {
-                margin: 2.5rem 0 0;
-                font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem);
-                line-height: 1.25;
-            }
-
             footer {
                 margin-top: 3rem;
                 padding-top: 1.5rem;
@@ -319,13 +340,18 @@ const page = `<!doctype html>
                 color: var(--faint);
             }
 
+            footer nav {
+                margin-top: 0.75rem;
+                line-height: 2;
+            }
+
             /*
              * Narrow: one card per civilization instead of one row.
              *
-             * Six columns of dates and areas measured 1183 pixels, which on a phone is three and a
-             * half screens of sideways scrolling to read one line — the reader loses the name by
-             * the time they reach the year. Stacked, every civilization is a short block that
-             * reads top to bottom, and nothing scrolls but the page.
+             * Six columns of dates and areas measured over a thousand pixels, which on a phone is
+             * three and a half screens of sideways scrolling to read one line — the reader loses
+             * the name by the time they reach the year. Stacked, every civilization is a short
+             * block that reads top to bottom, and nothing scrolls but the page.
              */
             @media (max-width: 56rem) {
                 .sheet {
@@ -366,7 +392,7 @@ const page = `<!doctype html>
                     white-space: normal;
                 }
 
-                /* Nothing sticks in a card: the name belongs to the block it heads, not to the top. */
+                /* Nothing sticks in a card: the name belongs to the block it heads, not the top. */
                 tbody tr:nth-child(odd) {
                     background: none;
                 }
@@ -377,6 +403,7 @@ const page = `<!doctype html>
                     justify-content: space-between;
                     padding: 0.3rem 0;
                     border: none;
+                    text-align: right;
                 }
 
                 td + td {
@@ -391,26 +418,20 @@ const page = `<!doctype html>
                     text-transform: uppercase;
                     color: var(--faint);
                 }
-
-                /* The value is the thing being read, so it takes the side the eye returns to. */
-                td {
-                    text-align: right;
-                }
             }
         </style>
     </head>
     <body>
         <main>
-            <a class="back" href="../">← The atlas</a>
-            <h1>${escape(HEADING)}</h1>
-            <p>${escape(LEAD)}</p>
-            <p>${escape(METHOD)}</p>
+            <a class="back" href="${locale === FALLBACK_LOCALE ? '../' : '../../'}">${escape(said.backToAtlas)}</a>
+            <h1>${escape(heading)}</h1>
+            <p>${escape(said.lead)}</p>
+            <p>${escape(method)}</p>
 
             <!--
                 The roles are written out because the narrow layout takes them away.
 
-                Below the breakpoint every part of this table is laid out as a block — six columns
-                of dates and areas are four screens of sideways scrolling on a phone — and a
+                Below the breakpoint every part of this table is laid out as a block, and a
                 browser drops the implicit table semantics the moment "display" stops being
                 "table-cell". Stating them keeps the thing a table for a screen reader at every
                 width, while "data-label" gives each figure back the heading it lost.
@@ -419,12 +440,12 @@ const page = `<!doctype html>
                 <table role="table">
                     <thead role="rowgroup">
                         <tr role="row">
-                            <th scope="col">Civilization</th>
-                            <th scope="col">The Wonder is modelled on</th>
-                            <th scope="col">Where it stands</th>
-                            <th scope="col">On stage</th>
-                            <th scope="col">Drawn on</th>
-                            <th scope="col">At its widest</th>
+                            <th scope="col">${escape(said.columns.civilization)}</th>
+                            <th scope="col">${escape(said.columns.monument)}</th>
+                            <th scope="col">${escape(said.columns.where)}</th>
+                            <th scope="col">${escape(said.columns.onStage)}</th>
+                            <th scope="col">${escape(said.columns.drawnOn)}</th>
+                            <th scope="col">${escape(said.columns.widest)}</th>
                         </tr>
                     </thead>
                     <tbody role="rowgroup">
@@ -432,11 +453,11 @@ ${rows
     .map(
         (row) => `                        <tr role="row">
                             <th scope="row" role="rowheader">${escape(row.name)}</th>
-                            <td role="cell" data-label="Wonder"><a href="${row.wikipedia}">${escape(row.monument)}</a></td>
-                            <td role="cell" data-label="Stands in">${escape(row.where)}</td>
-                            <td role="cell" data-label="On stage" class="num">${row.from}–${row.to}</td>
-                            <td role="cell" data-label="Drawn on" class="num">${escape(span(row))}</td>
-                            <td role="cell" data-label="At its widest" class="num">${escape(area(row.peakAreaKm2))} in ${row.peakYear}</td>
+                            <td role="cell" data-label="${escape(said.columns.monument)}"><a href="${row.wikipedia}">${escape(row.monument)}</a></td>
+                            <td role="cell" data-label="${escape(said.columns.where)}">${escape(row.where)}</td>
+                            <td role="cell" data-label="${escape(said.columns.onStage)}" class="num">${years(row.from)}–${years(row.to)}</td>
+                            <td role="cell" data-label="${escape(said.columns.drawnOn)}" class="num">${escape(span(row))}</td>
+                            <td role="cell" data-label="${escape(said.columns.widest)}" class="num">${escape(area(row.peakAreaKm2))} · ${years(row.peakYear)}</td>
                         </tr>`,
     )
     .join('\n')}
@@ -444,11 +465,10 @@ ${rows
                 </table>
             </div>
 
-            <h2>${escape(ODD_HEADING)}</h2>
-            <p>${escape(ODD_LEAD)}</p>
+            <h2>${escape(oddHeading)}</h2>
+            <p>${escape(said.oddLead)}</p>
             <dl class="odd">
-${rows
-    .filter((row) => row.anachronism !== null)
+${odd
     .map(
         (row) => `                <dt>${escape(row.name)} — ${escape(row.monument)}, ${escape(row.where)}</dt>
                 <dd>${escape(row.anachronism ?? '')}</dd>`,
@@ -457,40 +477,37 @@ ${rows
             </dl>
 
             <footer>
+                <p>${fill(said.sources, { basemaps, wiki })}</p>
+                <p>${escape(said.disagreement)}</p>
                 <p>
-                    Borders from
-                    <a href="https://github.com/aourednik/historical-basemaps">aourednik/historical-basemaps</a>,
-                    monuments from the
-                    <a href="https://ageofempires.fandom.com/wiki/Wonder_(Age_of_Empires_II)">Age of Empires Series Wiki</a>.
-                    Where the wiki and the atlas disagree on where a Wonder stands — the Varangian one at Bolghar
-                    against Gnezdovo, the Mongol one at Avarga against Karakorum — the atlas says which it chose and
-                    why on the civilization's own panel.
+                    <a href="${locale === FALLBACK_LOCALE ? '../' : '../../'}">${escape(said.openTheAtlas)}</a> ·
+                    <a href="https://github.com/giovani-freitag/aoe2-atlas">${escape(said.source)}</a>
                 </p>
-                <p><a href="../">Open the atlas</a> · <a href="https://github.com/giovani-freitag/aoe2-atlas">Source</a></p>
+                <nav aria-label="${escape(said.otherLanguages)}">${elsewhere}</nav>
             </footer>
         </main>
     </body>
 </html>
 `;
 
-const markdown = `# ${HEADING}
+    const markdown = `# ${heading}
 
-${LEAD}
+${said.lead}
 
-${METHOD}
+${method}
 
-| Civilization | The Wonder is modelled on | Where it stands | On stage | Drawn on | At its widest |
+| ${said.columns.civilization} | ${said.columns.monument} | ${said.columns.where} | ${said.columns.onStage} | ${said.columns.drawnOn} | ${said.columns.widest} |
 | --- | --- | --- | --- | --- | --- |
 ${rows
     .map(
         (row) =>
-            `| ${row.name} | [${row.monument}](${row.wikipedia}) | ${row.where} | ${row.from}–${row.to} | ${span(row)} | ${area(row.peakAreaKm2)} in ${row.peakYear} |`,
+            `| ${row.name} | [${row.monument}](${row.wikipedia}) | ${row.where} | ${years(row.from)}–${years(row.to)} | ${span(row)} | ${area(row.peakAreaKm2)} · ${years(row.peakYear)} |`,
     )
     .join('\n')}
 
-## ${ODD_HEADING}
+## ${oddHeading}
 
-${ODD_LEAD}
+${said.oddLead}
 
 ${odd.map((row) => `**${row.name} — ${row.monument}, ${row.where}.** ${row.anachronism ?? ''}`).join('\n\n')}
 
@@ -498,15 +515,27 @@ Borders from [aourednik/historical-basemaps](https://github.com/aourednik/histor
 monuments from the [Age of Empires Series Wiki](https://ageofempires.fandom.com/wiki/Wonder_(Age_of_Empires_II)).
 This file is generated by \`scripts/build-pages.ts\` — edit the data, not the table.
 
-[Open the atlas](${SITE})
+[${said.openTheAtlas}](${SITE})
 `;
 
-const out = join(ROOT, 'dist', 'civilizations');
-mkdirSync(out, { recursive: true });
-writeFileSync(join(out, 'index.html'), page, 'utf8');
-console.log(`  dist/civilizations/index.html  ${(Buffer.byteLength(page) / 1024).toFixed(0)} kB · ${rows.length} civilizations`);
+    return { html, markdown };
+}
+
+let total = 0;
+for (const locale of PAGE_LOCALES) {
+    const { html } = pageIn(locale);
+    const out = locale === FALLBACK_LOCALE
+        ? join(ROOT, 'dist', 'civilizations')
+        : join(ROOT, 'dist', 'civilizations', locale);
+
+    mkdirSync(out, { recursive: true });
+    writeFileSync(join(out, 'index.html'), html, 'utf8');
+    total += Buffer.byteLength(html);
+}
+
+console.log(`  dist/civilizations  ${PAGE_LOCALES.length} languages · ${(total / 1024).toFixed(0)} kB`);
 
 if (process.argv.includes('--docs')) {
-    writeFileSync(join(ROOT, 'docs', 'civilizations.md'), markdown, 'utf8');
-    console.log(`  docs/civilizations.md          ${(Buffer.byteLength(markdown) / 1024).toFixed(0)} kB`);
+    writeFileSync(join(ROOT, 'docs', 'civilizations.md'), pageIn(FALLBACK_LOCALE).markdown, 'utf8');
+    console.log('  docs/civilizations.md');
 }

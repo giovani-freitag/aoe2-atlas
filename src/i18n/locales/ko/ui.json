@@ -39,7 +39,7 @@
         "count": "{{year}}년에 {{standing}}개 존속 · 목록에 {{listed}}개",
         "trace": "{{name}}을(를) 지도에 그리기",
         "untrace": "{{name}}을(를) 지도에서 빼기",
-        "everyCivilization": "56개 문명 전체, 연대와 기념물까지 (영어)"
+        "everyCivilization": "56개 문명 전체, 연대와 기념물까지"
     },
     "sheet": {
         "grip": "패널 높이 바꾸기",

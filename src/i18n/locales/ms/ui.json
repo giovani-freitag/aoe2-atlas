@@ -39,7 +39,7 @@
         "count": "{{standing}} wujud pada {{year}} · {{listed}} dalam senarai",
         "trace": "Lukis {{name}} di peta",
         "untrace": "Buang {{name}} dari peta",
-        "everyCivilization": "Kesemua 56, dengan tarikh dan monumen (bahasa Inggeris)"
+        "everyCivilization": "Kesemua 56, dengan tarikh dan monumen"
     },
     "sheet": {
         "grip": "Ubah ketinggian panel",

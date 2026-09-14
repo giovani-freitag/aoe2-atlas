@@ -39,7 +39,7 @@
         "count": "{{standing}} de pé em {{year}} · {{listed}} na lista",
         "trace": "Traçar {{name}} no mapa",
         "untrace": "Tirar {{name}} do mapa",
-        "everyCivilization": "As 56, com datas e monumentos (em inglês)"
+        "everyCivilization": "As 56, com datas e monumentos"
     },
     "sheet": {
         "grip": "Mudar a altura do painel",

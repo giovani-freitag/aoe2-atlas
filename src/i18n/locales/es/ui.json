@@ -39,7 +39,7 @@
         "count": "{{standing}} en pie en {{year}} · {{listed}} en la lista",
         "trace": "Trazar {{name}} en el mapa",
         "untrace": "Quitar {{name}} del mapa",
-        "everyCivilization": "Las 56, con fechas y monumentos (en inglés)"
+        "everyCivilization": "Las 56, con fechas y monumentos"
     },
     "sheet": {
         "grip": "Cambiar la altura del panel",

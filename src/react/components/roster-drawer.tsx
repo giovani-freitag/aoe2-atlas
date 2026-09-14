@@ -8,6 +8,7 @@ import { EXPANSION_RECORDS } from '@/data/expansions.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useServices } from '@/react/providers/services-context.ts';
 import { useFormat } from '@/react/hooks/use-format.ts';
+import { FALLBACK_LOCALE, toSupportedLocale } from '@/i18n/locales.ts';
 import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
 import { CivRow } from './civ-row.tsx';
 import { SideDrawer } from './side-drawer.tsx';
@@ -33,7 +34,7 @@ export interface RosterDrawerProps {
  * drawn comes in from the other side.
  */
 export function RosterDrawer({ civilizations, borders, side, open, onClose }: RosterDrawerProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { palette } = useServices();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
@@ -43,6 +44,13 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
         () => Math.max(1, ...[...borders.values()].map((border) => border.areaKm2)),
         [borders],
     );
+
+    // The table is written in every language the atlas speaks, and English keeps the bare
+    // address because that is the one already indexed under it.
+    const language = toSupportedLocale(i18n.language);
+    const tableAddress = `${import.meta.env.BASE_URL}civilizations/${
+        language === FALLBACK_LOCALE ? '' : `${language}/`
+    }`;
 
     const standingCount = civilizations.filter((civ) => borders.has(civ.key)).length;
 
@@ -159,12 +167,12 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
              *
              * The atlas answers "where was this realm in 1200" and refuses to answer "which
              * centuries is it drawn in at all" without nineteen drags of the rail. That question
-             * has a page, built from these same files; it is written in English only, which the
-             * label says in the other sixteen languages rather than leaving as a surprise. The
-             * address goes through BASE_URL because the page is a build artefact and does not
-             * exist under `npm run dev`.
+             * has a page, built from these same files and written in all seventeen languages, so
+             * the link goes to the reader's own. English keeps the bare address because it is the
+             * one already indexed under it. The address goes through BASE_URL because the page is
+             * a build artefact and does not exist under `npm run dev`.
              */}
-            <a className="roster__more" href={`${import.meta.env.BASE_URL}civilizations/`} hrefLang="en">
+            <a className="roster__more" href={tableAddress} hrefLang={language}>
                 {t('roster.everyCivilization')}
             </a>
         </SideDrawer>
