@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.7.1...v1.8.0) (2026-09-14)
+
+
+### Added
+
+* **settings:** link out to the project, with the build you are running ([#14](https://github.com/giovani-freitag/aoe2-atlas/issues/14)) ([3bbaafc](https://github.com/giovani-freitag/aoe2-atlas/commit/3bbaafc65fe56ab341e65389376feaa1b4434385))
+
 ## [1.7.1](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.7.0...v1.7.1) (2026-09-14)
 
 
