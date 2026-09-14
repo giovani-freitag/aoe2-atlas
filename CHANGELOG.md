@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.7.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.6.1...v1.7.0) (2026-09-14)
+
+
+### Added
+
+* answer where the civilizations really were, not just that they are on a map ([f581b94](https://github.com/giovani-freitag/aoe2-atlas/commit/f581b94674f6d98fcde67c4287b8aec859dabe18))
+* **pages:** list every address in a sitemap ([c1a8d45](https://github.com/giovani-freitag/aoe2-atlas/commit/c1a8d4510394be202daa84c8be7cda6a358dd88d))
+* **pages:** write the civilizations table in all seventeen languages ([efca826](https://github.com/giovani-freitag/aoe2-atlas/commit/efca826e64c92093aef53484c4fc593262c0ba8c))
+
+
+### Fixed
+
+* **atlas:** Kizhi Pogost is 1714, not the seventeenth century ([054dabb](https://github.com/giovani-freitag/aoe2-atlas/commit/054dabb618fc106c8eb9e2556f8f2566098264d0))
+* **map:** square the settings panel, and let a trackpad swipe move the map ([a7470d6](https://github.com/giovani-freitag/aoe2-atlas/commit/a7470d60513b3bc6d2a6beacf7c2f0d9128ef879))
+
 ## [1.6.1](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.6.0...v1.6.1) (2026-09-12)
 
 
