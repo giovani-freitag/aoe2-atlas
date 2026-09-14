@@ -84,6 +84,7 @@
         "preserves": "conserva {{what}}",
         "chart": "Carta",
         "ruled": "Líneas de rumbo, ecuador y trópicos",
+        "project": "El proyecto en GitHub, versión {{version}}",
         "creditsBorders": "Fronteras de",
         "creditsRest": "(GPL-3.0) · costa de Natural Earth · maravillas y emblemas de la Age of Empires Series Wiki · geometría del {{date}}"
     },

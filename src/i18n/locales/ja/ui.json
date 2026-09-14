@@ -84,6 +84,7 @@
         "preserves": "{{what}}を保つ",
         "chart": "海図",
         "ruled": "航程線、赤道、回帰線",
+        "project": "GitHub 上のプロジェクト、バージョン {{version}}",
         "creditsBorders": "国境:",
         "creditsRest": "(GPL-3.0) · 海岸線は Natural Earth · 象徴と紋章は Age of Empires Series Wiki · 図形データは{{date}}"
     },

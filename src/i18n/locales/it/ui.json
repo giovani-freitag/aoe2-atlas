@@ -84,6 +84,7 @@
         "preserves": "conserva {{what}}",
         "chart": "Carta",
         "ruled": "Lossodromie, equatore e tropici",
+        "project": "Il progetto su GitHub, versione {{version}}",
         "creditsBorders": "Confini da",
         "creditsRest": "(GPL-3.0) · coste di Natural Earth · meraviglie ed emblemi dall'Age of Empires Series Wiki · geometria del {{date}}"
     },

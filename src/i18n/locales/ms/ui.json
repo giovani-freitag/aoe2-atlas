@@ -84,6 +84,7 @@
         "preserves": "mengekalkan {{what}}",
         "chart": "Carta",
         "ruled": "Garis rumb, khatulistiwa dan garisan sartan",
+        "project": "Projek ini di GitHub, versi {{version}}",
         "creditsBorders": "Sempadan daripada",
         "creditsRest": "(GPL-3.0) · pantai daripada Natural Earth · keajaiban dan lambang daripada Age of Empires Series Wiki · geometri pada {{date}}"
     },

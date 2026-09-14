@@ -84,6 +84,7 @@
         "preserves": "conserve {{what}}",
         "chart": "Carte",
         "ruled": "Loxodromies, équateur et tropiques",
+        "project": "Le projet sur GitHub, version {{version}}",
         "creditsBorders": "Frontières issues de",
         "creditsRest": "(GPL-3.0) · côtes de Natural Earth · merveilles et emblèmes de l'Age of Empires Series Wiki · géométrie du {{date}}"
     },

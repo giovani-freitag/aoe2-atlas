@@ -84,6 +84,7 @@
         "preserves": "preserves {{what}}",
         "chart": "Chart",
         "ruled": "Rhumb lines, equator and tropics",
+        "project": "The project on GitHub, running {{version}}",
         "creditsBorders": "Borders from",
         "creditsRest": "(GPL-3.0) · coastline from Natural Earth · Wonders and emblems from the Age of Empires Series Wiki · geometry cut on {{date}}"
     },

@@ -84,6 +84,7 @@
         "preserves": "{{what}} korur",
         "chart": "Harita",
         "ruled": "Kerte hatları, ekvator ve dönenceler",
+        "project": "Projenin GitHub sayfası, sürüm {{version}}",
         "creditsBorders": "Sınırlar:",
         "creditsRest": "(GPL-3.0) · kıyı çizgisi Natural Earth · harikalar ve armalar Age of Empires Series Wiki · geometri {{date}}"
     },
