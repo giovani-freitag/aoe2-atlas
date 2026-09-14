@@ -20,17 +20,16 @@ Three questions, three places, and the same three sides at either size. What is 
 in from the right, how it is drawn comes in from the left, and when — the axis every reading on
 the map is qualified by — is along the foot where a thumb already is.
 
-Everything turns at one width, the one `useWideScreen` names. There is no second breakpoint in
-the stylesheets; when there was, the legend believed it was on a desktop for two hundred and
-forty pixels' worth of window while the rest of the atlas was still a phone, and the two
-overlapped.
+Everything turns at one width, the one `useWideScreen` names, and there is no second breakpoint
+anywhere in the stylesheets. Every part of the atlas changes shape at the same pixel, so no two
+of them can disagree about which layout they are in.
 
 ## The civilization, as a deck
 
-Opening a civilization used to raise a sheet over the map, which answered every question at once
-and hid the ground it was describing to do it. It is a bar now: the arms, the name where there is
-room for it, one thumb-sized button per category, and a way out. A tap lifts that category over
-the map and a second tap puts it away.
+Opening a civilization raises a bar rather than a sheet: the arms, the name where there is room
+for it, one thumb-sized button per category, and a way out. A tap lifts that category over the
+map and a second tap puts it away, so the reader decides how much ground to cover and for how
+long, one question at a time.
 
 | State | Map covered |
 | --- | --- |
@@ -46,8 +45,8 @@ the map and a second tap puts it away.
 
 No panel may take more than a third of the screen's height; past that it scrolls. The map is
 shorter than the screen — the year's band is under it — so even the longest panel, the realm's,
-stops at a little under half of it, where it had been covering half the map while describing how
-much ground that realm held: the one thing the reader opened it to compare against what is drawn.
+stops at a little under half of it. A panel that describes how much ground a realm held has to
+leave that ground in view: it is the thing the reader opened it to measure the claim against.
 
 The bar slides out of the year's own band and tucks back under it. The year is what everything
 else is measured against, so it is the thing that casts a shadow rather than the thing covered.
@@ -55,9 +54,8 @@ else is measured against, so it is the thing that casts a shadow rather than the
 ## What the panels say
 
 Two panels describe the same civilization, one docked at the side of a desktop and one over the
-foot of a phone. They share their words. A copy is a promise to change both, and the second one
-is the one that gets forgotten: the phone's had already lost the hand-drawn note and the
-carried-border warning before they were brought together.
+foot of a phone, and they draw their words from one place rather than keeping a copy each. A copy
+is a standing promise to change both, and the second one is the one that gets forgotten.
 
 | Shared | Lives in |
 | --- | --- |
@@ -71,9 +69,9 @@ forty per cent of your ground" is a claim about a shape, and the shape is the an
 
 ## The year
 
-One bar of the histogram is lit, not every bar behind it. The bars read how crowded each century
-was, which is absolute for each one; lighting the run to the left said the centuries accumulate,
-and they do not. Each is its own map, complete on its own.
+One bar of the histogram is lit rather than the whole run up to it. The bars read how crowded
+each century was, and that reading stands alone for each: the centuries do not accumulate, and
+every one of them is its own map, complete in itself.
 
 The columns are a target as well as a reading: pointing at the tall bar picks that century. The
 handle is drawn rather than left to the browser, so its width is a number the stylesheet knows,
@@ -81,10 +79,9 @@ and everything painted behind the slider lands on exactly the positions the hand
 Measured drift between a column's middle and the handle that selects it: under half a pixel at
 either end of the rail.
 
-The fire is below the screen. It was tried on the header, which is a pill the size of two buttons
-on a phone, and then on the handle itself, which turned a hearth into a fidget that chased a
-slider. Loosed across the rail with the glow laid along the bottom edge, it reads as what it is:
-a light thrown up from under the last band of the atlas.
+The fire is below the screen, loosed across the whole rail with its glow laid along the bottom
+edge. It belongs to the band and not to any control in it, so it reads as what it is: a light
+thrown up from under the last band of the atlas.
 
 ## How it is checked
 
@@ -95,9 +92,8 @@ open, asking at each one whether the legend shares ground with the deck, the pan
 the pill or the rail, whether the page overflows sideways, and whether any text is clipped.
 
 Every control has a name, the headings run in order, no image is without alt text, and the page
-keeps its `h1` on a phone: invisible, but in the accessibility tree, which `display: none` had
-taken it out of.
+keeps its `h1` on a phone — out of sight, but present in the accessibility tree.
 
-Flights honour `prefers-reduced-motion`. The stylesheet already cut every transition and
-animation to nothing, but a flight across the map is neither of those: it is d3 interpolating a
-transform sixty times a second, and it went on gliding for anyone who had asked it not to.
+Flights honour `prefers-reduced-motion`, and they have to ask for themselves. Cutting every CSS
+transition and animation does not reach them: a flight across the map is neither of those but d3
+interpolating a transform sixty times a second, so it is asked separately and jumps instead.
