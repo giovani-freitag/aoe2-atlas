@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.7.0...v1.7.1) (2026-09-14)
+
+
+### Fixed
+
+* **map:** paint the shields of civilizations dragged into view ([#10](https://github.com/giovani-freitag/aoe2-atlas/issues/10)) ([1ea119d](https://github.com/giovani-freitag/aoe2-atlas/commit/1ea119db0c276581fffc2c0299adf9ac6d03361a))
+
 ## [1.7.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.6.1...v1.7.0) (2026-09-14)
 
 
