@@ -33,6 +33,8 @@ interface AtlasText {
     place: string;
     country: string;
     realm: string;
+    /** Why the monument does not belong to the civilization's time or place, where it does not. */
+    anachronism?: string;
 }
 
 interface AtlasIndex {
@@ -59,6 +61,8 @@ interface Row {
     cut: number;
     peakYear: number;
     peakAreaKm2: number;
+    /** Set for the seven whose Wonder stands somewhere its civilization never did. */
+    anachronism: string | null;
 }
 
 function read<T>(...path: string[]): T {
@@ -105,6 +109,7 @@ const rows: Row[] = CIVILIZATION_RECORDS.map((civilization) => {
         cut: map.cut,
         peakYear: reach.peakYear,
         peakAreaKm2: reach.peakAreaKm2,
+        anachronism: text.anachronism ?? null,
     };
 }).sort((left, right) => left.name.localeCompare(right.name, 'en'));
 
@@ -131,20 +136,34 @@ function escape(text: string): string {
 /*
  * Two headings, because they answer to different readers.
  *
- * The tab and the search result get the short one, and it leads with the dates: that is the
- * question this page is the best answer to on the open web — the thread that collects them
- * collects them in prose and stops at forty-three of the fifty-six — while 'Wonder' leads to a
- * wiki with a page per monument and a domain this one will never outweigh. The heading on the
- * page itself is free to say the whole thing, because nothing truncates it.
+ * The tab and the search result get the short one, and it leads with where rather than when.
+ * Both questions are asked of this table and it answers both, but the one people phrase out
+ * loud is where a civilization actually was — and what stands against it there is a forum
+ * thread with a picture in it, while 'Wonder' leads to a wiki with a page per monument and a
+ * domain this one will never outweigh. The heading on the page is free to say the whole thing,
+ * because nothing truncates it.
  */
-const TITLE = 'The dates of all 56 Age of Empires II civilizations';
-const HEADING = 'Every Age of Empires II civilization: the years it stood, and the Wonder it built';
+const TITLE = 'Where the 56 Age of Empires II civilizations stood, and when';
+const HEADING = 'Where every Age of Empires II civilization really stood, and for how long';
 const DESCRIPTION =
-    'When each of the 56 Age of Empires II civilizations stood, the dated maps the atlas draws its realm on, and the real monument its Wonder was modelled on.';
+    'Where each of the 56 Age of Empires II civilizations actually was: the real monument its Wonder was modelled on, the city that monument stands in, and the centuries the atlas draws its realm.';
 
 const maps = index.years.length;
 const first = index.years[0];
 const last = index.years[index.years.length - 1];
+
+const odd = rows.filter((row) => row.anachronism !== null);
+
+/*
+ * The part of this page nobody else has written.
+ *
+ * A list of civilization against Wonder can be copied off a wiki in an afternoon. Which of them
+ * stand somewhere their civilization never did, and why, is a judgement with a reason attached —
+ * and it is the honest answer to what a reader means by asking where these civilizations really
+ * were. The notes are the ones the atlas already shows on each civilization's own panel.
+ */
+const ODD_HEADING = `${odd.length} Wonders that stand where their civilization never did`;
+const ODD_LEAD = 'The game puts every Wonder on a building that exists, and for most of them the building is where the civilization was. These are the exceptions, and the atlas says so on each one rather than drawing the pin and leaving it. The monument is still real; what does not hold is the claim that the civilization stood there.';
 
 /* The two sentences that say what the numbers in the table mean, used by both outputs. */
 const LEAD = `Every civilization in Age of Empires II builds a Wonder modelled on a building that exists. This table names the building and the city it stands in, the years the game's own lore gives the realm, the dated maps the atlas draws it on, and how much ground it held when it was at its widest.`;
@@ -269,6 +288,27 @@ const page = `<!doctype html>
 
             .num {
                 font-variant-numeric: tabular-nums;
+            }
+
+            dl.odd {
+                margin: 1.25rem 0 0;
+                max-width: 46rem;
+            }
+
+            dl.odd dt {
+                margin-top: 1rem;
+                font-weight: 600;
+            }
+
+            dl.odd dd {
+                margin: 0.15rem 0 0;
+                color: var(--faint);
+            }
+
+            h2 {
+                margin: 2.5rem 0 0;
+                font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem);
+                line-height: 1.25;
             }
 
             footer {
@@ -404,6 +444,18 @@ ${rows
                 </table>
             </div>
 
+            <h2>${escape(ODD_HEADING)}</h2>
+            <p>${escape(ODD_LEAD)}</p>
+            <dl class="odd">
+${rows
+    .filter((row) => row.anachronism !== null)
+    .map(
+        (row) => `                <dt>${escape(row.name)} — ${escape(row.monument)}, ${escape(row.where)}</dt>
+                <dd>${escape(row.anachronism ?? '')}</dd>`,
+    )
+    .join('\n')}
+            </dl>
+
             <footer>
                 <p>
                     Borders from
@@ -435,6 +487,12 @@ ${rows
             `| ${row.name} | [${row.monument}](${row.wikipedia}) | ${row.where} | ${row.from}–${row.to} | ${span(row)} | ${area(row.peakAreaKm2)} in ${row.peakYear} |`,
     )
     .join('\n')}
+
+## ${ODD_HEADING}
+
+${ODD_LEAD}
+
+${odd.map((row) => `**${row.name} — ${row.monument}, ${row.where}.** ${row.anachronism ?? ''}`).join('\n\n')}
 
 Borders from [aourednik/historical-basemaps](https://github.com/aourednik/historical-basemaps),
 monuments from the [Age of Empires Series Wiki](https://ageofempires.fandom.com/wiki/Wonder_(Age_of_Empires_II)).

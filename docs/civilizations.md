@@ -1,4 +1,4 @@
-# Every Age of Empires II civilization: the years it stood, and the Wonder it built
+# Where every Age of Empires II civilization really stood, and for how long
 
 Every civilization in Age of Empires II builds a Wonder modelled on a building that exists. This table names the building and the city it stands in, the years the game's own lore gives the realm, the dated maps the atlas draws it on, and how much ground it held when it was at its widest.
 
@@ -62,6 +62,24 @@ The atlas is cut into 19 dated maps between AD 200 and 1600. A realm is listed f
 | Vikings | [Borgund Stave Church](https://en.wikipedia.org/wiki/Borgund_Stave_Church) | Lærdal, Norway | 793–1100 | 800–1100 · 4 maps | 551,909 km² in 1000 |
 | Wei | [Songyue Pagoda](https://en.wikipedia.org/wiki/Songyue_Pagoda) | Dengfeng, Henan, China | 220–266 | 250 · 1 map | 1,214,700 km² in 250 |
 | Wu | [Jing'an Temple](https://en.wikipedia.org/wiki/Jing'an_Temple) | Shanghai, China | 222–280 | 250 · 1 map | 1,433,420 km² in 250 |
+
+## 7 Wonders that stand where their civilization never did
+
+The game puts every Wonder on a building that exists, and for most of them the building is where the civilization was. These are the exceptions, and the atlas says so on each one rather than drawing the pin and leaving it. The monument is still real; what does not hold is the claim that the civilization stood there.
+
+**Chinese — Hall of Prayer for Good Harvests, Temple of Heaven, Beijing, China.** The hall is Ming (1420); the civilization reaches back to the Sui, eight hundred years earlier.
+
+**Cumans — Sarkel fortress, Lower Don, now submerged, Russia.** Raised by the Khazars with Byzantine engineers; the Cumans only took it.
+
+**Huns — Arch of Constantine, Rome, Italy.** The arch is Roman, and the Huns never reached Rome.
+
+**Malians — Great Mosque of Djenné, Djenné, Mali.** The present mosque is an early twentieth-century rebuilding.
+
+**Slavs — Kizhi Pogost, Kizhi Island, Karelia, Russia.** Built in the seventeenth century, long after the game's period.
+
+**Spanish — Torre del Oro, Seville, Spain.** Raised by the Berber Almohads; the Castilian crown only inherited it later.
+
+**Varangians — Norse ship burial, Gnezdovo, near Smolensk, Russia.** The wiki cites the Gokstad ship as the visual reference; it is in Norway, and the game's Varangians are the Rus'.
 
 Borders from [aourednik/historical-basemaps](https://github.com/aourednik/historical-basemaps),
 monuments from the [Age of Empires Series Wiki](https://ageofempires.fandom.com/wiki/Wonder_(Age_of_Empires_II)).

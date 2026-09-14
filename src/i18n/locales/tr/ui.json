@@ -2,7 +2,7 @@
     "app": {
         "title": "AoE2 Atlas",
         "tagline": "Yüzyıl yüzyıl harikalar ve topraklar",
-        "documentTitle": "Age of Empires II'nin 56 uygarlığı tek bir haritada",
+        "documentTitle": "Age of Empires II'nin tüm uygarlıklarının gerçek haritası",
         "focusedTitle": "{{year}} yılında {{name}}",
         "openRoster": "Uygarlık listesini aç",
         "openSettings": "Harita ayarlarını aç",

@@ -2,7 +2,7 @@
     "app": {
         "title": "AoE2 Atlas",
         "tagline": "世紀ごとの、象徴と領土",
-        "documentTitle": "Age of Empires II の全56文明を一枚の地図に",
+        "documentTitle": "Age of Empires II の全文明の実在地図",
         "focusedTitle": "{{year}}年の{{name}}",
         "openRoster": "文明の一覧を開く",
         "openSettings": "地図の設定を開く",

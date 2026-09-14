@@ -2,7 +2,7 @@
     "app": {
         "title": "AoE2 Atlas",
         "tagline": "世纪为序的奇观与疆域",
-        "documentTitle": "一张地图上的 Age of Empires II 全部 56 个文明",
+        "documentTitle": "Age of Empires II 全部文明的真实地图",
         "focusedTitle": "{{year}}年的{{name}}",
         "openRoster": "打开文明列表",
         "openSettings": "打开地图设置",
