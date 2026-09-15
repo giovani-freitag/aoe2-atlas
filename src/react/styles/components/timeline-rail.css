@@ -174,6 +174,20 @@
 }
 
 /*
+ * The handle rides in a span of the slider's own making, and that span is what gets placed.
+ *
+ * It carries the stop's offset along the track and a shift of half its own width, which is what
+ * centres the handle on the stop. So the handle has to stay in that span's flow for the shift to
+ * have a width to halve: given a position of its own it collapsed the span to nothing, and half
+ * of nothing left every stop with the handle sitting half a handle to the right of it.
+ *
+ * Only the height is ours to set, since the span is placed against the top of the track.
+ */
+.rail-body__slider > span {
+    top: calc((var(--lane) - var(--knob)) / 2);
+}
+
+/*
  * The handle, drawn once.
  *
  * It used to be a pair of vendor pseudo-elements carrying identical declarations, because a
@@ -182,8 +196,6 @@
  */
 .rail-body__knob {
     display: block;
-    position: absolute;
-    top: calc((var(--lane) - var(--knob)) / 2);
     width: var(--knob);
     height: var(--knob);
     border: 1px solid rgb(0 0 0 / 45%);
