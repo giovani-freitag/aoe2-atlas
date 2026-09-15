@@ -1,91 +1,93 @@
 import { describe, expect, it } from 'vitest';
-import { readAddress, writeAddress, type AddressOptions } from '@/react/address.ts';
+import { AddressService, type AddressServiceConfig } from '@/services/address/address-service.ts';
 
-const OPTIONS: AddressOptions = {
+const CONFIG: AddressServiceConfig = {
     years: [200, 800, 1200, 1279, 1600],
     keys: new Set(['byzantines', 'bulgarians', 'mongols']),
     openingYear: 1200,
 };
 
-describe('readAddress', () => {
+const address = new AddressService(CONFIG);
+
+describe('AddressService.read', () => {
     it('reads nothing from an empty address', () => {
-        const shared = readAddress('', OPTIONS);
+        const shared = address.read('');
 
         expect(shared).toEqual({});
     });
 
     it('reads the year, with or without the leading question mark', () => {
-        const shared = readAddress('year=800', OPTIONS);
+        const shared = address.read('year=800');
 
         expect(shared.year).toBe(800);
     });
 
     it('snaps a year the atlas has no map for to the nearest one it has', () => {
-        const shared = readAddress('?year=1250', OPTIONS);
+        const shared = address.read('?year=1250');
 
         expect(shared.year).toBe(1279);
     });
 
     it('ignores a year that is not a number', () => {
-        const shared = readAddress('?year=soon', OPTIONS);
+        const shared = address.read('?year=soon');
 
         expect(shared.year).toBeUndefined();
     });
 
     it('opens the civilization named', () => {
-        const shared = readAddress('?civ=byzantines', OPTIONS);
+        const shared = address.read('?civ=byzantines');
 
         expect(shared.focused).toBe('byzantines');
     });
 
     it('drops a civilization it has never heard of', () => {
-        const shared = readAddress('?civ=atlanteans', OPTIONS);
+        const shared = address.read('?civ=atlanteans');
 
         expect(shared.focused).toBeUndefined();
     });
 
     it('pins the civilizations listed, keeping only the ones it knows', () => {
-        const shared = readAddress('?pin=bulgarians,atlanteans,mongols', OPTIONS);
+        const shared = address.read('?pin=bulgarians,atlanteans,mongols');
 
         expect(shared.pinned).toEqual(['bulgarians', 'mongols']);
     });
 
     it('counts the same pin twice as one pin', () => {
-        const shared = readAddress('?pin=mongols,mongols', OPTIONS);
+        const shared = address.read('?pin=mongols,mongols');
 
         expect(shared.pinned).toEqual(['mongols']);
     });
 
     it('sets nothing for pins when none of them is known', () => {
-        const shared = readAddress('?pin=atlanteans', OPTIONS);
+        const shared = address.read('?pin=atlanteans');
 
         expect(shared.pinned).toBeUndefined();
     });
 });
 
-describe('writeAddress', () => {
+describe('AddressService.write', () => {
     it('writes an empty address for the atlas at rest', () => {
-        const query = writeAddress({ year: 1200, focused: null, pinned: [] }, OPTIONS);
+        const query = address.write({ year: 1200, focused: null, pinned: [] });
 
         expect(query).toBe('');
     });
 
     it('leaves the opening year out and says only what changed', () => {
-        const query = writeAddress({ year: 1200, focused: 'byzantines', pinned: [] }, OPTIONS);
+        const query = address.write({ year: 1200, focused: 'byzantines', pinned: [] });
 
         expect(query).toBe('?civ=byzantines');
     });
 
     it('writes the pins with bare commas between them', () => {
-        const query = writeAddress({ year: 800, focused: null, pinned: ['bulgarians', 'mongols'] }, OPTIONS);
+        const query = address.write({ year: 800, focused: null, pinned: ['bulgarians', 'mongols'] });
 
         expect(query).toBe('?year=800&pin=bulgarians,mongols');
     });
 
     it('survives a round trip', () => {
-        const written = writeAddress({ year: 1279, focused: 'byzantines', pinned: ['bulgarians'] }, OPTIONS);
+        const written = address.write({ year: 1279, focused: 'byzantines', pinned: ['bulgarians'] });
 
-        const read = readAddress(written, OPTIONS);
+        const read = address.read(written);
 
         expect(read).toEqual({ year: 1279, focused: 'byzantines', pinned: ['bulgarians'] });
     });

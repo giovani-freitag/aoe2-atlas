@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createFormatters } from '@/react/format.ts';
+import { createFormatters } from '@/i18n/formatters.ts';
 
 const format = createFormatters({ locale: 'en', beforeCommonEra: (year) => `${year} BC` });
 

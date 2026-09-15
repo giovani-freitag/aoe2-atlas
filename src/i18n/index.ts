@@ -6,8 +6,6 @@ import { FALLBACK_LOCALE, SUPPORTED_LOCALES, toSupportedLocale } from './locales
 /** The two bundles each language ships: what the interface says, and what the atlas is made of. */
 export const NAMESPACES = ['ui', 'atlas'] as const;
 
-export type Namespace = (typeof NAMESPACES)[number];
-
 /** Where a stored language choice lives between visits. */
 const STORAGE_KEY = 'aoe2-atlas.locale';
 

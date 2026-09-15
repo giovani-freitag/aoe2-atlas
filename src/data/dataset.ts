@@ -16,6 +16,9 @@ const reachOf = new Map(atlas.civilizations.map((entry) => [entry.civ, entry]));
 /** The centuries the atlas has maps for, oldest first. */
 export const SLICE_YEARS: readonly number[] = atlas.years;
 
+/** Where the atlas opens: the busiest century the game covers. */
+export const OPENING_YEAR = 1200;
+
 /**
  * Every civilization, assembled from the curated records and the measured reach of its borders.
  *

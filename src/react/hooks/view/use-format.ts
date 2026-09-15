@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { createFormatters, type Formatters } from '@/react/format.ts';
+import { createFormatters, type Formatters } from '@/i18n/formatters.ts';
 
 /** Number and date formatting for the language on, rebuilt when the reader switches. */
 export function useFormat(): Formatters {

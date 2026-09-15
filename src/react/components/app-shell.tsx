@@ -1,35 +1,45 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ListFilter, Loader, SlidersHorizontal } from 'lucide-react';
 import { SLICE_YEARS } from '@/data/dataset.ts';
-import { useServices } from '@/react/providers/services-context.ts';
-import { drawnRealms, useAtlas } from '@/react/providers/atlas-context.ts';
-import { useAddress } from '@/react/hooks/use-address.ts';
-import { useEscape } from '@/react/hooks/use-escape.ts';
-import { useFormat } from '@/react/hooks/use-format.ts';
-import { useMeasuredHeight, useMeasuredWidth } from '@/react/hooks/use-measured-height.ts';
-import { useTimeSlice } from '@/react/hooks/use-time-slice.ts';
-import { useSheetHistory } from '@/react/hooks/use-sheet-history.ts';
-import { useSpecular } from '@/react/hooks/use-specular.ts';
-import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
+import { useCatalogue } from '@/react/hooks/services/use-catalogue.ts';
+import { useAtlasView } from '@/react/hooks/view/use-atlas-view.ts';
+import { useAtlas } from '@/react/providers/atlas-context.ts';
+import { useAddress } from '@/react/hooks/dom/use-address.ts';
+import { useEscape } from '@/react/hooks/dom/use-escape.ts';
+import { useFormat } from '@/react/hooks/view/use-format.ts';
+import { useMeasuredHeight, useMeasuredWidth } from '@/react/hooks/dom/use-measured-height.ts';
+import { useSheetHistory } from '@/react/hooks/dom/use-sheet-history.ts';
+import { useSpecular } from '@/react/hooks/dom/use-specular.ts';
+import { useWideScreen } from '@/react/hooks/dom/use-wide-screen.ts';
 import { AtlasMap } from './atlas-map.tsx';
 import { CivDeck } from './civ-deck.tsx';
 import { DetailSheet } from './detail-sheet.tsx';
 import { EmberCanvas } from './ember-canvas.tsx';
 import { LegendPanel } from './legend-panel.tsx';
 import { RosterDrawer } from './roster-drawer.tsx';
-import { SettingsSheet } from './settings-sheet.tsx';
 import { TimelineRail } from './timeline-rail.tsx';
+
+/*
+ * How the world is drawn is a question a reader asks once a session, if at all, and the panel
+ * that answers it carries the heaviest controls in the atlas — the language list alone brings
+ * the whole floating layer with it. None of that is fetched until the panel is first opened.
+ */
+const SettingsSheet = lazy(() =>
+    import('./settings-sheet.tsx').then((module) => ({ default: module.SettingsSheet })),
+);
 
 /** The whole interface: a map that owns the screen, with everything else sliding over it. */
 export function AppShell() {
     const { t, i18n } = useTranslation();
-    const { catalogue, slices, text } = useServices();
+    const catalogue = useCatalogue();
     const format = useFormat();
     const { state, dispatch } = useAtlas();
+    const { listed, standing, drawn, borders, focused, focusedName, slice, loading, failed } = useAtlasView();
     const wide = useWideScreen();
     const [rosterOpen, setRosterOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [settingsEverOpened, setSettingsEverOpened] = useState(false);
 
     useSpecular('.iron');
 
@@ -50,21 +60,6 @@ export function AppShell() {
         document.documentElement.lang = language;
     }, [language]);
 
-    const { slice, loading, failed } = useTimeSlice(slices, state.year);
-
-    const borders = useMemo(() => new Map((slice?.borders ?? []).map((border) => [border.civ, border])), [slice]);
-
-    // The language is a dependency because the names the search matches and sorts by live in it.
-    const listed = useMemo(
-        () => catalogue.search({ text: state.query, expansions: state.expansions, order: state.order }),
-        // eslint-disable-next-line react-hooks/exhaustive-deps -- the language changes what search returns
-        [catalogue, state.query, state.expansions, state.order, language],
-    );
-
-    const standing = useMemo(() => listed.filter((civ) => borders.has(civ.key)), [listed, borders]);
-    const drawn = useMemo(() => drawnRealms(state, standing), [state, standing]);
-    const focused = state.focused ? catalogue.find(state.focused) : null;
-
     /*
      * The title says what is on the map, in the reader's language.
      *
@@ -74,7 +69,6 @@ export function AppShell() {
      * civilization and the year instead: a link to "the Byzantines in 800" now says so in the
      * tab, in the history, and in the text the share sheet offers alongside the address.
      */
-    const focusedName = focused ? text.civilization(focused.key, focused.wonder.anachronistic).name : null;
     const yearLabel = format.year(state.year);
     useEffect(() => {
         const subject = focusedName ? t('app.focusedTitle', { name: focusedName, year: yearLabel }) : t('app.documentTitle');
@@ -91,6 +85,7 @@ export function AppShell() {
     }, []);
 
     const toggleSettings = useCallback(() => {
+        setSettingsEverOpened(true);
         setSettingsOpen((open) => !open);
     }, []);
 
@@ -202,7 +197,12 @@ export function AppShell() {
                 )
             ) : null}
 
-            <SettingsSheet side="left" open={settingsOpen} onClose={closeSettings} />
+            {/* Kept mounted once opened, so closing it can still slide out. */}
+            {settingsEverOpened ? (
+                <Suspense fallback={null}>
+                    <SettingsSheet side="left" open={settingsOpen} onClose={closeSettings} />
+                </Suspense>
+            ) : null}
 
             {/*
              * The same instrument at both sizes, because the year is not a preference.

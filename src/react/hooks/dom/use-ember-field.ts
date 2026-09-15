@@ -1,5 +1,5 @@
 import { useEffect, useRef, type RefObject } from 'react';
-import { EmberField } from '../effects/ember-field.ts';
+import { EmberField } from '@/react/effects/ember-field.ts';
 
 export interface EmberFieldOptions {
     density?: number;

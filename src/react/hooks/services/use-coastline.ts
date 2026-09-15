@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { MultiPolygonRings } from '@/domain/values/geo-shape.ts';
-import type { CoastlineService } from '@/services/geo/coastline-service.ts';
+import { useServices } from '@/react/providers/services-context.ts';
 
 /**
  * The coastline, once it has arrived.
@@ -11,10 +11,9 @@ import type { CoastlineService } from '@/services/geo/coastline-service.ts';
  * slow connection a third download alongside them was measured to delay it. If it never arrives
  * the map stays usable — realms on sea, without the shore — which is a degraded map and not a
  * blank one, and the reason no error is raised for it.
- *
- * @param coastline - The service that fetches and keeps it.
  */
-export function useCoastline(coastline: CoastlineService): MultiPolygonRings | null {
+export function useCoastline(): MultiPolygonRings | null {
+    const { coastline } = useServices();
     const [rings, setRings] = useState<MultiPolygonRings | null>(() => coastline.peek());
 
     useEffect(() => {

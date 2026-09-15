@@ -10,9 +10,6 @@ import { useCallback, useRef, useState, type PointerEvent as ReactPointerEvent }
  */
 const STOPS = [0.34, 0.62, 0.88] as const;
 
-/** What the sheet covers when it first arrives, as a share of the screen. */
-export const SHEET_PEEK = STOPS[0];
-
 /** How far a drag must travel before it counts as a drag rather than a tap. */
 const SLOP = 6;
 

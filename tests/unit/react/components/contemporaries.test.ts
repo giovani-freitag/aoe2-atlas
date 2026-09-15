@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Frontier } from '@/domain/values/frontier.ts';
-import { contemporaries } from '@/react/components/contemporaries.ts';
+import { contemporaries } from '@/domain/rules/contemporaries.ts';
 import { civilizationStub } from '../../../fixtures/civilizations.ts';
 
 const BYZANTINES = civilizationStub({ key: 'byzantines' });

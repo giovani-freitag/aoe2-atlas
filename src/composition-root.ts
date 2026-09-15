@@ -1,15 +1,17 @@
 import type { i18n } from 'i18next';
-import { CIVILIZATIONS, REGION_MEMBERSHIP, SLICE_YEARS } from './data/dataset.ts';
+import { CIVILIZATIONS, OPENING_YEAR, REGION_MEMBERSHIP, SLICE_YEARS } from './data/dataset.ts';
 import { EXPANSION_RECORDS } from './data/expansions.ts';
 import { CatalogueService } from './services/atlas/catalogue-service.ts';
 import { SliceService } from './services/atlas/slice-service.ts';
 import { CoastlineService } from './services/geo/coastline-service.ts';
 import { PaletteService } from './services/palette/palette-service.ts';
 import { TextService } from './services/text/text-service.ts';
+import { AddressService } from './services/address/address-service.ts';
 import { WikiService } from './services/wiki/wiki-service.ts';
 import { AGE_COLUMN, AGE_REGION_SLOT } from './skins/age/palette.ts';
 
 export interface AtlasServices {
+    address: AddressService;
     catalogue: CatalogueService;
     slices: SliceService;
     coastline: CoastlineService;
@@ -35,6 +37,11 @@ export function createServices(translator: i18n): AtlasServices {
     });
 
     return {
+        address: new AddressService({
+            years: SLICE_YEARS,
+            keys: new Set(CIVILIZATIONS.map((civilization) => civilization.key)),
+            openingYear: OPENING_YEAR,
+        }),
         catalogue: new CatalogueService({
             civilizations: CIVILIZATIONS,
             expansionOrder: EXPANSION_RECORDS.map((expansion) => expansion.key),
