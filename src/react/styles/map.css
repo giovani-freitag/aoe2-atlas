@@ -237,7 +237,7 @@
  * still a phone, with the deck sitting in that same corner. The two overlapped, and the legend
  * had no chip left to fold itself away with.
  */
-@media (min-width: 60rem) {
+@media (min-width: 48rem) {
     /*
      * No pill beside it here, so it takes a corner of its own — the one the civilization's panel
      * does not dock into, and just clear of the column of map controls.

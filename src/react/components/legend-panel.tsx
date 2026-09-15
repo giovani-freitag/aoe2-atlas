@@ -8,7 +8,7 @@ import { usePalette } from '@/react/hooks/services/use-palette.ts';
 import { useText } from '@/react/hooks/services/use-text.ts';
 import { LEGEND_DETAIL_LIMIT, useAtlas } from '@/react/providers/atlas-context.ts';
 import { useFormat } from '@/react/hooks/view/use-format.ts';
-import { useWideScreen } from '@/react/hooks/dom/use-wide-screen.ts';
+import { useAtLeast } from '@/react/hooks/dom/use-breakpoint.ts';
 import { HatchSwatch } from './hatch-swatch.tsx';
 
 export interface LegendPanelProps {
@@ -32,7 +32,7 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
     const text = useText();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
-    const wide = useWideScreen();
+    const roomForLegend = useAtLeast('md');
     const [open, setOpen] = useState(false);
 
     /*
@@ -43,7 +43,7 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
      * miniature, and enough to see that five colours are in play and which they are. Where
      * there is room for it to sit in a corner and bother nobody, it stays open.
      */
-    const shown = wide || open;
+    const shown = roomForLegend || open;
 
     const detailed = drawn.length <= LEGEND_DETAIL_LIMIT;
     const regionsOnMap = new Set(drawn.map((civ) => civ.region));
@@ -62,7 +62,7 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
             aria-label={t('legend.onMap', { count: drawn.length })}
         >
             {/* On a phone the pill is the header: it folds the panel, and carries the way out. */}
-            {wide ? null : (
+            {roomForLegend ? null : (
                 <div className="legend__pill">
                     <button
                         type="button"
@@ -106,7 +106,7 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
              * band of its own, in the title face, behind the same mark the trace control wears,
              * the card reads as a panel — and the header holds still while the list scrolls.
              */}
-            {wide ? (
+            {roomForLegend ? (
             <header className="legend__head">
                 <Layers size={14} aria-hidden />
                 <h2>{t('legend.onMap', { count: drawn.length })}</h2>

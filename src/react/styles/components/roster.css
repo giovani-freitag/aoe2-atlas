@@ -112,7 +112,7 @@
     opacity: 0.42;
 }
 
-@media (min-width: 60rem) {
+@media (min-width: 62rem) {
     .civ__pin {
         opacity: 0;
     }

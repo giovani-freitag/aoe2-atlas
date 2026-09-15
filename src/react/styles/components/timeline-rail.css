@@ -221,7 +221,7 @@
  * With room for it, the reading moves back beside the rail and the whole instrument shrinks:
  * a pointer is precise, so the handle has no need to be the size of a fingertip.
  */
-@media (min-width: 60rem) {
+@media (min-width: 48rem) {
     .rail-body {
         grid-template-columns: auto 1fr;
         grid-template-areas:

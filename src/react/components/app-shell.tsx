@@ -11,7 +11,7 @@ import { useFormat } from '@/react/hooks/view/use-format.ts';
 import { useMeasuredHeight, useMeasuredWidth } from '@/react/hooks/dom/use-measured-height.ts';
 import { useSheetHistory } from '@/react/hooks/dom/use-sheet-history.ts';
 import { useSpecular } from '@/react/hooks/dom/use-specular.ts';
-import { useWideScreen } from '@/react/hooks/dom/use-wide-screen.ts';
+import { useAtLeast } from '@/react/hooks/dom/use-breakpoint.ts';
 import { AtlasMap } from './atlas-map.tsx';
 import { CivDeck } from './civ-deck.tsx';
 import { DetailSheet } from './detail-sheet.tsx';
@@ -36,7 +36,7 @@ export function AppShell() {
     const format = useFormat();
     const { state, dispatch } = useAtlas();
     const { listed, standing, drawn, borders, focused, focusedName, slice, loading, failed } = useAtlasView();
-    const wide = useWideScreen();
+    const roomForPanel = useAtLeast('md');
     const [rosterOpen, setRosterOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [settingsEverOpened, setSettingsEverOpened] = useState(false);
@@ -180,7 +180,7 @@ export function AppShell() {
 
             {/* On a phone a civilization is a bar over the year rail, not a sheet over the map. */}
             {focused ? (
-                wide ? (
+                roomForPanel ? (
                     <DetailSheet
                         civilization={focused}
                         border={borders.get(focused.key) ?? null}
@@ -229,10 +229,10 @@ export function AppShell() {
                     years={SLICE_YEARS}
                     year={state.year}
                     loading={loading}
-                    stepping={!wide}
+                    stepping={!roomForPanel}
                     onChange={setYear}
                     trailing={
-                        wide ? null : (
+                        roomForPanel ? null : (
                             <button
                                 type="button"
                                 className="rail-body__step iron riveted"

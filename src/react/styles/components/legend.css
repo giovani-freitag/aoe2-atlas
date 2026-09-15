@@ -184,7 +184,7 @@
 }
 
 /* With a pointer the crosses stay out of the way until the row is under it. */
-@media (min-width: 60rem) {
+@media (min-width: 62rem) {
     .legend__civs li button {
         opacity: 0;
     }

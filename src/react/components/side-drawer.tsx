@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Dialog, VisuallyHidden } from 'radix-ui';
-import { useWideScreen } from '@/react/hooks/dom/use-wide-screen.ts';
+import { useAtLeast } from '@/react/hooks/dom/use-breakpoint.ts';
 
 export interface SideDrawerProps {
     /** Accessible name for the panel. */
@@ -9,8 +9,8 @@ export interface SideDrawerProps {
     onClose: () => void;
     /** Which edge it comes in from. */
     side: 'left' | 'right';
-    /** Stays open on a wide screen whatever `open` says, for a panel that docks into the layout. */
-    pinnedWhenWide?: boolean;
+    /** Stays open whatever `open` says, for a panel the caller has decided is out at this width. */
+    staysOut?: boolean;
     /** Class names for the panel itself, on top of the shared drawer ones. */
     className?: string;
     children: ReactNode;
@@ -29,13 +29,18 @@ export interface SideDrawerProps {
  * dialog demanded — a panel opened on a desktop and carried down to a phone width used to stay
  * non-modal, with the header and the year rail painted over it.
  *
- * It is deliberately not portalled: on a wide screen the roster is a column of the shell's grid,
- * and a panel moved to the end of the body cannot be one.
+ * It is deliberately not portalled, so that it keeps its place in the shell's own stacking order
+ * rather than being lifted out of it.
  */
-export function SideDrawer({ label, open, onClose, side, pinnedWhenWide, className, children }: SideDrawerProps) {
-    const wide = useWideScreen();
-    const pinned = wide && pinnedWhenWide === true;
-    const modal = !wide;
+export function SideDrawer({ label, open, onClose, side, staysOut, className, children }: SideDrawerProps) {
+    /*
+     * Below this the panel has nowhere to go but over everything, so it takes the whole side and
+     * makes the rest inert. Above it there is map to spare: it stops at the year rail, and the
+     * map and the rail stay live behind it.
+     */
+    const roomBeside = useAtLeast('sm');
+    const pinned = staysOut === true;
+    const modal = !roomBeside;
 
     return (
         <Dialog.Root

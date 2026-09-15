@@ -9,7 +9,7 @@ import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { usePalette } from '@/react/hooks/services/use-palette.ts';
 import { useFormat } from '@/react/hooks/view/use-format.ts';
 import { FALLBACK_LOCALE, toSupportedLocale } from '@/i18n/locales.ts';
-import { useWideScreen } from '@/react/hooks/dom/use-wide-screen.ts';
+import { useAtLeast } from '@/react/hooks/dom/use-breakpoint.ts';
 import { Collapsible } from '@/react/ui/collapsible.tsx';
 import { MultiToggleGroup, ToggleGroup, ToggleGroupItem } from '@/react/ui/toggle-group.tsx';
 import { CivRow } from './civ-row.tsx';
@@ -40,7 +40,7 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
     const palette = usePalette();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
-    const wide = useWideScreen();
+    const rosterStaysOut = useAtLeast('lg');
     const [unfolded, setUnfolded] = useState(false);
 
     const largest = useMemo(
@@ -81,7 +81,7 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
     );
 
     return (
-        <SideDrawer label={t('roster.title')} open={open} onClose={onClose} side={side} pinnedWhenWide className="roster">
+        <SideDrawer label={t('roster.title')} open={open} onClose={onClose} side={side} staysOut={rosterStaysOut} className="roster">
             <div className="drawer__head">
                 <h2>{t('roster.title')}</h2>
             </div>
@@ -123,7 +123,7 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
                  * who has set a filter finds it open, so the thing shaping the list is never out
                  * of sight. Where there is room, they are simply there.
                  */}
-                {wide ? (
+                {rosterStaysOut ? (
                     chips
                 ) : (
                     <Collapsible
@@ -165,7 +165,7 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
                         pinned={state.pinned.includes(civilization.key)}
                         onOpen={(key) => {
                             dispatch({ type: 'focus', value: state.focused === key ? null : key });
-                            if (!wide) onClose();
+                            if (!rosterStaysOut) onClose();
                         }}
                         onTogglePin={(key) => {
                             dispatch({ type: 'toggle-pin', value: key });

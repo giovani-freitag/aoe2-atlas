@@ -13,7 +13,7 @@ import { useAtlas } from '@/react/providers/atlas-context.ts';
 import { useElementSize } from '@/react/hooks/dom/use-element-size.ts';
 import { useMapZoom } from '@/react/hooks/dom/use-map-zoom.ts';
 import { DECK_BAR } from './civ-deck.tsx';
-import { useWideScreen } from '@/react/hooks/dom/use-wide-screen.ts';
+import { useAtLeast } from '@/react/hooks/dom/use-breakpoint.ts';
 import { useWikiHover } from '@/react/hooks/services/use-wiki-hover.ts';
 import { HoverCard, HoverCardAnchor, HoverCardPanel } from '@/react/ui/hover-card.tsx';
 import { Toggle } from '@/react/ui/toggle.tsx';
@@ -46,7 +46,7 @@ const CLEAR_PIN = 6;
  * How far from the middle of a pin still counts as pointing at it, in pixels.
  *
  * Twice the dot it surrounds, and no more: monuments in Europe land within a couple of dozen
- * pixels of one another at the width the map opens at, and a reach wide enough to be comfortable
+ * pixels of one another at the width the map opens at, and a reach roomForPanel enough to be comfortable
  * on its own would start answering for its neighbour.
  */
 const PIN_REACH = 10;
@@ -269,7 +269,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
      * only one that flies, and it flies to a frame that is already right.
      */
     const focus = state.focused;
-    const wide = useWideScreen();
+    const roomForPanel = useAtLeast('md');
 
     /*
      * What the camera was last sent somewhere for.
@@ -285,7 +285,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
      * cancelled and rebuilt before its frame arrives — the borders for the century land a moment
      * after the sheet opens — and marking it as done too early lost the flight altogether.
      */
-    const flown = useRef<{ focus: string | null; wide: boolean; projection: AtlasProjection } | null>(null);
+    const flown = useRef<{ focus: string | null; roomForPanel: boolean; projection: AtlasProjection } | null>(null);
 
     /*
      * Where the reader was before they opened a civilization, so closing it gives them that back.
@@ -302,7 +302,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
         if (!projection) return;
 
         const was = flown.current;
-        if (was && was.focus === focus && was.wide === wide && was.projection === projection) return;
+        if (was && was.focus === focus && was.roomForPanel === roomForPanel && was.projection === projection) return;
 
         const frame = requestAnimationFrame(() => {
             /*
@@ -310,7 +310,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
              * foot. Either way a realm centred in the whole viewport ends up behind it.
              */
             const covered =
-                wide
+                roomForPanel
                     ? { left: focus ? PANEL_WIDTH : 0 }
                     : { bottom: focus ? DECK_BAR : 0 };
 
@@ -323,7 +323,7 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
             }
 
             if (!focus) {
-                flown.current = { focus, wide, projection };
+                flown.current = { focus, roomForPanel, projection };
 
                 const back = kept.current;
                 kept.current = null;
@@ -347,14 +347,14 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
             const border = borders.get(focus);
             if (!border) return;
 
-            flown.current = { focus, wide, projection };
+            flown.current = { focus, roomForPanel, projection };
             flyTo(projection.frameFor(border.rings, covered));
         });
 
         return () => {
             cancelAnimationFrame(frame);
         };
-    }, [focus, projection, borders, flyTo, wide]);
+    }, [focus, projection, borders, flyTo, roomForPanel]);
 
     const roseRadius = Math.min(ROSE_MAX, Math.min(size.width, size.height) * ROSE_SHARE);
 

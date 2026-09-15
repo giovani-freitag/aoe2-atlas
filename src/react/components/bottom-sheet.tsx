@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Dialog, VisuallyHidden } from 'radix-ui';
 import { useSheetDrag } from '@/react/hooks/dom/use-sheet-drag.ts';
 import { SheetProviderContext } from '@/react/providers/sheet-context.ts';
-import { useWideScreen } from '@/react/hooks/dom/use-wide-screen.ts';
+import { useAtLeast } from '@/react/hooks/dom/use-breakpoint.ts';
 
 export interface BottomSheetProps {
     /** Accessible name for the panel. */
@@ -32,7 +32,7 @@ export interface BottomSheetProps {
  */
 export function BottomSheet({ label, open, onClose, head, children }: BottomSheetProps) {
     const { t } = useTranslation();
-    const isWide = useWideScreen();
+    const roomForPanel = useAtLeast('md');
     const drag = useSheetDrag({ open, onDismiss: onClose });
     const sheet = useMemo(() => ({ collapse: drag.collapse }), [drag.collapse]);
 
@@ -50,7 +50,7 @@ export function BottomSheet({ label, open, onClose, head, children }: BottomShee
                     aria-label={label}
                     aria-describedby={undefined}
                     data-dragging={drag.dragging}
-                    style={isWide ? undefined : { height: `${drag.height * 100}dvh` }}
+                    style={roomForPanel ? undefined : { height: `${drag.height * 100}dvh` }}
                     /*
                      * A civilization is opened by pointing at the map, and the reader is still
                      * looking at the map. Pulling focus into the panel would scroll what they
@@ -72,7 +72,7 @@ export function BottomSheet({ label, open, onClose, head, children }: BottomShee
                     </VisuallyHidden.Root>
 
                     {/* The grip resizes a sheet that slides; wide, neither sheet slides, so it would be a lie. */}
-                    {isWide ? null : (
+                    {roomForPanel ? null : (
                         <button
                             type="button"
                             className="sheet__grip"

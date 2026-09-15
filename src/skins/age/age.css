@@ -79,7 +79,7 @@
     --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 }
 
-@media (min-width: 60rem) {
+@media (min-width: 62rem) {
     :root {
         /* A pointer is precise, so controls can stop being thumb-sized. */
         --control: 2.25rem;

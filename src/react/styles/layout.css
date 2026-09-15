@@ -456,16 +456,35 @@
  * pulled back into the flow, and the sheet becomes the right-hand column. Nothing is duplicated
  * for the wide case.
  */
-@media (min-width: 60rem) {
+/* ---- sm: the panels stop taking the whole screen ------------------------ */
+
+/*
+ * From here up a panel is laid over the map, not over the atlas.
+ *
+ * There is room beside it now, so it stops at the year rail and leaves the map live behind it.
+ * The rail is the axis every reading on the map is qualified by; a panel that hides it is asking
+ * the reader to remember which map they are looking at, and below this width that price is worth
+ * paying only because there is nowhere else for the panel to go.
+ */
+@media (min-width: 36rem) {
+    .drawer {
+        bottom: var(--rail-height, 0px);
+        width: 20rem;
+    }
+}
+
+/* ---- md: the atlas takes a header, and a civilization takes a panel ----- */
+
+@media (min-width: 48rem) {
     .shell {
         grid-template-areas:
-            'bar bar'
-            'stage roster'
-            'rail rail';
-        grid-template-columns: 1fr 20rem;
+            'bar'
+            'stage'
+            'rail';
         grid-template-rows: auto 1fr auto;
     }
 
+    /* The pill unfolds into the band it was a folded copy of: the mark, the name, the way in. */
     .bar {
         grid-area: bar;
         position: relative;
@@ -486,6 +505,7 @@
         height: auto;
         overflow: visible;
         clip-path: none;
+        font-size: 0.9375rem;
     }
 
     .bar__spacer,
@@ -495,10 +515,6 @@
 
     .bar__brand {
         padding-left: 0;
-    }
-
-    .bar__brand h1 {
-        font-size: 0.9375rem;
     }
 
     .bar__brand p {
@@ -514,56 +530,24 @@
         padding: var(--space-2) var(--space-4);
     }
 
-    /*
-     * The panel stops being something laid over the map and becomes a column of it. A zero
-     * min-height is what stops fifty-six rows from stretching the row and pushing the map off
-     * the screen, and the slide is turned off because a column does not arrive from anywhere.
-     */
-    .roster {
-        grid-area: roster;
-        position: relative;
-        inset: auto;
-        margin: 0;
-        width: auto;
-        max-width: none;
-        height: auto;
-        min-height: 0;
-        border-right: none;
-        border-left: 1px solid var(--oak);
-        transform: none;
-        box-shadow: none;
-        animation: none;
+    /* Between the band and the rail, because both are out and neither may be covered. */
+    .drawer {
+        top: var(--bar-height, 0px);
     }
 
-    /*
-     * Wide, the preferences are a panel over the map rather than over everything.
-     *
-     * They open without a modal here, so the header and the year rail stay live behind them —
-     * and a live control covered is worse than one that is simply not there. On a phone the
-     * drawer is modal and makes the page inert, and then it takes the whole side.
-     */
     .prefs {
-        top: var(--bar-height, 0px);
-        bottom: var(--rail-height, 0px);
         width: 22rem;
-        /* Square, like the panel opposite: both are columns between the bar and the rail. */
+        /* Square: a panel that runs from the header to the rail reads as a column, not a card. */
         border-radius: 0;
     }
 
     /*
-     * The detail panel lies over the map, it does not take a column from it.
+     * The civilization stops being a bar over the year and becomes a panel beside the map.
      *
-     * As a grid cell it took a third of the map's width on the way in and gave it back on the
-     * way out, and every path in the SVG was reprojected and redrawn at a new size in the same
-     * frame. However well the zoom was carried across, the map visibly heaved. Over the top it
-     * costs the map nothing: the projection never changes, nothing is reprojected, and the panel
-     * simply slides in from the right.
-     */
-    /*
-     * Opposite the roster, not over it.
-     *
-     * The list is a column on the right now, and a panel docking on that side would cover the
-     * very list the reader picked the civilization from.
+     * It lies over the map rather than taking a column from it: as a grid cell it took a third
+     * of the map's width on the way in and gave it back on the way out, and every path in the
+     * SVG was reprojected and redrawn at a new size in the same frame. However well the zoom was
+     * carried across, the map visibly heaved.
      */
     .sheet--dock {
         inset: var(--bar-height, 0px) auto var(--rail-height, 0px) 0;
@@ -572,12 +556,11 @@
         max-height: none;
         border-top: none;
         border-right: 1px solid var(--oak);
-        /* Docked between the bar and the rail it is a column, not a card: square, like the roster opposite. */
         border-radius: 0;
         transition: none;
     }
 
-    /* Wide it arrives from the side it docks against, not from the foot of the screen. */
+    /* It arrives from the side it rests against, not from the foot of the screen. */
     .sheet--dock[data-state='open'] {
         animation: dock-in 240ms ease;
     }
@@ -590,6 +573,25 @@
 
     .sheet__head {
         padding-top: var(--space-3);
+    }
+
+    .deck {
+        display: none;
+    }
+}
+
+/* ---- lg: the roster is out to begin with -------------------------------- */
+
+/*
+ * Wide enough that the list can stand open without the map becoming a strip behind it.
+ *
+ * It is still laid over the map and not a column of it, so the world keeps its full width and
+ * its middle stays where it was: docking the list shifted the whole projection sideways every
+ * time it opened, which is a large price for a list that is mostly read at a glance.
+ */
+@media (min-width: 62rem) {
+    .roster {
+        box-shadow: var(--shadow);
     }
 }
 
@@ -774,11 +776,4 @@
 .deck__panel .card__note {
     padding: var(--space-1) var(--space-2);
     font-size: 0.6875rem;
-}
-
-
-@media (min-width: 60rem) {
-    .deck {
-        display: none;
-    }
 }
