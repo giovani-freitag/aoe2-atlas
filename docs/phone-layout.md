@@ -8,11 +8,11 @@ measurements are how each one was settled.
 
 | | Phone | Desktop |
 | --- | --- | --- |
-| The map | the whole screen, edge to edge | the middle column |
+| The map | the whole screen, edge to edge | the whole screen, with panels laid over it |
 | The year | a band at the foot, always out | a band at the foot, always out |
-| What is on the map | a drawer from the right | a column on the right |
+| What is on the map | a drawer from the right | a panel from the right, out to begin with |
 | How it is drawn | a drawer from the left | a drawer from the left |
-| One civilization | a bar over the year rail, one panel at a time | a panel docked on the left |
+| One civilization | a bar over the year rail, one panel at a time | a panel over the map, on the left |
 | The legend | a pill at the head of the map, unfolding on a tap | a card in the corner |
 | The atlas itself | a pill at the head of the map | a band along the top |
 
@@ -20,9 +20,11 @@ Three questions, three places, and the same three sides at either size. What is 
 in from the right, how it is drawn comes in from the left, and when — the axis every reading on
 the map is qualified by — is along the foot where a thumb already is.
 
-Everything turns at one width, the one `useWideScreen` names, and there is no second breakpoint
-anywhere in the stylesheets. Every part of the atlas changes shape at the same pixel, so no two
-of them can disagree about which layout they are in.
+The atlas turns at more than one width now, and on purpose: it used to turn at a single one, and
+between a phone and that width it kept a phone's arrangement with room for a great deal more. The
+steps are Bootstrap's, declared once in `react/breakpoints.ts`, and an architecture test fails if
+a stylesheet turns anywhere else — so parts of the atlas change at different widths by design and
+never by accident. [The ladder, and what it cost](adr/0007-a-ladder-of-widths.md).
 
 ## The civilization, as a deck
 

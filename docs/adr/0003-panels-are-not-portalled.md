@@ -1,6 +1,8 @@
 # 0003 — The panels are not portalled
 
-*Accepted, 15 September 2026.*
+*Accepted, 15 September 2026. Partly corrected by [0007](0007-a-ladder-of-widths.md): the claim
+below that modality-as-a-prop ended the resize bug was half right. The platform's modal dialog
+also rode a layer above every `z-index`, and the panel that replaced it had to be told to.*
 
 ## Context
 

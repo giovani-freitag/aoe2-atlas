@@ -20,3 +20,4 @@ that are invisible in the source.
 | [0004](0004-interface-state-stays-a-reducer.md) | Interface state stays a reducer | accepted |
 | [0005](0005-measured-regression.md) | Regression is measured, not diffed as pixels | accepted |
 | [0006](0006-what-loads-first.md) | Vendor chunks split, preferences deferred | accepted |
+| [0007](0007-a-ladder-of-widths.md) | A ladder of widths, and panels that always overlay | accepted |
