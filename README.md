@@ -84,6 +84,8 @@ npm run dev        # http://localhost:5174
 | `npm run data:build` | rebuild the 19 dated maps |
 | `npm run data:icons` | fetch the three emblems the game does not ship yet |
 | `npm run docs:table` | rewrite docs/civilizations.md from the data |
+| `npm run test:e2e` | drive the built atlas in a browser: the controls, and the search decisions |
+| `npm run measure` | time to a usable map, with the network and the processor throttled |
 
 ## 🧭 Where the data comes from
 
@@ -115,6 +117,7 @@ medieval Slavic border.
 - [Every civilization, its Wonder and the centuries it stood](docs/civilizations.md) — the 56 in one table, generated from the same files the map is drawn from
 - [The shape of the atlas on a phone](docs/phone-layout.md) — where everything sits, and the measurements that settled it
 - [Being found](docs/search-visibility.md) — what was done for search, what was deliberately not, and why
+- [Decisions](docs/adr/) — one file per choice that closed off a reasonable alternative, and what it cost
 - [Changelog](CHANGELOG.md) — what shipped, release by release
 - [Releases](https://github.com/giovani-freitag/aoe2-atlas/releases) — the tagged builds
 - Source layout: `src/domain` (entities), `src/services` (catalogue, slices, projection, palette),
