@@ -243,10 +243,11 @@ export function AppShell() {
                             <button
                                 type="button"
                                 className="rail-body__step iron riveted"
+                                aria-expanded={rosterOpen}
                                 onClick={() => {
-                                    setRosterOpen(true);
+                                    setRosterOpen((out) => !out);
                                 }}
-                                aria-label={t('app.openRoster')}
+                                aria-label={t(rosterOpen ? 'app.closeRoster' : 'app.openRoster')}
                             >
                                 <ListFilter size={18} aria-hidden />
                             </button>

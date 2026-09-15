@@ -108,6 +108,25 @@ test.describe('the roster', () => {
         await expect(rows).not.toHaveCount(before);
     });
 
+    test('the way in opens the list and closes it again', async ({ page, isMobile }) => {
+        test.skip(Boolean(isMobile), 'needs a width where the list is not already out');
+
+        await page.setViewportSize({ width: 900, height: 800 });
+        const opener = page.locator('.rail-body__step.riveted');
+        const list = page.locator('.roster');
+
+        await expect(opener).toHaveAttribute('aria-expanded', 'false');
+
+        await opener.click();
+        await expect(list).toBeVisible();
+        await expect(opener).toHaveAttribute('aria-expanded', 'true');
+
+        /* The control that opened it is the control that closes it, not a one-way door. */
+        await opener.click();
+        await expect(list).toHaveCount(0);
+        await expect(opener).toHaveAttribute('aria-expanded', 'false');
+    });
+
     test('the way in goes only where the list is already out', async ({ page, isMobile }) => {
         test.skip(Boolean(isMobile), 'needs a window to resize');
 
