@@ -15,10 +15,15 @@ const settle = async (page: Page): Promise<void> => {
     await expect(page.locator('.rail-body__reading strong')).not.toBeEmpty();
 };
 
+/** The list is out to begin with where there is room for it, so opening it may mean leaving it. */
 const openRoster = async (page: Page): Promise<void> => {
-    const opener = page.locator('.rail-body__step.riveted');
-    if (await opener.isVisible()) await opener.click();
+    if ((await page.locator('.roster').count()) === 0) await page.click('.rail-body__step.riveted');
     await expect(page.locator('.roster__list')).toBeVisible();
+};
+
+const shutRoster = async (page: Page): Promise<void> => {
+    if ((await page.locator('.roster').count()) > 0) await page.click('.rail-body__step.riveted');
+    await expect(page.locator('.roster')).toHaveCount(0);
 };
 
 const openSettings = async (page: Page): Promise<void> => {
@@ -29,6 +34,9 @@ const openSettings = async (page: Page): Promise<void> => {
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await settle(page);
+
+    /* Every test starts from the same place, whichever width its project opens at. */
+    await shutRoster(page);
 });
 
 test.describe('the year on the rail', () => {
@@ -127,23 +135,26 @@ test.describe('the roster', () => {
         await expect(opener).toHaveAttribute('aria-expanded', 'false');
     });
 
-    test('the way in goes only where the list is already out', async ({ page, isMobile }) => {
+    test('can be put away at every width, including the one it opens at', async ({ page, isMobile }) => {
         test.skip(Boolean(isMobile), 'needs a window to resize');
 
         const opener = page.locator('.rail-body__step.riveted');
         const list = page.locator('.roster');
 
         /*
-         * These two turn at the same step or the filters cannot be reached at all: tied to
-         * different ones there was a band of widths — a tablet's — where the button had already
-         * gone and the list had not yet arrived.
+         * The list is laid over the map rather than docked beside it, so a reader who wants the
+         * whole map has to be able to send it away — at the widths where it arrives by itself
+         * most of all. It used to be pinned open there, with the only way out taken away too.
          */
-        await page.setViewportSize({ width: 900, height: 800 });
+        await page.setViewportSize({ width: 1100, height: 800 });
+        await openRoster(page);
         await expect(opener).toHaveCount(1);
 
-        await page.setViewportSize({ width: 1100, height: 800 });
-        await expect(opener).toHaveCount(0);
-        await expect(list).toBeVisible();
+        await opener.click();
+        await expect(list).toHaveCount(0);
+
+        await page.setViewportSize({ width: 700, height: 800 });
+        await expect(opener).toHaveCount(1);
     });
 
     test('opening a civilization traces its realm on the map', async ({ page }) => {

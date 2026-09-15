@@ -9,8 +9,6 @@ export interface SideDrawerProps {
     onClose: () => void;
     /** Which edge it comes in from. */
     side: 'left' | 'right';
-    /** Stays open whatever `open` says, for a panel the caller has decided is out at this width. */
-    staysOut?: boolean;
     /** Class names for the panel itself, on top of the shared drawer ones. */
     className?: string;
     children: ReactNode;
@@ -32,22 +30,21 @@ export interface SideDrawerProps {
  * It is deliberately not portalled, so that it keeps its place in the shell's own stacking order
  * rather than being lifted out of it.
  */
-export function SideDrawer({ label, open, onClose, side, staysOut, className, children }: SideDrawerProps) {
+export function SideDrawer({ label, open, onClose, side, className, children }: SideDrawerProps) {
     /*
      * Below this the panel has nowhere to go but over everything, so it takes the whole side and
      * makes the rest inert. Above it there is map to spare: it stops at the year rail, and the
      * map and the rail stay live behind it.
      */
     const roomBeside = useAtLeast('sm');
-    const pinned = staysOut === true;
     const modal = !roomBeside;
 
     return (
         <Dialog.Root
-            open={pinned || open}
+            open={open}
             modal={modal}
             onOpenChange={(next) => {
-                if (!next && !pinned) onClose();
+                if (!next) onClose();
             }}
         >
             {/* There is only a scrim to dim where the panel is modal; docked, it dims nothing. */}
@@ -69,7 +66,7 @@ export function SideDrawer({ label, open, onClose, side, staysOut, className, ch
                      * Where the panel is a column of the layout rather than something laid over
                      * it, a click on the map beside it is a click on the map — not a dismissal.
                      */
-                    if (pinned || !modal) event.preventDefault();
+                    if (!modal) event.preventDefault();
                 }}
             >
                 {/*

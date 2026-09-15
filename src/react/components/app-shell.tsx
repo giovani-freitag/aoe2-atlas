@@ -12,6 +12,7 @@ import { useMeasuredHeight, useMeasuredWidth } from '@/react/hooks/dom/use-measu
 import { useSheetHistory } from '@/react/hooks/dom/use-sheet-history.ts';
 import { useSpecular } from '@/react/hooks/dom/use-specular.ts';
 import { useAtLeast } from '@/react/hooks/dom/use-breakpoint.ts';
+import { widthOf } from '@/react/breakpoints.ts';
 import { AtlasMap } from './atlas-map.tsx';
 import { CivDeck } from './civ-deck.tsx';
 import { DetailSheet } from './detail-sheet.tsx';
@@ -39,12 +40,11 @@ export function AppShell() {
     const roomForPanel = useAtLeast('md');
 
     /*
-     * The way into the filters goes when the filters are already out, and not a step before.
-     * Tied to the wrong step it left a band of widths — a tablet's — where the button had gone
-     * and the list had not yet arrived, and the filters could not be reached at all.
+     * The list is out to begin with where there is room to read it beside the map, and shut where
+     * it would be the map. Read once, as the shell is built: a reader who closes it has said what
+     * they want, and a change of width is not a reason to overrule them.
      */
-    const rosterStaysOut = useAtLeast('lg');
-    const [rosterOpen, setRosterOpen] = useState(false);
+    const [rosterOpen, setRosterOpen] = useState(() => matchMedia(widthOf('lg')).matches);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [settingsEverOpened, setSettingsEverOpened] = useState(false);
 
@@ -239,19 +239,17 @@ export function AppShell() {
                     stepping={!roomForPanel}
                     onChange={setYear}
                     trailing={
-                        rosterStaysOut ? null : (
-                            <button
-                                type="button"
-                                className="rail-body__step iron riveted"
-                                aria-expanded={rosterOpen}
-                                onClick={() => {
-                                    setRosterOpen((out) => !out);
-                                }}
-                                aria-label={t(rosterOpen ? 'app.closeRoster' : 'app.openRoster')}
-                            >
-                                <ListFilter size={18} aria-hidden />
-                            </button>
-                        )
+                        <button
+                            type="button"
+                            className="rail-body__step iron riveted"
+                            aria-expanded={rosterOpen}
+                            onClick={() => {
+                                setRosterOpen((out) => !out);
+                            }}
+                            aria-label={t(rosterOpen ? 'app.closeRoster' : 'app.openRoster')}
+                        >
+                            <ListFilter size={18} aria-hidden />
+                        </button>
                     }
                 />
             </div>
