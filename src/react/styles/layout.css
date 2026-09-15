@@ -467,7 +467,17 @@
  * paying only because there is nowhere else for the panel to go.
  */
 @media (min-width: 36rem) {
+    /*
+     * Below the pill, not under it.
+     *
+     * The header is still a pill floating in the corner at this step — a phone held on its side
+     * has width to spare and no height at all, so the band would cost the map a strip it cannot
+     * afford. But the pill shares that corner with the panel that comes in from the left, and a
+     * panel that opens with the button that opened it sitting on its own parchment reads as an
+     * accident. It starts below the pill instead, on both sides, so the two stay a pair.
+     */
     .drawer {
+        top: calc(var(--bar-height, 0px) + var(--space-2) * 2);
         bottom: var(--rail-height, 0px);
         width: 20rem;
     }
