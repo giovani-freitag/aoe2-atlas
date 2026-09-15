@@ -37,6 +37,13 @@ export function AppShell() {
     const { state, dispatch } = useAtlas();
     const { listed, standing, drawn, borders, focused, focusedName, slice, loading, failed } = useAtlasView();
     const roomForPanel = useAtLeast('md');
+
+    /*
+     * The way into the filters goes when the filters are already out, and not a step before.
+     * Tied to the wrong step it left a band of widths — a tablet's — where the button had gone
+     * and the list had not yet arrived, and the filters could not be reached at all.
+     */
+    const rosterStaysOut = useAtLeast('lg');
     const [rosterOpen, setRosterOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [settingsEverOpened, setSettingsEverOpened] = useState(false);
@@ -232,7 +239,7 @@ export function AppShell() {
                     stepping={!roomForPanel}
                     onChange={setYear}
                     trailing={
-                        roomForPanel ? null : (
+                        rosterStaysOut ? null : (
                             <button
                                 type="button"
                                 className="rail-body__step iron riveted"

@@ -108,6 +108,25 @@ test.describe('the roster', () => {
         await expect(rows).not.toHaveCount(before);
     });
 
+    test('the way in goes only where the list is already out', async ({ page, isMobile }) => {
+        test.skip(Boolean(isMobile), 'needs a window to resize');
+
+        const opener = page.locator('.rail-body__step.riveted');
+        const list = page.locator('.roster');
+
+        /*
+         * These two turn at the same step or the filters cannot be reached at all: tied to
+         * different ones there was a band of widths — a tablet's — where the button had already
+         * gone and the list had not yet arrived.
+         */
+        await page.setViewportSize({ width: 900, height: 800 });
+        await expect(opener).toHaveCount(1);
+
+        await page.setViewportSize({ width: 1100, height: 800 });
+        await expect(opener).toHaveCount(0);
+        await expect(list).toBeVisible();
+    });
+
     test('opening a civilization traces its realm on the map', async ({ page }) => {
         await openRoster(page);
         const realms = page.locator('.atlas__realm');
