@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.8.1](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.8.0...v1.8.1) (2026-09-15)
+
+
+### Fixed
+
+* **layout:** reopen a panel in the mode its width asks for ([cc2d73f](https://github.com/giovani-freitag/aoe2-atlas/commit/cc2d73f1ab9ac0f045222b72eb4d43091144b272))
+
+
+### Performance
+
+* split the vendor chunks and hold back the emblems below the fold ([d5a6a25](https://github.com/giovani-freitag/aoe2-atlas/commit/d5a6a2529d7b21c25513860b3450f95beedf4c27))
+
+
+### Changed
+
+* build every control on shared primitives ([dd64281](https://github.com/giovani-freitag/aoe2-atlas/commit/dd64281bdaea9aaf34ce29be039e53626f031d6b))
+* reach the services through hooks and move policy out of the interface ([a0423d7](https://github.com/giovani-freitag/aoe2-atlas/commit/a0423d738eb00d37cfe7b35df075df0f62aa65c0))
+* split the component sheet into one file per component ([03ab374](https://github.com/giovani-freitag/aoe2-atlas/commit/03ab3749a482124cf5594e498cf30c54b12d83ae))
+
 ## [1.8.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.7.1...v1.8.0) (2026-09-14)
 
 
