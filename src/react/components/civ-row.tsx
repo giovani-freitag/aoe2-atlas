@@ -3,8 +3,8 @@ import { Pin, PinOff } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import type { CivilizationStyle } from '@/services/palette/palette-service.ts';
-import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
-import { useFormat } from '@/react/hooks/use-format.ts';
+import { useCivilizationText } from '@/react/hooks/view/use-civilization-text.ts';
+import { useFormat } from '@/react/hooks/view/use-format.ts';
 import { CivArms } from './civ-arms.tsx';
 import { HatchSwatch } from './hatch-swatch.tsx';
 
@@ -60,7 +60,7 @@ export function CivRow({
             >
                 <span className="civ__bar" style={{ width: `${share * 100}%`, background: style.colour }} aria-hidden />
                 <HatchSwatch style={style} size={14} />
-                <CivArms civilization={civilization} size={26} />
+                <CivArms civilization={civilization} size={26} deferred />
                 {/*
                  * The monument under the name, not only behind a tap.
                  *

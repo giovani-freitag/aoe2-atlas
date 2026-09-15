@@ -9,6 +9,14 @@ export interface CivArmsProps {
     label?: string;
     /** Rings the arms in the civilization's own colour, for a row that has no other hue. */
     colour?: string;
+    /**
+     * Holds the fetch back for arms below the fold.
+     *
+     * Fifty-six of these in a list that shows a dozen is fifty-six requests racing the coastline
+     * and the first century for a phone's connection, to paint four dozen rows nobody has
+     * scrolled to yet.
+     */
+    deferred?: boolean;
 }
 
 /**
@@ -18,7 +26,7 @@ export interface CivArmsProps {
  * head of its panel, in the row of its neighbours — so they are worth one component rather than
  * five spellings of the same `img` tag.
  */
-export function CivArms({ civilization, size, label, colour }: CivArmsProps) {
+export function CivArms({ civilization, size, label, colour, deferred }: CivArmsProps) {
     return (
         <img
             className="arms"
@@ -27,6 +35,8 @@ export function CivArms({ civilization, size, label, colour }: CivArmsProps) {
             title={label}
             width={size}
             height={size}
+            loading={deferred ? 'lazy' : undefined}
+            fetchPriority={deferred ? 'low' : undefined}
             style={colour ? { borderColor: colour, borderStyle: 'solid', borderWidth: 1 } : undefined}
         />
     );

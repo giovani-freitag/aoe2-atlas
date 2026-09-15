@@ -55,5 +55,22 @@ export default defineConfig({
         // The coastline and the fifty-six borders are the bundle; splitting them out would only
         // trade one download for two and put a loading state in front of the map.
         chunkSizeWarningLimit: 900,
+        rollupOptions: {
+            output: {
+                manualChunks(id: string) {
+                    if (!id.includes('node_modules')) return undefined;
+
+                    if (/node_modules[\\/]react(-dom)?[\\/]/.test(id)) return 'v-react';
+                    if (/node_modules[\\/]d3-/.test(id)) return 'v-d3';
+                    if (/i18next/.test(id)) return 'v-i18n';
+                    if (/lucide/.test(id)) return 'v-lucide';
+                    if (/radix|floating-ui|aria-hidden|react-remove-scroll|react-style-singleton/.test(id)) {
+                        return 'v-radix';
+                    }
+
+                    return 'v-outros';
+                },
+            },
+        },
     },
 });
