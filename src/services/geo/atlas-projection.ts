@@ -42,6 +42,20 @@ const DRAWN_WINDOW = { west: -115, south: -48, east: 150, north: 72 };
 const SAMPLE_STEP = 5;
 
 /**
+ * How much of the height the opening view covers before it stops growing, and how far it may
+ * grow to get there.
+ *
+ * The drawn world is twice as wide as it is tall. Fitted whole inside a phone held upright that
+ * leaves a strip of map with two thirds of the screen dark above and below it, and thirty-five
+ * shields piled into a band too small to tell apart. Past a point it is better to show less of
+ * the world larger: the view grows until it covers enough of the height, and stops before it has
+ * cropped away more than two thirds of what it was framing. On a screen wider than it is tall
+ * neither limit is ever reached, and the opening view is the fit it always was.
+ */
+const FILLED_DOWN = 0.55;
+const MOST_GROWTH = 3;
+
+/**
  * The extent every projection is fitted to, as a densified ring.
  *
  * Fitting to the whole sphere is no use for Mercator, which sends the poles to infinity, so all
@@ -135,6 +149,22 @@ export class AtlasProjection {
      * @param fill - How much of the free space the box should take.
      * @param covered - Pixels hidden behind panels on each side.
      */
+    /**
+     * How much to grow a framing past the fit, so a tall screen is not mostly empty.
+     *
+     * One where nothing is cropped and none is wasted answers 1, which is every screen wider
+     * than the world it is drawing.
+     *
+     * @param spanX - Width of what is being framed, in the projection's own units.
+     * @param spanY - Its height, in the same units.
+     */
+    private fillFor(spanX: number, spanY: number): number {
+        const contain = Math.min(this.width / Math.max(spanX, 1), this.height / Math.max(spanY, 1));
+        const filled = (this.height * FILLED_DOWN) / Math.max(spanY, 1);
+
+        return Math.max(1, Math.min(MOST_GROWTH, filled / contain));
+    }
+
     private fit(box: { left: number; top: number; right: number; bottom: number }, fill: number, covered: Covered): Frame {
         const hiddenLeft = covered.left ?? 0;
         const hiddenRight = covered.right ?? 0;
@@ -306,7 +336,7 @@ export class AtlasProjection {
 
         if (!Number.isFinite(left)) return { k: MIN_SCALE, x: 0, y: 0 };
 
-        return this.fit({ left, top, right, bottom }, 1, covered);
+        return this.fit({ left, top, right, bottom }, this.fillFor(right - left, bottom - top), covered);
     }
 
 }

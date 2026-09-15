@@ -69,3 +69,25 @@ describe('AtlasProjection', () => {
         });
     });
 });
+
+describe('the opening view on a screen taller than the world it draws', () => {
+    it('fills the height rather than leaving most of it dark', () => {
+        const phone = new AtlasProjection({ width: 320, height: 720, kind: 'equal-earth' });
+
+        const frame = phone.wholeWorld();
+
+        /*
+         * Fitted whole, the drawn world lands about a fifth of the way down a phone held upright
+         * and the rest is dark. It is allowed to crop east and west to be worth looking at.
+         */
+        expect(frame.k).toBeGreaterThan(2);
+    });
+
+    it('leaves a screen wider than the world exactly where it fitted', () => {
+        const desktop = new AtlasProjection({ width: 1440, height: 900, kind: 'equal-earth' });
+        const narrow = new AtlasProjection({ width: 1440, height: 400, kind: 'equal-earth' });
+
+        /* Both are wider than they are tall, so neither has height going to waste to reclaim. */
+        expect(desktop.wholeWorld().k).toBeLessThan(2 * narrow.wholeWorld().k);
+    });
+});
