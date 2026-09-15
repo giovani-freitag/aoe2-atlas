@@ -59,6 +59,22 @@ test.describe('the year on the rail', () => {
 
         await expect(page.locator('.rail-body__knob')).toHaveAttribute('aria-valuetext', reading ?? '');
     });
+
+    test('the handle sits over the bar it has chosen', async ({ page }) => {
+        /*
+         * The handle rides in a span the slider places, and that span centres it by shifting half
+         * its own width. Give the handle a position of its own and the span has no width to
+         * halve, which leaves every stop with the handle half a handle to the right of it.
+         */
+        const knob = await page.locator('.rail-body__knob').boundingBox();
+        const bar = await page.locator(".rail-body__profile span[data-current='true']").boundingBox();
+
+        expect(knob).not.toBeNull();
+        expect(bar).not.toBeNull();
+
+        const apart = Math.abs((knob?.x ?? 0) + (knob?.width ?? 0) / 2 - ((bar?.x ?? 0) + (bar?.width ?? 0) / 2));
+        expect(apart).toBeLessThanOrEqual(1);
+    });
 });
 
 test.describe('the roster', () => {
@@ -156,6 +172,32 @@ test.describe('the preferences', () => {
         await page.keyboard.press('Enter');
 
         await expect(value).not.toHaveText(before ?? '');
+    });
+
+    test('carried down to a phone width it covers the year rail', async ({ page, isMobile }) => {
+        test.skip(Boolean(isMobile), 'starts narrow, so there is no window to shrink');
+
+        await openSettings(page);
+        await page.setViewportSize({ width: 380, height: 844 });
+        await expect(page.locator('.drawer__scrim')).toBeVisible();
+
+        /*
+         * The platform's own modal dialog rode a layer above every z-index on the page, and the
+         * panel that replaced it is an ordinary element that has to be told. Left untold, the
+         * year rail showed through the panel covering the map: a control in plain sight that
+         * could not be touched.
+         */
+        const rail = await page.locator('.rail').boundingBox();
+        const onTop = await page.evaluate(
+            (at) => {
+                const el = document.elementFromPoint(at.x, at.y);
+
+                return el?.closest('.drawer, .drawer__scrim') !== null;
+            },
+            { x: (rail?.x ?? 0) + (rail?.width ?? 0) / 2, y: (rail?.y ?? 0) + (rail?.height ?? 0) / 2 },
+        );
+
+        expect(onTop).toBe(true);
     });
 
     test('the language list stays on screen', async ({ page }) => {
