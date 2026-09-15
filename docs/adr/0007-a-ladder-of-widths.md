@@ -41,8 +41,8 @@ What changes, and where:
 | step | | |
 | --- | --- | --- |
 | xs | below 36rem | map full screen; panels take the whole side and make the rest inert; the year is hidden while one is open, because there is nowhere else for it to be |
-| sm | 36rem | panels stop at the year rail and stop being modal — the map and the year stay live behind them |
-| md | 48rem | the header pill unfolds into a band; a civilization stops being a bar over the year and becomes a panel beside the map |
+| sm | 36rem | the header pill unfolds into the band it was a folded copy of, and the panel stops covering: it sits below the band and above the rail, and the map and the year stay live behind it |
+| md | 48rem | a civilization stops being a bar over the year and becomes a panel beside the map; the map keeps its own controls while a panel is open |
 | lg | 62rem | the roster is out to begin with; pointer-sized controls, and what was revealed on hover starts hiding until hovered |
 | xl, xxl | 75rem, 87.5rem | held in reserve; nothing turns here yet |
 

@@ -240,6 +240,41 @@ test.describe('the preferences', () => {
         expect(onTop).toBe(true);
     });
 
+    test('never leaves the header a loose button over the map', async ({ page, isMobile }) => {
+        test.skip(Boolean(isMobile), 'needs a window to resize');
+
+        await openSettings(page);
+
+        /*
+         * The pill is the header folded up, and it only reads as one while something covers it.
+         * So there are two arrangements and no third: a panel over a pill, or a band with the
+         * panel below it. A button hanging over the map with no header around it is neither.
+         */
+        for (const width of [390, 520, 576, 700, 900]) {
+            await page.setViewportSize({ width, height: 800 });
+            await page.waitForTimeout(350);
+
+            const state = await page.evaluate(() => {
+                const bar = document.querySelector('.bar');
+                const button = document.querySelector('.bar__settings');
+                if (!bar || !button) return null;
+
+                const box = button.getBoundingClientRect();
+                const at = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+
+                return {
+                    folded: getComputedStyle(bar).position === 'fixed',
+                    covered: at?.closest('.bar__settings') === null,
+                };
+            });
+
+            expect(state, `at ${width}px`).not.toBeNull();
+            expect(state?.folded, `at ${width}px the pill is only ever out when covered`).toBe(
+                state?.covered,
+            );
+        }
+    });
+
     test('leaves the year alone as soon as there is room beside it', async ({ page, isMobile }) => {
         test.skip(Boolean(isMobile), 'starts narrow, so there is no window to shrink');
 
