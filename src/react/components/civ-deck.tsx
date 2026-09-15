@@ -5,15 +5,16 @@ import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { Frontier } from '@/domain/values/frontier.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import { expansionOf } from '@/data/expansions.ts';
-import { useServices } from '@/react/providers/services-context.ts';
+import { usePalette } from '@/react/hooks/services/use-palette.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
-import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
-import { useFormat } from '@/react/hooks/use-format.ts';
-import { useMeasuredHeight } from '@/react/hooks/use-measured-height.ts';
+import { useCivilizationText } from '@/react/hooks/view/use-civilization-text.ts';
+import { useFormat } from '@/react/hooks/view/use-format.ts';
+import { useMeasuredHeight } from '@/react/hooks/dom/use-measured-height.ts';
 import { SheetProviderContext } from '@/react/providers/sheet-context.ts';
+import { ToggleGroup, ToggleGroupItem } from '@/react/ui/toggle-group.tsx';
 import { CivArms } from './civ-arms.tsx';
 import { ExpansionFacts, RealmFacts, WonderFacts } from './civ-facts.tsx';
-import { contemporaries } from './contemporaries.ts';
+import { contemporaries } from '@/domain/rules/contemporaries.ts';
 import { Rivals } from './rivals.tsx';
 
 /** The height of the bar alone, in pixels, which is what the map frames its realms above. */
@@ -42,7 +43,7 @@ export interface CivDeckProps {
  */
 export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckProps) {
     const { t } = useTranslation();
-    const { palette } = useServices();
+    const palette = usePalette();
     const { state } = useAtlas();
     const words = useCivilizationText(civilization);
     const format = useFormat();
@@ -149,24 +150,18 @@ export function CivDeck({ civilization, border, frontiers, onClose }: CivDeckPro
                 <CivArms civilization={civilization} size={30} label={words.name} />
                 <span className="deck__name">{words.name}</span>
 
-                <nav>
+                <ToggleGroup
+                    label={t('sheet.details', { name: words.name })}
+                    className="deck__tabs"
+                    value={open}
+                    onValueChange={setOpen}
+                >
                     {tabs.map(({ key, icon: Icon, label }) => (
-                        <button
-                            key={key}
-                            type="button"
-                            className="iron"
-                            data-active={open === key}
-                            aria-expanded={open === key}
-                            aria-label={label}
-                            title={label}
-                            onClick={() => {
-                                setOpen((current) => (current === key ? null : key));
-                            }}
-                        >
+                        <ToggleGroupItem key={key} value={key} className="iron" aria-label={label} title={label}>
                             <Icon size={17} aria-hidden />
-                        </button>
+                        </ToggleGroupItem>
                     ))}
-                </nav>
+                </ToggleGroup>
 
                 <button type="button" className="deck__close iron" aria-label={t('sheet.close')} onClick={onClose}>
                     <X size={17} aria-hidden />

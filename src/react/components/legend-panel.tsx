@@ -4,10 +4,11 @@ import { Layers, X } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import { REGION_KEYS, type RegionKey } from '@/domain/enums/region.ts';
-import { useServices } from '@/react/providers/services-context.ts';
+import { usePalette } from '@/react/hooks/services/use-palette.ts';
+import { useText } from '@/react/hooks/services/use-text.ts';
 import { LEGEND_DETAIL_LIMIT, useAtlas } from '@/react/providers/atlas-context.ts';
-import { useFormat } from '@/react/hooks/use-format.ts';
-import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
+import { useFormat } from '@/react/hooks/view/use-format.ts';
+import { useWideScreen } from '@/react/hooks/dom/use-wide-screen.ts';
 import { HatchSwatch } from './hatch-swatch.tsx';
 
 export interface LegendPanelProps {
@@ -27,7 +28,8 @@ export interface LegendPanelProps {
  */
 export function LegendPanel({ drawn, borders }: LegendPanelProps) {
     const { t } = useTranslation();
-    const { palette, text } = useServices();
+    const palette = usePalette();
+    const text = useText();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
     const wide = useWideScreen();

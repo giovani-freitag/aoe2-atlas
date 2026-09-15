@@ -2,10 +2,13 @@ import { useTranslation } from 'react-i18next';
 import { Swords } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { Frontier } from '@/domain/values/frontier.ts';
-import { useServices } from '@/react/providers/services-context.ts';
+import { useCatalogue } from '@/react/hooks/services/use-catalogue.ts';
+import { usePalette } from '@/react/hooks/services/use-palette.ts';
+import { useText } from '@/react/hooks/services/use-text.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
-import { useFormat } from '@/react/hooks/use-format.ts';
+import { useFormat } from '@/react/hooks/view/use-format.ts';
 import { useSheet } from '@/react/providers/sheet-context.ts';
+import { Toggle } from '@/react/ui/toggle.tsx';
 import { CivArms } from './civ-arms.tsx';
 
 export interface RivalsProps {
@@ -36,7 +39,9 @@ export interface RivalsProps {
  */
 export function Rivals({ civilization, frontiers, layout }: RivalsProps) {
     const { t } = useTranslation();
-    const { catalogue, palette, text } = useServices();
+    const catalogue = useCatalogue();
+    const palette = usePalette();
+    const text = useText();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
     const sheet = useSheet();
@@ -62,12 +67,10 @@ export function Rivals({ civilization, frontiers, layout }: RivalsProps) {
 
                     return (
                         <li key={other.key}>
-                            <button
-                                type="button"
-                                data-active={state.pinned.includes(other.key)}
-                                title={t('detail.overlay', { name })}
-                                aria-label={t('detail.overlay', { name })}
-                                onClick={() => {
+                            <Toggle
+                                label={t('detail.overlay', { name })}
+                                pressed={state.pinned.includes(other.key)}
+                                onPressedChange={() => {
                                     dispatch({ type: 'toggle-pin', value: other.key });
                                     sheet.collapse();
                                 }}
@@ -84,7 +87,7 @@ export function Rivals({ civilization, frontiers, layout }: RivalsProps) {
                                     {frontier.carried ? <abbr title={t('detail.sharedAbbr')}>≈</abbr> : null}
                                     {share}
                                 </b>
-                            </button>
+                            </Toggle>
                         </li>
                     );
                 })}

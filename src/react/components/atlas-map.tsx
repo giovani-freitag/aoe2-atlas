@@ -5,15 +5,18 @@ import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { GeoPoint } from '@/domain/values/geo-point.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import { AtlasProjection, SCALE_EXTENT, type Frame } from '@/services/geo/atlas-projection.ts';
-import { useCoastline } from '@/react/hooks/use-coastline.ts';
-import { useFormat } from '@/react/hooks/use-format.ts';
-import { useServices } from '@/react/providers/services-context.ts';
+import { useCoastline } from '@/react/hooks/services/use-coastline.ts';
+import { useFormat } from '@/react/hooks/view/use-format.ts';
+import { usePalette } from '@/react/hooks/services/use-palette.ts';
+import { useText } from '@/react/hooks/services/use-text.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
-import { useElementSize } from '@/react/hooks/use-element-size.ts';
-import { useMapZoom } from '@/react/hooks/use-map-zoom.ts';
+import { useElementSize } from '@/react/hooks/dom/use-element-size.ts';
+import { useMapZoom } from '@/react/hooks/dom/use-map-zoom.ts';
 import { DECK_BAR } from './civ-deck.tsx';
-import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
-import { useWikiHover } from '@/react/hooks/use-wiki-hover.ts';
+import { useWideScreen } from '@/react/hooks/dom/use-wide-screen.ts';
+import { useWikiHover } from '@/react/hooks/services/use-wiki-hover.ts';
+import { HoverCard, HoverCardAnchor, HoverCardPanel } from '@/react/ui/hover-card.tsx';
+import { Toggle } from '@/react/ui/toggle.tsx';
 import { CompassRose } from './compass-rose.tsx';
 import { HatchDefs, HAZE } from './hatch-defs.tsx';
 import { ShareButton } from './share-button.tsx';
@@ -62,9 +65,10 @@ export interface AtlasMapProps {
 export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
     const { t } = useTranslation();
     const format = useFormat();
-    const { palette, text, coastline } = useServices();
+    const palette = usePalette();
+    const text = useText();
     const { state, dispatch } = useAtlas();
-    const coast = useCoastline(coastline);
+    const coast = useCoastline();
     const [holder, size] = useElementSize<HTMLDivElement>();
     const svg = useRef<SVGSVGElement>(null);
 
@@ -604,47 +608,17 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                 </svg>
             ) : null}
 
-            {/*
-             * The card hangs off a point rather than a line of text, so the anchor is a marker of
-             * zero size sitting exactly on the Wonder. Everything else about the placement — the
-             * slide back onto the screen, the flip below, the tip — is the card's own doing, and
-             * is the same here as it is on the link in the sheet.
-             */}
-            {marks.map(({ civilization, anchor, wonder }) => {
-                if (civilization.key !== previewing || !wiki.shown) return null;
-
-                const on = hungOn === PIN ? wonder : anchor;
-                const clear = hungOn === PIN ? CLEAR_PIN : CLEAR_SHIELD;
-
-                return (
-                    <div
-                        key={civilization.key}
-                        className="atlas__preview"
-                        style={{
-                            left: origin.x + frame.k * on[0] + frame.x,
-                            top: origin.y + frame.k * on[1] + frame.y - clear,
-                            // Tall as the mark, so the card clears it whether it opens above or below.
-                            height: clear * 2,
-                        }}
-                    >
-                        <WikiCard summary={wiki.shown.summary} />
-                    </div>
-                );
-            })}
-
             <div className="atlas__controls">
-                <button
-                    type="button"
+                <Toggle
                     className="iron"
-                    aria-pressed={state.showAll}
-                    onClick={() => {
+                    label={traceLabel}
+                    pressed={state.showAll}
+                    onPressedChange={() => {
                         dispatch({ type: 'toggle-show-all' });
                     }}
-                    aria-label={traceLabel}
-                    title={traceLabel}
                 >
                     <Layers size={18} aria-hidden />
-                </button>
+                </Toggle>
                 <button
                     type="button"
                     className="iron"
@@ -677,6 +651,42 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                 </button>
                 <ShareButton />
             </div>
+
+            {/*
+             * The card hangs off a point rather than a line of text, so the anchor is a marker of
+             * zero size sitting exactly on the Wonder. Everything else about the placement — the
+             * slide back onto the screen, the flip below, the tip — is the card's own doing, and
+             * is the same here as it is on the link in the sheet.
+             *
+             * Last in the map, because it is the topmost thing in it: the zoom controls are drawn
+             * just above and a preview is not something to be painted over.
+             */}
+            {marks.map(({ civilization, anchor, wonder }) => {
+                if (civilization.key !== previewing || !wiki.shown) return null;
+
+                const on = hungOn === PIN ? wonder : anchor;
+                const clear = hungOn === PIN ? CLEAR_PIN : CLEAR_SHIELD;
+
+                return (
+                    <HoverCard key={civilization.key} open>
+                        <HoverCardAnchor>
+                            <div
+                                className="atlas__preview"
+                                style={{
+                                    left: origin.x + frame.k * on[0] + frame.x,
+                                    top: origin.y + frame.k * on[1] + frame.y - clear,
+                                    // Tall as the mark, so the card clears it whichever side it opens.
+                                    height: clear * 2,
+                                }}
+                            />
+                        </HoverCardAnchor>
+
+                        <HoverCardPanel className="wiki__card leather" arrowClassName="wiki__tip">
+                            <WikiCard summary={wiki.shown.summary} />
+                        </HoverCardPanel>
+                    </HoverCard>
+                );
+            })}
         </div>
     );
 }

@@ -1,14 +1,12 @@
 import { createContext, useContext } from 'react';
-import type { Civilization } from '@/domain/entities/civilization.ts';
+
 import type { ExpansionKey } from '@/domain/enums/expansion.ts';
 import type { ProjectionKey } from '@/domain/enums/projection.ts';
 import type { CatalogueOrder } from '@/services/atlas/catalogue-service.ts';
+import { OPENING_YEAR } from '@/data/dataset.ts';
 
 /** Past this many realms the legend names regions instead of civilizations. */
 export const LEGEND_DETAIL_LIMIT = 10;
-
-/** Where the atlas opens: the busiest century the game covers. */
-export const OPENING_YEAR = 1200;
 
 export interface AtlasState {
     /** The year on the rail. Everything on the map is drawn as it stood then. */
@@ -34,8 +32,7 @@ export interface AtlasState {
 export type AtlasAction =
     | { type: 'year'; value: number }
     | { type: 'query'; value: string }
-    | { type: 'toggle-expansion'; value: ExpansionKey }
-    | { type: 'clear-expansions' }
+    | { type: 'expansions'; value: readonly ExpansionKey[] }
     | { type: 'order'; value: CatalogueOrder }
     | { type: 'focus'; value: string | null }
     | { type: 'toggle-pin'; value: string }
@@ -80,26 +77,6 @@ export function useAtlas(): AtlasStore {
 }
 
 /**
- * Works out which realms belong on the map.
- *
- * Everything here is already filtered to the year on the rail, so "draw everything" means
- * everything that actually stood in that century — not every civilization the game ships.
- *
- * @param state - What the reader has chosen.
- * @param standing - The civilizations left by the filters, standing in the year on the rail.
- * @returns The realms to draw, in draw order, the focused one last so it lies on top.
- */
-export function drawnRealms(state: AtlasState, standing: readonly Civilization[]): Civilization[] {
-    if (state.showAll) return [...standing];
-
-    const byKey = new Map(standing.map((civ) => [civ.key, civ]));
-    const chosen = state.pinned.filter((key) => byKey.has(key));
-    if (state.focused && byKey.has(state.focused) && !chosen.includes(state.focused)) chosen.push(state.focused);
-
-    return chosen.flatMap((key) => byKey.get(key) ?? []);
-}
-
-/**
  * Folds an action into the state.
  *
  * Exported so it can be tested without a React tree.
@@ -115,19 +92,8 @@ export function atlasReducer(state: AtlasState, action: AtlasAction): AtlasState
         case 'query':
             return { ...state, query: action.value };
 
-        case 'toggle-expansion': {
-            const held = state.expansions.includes(action.value);
-
-            return {
-                ...state,
-                expansions: held
-                    ? state.expansions.filter((key) => key !== action.value)
-                    : [...state.expansions, action.value],
-            };
-        }
-
-        case 'clear-expansions':
-            return { ...state, expansions: [] };
+        case 'expansions':
+            return { ...state, expansions: action.value };
 
         case 'order':
             return { ...state, order: action.value };

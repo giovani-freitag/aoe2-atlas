@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
@@ -6,10 +6,12 @@ import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import type { CatalogueOrder } from '@/services/atlas/catalogue-service.ts';
 import { EXPANSION_RECORDS } from '@/data/expansions.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
-import { useServices } from '@/react/providers/services-context.ts';
-import { useFormat } from '@/react/hooks/use-format.ts';
+import { usePalette } from '@/react/hooks/services/use-palette.ts';
+import { useFormat } from '@/react/hooks/view/use-format.ts';
 import { FALLBACK_LOCALE, toSupportedLocale } from '@/i18n/locales.ts';
-import { useWideScreen } from '@/react/hooks/use-wide-screen.ts';
+import { useWideScreen } from '@/react/hooks/dom/use-wide-screen.ts';
+import { Collapsible } from '@/react/ui/collapsible.tsx';
+import { MultiToggleGroup, ToggleGroup, ToggleGroupItem } from '@/react/ui/toggle-group.tsx';
 import { CivRow } from './civ-row.tsx';
 import { SideDrawer } from './side-drawer.tsx';
 
@@ -35,10 +37,11 @@ export interface RosterDrawerProps {
  */
 export function RosterDrawer({ civilizations, borders, side, open, onClose }: RosterDrawerProps) {
     const { t, i18n } = useTranslation();
-    const { palette } = useServices();
+    const palette = usePalette();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
     const wide = useWideScreen();
+    const [unfolded, setUnfolded] = useState(false);
 
     const largest = useMemo(
         () => Math.max(1, ...[...borders.values()].map((border) => border.areaKm2)),
@@ -55,24 +58,26 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
     const standingCount = civilizations.filter((civ) => borders.has(civ.key)).length;
 
     const chips = (
-        <div className="chips">
+        <MultiToggleGroup
+            label={t('roster.order.expansion')}
+            className="chips"
+            value={state.expansions}
+            onValueChange={(value) => {
+                dispatch({ type: 'expansions', value });
+            }}
+        >
             {EXPANSION_RECORDS.map((expansion) => (
-                <button
+                <ToggleGroupItem
                     key={expansion.key}
-                    type="button"
+                    value={expansion.key}
                     className="chip"
-                    data-active={state.expansions.includes(expansion.key)}
                     data-upcoming={!expansion.released}
                     title={`${expansion.name} · ${expansion.releasedOn.slice(0, 4)}`}
-                    aria-pressed={state.expansions.includes(expansion.key)}
-                    onClick={() => {
-                        dispatch({ type: 'toggle-expansion', value: expansion.key });
-                    }}
                 >
                     {expansion.shortName}
-                </button>
+                </ToggleGroupItem>
             ))}
-        </div>
+        </MultiToggleGroup>
     );
 
     return (
@@ -95,20 +100,21 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
                     />
                 </div>
 
-                <div className="segmented oak" role="group" aria-label={t('roster.orderBy')}>
+                <ToggleGroup
+                    label={t('roster.orderBy')}
+                    className="segmented oak"
+                    value={state.order}
+                    onValueChange={(value) => {
+                        // Pressing the order already in force would otherwise sort the list by nothing.
+                        if (value) dispatch({ type: 'order', value });
+                    }}
+                >
                     {ORDERS.map((order) => (
-                        <button
-                            key={order}
-                            type="button"
-                            data-active={state.order === order}
-                            onClick={() => {
-                                dispatch({ type: 'order', value: order });
-                            }}
-                        >
+                        <ToggleGroupItem key={order} value={order}>
                             {t(`roster.order.${order}`)}
-                        </button>
+                        </ToggleGroupItem>
                     ))}
-                </div>
+                </ToggleGroup>
 
                 {/*
                  * Fourteen expansion chips are three rows on a phone, and three rows of chips
@@ -120,13 +126,22 @@ export function RosterDrawer({ civilizations, borders, side, open, onClose }: Ro
                 {wide ? (
                     chips
                 ) : (
-                    <details className="chips__fold" open={state.expansions.length > 0}>
-                        <summary className="chip" data-active={state.expansions.length > 0}>
-                            {t('roster.order.expansion')}
-                            {state.expansions.length > 0 ? ` · ${state.expansions.length}` : ''}
-                        </summary>
+                    <Collapsible
+                        className="chips__fold"
+                        /* A reader who has set a filter finds it open, and cannot shut it on itself. */
+                        open={unfolded || state.expansions.length > 0}
+                        onOpenChange={setUnfolded}
+                        triggerClassName="chip"
+                        active={state.expansions.length > 0}
+                        trigger={
+                            <>
+                                {t('roster.order.expansion')}
+                                {state.expansions.length > 0 ? ` · ${state.expansions.length}` : ''}
+                            </>
+                        }
+                    >
                         {chips}
-                    </details>
+                    </Collapsible>
                 )}
 
                 <p className="roster__count">

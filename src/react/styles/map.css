@@ -360,17 +360,6 @@
 }
 
 /*
- * Over a point the card is centred on it; over a line of text it hangs from its start.
- *
- * Only the centring belongs here. Pinning the card's bottom edge as well left it with both a
- * top and a bottom once it flipped under the pin, which is a box of no height — the picture and
- * the title spilled out through the lid of it.
- */
-.atlas__preview .wiki__card {
-    transform: translateX(-50%);
-}
-
-/*
  * Folded up, the legend is a pill: the count and a dot per region.
  *
  * A caption that covers a third of what it captions is worth less than the ground it takes. The

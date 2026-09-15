@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import type { Civilization } from '@/domain/entities/civilization.ts';
-import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
+import { useCivilizationText } from '@/react/hooks/view/use-civilization-text.ts';
 import { armsUrl } from '@/react/assets.ts';
 
 /**

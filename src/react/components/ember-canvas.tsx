@@ -1,4 +1,4 @@
-import { useEmberField, type EmberFieldOptions } from '@/react/hooks/use-ember-field.ts';
+import { useEmberField, type EmberFieldOptions } from '@/react/hooks/dom/use-ember-field.ts';
 
 export interface EmberCanvasProps extends EmberFieldOptions {
     className?: string;

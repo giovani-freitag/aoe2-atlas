@@ -3,14 +3,15 @@ import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { Frontier } from '@/domain/values/frontier.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import { expansionOf } from '@/data/expansions.ts';
-import { useServices } from '@/react/providers/services-context.ts';
+import { usePalette } from '@/react/hooks/services/use-palette.ts';
+import { useText } from '@/react/hooks/services/use-text.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
-import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
-import { useFormat } from '@/react/hooks/use-format.ts';
+import { useCivilizationText } from '@/react/hooks/view/use-civilization-text.ts';
+import { useFormat } from '@/react/hooks/view/use-format.ts';
 import { BottomSheet } from './bottom-sheet.tsx';
 import { CivArms } from './civ-arms.tsx';
 import { ExpansionFacts, RealmFacts, WonderFacts } from './civ-facts.tsx';
-import { contemporaries } from './contemporaries.ts';
+import { contemporaries } from '@/domain/rules/contemporaries.ts';
 import { Rivals } from './rivals.tsx';
 
 export interface DetailSheetProps {
@@ -33,7 +34,8 @@ export interface DetailSheetProps {
  */
 export function DetailSheet({ civilization, border, frontiers, onClose }: DetailSheetProps) {
     const { t } = useTranslation();
-    const { palette, text } = useServices();
+    const palette = usePalette();
+    const text = useText();
     const { state } = useAtlas();
     const words = useCivilizationText(civilization);
     const format = useFormat();

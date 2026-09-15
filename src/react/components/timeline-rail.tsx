@@ -2,7 +2,8 @@ import { useMemo, type CSSProperties, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Civilization } from '@/domain/entities/civilization.ts';
-import { useFormat } from '@/react/hooks/use-format.ts';
+import { useFormat } from '@/react/hooks/view/use-format.ts';
+import { Slider } from '@/react/ui/slider.tsx';
 
 export interface TimelineRailProps {
     /** Every civilization, so the profile does not move when a filter does. */
@@ -126,16 +127,15 @@ export function TimelineRail({ civilizations, years, year, loading, stepping, tr
                     </div>
                     <div className="rail-body__rope oak" aria-hidden />
                     <div className="rail-body__fill" aria-hidden />
-                    <input
-                        type="range"
-                        min={0}
-                        max={Math.max(0, years.length - 1)}
-                        step={1}
+                    <Slider
+                        className="rail-body__slider"
+                        thumbClassName="rail-body__knob"
+                        label={t('rail.year')}
+                        valueText={format.year(year)}
                         value={at}
-                        aria-label={t('rail.year')}
-                        aria-valuetext={format.year(year)}
-                        onChange={(event) => {
-                            const chosen = years[Number(event.target.value)];
+                        max={Math.max(0, years.length - 1)}
+                        onValueChange={(index) => {
+                            const chosen = years[index];
                             if (chosen !== undefined) onChange(chosen);
                         }}
                     />

@@ -78,18 +78,6 @@ h3 {
     outline-offset: 2px;
 }
 
-dialog {
-    padding: 0;
-    border: none;
-    color: inherit;
-    max-width: none;
-    max-height: none;
-}
-
-dialog::backdrop {
-    background: rgb(12 8 4 / 62%);
-}
-
 /* Readable by a screen reader, invisible to everyone else. */
 .sr-only {
     position: absolute;

@@ -170,53 +170,101 @@
  * would be a control the reader can see and cannot touch. The civilization sheet is the other
  * case and stops at the rail, because the map behind it stays live.
  */
+/* The screen behind a panel that is laid over it, dimmed. Docked, there is nothing to dim. */
+.drawer__scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    background: rgb(12 8 4 / 62%);
+}
+
+/*
+ * The dimming is held, not faded, while the panel slides away.
+ *
+ * It arrives with the panel and leaves when the panel has gone. Without something for the
+ * closing state to wait on it would be torn out on the first frame of the slide, and the panel
+ * would spend its exit over an undimmed map.
+ */
+.drawer__scrim[data-state='closed'] {
+    animation: hold 240ms linear;
+}
+
+@keyframes hold {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
 .drawer {
     position: fixed;
     top: 0;
     bottom: 0;
     width: min(20rem, 88vw);
-    /*
-     * A dialog is `height: fit-content` by the browser's own stylesheet, which quietly wins over
-     * a top and a bottom and makes the box as tall as its contents. Whatever scrolls inside then
-     * has nothing to be a fraction of, and its scroll goes away with it.
-     */
     height: auto;
     /* Above the civilization sheet, which shares the right-hand side on a wide screen. */
     z-index: 2;
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow-lg);
-    transition:
-        transform 240ms ease,
-        overlay 240ms allow-discrete,
-        display 240ms allow-discrete;
 }
 
 .drawer--left {
     left: 0;
     right: auto;
     border-right: 1px solid var(--oak);
-    transform: translateX(-100%);
 }
 
 .drawer--right {
     left: auto;
     right: 0;
     border-left: 1px solid var(--oak);
-    transform: translateX(100%);
 }
 
-.drawer[open] {
-    transform: translateX(0);
+/*
+ * A panel is mounted when it opens and taken out when it has finished leaving, so the slide is
+ * an animation rather than a transition: a transition needs two states on an element that is
+ * already there, and what is removed on close has to be waited for rather than transitioned.
+ */
+.drawer--left[data-state='open'] {
+    animation: drawer-in-left 240ms ease;
 }
 
-/* A panel has to start offscreen for the transition to have anywhere to come from. */
-@starting-style {
-    .drawer--left[open] {
+.drawer--left[data-state='closed'] {
+    animation: drawer-out-left 240ms ease;
+}
+
+.drawer--right[data-state='open'] {
+    animation: drawer-in-right 240ms ease;
+}
+
+.drawer--right[data-state='closed'] {
+    animation: drawer-out-right 240ms ease;
+}
+
+@keyframes drawer-in-left {
+    from {
         transform: translateX(-100%);
     }
+}
 
-    .drawer--right[open] {
+@keyframes drawer-out-left {
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes drawer-in-right {
+    from {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes drawer-out-right {
+    to {
         transform: translateX(100%);
     }
 }
@@ -332,25 +380,19 @@
      * sheet on its way up or down slides behind the year rail rather than across the top of it.
      */
     z-index: 1;
-    visibility: hidden;
-    transform: translateY(calc(100% + var(--rail-height, 0px)));
-    transition:
-        transform 240ms ease,
-        height 200ms ease,
-        visibility 240ms;
-}
-
-.sheet[data-open='true'] {
-    visibility: visible;
-    transform: translateY(0);
+    transition: height 200ms ease;
 }
 
 /*
- * The civilization sheet is built when a civilization is opened, so it arrives already open and
- * would simply be there. This gives it somewhere to come from.
+ * The sheet is built when a civilization is opened, so it arrives already open and would simply
+ * be there. This gives it somewhere to come from.
  */
-@starting-style {
-    .sheet[data-open='true'] {
+.sheet[data-state='open'] {
+    animation: sheet-up 240ms ease;
+}
+
+@keyframes sheet-up {
+    from {
         transform: translateY(calc(100% + var(--rail-height, 0px)));
     }
 }
@@ -463,9 +505,9 @@
     }
 
     /*
-     * A non-modal dialog still arrives with the user agent's absolute positioning and auto
-     * margins. Both have to go for it to behave as a grid column, and a zero min-height is what
-     * stops fifty-six rows from stretching the row and pushing the map off the screen.
+     * The panel stops being something laid over the map and becomes a column of it. A zero
+     * min-height is what stops fifty-six rows from stretching the row and pushing the map off
+     * the screen, and the slide is turned off because a column does not arrive from anywhere.
      */
     .roster {
         grid-area: roster;
@@ -480,7 +522,7 @@
         border-left: 1px solid var(--oak);
         transform: none;
         box-shadow: none;
-        transition: none;
+        animation: none;
     }
 
     /*
@@ -522,18 +564,16 @@
         border-right: 1px solid var(--oak);
         /* Docked between the bar and the rail it is a column, not a card: square, like the roster opposite. */
         border-radius: 0;
-        transform: translateX(-100%);
-        transition:
-            transform 240ms ease,
-            visibility 240ms;
+        transition: none;
     }
 
-    .sheet--dock[data-open='true'] {
-        transform: translateX(0);
+    /* Wide it arrives from the side it docks against, not from the foot of the screen. */
+    .sheet--dock[data-state='open'] {
+        animation: dock-in 240ms ease;
     }
 
-    @starting-style {
-        .sheet--dock[data-open='true'] {
+    @keyframes dock-in {
+        from {
             transform: translateX(-100%);
         }
     }
@@ -632,12 +672,12 @@
     }
 }
 
-.deck__bar nav {
+.deck__tabs {
     display: flex;
     gap: var(--space-1);
 }
 
-.deck__bar nav button,
+.deck__tabs button,
 .deck__close {
     display: grid;
     place-items: center;
@@ -647,7 +687,7 @@
 }
 
 /* The category on show wears the same sunk plate the traced-realms switch does. */
-.deck__bar nav button[data-active='true'] {
+.deck__tabs button[data-state='on'] {
     box-shadow:
         inset 0 2px 4px rgb(0 0 0 / 70%),
         inset 0 0 0 1px rgb(200 164 74 / 45%);

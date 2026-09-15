@@ -4,8 +4,8 @@ import type { Civilization } from '@/domain/entities/civilization.ts';
 import type { RealmBorder } from '@/domain/values/realm-border.ts';
 import { expansionOf } from '@/data/expansions.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
-import { useCivilizationText } from '@/react/hooks/use-civilization-text.ts';
-import { useFormat } from '@/react/hooks/use-format.ts';
+import { useCivilizationText } from '@/react/hooks/view/use-civilization-text.ts';
+import { useFormat } from '@/react/hooks/view/use-format.ts';
 import { WikiLink } from './wiki-link.tsx';
 
 /*

@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Grid2x2 } from 'lucide-react';
 import { PROJECTION_KEYS, PROJECTIONS } from '@/domain/enums/projection.ts';
+import { Option, OptionGroup } from '@/react/ui/option-group.tsx';
+import { Switch } from '@/react/ui/switch.tsx';
 import { GENERATED_AT } from '@/data/dataset.ts';
 import { useAtlas } from '@/react/providers/atlas-context.ts';
-import { useFormat } from '@/react/hooks/use-format.ts';
+import { useFormat } from '@/react/hooks/view/use-format.ts';
 import { LanguagePicker } from './language-picker.tsx';
 import { SideDrawer } from './side-drawer.tsx';
 
@@ -56,46 +58,35 @@ export function SettingsSheet({ side, open, onClose }: SettingsSheetProps) {
                 <section className="card parchment singed">
                     <h3 className="eyebrow">{t('settings.projection')}</h3>
                     <p className="card__hint">{t('settings.projectionHint')}</p>
-                    <div className="options" role="radiogroup" aria-label={t('settings.projection')}>
+                    <OptionGroup
+                        label={t('settings.projection')}
+                        value={state.projection}
+                        onValueChange={(value) => {
+                            dispatch({ type: 'projection', value });
+                        }}
+                    >
                         {PROJECTION_KEYS.map((key) => (
-                            <button
+                            <Option
                                 key={key}
-                                type="button"
-                                role="radio"
-                                aria-checked={state.projection === key}
-                                data-active={state.projection === key}
-                                onClick={() => {
-                                    dispatch({ type: 'projection', value: key });
-                                }}
-                            >
-                                <span className="options__name">
-                                    {PROJECTIONS[key].name}
-                                    <small>{t('settings.preserves', { what: t(`projections.${key}.preserves`) })}</small>
-                                </span>
-                                <span className="options__caveat">{t(`projections.${key}.caveat`)}</span>
-                            </button>
+                                value={key}
+                                name={PROJECTIONS[key].name}
+                                hint={t('settings.preserves', { what: t(`projections.${key}.preserves`) })}
+                                caveat={t(`projections.${key}.caveat`)}
+                            />
                         ))}
-                    </div>
+                    </OptionGroup>
                 </section>
 
                 <section className="card parchment singed">
                     <h3 className="eyebrow">{t('settings.chart')}</h3>
-                    <button
-                        type="button"
-                        className="switch"
-                        role="switch"
-                        aria-checked={state.ruled}
-                        data-active={state.ruled}
-                        onClick={() => {
+                    <Switch
+                        label={t('settings.ruled')}
+                        checked={state.ruled}
+                        onCheckedChange={() => {
                             dispatch({ type: 'toggle-ruled' });
                         }}
-                    >
-                        <Grid2x2 size={16} aria-hidden />
-                        <span>{t('settings.ruled')}</span>
-                        <span className="switch__track" aria-hidden>
-                            <span className="switch__knob" />
-                        </span>
-                    </button>
+                        icon={<Grid2x2 size={16} aria-hidden />}
+                    />
                 </section>
 
                 {/*
