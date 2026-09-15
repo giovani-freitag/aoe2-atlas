@@ -26,7 +26,11 @@
         "data:build": "vite-node scripts/build-territories.ts",
         "data:icons": "vite-node scripts/fetch-wiki-emblems.ts",
         "docs:table": "vite-node scripts/build-pages.ts -- --docs",
-        "test:links": "vitest run --config vitest.links.config.ts"
+        "test:links": "vitest run --config vitest.links.config.ts",
+        "test:e2e": "playwright test",
+        "compare": "node scripts/compare-builds.mjs",
+        "measure": "node scripts/measure-load.mjs",
+        "profile": "node scripts/profile-boot.mjs"
     },
     "dependencies": {
         "d3-geo": "^3.1.1",
@@ -37,12 +41,14 @@
         "i18next": "^26.4.2",
         "i18next-browser-languagedetector": "^8.2.1",
         "lucide-react": "^1.32.0",
+        "radix-ui": "^1.6.7",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
         "react-i18next": "^17.0.13"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
+        "@playwright/test": "^1.63.0",
         "@testing-library/dom": "^10.4.1",
         "@testing-library/react": "^16.3.2",
         "@testing-library/user-event": "^14.6.5",
@@ -64,6 +70,7 @@
         "eslint-plugin-react-refresh": "^0.5.4",
         "globals": "^17.11.0",
         "jsdom": "^30.0.1",
+        "playwright": "^1.63.0",
         "polygon-clipping": "^0.15.7",
         "sharp": "^0.35.4",
         "topojson-client": "^3.1.0",
