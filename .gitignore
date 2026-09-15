@@ -12,3 +12,7 @@ coverage
 
 # Scratch scripts written while probing the source data, never part of a build.
 scripts/tmp-*
+
+# Playwright leaves these behind when a test fails.
+test-results
+playwright-report
