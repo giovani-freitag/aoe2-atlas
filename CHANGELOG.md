@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.9.0](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.8.1...v1.9.0) (2026-09-15)
+
+
+### Added
+
+* lay every panel over the map instead of docking it into a column ([1464a31](https://github.com/giovani-freitag/aoe2-atlas/commit/1464a31af6887550a093d2542c44b2ee3ae428bf))
+* name the closed state of the roster in every language ([afe9c09](https://github.com/giovani-freitag/aoe2-atlas/commit/afe9c094d40a96d10c98a0eea66e21a4b90e750d))
+* turn the layout on a ladder of widths instead of a single one ([c8556db](https://github.com/giovani-freitag/aoe2-atlas/commit/c8556db736d5995106ac9855d8a854ab1cb779c6))
+
+
+### Fixed
+
+* centre the year handle on the stop it has chosen ([9b452ec](https://github.com/giovani-freitag/aoe2-atlas/commit/9b452ec71af333cdce448fd1304e27c5a8d466be))
+* fill a tall screen with map instead of framing the world into a strip ([6b2bf32](https://github.com/giovani-freitag/aoe2-atlas/commit/6b2bf32ad69171a81e0ebb9ff3a8ca9731b0ddd0))
+* hide the way into the filters only where the filters are already out ([cbfa60e](https://github.com/giovani-freitag/aoe2-atlas/commit/cbfa60e7e687946d51acc416036dfcd1cf8daef5))
+* let the roster be sent away at every width instead of pinning it open ([f9ea10a](https://github.com/giovani-freitag/aoe2-atlas/commit/f9ea10a91fceb4d4b94f36f49955f878cc7c6118))
+* make the filter button close the list it opened ([44bb7a7](https://github.com/giovani-freitag/aoe2-atlas/commit/44bb7a700d3f3c937e80b93c11db02010c8c1b3a))
+* paint a modal panel over the year rail instead of under it ([d15c36d](https://github.com/giovani-freitag/aoe2-atlas/commit/d15c36d74db09508f404f48aa754684b0cf4b101))
+* stand the map controls down while a panel covers the map ([dea1ba5](https://github.com/giovani-freitag/aoe2-atlas/commit/dea1ba528a7a75258474f61eb148b34f4763aad1))
+* start the side panels below the header pill instead of under it ([b94e790](https://github.com/giovani-freitag/aoe2-atlas/commit/b94e7905ec7c9a9a34acb8ed4c6569c1c19c42a3))
+* unfold the header into a band wherever a panel no longer covers it ([e72e788](https://github.com/giovani-freitag/aoe2-atlas/commit/e72e78832a472222005f11f96006155a1d78563e))
+* widen what counts as pointing at a wonder pin ([79a7820](https://github.com/giovani-freitag/aoe2-atlas/commit/79a782000d4a3c17028092d4d5eb643efbebcc6e))
+
 ## [1.8.1](https://github.com/giovani-freitag/aoe2-atlas/compare/v1.8.0...v1.8.1) (2026-09-15)
 
 
