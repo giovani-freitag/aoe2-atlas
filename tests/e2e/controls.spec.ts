@@ -179,7 +179,9 @@ test.describe('the preferences', () => {
 
         await openSettings(page);
         await page.setViewportSize({ width: 380, height: 844 });
-        await expect(page.locator('.drawer__scrim')).toBeVisible();
+
+        /* The panel the roster was leaving dims too, for as long as it takes to go. */
+        await expect(page.locator(".drawer__scrim[data-state='open']")).toBeVisible();
 
         /*
          * The platform's own modal dialog rode a layer above every z-index on the page, and the
@@ -198,6 +200,26 @@ test.describe('the preferences', () => {
         );
 
         expect(onTop).toBe(true);
+    });
+
+    test('leaves the year alone as soon as there is room beside it', async ({ page, isMobile }) => {
+        test.skip(Boolean(isMobile), 'starts narrow, so there is no window to shrink');
+
+        await openSettings(page);
+
+        /*
+         * One step up from a phone the panel stops taking the whole screen. The year is the axis
+         * every reading on the map is qualified by, so the moment there is anywhere else for the
+         * panel to go, it goes there and leaves the rail out.
+         */
+        await page.setViewportSize({ width: 600, height: 844 });
+        await expect(page.locator('.prefs')).toBeVisible();
+
+        const panel = await page.locator('.prefs').boundingBox();
+        const rail = await page.locator('.rail').boundingBox();
+
+        expect((panel?.y ?? 0) + (panel?.height ?? 0)).toBeLessThanOrEqual((rail?.y ?? 0) + 1);
+        await expect(page.locator('.rail-body__reading strong')).toBeVisible();
     });
 
     test('the language list stays on screen', async ({ page }) => {
