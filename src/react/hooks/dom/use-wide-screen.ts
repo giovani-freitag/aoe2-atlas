@@ -6,9 +6,10 @@ const WIDE = '(min-width: 60rem)';
 /**
  * Whether there is room for the panels to dock instead of slide.
  *
- * The layout itself is CSS, but the offcanvas panels are real `dialog` elements, and a dialog
- * has to be told whether to open modally. On a phone it should trap the focus; docked in a
- * column it must not.
+ * The layout itself is CSS; what this answers is the part CSS cannot. A panel laid over the map
+ * has to trap the focus, make the rest of the page inert and be painted over the furniture,
+ * while the same panel docked into a column must do none of those things — and none of them is
+ * a matter of width alone. The width it turns on is the one the stylesheet turns on.
  */
 export function useWideScreen(): boolean {
     const [wide, setWide] = useState(() => matchMedia(WIDE).matches);

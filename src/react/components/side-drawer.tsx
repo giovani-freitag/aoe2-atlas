@@ -52,6 +52,13 @@ export function SideDrawer({ label, open, onClose, side, pinnedWhenWide, classNa
                 className={`drawer drawer--${side} leather ${className ?? ''}`.trim()}
                 aria-label={label}
                 aria-describedby={undefined}
+                /*
+                 * A modal panel has to be painted over the furniture as well as make it inert.
+                 * The platform's own modal dialog did both at once by riding a layer above every
+                 * z-index on the page; a panel that is an ordinary element has to be told, or the
+                 * year rail shows through the one thing that is covering the map.
+                 */
+                data-modal={modal}
                 onInteractOutside={(event) => {
                     /*
                      * Where the panel is a column of the layout rather than something laid over

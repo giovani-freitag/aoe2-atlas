@@ -170,11 +170,16 @@
  * would be a control the reader can see and cannot touch. The civilization sheet is the other
  * case and stops at the rail, because the map behind it stays live.
  */
-/* The screen behind a panel that is laid over it, dimmed. Docked, there is nothing to dim. */
+/*
+ * The screen behind a panel that is laid over it, dimmed. Docked, there is nothing to dim.
+ *
+ * Over the header and the year rail, not under them: a rail showing beneath a modal panel is a
+ * control the reader can see and cannot touch.
+ */
 .drawer__scrim {
     position: fixed;
     inset: 0;
-    z-index: 2;
+    z-index: 4;
     background: rgb(12 8 4 / 62%);
 }
 
@@ -210,6 +215,11 @@
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow-lg);
+}
+
+/* Laid over the whole page rather than docked into it, so it clears the bar and the rail too. */
+.drawer[data-modal='true'] {
+    z-index: 5;
 }
 
 .drawer--left {
