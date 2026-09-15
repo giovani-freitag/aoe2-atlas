@@ -1,0 +1,17 @@
+/*
+ * The component sheets, in cascade order.
+ *
+ * Order is load-bearing and stated here rather than left to a glob: the shared card fittings
+ * have to land before the panels that dress them, and the select has to land after the cards it
+ * is dropped into. One file per component, each keeping the section comment it was split from.
+ */
+
+@import './fittings.css';
+@import './header.css';
+@import './roster.css';
+@import './timeline-rail.css';
+@import './legend.css';
+@import './detail-sheet.css';
+@import './settings.css';
+@import './wiki.css';
+@import './select.css';

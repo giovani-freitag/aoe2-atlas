@@ -1,0 +1,126 @@
+/* ---- roster ------------------------------------------------------------- */
+
+.roster__filters {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border-bottom: 1px solid var(--oak);
+}
+
+.roster__count {
+    font-size: 0.6875rem;
+    color: var(--text-faint);
+}
+
+.civ {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+}
+
+.civ__main {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex: 1;
+    min-width: 0;
+    min-height: var(--tap);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius);
+    text-align: left;
+    isolation: isolate;
+}
+
+/* The bar behind the name is the ground held this century, against the widest realm in it. */
+.civ__bar {
+    position: absolute;
+    inset: 3px auto 3px 0;
+    z-index: -1;
+    border-radius: var(--radius-sm);
+    opacity: 0.18;
+}
+
+.arms {
+    flex: none;
+    display: block;
+    border-radius: 2px;
+}
+
+/*
+ * The name and its monument, stacked in the one column the row has room for.
+ *
+ * Both lines fit inside the 44px the row already reserves for a thumb, so the list is no taller
+ * than it was with the name alone.
+ */
+.civ__text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    line-height: 1.25;
+}
+
+.civ__name,
+.civ__monument {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.civ__name {
+    font-size: 0.875rem;
+}
+
+.civ__monument {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+}
+
+.civ__area {
+    flex: none;
+    font-size: 0.6875rem;
+    color: var(--text-faint);
+}
+
+.civ__pin {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: var(--tap);
+    border-radius: var(--radius);
+    color: var(--text-faint);
+}
+
+.civ__pin[data-pinned='true'] {
+    color: var(--brass);
+}
+
+.civ__pin:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
+
+.civ[data-focused='true'] .civ__main {
+    background: var(--leather-raised);
+    box-shadow: var(--emboss), inset 0 0 0 1px var(--stitch);
+}
+
+/* A civilization that held nothing this century stays listed, but greyed. */
+.civ[data-absent='true'] {
+    opacity: 0.42;
+}
+
+@media (min-width: 60rem) {
+    .civ__pin {
+        opacity: 0;
+    }
+
+    .civ:hover .civ__pin,
+    .civ__pin:focus-visible,
+    .civ__pin[data-pinned='true'] {
+        opacity: 1;
+    }
+}
+

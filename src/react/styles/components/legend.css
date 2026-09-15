@@ -1,0 +1,197 @@
+/* ---- legend ------------------------------------------------------------- */
+
+/*
+ * The header band: raised leather, a brass rule under it, and the title on the same mark the
+ * control that fills this card wears.
+ */
+.legend__head {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+    background: var(--leather-raised);
+    border-bottom: 1px solid var(--oak);
+    box-shadow:
+        var(--emboss),
+        0 1px 0 rgb(200 164 74 / 18%);
+}
+
+.legend__head > svg {
+    flex: none;
+    color: var(--brass);
+}
+
+.legend__head h2 {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--title);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--brass-soft);
+}
+
+.legend__clear {
+    flex: none;
+    min-height: 1.5rem;
+    padding: 0 var(--space-2);
+    border: 1px solid var(--oak);
+    border-radius: var(--radius-sm);
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+}
+
+.legend__clear:hover {
+    border-color: var(--brass-deep);
+    color: var(--brass-soft);
+}
+
+.legend__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-2);
+}
+
+.legend__hint {
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dashed var(--oak);
+    font-size: 0.6875rem;
+    line-height: 1.35;
+    color: var(--text-faint);
+}
+
+.legend ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.legend__civs {
+    flex-direction: column;
+    gap: 1px;
+}
+
+.legend__civs li {
+    padding: 2px var(--space-1);
+    border-radius: var(--radius-sm);
+}
+
+.legend__civs li:hover {
+    background: var(--leather-raised);
+}
+
+.legend li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/*
+ * The regions as a row of tokens, not a column of rows.
+ *
+ * Eight regions written out one per line, each carrying the same three words after its count,
+ * made a card tall enough to cover a third of the map to say very little. A colour, a name and
+ * a numeral is the whole of it, and eight of those fit on two lines.
+ */
+.legend__regions {
+    flex-wrap: wrap;
+    gap: var(--space-1);
+}
+
+.legend__regions li {
+    gap: 6px;
+    padding: 3px var(--space-2) 3px 5px;
+    border: 1px solid var(--oak);
+    border-radius: 999px;
+    background: var(--leather-raised);
+    box-shadow: var(--emboss);
+}
+
+.legend__region {
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+}
+
+.legend__regions b {
+    font-family: var(--title);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--brass-soft);
+}
+
+.legend__regions .legend__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 40%);
+}
+
+.legend__dot {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+}
+
+.legend__text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.legend__text strong {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.legend__text small {
+    font-size: 0.625rem;
+    color: var(--text-faint);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.legend__area {
+    flex: none;
+    font-size: 0.625rem;
+    color: var(--text-faint);
+}
+
+.legend li button {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-faint);
+}
+
+.legend li button:hover {
+    color: var(--danger-soft);
+}
+
+/* With a pointer the crosses stay out of the way until the row is under it. */
+@media (min-width: 60rem) {
+    .legend__civs li button {
+        opacity: 0;
+    }
+
+    .legend__civs li:hover button,
+    .legend__civs li button:focus-visible {
+        opacity: 1;
+    }
+}
+

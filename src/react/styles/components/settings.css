@@ -1,0 +1,93 @@
+/* ---- settings ----------------------------------------------------------- */
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.options button {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--space-2);
+    border: 1px solid var(--parchment-deep);
+    border-radius: var(--radius);
+    text-align: left;
+    color: var(--ink-soft);
+}
+
+.options button[data-state='checked'] {
+    background: rgb(138 106 31 / 14%);
+    border-color: var(--brass-deep);
+}
+
+.options__name {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    font-family: var(--title);
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.options__name small {
+    font-family: var(--font);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    color: var(--ink-faint);
+}
+
+.options__caveat {
+    font-size: 0.75rem;
+}
+
+.switch {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    min-height: var(--tap);
+    color: var(--ink-soft);
+    font-size: 0.8125rem;
+}
+
+.switch__label {
+    flex: 1;
+    text-align: left;
+}
+
+.switch__track {
+    flex: none;
+    width: 2.5rem;
+    height: 1.25rem;
+    padding: 2px;
+    border-radius: 0.75rem;
+    background: var(--parchment-deep);
+    transition: background 140ms ease;
+}
+
+.switch[data-state='checked'] .switch__track {
+    background: var(--brass-deep);
+}
+
+.switch__knob {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: var(--parchment);
+    box-shadow: var(--shadow);
+    transition: transform 140ms ease;
+}
+
+.switch[data-state='checked'] .switch__knob {
+    transform: translateX(1.25rem);
+}
+
+/* A share measured against a borrowed border is shown as an estimate, not a figure. */
+.card__hint abbr {
+    text-decoration: underline dotted;
+    cursor: help;
+}
+

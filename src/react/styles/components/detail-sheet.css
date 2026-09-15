@@ -1,0 +1,285 @@
+/* ---- detail sheet ------------------------------------------------------- */
+
+.sheet__head h2 {
+    font-size: 1.125rem;
+}
+
+.sheet__head--titled {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+    width: 100%;
+}
+
+.sheet__who {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.sheet__who img {
+    flex: none;
+}
+
+.sheet__region {
+    font-size: 0.6875rem;
+    color: var(--text-faint);
+}
+
+.sheet__head > button {
+    margin-left: auto;
+}
+
+/*
+ * Cards are parchment even inside the leather panel: they carry the record, and the record
+ * should look like something written down rather than another slab of furniture.
+ */
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--parchment-deep);
+    border-radius: var(--radius);
+}
+
+.card .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--ink-faint);
+}
+
+.card__lead {
+    font-family: var(--title);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.card__line {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.8125rem;
+    color: var(--ink-soft);
+}
+
+.card__hint,
+.card__source {
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+}
+
+.card__source svg {
+    vertical-align: -2px;
+}
+
+.card__source .card__link {
+    display: inline-flex;
+    min-height: 0;
+    font-size: inherit;
+}
+
+.card__note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    background: rgb(138 106 31 / 12%);
+    border-left: 2px solid var(--brass-deep);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+}
+
+.card__note svg {
+    flex: none;
+    margin-top: 2px;
+    color: var(--brass-deep);
+}
+
+.card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    align-self: flex-start;
+    min-height: 1.75rem;
+    font-size: 0.8125rem;
+    color: var(--brass-deep);
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2) var(--space-3);
+    margin: 0;
+}
+
+.stats dt {
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+.stats dd {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--ink);
+}
+
+/*
+ * The contemporaries, in whichever of two shapes the room allows.
+ *
+ * Arms are how a civilization is known everywhere else here — on the map, in the roster, at the
+ * head of its own panel — so packed into a row under the name they are what a reader recognises
+ * fastest, and they take a quarter of the room a list of names does. Given a panel of its own,
+ * the same list names them.
+ */
+.rivals {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.rivals__label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--title);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+}
+
+.rivals ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.rivals button {
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius);
+}
+
+.rivals abbr {
+    text-decoration: none;
+}
+
+/* Packed: a row of arms with the share under each, scrolled sideways if there are many. */
+.rivals[data-layout='arms'] ul {
+    display: flex;
+    gap: var(--space-1);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+}
+
+.rivals[data-layout='arms'] ul::-webkit-scrollbar {
+    display: none;
+}
+
+.rivals[data-layout='arms'] button {
+    flex-direction: column;
+    gap: 1px;
+    padding: 3px var(--space-1);
+    color: var(--text-muted);
+}
+
+.rivals[data-layout='arms'] button:hover {
+    background: var(--leather-raised);
+}
+
+.rivals[data-layout='arms'] button[data-state='on'] {
+    background: var(--brass-dim);
+    color: var(--brass-soft);
+}
+
+.rivals[data-layout='arms'] b {
+    font-size: 0.625rem;
+    font-weight: 400;
+}
+
+/*
+ * Named: a row per neighbour, no taller than the arms it carries.
+ *
+ * These were full thumb-sized rows, which made four neighbours as tall as the panel holding
+ * them. A row here is a reading with a switch behind it, not a button in a form, so it is set
+ * to the height of what it shows.
+ */
+.rivals[data-layout='rows'] ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rivals[data-layout='rows'] button {
+    gap: var(--space-2);
+    width: 100%;
+    min-height: 2rem;
+    padding: 2px var(--space-1);
+    border-radius: var(--radius-sm);
+    text-align: left;
+    color: var(--ink);
+}
+
+.rivals[data-layout='rows'] button:hover {
+    background: rgb(36 28 16 / 7%);
+}
+
+.rivals[data-layout='rows'] button[data-state='on'] {
+    background: rgb(138 106 31 / 16%);
+}
+
+.rivals[data-layout='rows'] span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.8125rem;
+}
+
+.rivals[data-layout='rows'] b {
+    flex: none;
+    font-family: var(--title);
+    font-size: 0.8125rem;
+    color: var(--brass-deep);
+}
+
+/*
+ * The one control that lives inside a parchment card: it moves the year rail rather than
+ * changing anything about the card, so it reads as a link with an arrow, not as a button.
+ */
+.card__jump {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    align-self: flex-start;
+    min-height: 1.75rem;
+    padding: 0 var(--space-2) 0 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--brass-deep);
+    border-bottom: 1px solid color-mix(in srgb, var(--brass-deep) 40%, transparent);
+}
+
+.card__jump:hover,
+.card__jump:focus-visible {
+    color: var(--ink);
+    border-bottom-color: var(--brass-deep);
+}
+
+.card__jump svg {
+    transition: transform 140ms ease;
+}
+
+.card__jump:hover svg {
+    transform: translateX(3px);
+}

@@ -1,0 +1,21 @@
+/* ---- header ------------------------------------------------------------- */
+
+.bar__loading {
+    display: grid;
+    place-items: center;
+    width: var(--control);
+    height: var(--control);
+    color: var(--brass);
+    z-index: 1;
+}
+
+.bar__loading svg {
+    animation: turn 1.1s linear infinite;
+}
+
+@keyframes turn {
+    to {
+        transform: rotate(1turn);
+    }
+}
+

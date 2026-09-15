@@ -1,0 +1,124 @@
+/* ---- the language picker ------------------------------------------------ */
+
+.picker {
+    position: relative;
+}
+
+.picker__button {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    min-height: var(--control);
+    padding: 0 var(--space-2);
+    border: 1px solid var(--parchment-deep);
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 22%);
+    font-size: 0.875rem;
+    color: var(--ink);
+    text-align: left;
+}
+
+.picker__button:hover,
+.picker__button[data-state='open'] {
+    border-color: var(--brass-deep);
+}
+
+.picker__button svg {
+    flex: none;
+    color: var(--ink-faint);
+}
+
+.picker__value {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.picker__caret {
+    transition: transform 140ms ease;
+}
+
+.picker__button[data-state='open'] .picker__caret {
+    transform: rotate(180deg);
+}
+
+/*
+ * The list drops over the panel rather than pushing it apart, and is held to the width of the
+ * button it fell out of: a list that resizes the panel it lives in moves everything the reader
+ * was looking at.
+ */
+/*
+ * The cap is on the list and not on the part of it that scrolls, so that the border counts
+ * towards the height rather than being added on top of it.
+ */
+.picker__list {
+    z-index: 5;
+    width: var(--radix-select-trigger-width);
+    max-height: min(17rem, 46dvh);
+    border: 1px solid var(--brass-deep);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+}
+
+/*
+ * The scroll belongs to the list and not to the panel: with seventeen entries it is taller than
+ * a phone's sheet, and a wheel that ran out of list should not carry on into the panel behind.
+ *
+ * A zero min-height is what lets it shrink inside the cap at all: a column flex item refuses to
+ * go below its content otherwise, and the list would grow past the height it was held to.
+ */
+.picker__viewport {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-1);
+}
+
+.picker__option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    min-height: 2.25rem;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+}
+
+.picker__label {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    overflow: hidden;
+}
+
+.picker__label small {
+    font-size: 0.6875rem;
+    color: var(--ink-faint);
+}
+
+.picker__option svg {
+    flex: none;
+    color: var(--brass-deep);
+}
+
+/* The keyboard's place in the list and the pointer's read the same, because they are the same. */
+.picker__option[data-highlighted] {
+    background: rgb(138 106 31 / 16%);
+    color: var(--ink);
+}
+
+.picker__option[data-state='checked'] {
+    font-weight: 600;
+    color: var(--ink);
+}

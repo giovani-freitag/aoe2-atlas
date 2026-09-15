@@ -1,0 +1,84 @@
+/* ---- the Wikipedia preview --------------------------------------------- */
+
+/*
+ * The card is placed against the viewport rather than against the panel it was opened from, so
+ * it follows the line it belongs to wherever that line has been scrolled to and is never clipped
+ * by the panel's own scroll. It never moves the text beneath it — a preview that pushed the
+ * panel around on hover would be worse than no preview.
+ */
+.wiki__card {
+    /* Read off the card and copied onto the floating layer the primitive wraps it in. */
+    z-index: 3;
+    display: flex;
+    gap: var(--space-3);
+    width: min(22rem, 78vw);
+    padding: var(--space-3);
+    border: 1px solid var(--oak);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    color: var(--text);
+    text-align: left;
+    pointer-events: none;
+}
+
+.wiki__card img {
+    flex: none;
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--oak);
+}
+
+.wiki__body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.wiki__body strong {
+    font-family: var(--title);
+    font-size: 0.875rem;
+    color: var(--brass-soft);
+}
+
+.wiki__body small {
+    font-size: 0.6875rem;
+    color: var(--text-faint);
+}
+
+/* Three lines of the article: enough to know what the building is, short enough to stay a hint. */
+.wiki__extract {
+    margin-top: var(--space-1);
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/*
+ * The tip, kept pointed at whatever the card came from even after the card has been slid
+ * sideways to stay on screen, and turned to the right edge when there was no room above.
+ *
+ * It used to be a pair of CSS triangles — one the border, one the face a pixel in front — placed
+ * by measuring in script. One filled shape with a stroke says the same thing, and the stroke is
+ * held at a hairline rather than scaled with the shape, which is what the flattened viewBox
+ * would otherwise do to it.
+ */
+.wiki__tip polygon {
+    fill: var(--leather);
+    stroke: var(--oak);
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+}
+
+/* Lifted onto the card's own border, which is what hides the stroke across the tip's base. */
+.wiki__tip {
+    transform: translateY(-1px);
+}
+
