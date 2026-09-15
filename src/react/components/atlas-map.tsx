@@ -42,6 +42,15 @@ const PIN = 'pin';
 const CLEAR_SHIELD = MARKER_SIZE / 2;
 const CLEAR_PIN = 6;
 
+/**
+ * How far from the middle of a pin still counts as pointing at it, in pixels.
+ *
+ * Twice the dot it surrounds, and no more: monuments in Europe land within a couple of dozen
+ * pixels of one another at the width the map opens at, and a reach wide enough to be comfortable
+ * on its own would start answering for its neighbour.
+ */
+const PIN_REACH = 10;
+
 /** Where the wind rose sits and how big it is, as a share of the shorter side. */
 const ROSE_SHARE = 0.11;
 const ROSE_MAX = 46;
@@ -583,6 +592,15 @@ export function AtlasMap({ standing, drawn, borders }: AtlasMapProps) {
                                             }}
                                         >
                                             <title>{text.civilization(civilization.key, false).monument}</title>
+                                            {/*
+                                             * The reach of the pin, which is wider than the pin.
+                                             *
+                                             * A ten-pixel dot is a fair drawing of a monument and
+                                             * a poor thing to aim at — and it is the one mark on
+                                             * the map that answers with an article rather than a
+                                             * panel, so it is worth being able to rest on.
+                                             */}
+                                            <circle className="pin__reach" r={PIN_REACH} />
                                             <circle className="pin__dot" r={5} stroke={colour} />
                                             <circle className="pin__core" r={1.8} />
                                         </g>

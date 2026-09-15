@@ -321,6 +321,11 @@
     cursor: pointer;
 }
 
+/* Filled, because a shape with no fill catches no pointer; transparent, because it is not drawn. */
+.pin__reach {
+    fill: transparent;
+}
+
 .pin__dot {
     fill: var(--parchment);
     stroke-width: 1.5;
