@@ -466,26 +466,17 @@
  * the reader to remember which map they are looking at, and below this width that price is worth
  * paying only because there is nowhere else for the panel to go.
  */
+/* ---- sm: the header becomes a band, and a panel stops covering the atlas -- */
+
+/*
+ * The pill and the panel are a pair, and they arrive and leave together.
+ *
+ * A pill floating in the corner is the header folded up small, and it only reads as one while
+ * something is covering it — on a phone the panel takes the whole side and the pill goes behind
+ * it. The moment the panel stops covering, a button hanging over the map with no header around
+ * it is a third thing that is neither, so the pill unfolds into the band at the same step.
+ */
 @media (min-width: 36rem) {
-    /*
-     * Below the pill, not under it.
-     *
-     * The header is still a pill floating in the corner at this step — a phone held on its side
-     * has width to spare and no height at all, so the band would cost the map a strip it cannot
-     * afford. But the pill shares that corner with the panel that comes in from the left, and a
-     * panel that opens with the button that opened it sitting on its own parchment reads as an
-     * accident. It starts below the pill instead, on both sides, so the two stay a pair.
-     */
-    .drawer {
-        top: calc(var(--bar-height, 0px) + var(--space-2) * 2);
-        bottom: var(--rail-height, 0px);
-        width: 20rem;
-    }
-}
-
-/* ---- md: the atlas takes a header, and a civilization takes a panel ----- */
-
-@media (min-width: 48rem) {
     .shell {
         grid-template-areas:
             'bar'
@@ -494,7 +485,6 @@
         grid-template-rows: auto 1fr auto;
     }
 
-    /* The pill unfolds into the band it was a folded copy of: the mark, the name, the way in. */
     .bar {
         grid-area: bar;
         position: relative;
@@ -543,6 +533,8 @@
     /* Between the band and the rail, because both are out and neither may be covered. */
     .drawer {
         top: var(--bar-height, 0px);
+        bottom: var(--rail-height, 0px);
+        width: 20rem;
     }
 
     .prefs {
@@ -550,7 +542,9 @@
         /* Square: a panel that runs from the header to the rail reads as a column, not a card. */
         border-radius: 0;
     }
+}
 
+@media (min-width: 48rem) {
     /*
      * The civilization stops being a bar over the year and becomes a panel beside the map.
      *
@@ -777,13 +771,3 @@
     font-size: 0.8125rem;
 }
 
-.deck__panel .card__source,
-.deck__panel .card__line {
-    font-size: 0.6875rem;
-    line-height: 1.4;
-}
-
-.deck__panel .card__note {
-    padding: var(--space-1) var(--space-2);
-    font-size: 0.6875rem;
-}

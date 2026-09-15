@@ -32,7 +32,7 @@ export function LegendPanel({ drawn, borders }: LegendPanelProps) {
     const text = useText();
     const { state, dispatch } = useAtlas();
     const format = useFormat();
-    const roomForLegend = useAtLeast('md');
+    const roomForLegend = useAtLeast('sm');
     const [open, setOpen] = useState(false);
 
     /*
