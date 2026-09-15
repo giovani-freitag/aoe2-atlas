@@ -5,6 +5,7 @@
         "documentTitle": "The real-world map of every Age of Empires II civilization",
         "focusedTitle": "{{name}} in {{year}}",
         "openRoster": "Open the list of civilizations",
+        "closeRoster": "Close the list of civilizations",
         "openSettings": "Open the map settings",
         "closeSettings": "Close the map settings",
         "loading": "Loading the century",

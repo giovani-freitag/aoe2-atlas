@@ -5,6 +5,7 @@
         "documentTitle": "Age of Empires II の全文明の実在地図",
         "focusedTitle": "{{year}}年の{{name}}",
         "openRoster": "文明の一覧を開く",
+        "closeRoster": "文明の一覧を閉じる",
         "openSettings": "地図の設定を開く",
         "closeSettings": "地図の設定を閉じる",
         "loading": "世紀を読み込み中",

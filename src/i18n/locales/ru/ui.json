@@ -5,6 +5,7 @@
         "documentTitle": "Настоящая карта всех цивилизаций Age of Empires II",
         "focusedTitle": "{{name}} в {{year}} году",
         "openRoster": "Открыть список цивилизаций",
+        "closeRoster": "Закрыть список цивилизаций",
         "openSettings": "Открыть настройки карты",
         "closeSettings": "Закрыть настройки карты",
         "loading": "Загрузка века",

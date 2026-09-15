@@ -5,6 +5,7 @@
         "documentTitle": "Age of Empires II'nin tüm uygarlıklarının gerçek haritası",
         "focusedTitle": "{{year}} yılında {{name}}",
         "openRoster": "Uygarlık listesini aç",
+        "closeRoster": "Uygarlık listesini kapat",
         "openSettings": "Harita ayarlarını aç",
         "closeSettings": "Harita ayarlarını kapat",
         "loading": "Yüzyıl yükleniyor",

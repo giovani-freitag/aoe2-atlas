@@ -5,6 +5,7 @@
         "documentTitle": "Prawdziwa mapa wszystkich cywilizacji Age of Empires II",
         "focusedTitle": "{{name}} w roku {{year}}",
         "openRoster": "Otwórz listę cywilizacji",
+        "closeRoster": "Zamknij listę cywilizacji",
         "openSettings": "Otwórz ustawienia mapy",
         "closeSettings": "Zamknij ustawienia mapy",
         "loading": "Wczytywanie stulecia",

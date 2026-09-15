@@ -5,6 +5,7 @@
         "documentTitle": "El mapa real de todas las civilizaciones de Age of Empires II",
         "focusedTitle": "{{name}} en {{year}}",
         "openRoster": "Abrir la lista de civilizaciones",
+        "closeRoster": "Cerrar la lista de civilizaciones",
         "openSettings": "Abrir los ajustes del mapa",
         "closeSettings": "Cerrar los ajustes del mapa",
         "loading": "Cargando el siglo",

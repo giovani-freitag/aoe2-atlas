@@ -5,6 +5,7 @@
         "documentTitle": "Age of Empires II 全部文明的真實地圖",
         "focusedTitle": "{{year}}年的{{name}}",
         "openRoster": "開啟文明列表",
+        "closeRoster": "關閉文明列表",
         "openSettings": "開啟地圖設定",
         "closeSettings": "關閉地圖設定",
         "loading": "正在載入本世紀",

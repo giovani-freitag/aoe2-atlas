@@ -5,6 +5,7 @@
         "documentTitle": "La mappa reale di tutte le civiltà di Age of Empires II",
         "focusedTitle": "{{name}} nel {{year}}",
         "openRoster": "Apri l'elenco delle civiltà",
+        "closeRoster": "Chiudi l’elenco delle civiltà",
         "openSettings": "Apri le impostazioni della mappa",
         "closeSettings": "Chiudi le impostazioni della mappa",
         "loading": "Caricamento del secolo",
